@@ -44,7 +44,7 @@ int arr4[5] = {0};                        // 全部初始化为0
 ### 访问数组元素
 
 ```
-#include 
+[[include]] 
 
 int main() {
     int arr[5] = {10, 20, 30, 40, 50};
@@ -92,7 +92,7 @@ int mat3[][3] = {1, 2, 3, 4, 5, 6};      // 省略行数
 ### 访问二维数组
 
 ```
-#include 
+[[include]] 
 
 int main() {
     int matrix[2][3] = {
@@ -134,8 +134,8 @@ char str2[] = "Hello";                        // 字符串
 字符串是以`'\0'`（空字符）结尾的字符数组：
 
 ```
-#include 
-#include 
+[[include]] 
+[[include]] 
 
 int main() {
     char str[] = "Hello";
@@ -177,7 +177,7 @@ int main() {
 ## 数组作为函数参数
 
 ```
-#include 
+[[include]] 
 
 // 函数声明
 void printArray(int arr[], int size);
@@ -236,7 +236,7 @@ void reverseArray(int arr[], int size) {
 ### 冒泡排序
 
 ```
-#include 
+[[include]] 
 
 void bubbleSort(int arr[], int size) {
     for (int i = 0; i < size - 1; i++) {
@@ -269,7 +269,7 @@ int main() {
 ### 二分查找
 
 ```
-#include 
+[[include]] 
 
 int binarySearch(int arr[], int size, int target) {
     int left = 0, right = size - 1;
@@ -311,10 +311,10 @@ int main() {
 ## 综合示例：学生成绩管理
 
 ```
-#include 
+[[include]] 
 
-#define MAX_STUDENTS 100
-#define MAX_NAME 50
+[[define]] MAX_STUDENTS 100
+[[define]] MAX_NAME 50
 
 struct Student {
     char name[MAX_NAME];

@@ -102,7 +102,7 @@ struct Flags {
 
 ```
 // 错误的宏定义
-#define MAX(a, b) a > b ? a : b
+[[define]] MAX(a, b) a > b ? a : b
 
 // 调用时
 int result = MAX(x + y, z);
@@ -113,13 +113,13 @@ int result = MAX(x + y, z);
 **正确写法：**参数和整体都加括号
 
 ```
-#define MAX(a, b) ((a) > (b) ? (a) : (b))
+[[define]] MAX(a, b) ((a) > (b) ? (a) : (b))
 ```
 
 ##### 易错点：宏替换导致多次求值
 
 ```
-#define SQUARE(x) ((x) * (x))
+[[define]] SQUARE(x) ((x) * (x))
 
 int a = 5;
 int result = SQUARE(a++);  // 危险！

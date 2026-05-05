@@ -25,7 +25,7 @@ C语言有三种基本的程序结构：
 顺序结构是最简单的结构，程序按照语句的书写顺序依次执行：
 
 ```
-#include 
+[[include]] 
 
 int main() {
     int a, b, sum;
@@ -56,7 +56,7 @@ if (条件表达式) {
 ```
 
 ```
-#include 
+[[include]] 
 
 int main() {
     int score;
@@ -83,7 +83,7 @@ if (条件表达式) {
 ```
 
 ```
-#include 
+[[include]] 
 
 int main() {
     int score;
@@ -114,7 +114,7 @@ if (条件1) {
 ```
 
 ```
-#include 
+[[include]] 
 
 int main() {
     int score;
@@ -157,7 +157,7 @@ switch (表达式) {
 ```
 
 ```
-#include 
+[[include]] 
 
 int main() {
     int day;
@@ -215,7 +215,7 @@ while (条件表达式) {
 ```
 
 ```
-#include 
+[[include]] 
 
 int main() {
     int i = 1;
@@ -243,7 +243,7 @@ do {
 ```
 
 ```
-#include 
+[[include]] 
 
 int main() {
     int number;
@@ -270,7 +270,7 @@ for (初始化表达式; 条件表达式; 更新表达式) {
 ```
 
 ```
-#include 
+[[include]] 
 
 int main() {
     int sum = 0;
@@ -307,7 +307,7 @@ int main() {
 立即跳出当前循环：
 
 ```
-#include 
+[[include]] 
 
 int main() {
     for (int i = 1; i <= 10; i++) {
@@ -327,7 +327,7 @@ int main() {
 跳过本次循环，继续下一次循环：
 
 ```
-#include 
+[[include]] 
 
 int main() {
     for (int i = 1; i <= 10; i++) {
@@ -347,7 +347,7 @@ int main() {
 循环和选择结构可以互相嵌套：
 
 ```
-#include 
+[[include]] 
 
 int main() {
     // 打印1-100之间的所有质数
@@ -373,7 +373,7 @@ int main() {
 ## 综合示例
 
 ```
-#include 
+[[include]] 
 
 int main() {
     int choice;

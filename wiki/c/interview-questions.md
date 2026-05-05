@@ -221,7 +221,7 @@ p++    // ✅ 正确
 ##### 答案：
 
 ```
-#include 
+[[include]] 
 
 void reverse(char* str) {
     if (str == NULL) return;
@@ -247,8 +247,8 @@ int main() {
 ##### 答案：
 
 ```
-#include 
-#include 
+[[include]] 
+[[include]] 
 
 bool isPalindrome(char* str) {
     if (str == NULL) return false;
@@ -440,8 +440,8 @@ int fib(int n) {
 ##### 答案：
 
 ```
-#include 
-#include 
+[[include]] 
+[[include]] 
 
 bool isPrime(int n) {
     if (n <= 1) return false;

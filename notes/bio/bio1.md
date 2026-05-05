@@ -48,17 +48,17 @@ wiki: ''
 ### 1）安装
 
 ```bash
-#安装miniconda
+[[安装miniconda]]
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash Miniconda3-latest-Linux-x86_64.sh
-#配置环境变量
+[[配置环境变量]]
 echo 'export PATH="～/miniconda3/bin: $ PATH"' >> ～/.bashrc
 source ～/.bashrc
-#验证安装
+[[验证安装]]
 conda --version
-#创建虚拟环境
+[[创建虚拟环境]]
 conda create -n myenv
-conda activate myenv #激活环境，配置软件包
+conda activate myenv [[激活环境，配置软件包]]
 ```
 
 ### 2）换源
@@ -76,14 +76,14 @@ custom_channels:
   pytorch: https://mirror.lzu.edu.cn/anaconda/cloud
 ' | tee ~/.condarc
 conda config --set custom_channels.bioconda https://mirror.lzu.edu.cn/anaconda/cloud/
-#bioconda是常用源，非常重要，大部分软件需要从这里下载
+[[bioconda是常用源，非常重要，大部分软件需要从这里下载]]
 ```
 
 ### 3）利用 conda 安装软件
 
 ```bash
 conda create -n myenv python=3.6#创建环境，一定要指定python版本
-conda activate myenv #激活环境
+conda activate myenv [[激活环境]]
 conda install -c bioconda fastqc trim-galore snakemake
 ```
 

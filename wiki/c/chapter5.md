@@ -43,7 +43,7 @@ p = &a         // p指向a的地址
 ### 指针的定义和使用
 
 ```
-#include 
+[[include]] 
 
 int main() {
     int a = 10;
@@ -68,7 +68,7 @@ int main() {
 ### 指针的算术运算
 
 ```
-#include 
+[[include]] 
 
 int main() {
     int arr[5] = {10, 20, 30, 40, 50};
@@ -110,7 +110,7 @@ if (p1 < p2) {
 数组名在很多情况下会退化为指向首元素的指针：
 
 ```
-#include 
+[[include]] 
 
 int main() {
     int arr[5] = {10, 20, 30, 40, 50};
@@ -150,7 +150,7 @@ for (int *p = arr; p < arr + 5; p++) {
 指针参数可以实现"传引用"的效果：
 
 ```
-#include 
+[[include]] 
 
 // 值传递：不会改变原变量
 void swapByValue(int a, int b) {
@@ -182,7 +182,7 @@ int main() {
 ### 函数返回指针
 
 ```
-#include 
+[[include]] 
 
 int* max(int *a, int *b) {
     return (*a > *b) ? a : b;
@@ -221,7 +221,7 @@ int (*p)[5];    // 指向包含5个int的数组的指针
 ```
 
 ```
-#include 
+[[include]] 
 
 int main() {
     int arr[3][4] = {
@@ -247,7 +247,7 @@ int main() {
 指向指针的指针称为二级指针：
 
 ```
-#include 
+[[include]] 
 
 int main() {
     int a = 10;
@@ -274,8 +274,8 @@ int main() {
 ### malloc和free
 
 ```
-#include 
-#include 
+[[include]] 
+[[include]] 
 
 int main() {
     // 动态分配内存
@@ -306,7 +306,7 @@ int main() {
 ### calloc和realloc
 
 ```
-#include 
+[[include]] 
 
 // calloc：分配并初始化为0
 int *p1 = (int*)calloc(5, sizeof(int));
@@ -367,8 +367,8 @@ for (int i = 0; i <= 5; i++) {
 ## 综合示例：链表
 
 ```
-#include 
-#include 
+[[include]] 
+[[include]] 
 
 struct Node {
     int data;

@@ -79,7 +79,7 @@ double d = 3.14159;      // 双精度浮点型
 "Hello World"  // 字符串
 
 // 符号常量
-#define PI 3.14159
+[[define]] PI 3.14159
 const int MAX = 100;
 ```
 
@@ -206,7 +206,7 @@ int result2 = a / (int)b;      // 结果为3
 ### 格式化输出 printf
 
 ```
-#include 
+[[include]] 
 
 int main() {
     int age = 20;
@@ -235,7 +235,7 @@ int main() {
 ### 格式化输入 scanf
 
 ```
-#include 
+[[include]] 
 
 int main() {
     int age;
@@ -262,9 +262,9 @@ int main() {
 ## 完整示例
 
 ```
-#include 
+[[include]] 
 
-#define PI 3.14159
+[[define]] PI 3.14159
 
 int main() {
     // 计算圆的面积
@@ -303,7 +303,7 @@ int main() {
 #### 💻 完整代码
 
 ```
-#include 
+[[include]] 
 
 int main() {
     int choice;
@@ -419,7 +419,7 @@ float temperature, converted;
 #### 💻 完整代码
 
 ```
-#include 
+[[include]] 
 
 int main() {
     float num1, num2, result;
@@ -494,7 +494,7 @@ if (num2 == 0.0f) { ... }
 **注意：**浮点数直接比较可能不精确，实际应用中应该使用容差比较：
 
 ```
-if (fabs(num2) < 1e-6) {  // 需要 #include 
+if (fabs(num2) < 1e-6) {  // 需要 [[include]] 
     printf("除数接近0\n");
 }
 ```

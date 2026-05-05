@@ -73,7 +73,7 @@ int fclose(FILE *stream);
 ```
 
 ```
-#include 
+[[include]] 
 
 int main() {
     FILE *fp;
@@ -106,7 +106,7 @@ int main() {
 ### 字符读写 fgetc/fputc
 
 ```
-#include 
+[[include]] 
 
 int main() {
     FILE *fp;
@@ -141,7 +141,7 @@ int main() {
 ### 字符串读写 fgets/fputs
 
 ```
-#include 
+[[include]] 
 
 int main() {
     FILE *fp;
@@ -167,7 +167,7 @@ int main() {
 ### 格式化读写 fprintf/fscanf
 
 ```
-#include 
+[[include]] 
 
 struct Student {
     char name[50];
@@ -212,7 +212,7 @@ size_t fwrite(const void *ptr, size_t size, size_t count, FILE *stream);
 ```
 
 ```
-#include 
+[[include]] 
 
 struct Student {
     char name[50];
@@ -270,7 +270,7 @@ int main() {
 ### fseek的使用
 
 ```
-#include 
+[[include]] 
 
 int main() {
     FILE *fp;
@@ -314,7 +314,7 @@ int main() {
 | `clearerr(fp)` | 清除文件错误标志 |
 
 ```
-#include 
+[[include]] 
 
 int main() {
     FILE *fp;
@@ -354,7 +354,7 @@ C语言定义了三个标准文件流：
 | `stderr` | 标准错误 | 屏幕 |
 
 ```
-#include 
+[[include]] 
 
 int main() {
     // 从标准输入读取
@@ -375,11 +375,11 @@ int main() {
 ## 综合示例：学生成绩管理系统
 
 ```
-#include 
-#include 
-#include 
+[[include]] 
+[[include]] 
+[[include]] 
 
-#define FILENAME "students.dat"
+[[define]] FILENAME "students.dat"
 
 struct Student {
     int id;

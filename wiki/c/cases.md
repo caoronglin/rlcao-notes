@@ -40,10 +40,10 @@ updated: 2026-02-01 13:00:55
 #### 💻 完整代码
 
 ```
-#include 
-#include 
+[[include]] 
+[[include]] 
 
-#define MAX_STUDENTS 50
+[[define]] MAX_STUDENTS 50
 
 // 学生结构体
 struct Student {
@@ -391,8 +391,8 @@ for (int i = 0; i < studentCount; i++) {
 #### 💻 完整代码
 
 ```
-#include 
-#include   // 用于 toupper() 函数
+[[include]] 
+[[include]]   // 用于 toupper() 函数
 
 // 函数声明
 double add(double a, double b);
@@ -628,13 +628,13 @@ void clearInputBuffer() {
 #### 💻 完整代码
 
 ```
-#include 
-#include 
-#include 
+[[include]] 
+[[include]] 
+[[include]] 
 
-#define MAX_ATTEMPTS 10
-#define MIN_NUM 1
-#define MAX_NUM 100
+[[define]] MAX_ATTEMPTS 10
+[[define]] MIN_NUM 1
+[[define]] MAX_NUM 100
 
 // 函数声明
 int generateRandomNumber(int min, int max);

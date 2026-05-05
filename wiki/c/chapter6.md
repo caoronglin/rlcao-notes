@@ -91,7 +91,7 @@ void printHello() {
 ### 基本调用
 
 ```
-#include 
+[[include]] 
 
 int square(int num);
 
@@ -110,7 +110,7 @@ int square(int num) {
 ### 嵌套调用
 
 ```
-#include 
+[[include]] 
 
 int add(int a, int b) {
     return a + b;
@@ -135,7 +135,7 @@ int main() {
 ### 递归调用
 
 ```
-#include 
+[[include]] 
 
 // 计算阶乘
 long factorial(int n) {
@@ -167,7 +167,7 @@ int main() {
 C语言默认使用值传递，将实参的值复制给形参：
 
 ```
-#include 
+[[include]] 
 
 void swap(int a, int b) {
     int temp = a;
@@ -190,7 +190,7 @@ int main() {
 通过传递指针实现地址传递，可以修改原变量的值：
 
 ```
-#include 
+[[include]] 
 
 void swap(int *a, int *b) {
     int temp = *a;
@@ -210,7 +210,7 @@ int main() {
 ### 数组作为参数
 
 ```
-#include 
+[[include]] 
 
 // 数组作为参数会退化为指针
 void printArray(int arr[], int size) {
@@ -256,7 +256,7 @@ void func() {
 ### 全局变量
 
 ```
-#include 
+[[include]] 
 
 int global = 100;  // 全局变量，整个文件都可以访问
 
@@ -279,7 +279,7 @@ int main() {
 ### static变量
 
 ```
-#include 
+[[include]] 
 
 void count() {
     static int count = 0;  // 静态局部变量，只初始化一次
@@ -306,11 +306,11 @@ int main() {
 
 ## 预处理命令
 
-### #define 宏定义
+### [[define]] 宏定义
 
 ```
-#define PI 3.14159           // 常量宏
-#define MAX(a, b) ((a) > (b) ? (a) : (b))  // 函数宏
+[[define]] PI 3.14159           // 常量宏
+[[define]] MAX(a, b) ((a) > (b) ? (a) : (b))  // 函数宏
 
 int main() {
     printf("PI = %f\n", PI);
@@ -320,30 +320,30 @@ int main() {
 }
 ```
 
-### #include 文件包含
+### [[include]] 文件包含
 
 ```
-#include        // 系统头文件
-#include "myheader.h"     // 自定义头文件
+[[include]]        // 系统头文件
+[[include]] "myheader.h"     // 自定义头文件
 ```
 
 ### 条件编译
 
 ```
-#define DEBUG 1
+[[define]] DEBUG 1
 
 int main() {
-    #ifdef DEBUG
+    [[ifdef]] DEBUG
         printf("调试模式\n");
-    #endif
+    [[endif]]
 
-    #if DEBUG == 1
+    [[if]] DEBUG == 1
         printf("调试级别1\n");
-    #elif DEBUG == 2
+    [[elif]] DEBUG == 2
         printf("调试级别2\n");
-    #else
+    [[else]]
         printf("发布模式\n");
-    #endif
+    [[endif]]
 
     return 0;
 }
@@ -360,8 +360,8 @@ int main() {
 ### 数学函数 math.h
 
 ```
-#include 
-#include 
+[[include]] 
+[[include]] 
 
 int main() {
     printf("sqrt(16) = %f\n", sqrt(16));
@@ -375,8 +375,8 @@ int main() {
 ### 字符串函数 string.h
 
 ```
-#include 
-#include 
+[[include]] 
+[[include]] 
 
 int main() {
     char s1[] = "Hello";
@@ -394,8 +394,8 @@ int main() {
 ### 内存操作函数
 
 ```
-#include 
-#include 
+[[include]] 
+[[include]] 
 
 int main() {
     int arr[5] = {1, 2, 3, 4, 5};
@@ -410,10 +410,10 @@ int main() {
 ## 综合示例：学生成绩管理系统
 
 ```
-#include 
-#include 
+[[include]] 
+[[include]] 
 
-#define MAX_STUDENTS 100
+[[define]] MAX_STUDENTS 100
 
 struct Student {
     char name[50];

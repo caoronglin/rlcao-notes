@@ -90,8 +90,8 @@ stu3.score = 88.5;
 ### 访问结构体成员
 
 ```
-#include 
-#include 
+[[include]] 
+[[include]] 
 
 struct Student {
     char name[50];
@@ -121,7 +121,7 @@ int main() {
 结构体数组的每个元素都是一个结构体：
 
 ```
-#include 
+[[include]] 
 
 struct Student {
     char name[50];
@@ -155,7 +155,7 @@ int main() {
 ### 指向结构体的指针
 
 ```
-#include 
+[[include]] 
 
 struct Student {
     char name[50];
@@ -181,7 +181,7 @@ int main() {
 ### 结构体指针作为函数参数
 
 ```
-#include 
+[[include]] 
 
 struct Student {
     char name[50];
@@ -217,7 +217,7 @@ int main() {
 结构体可以包含另一个结构体作为成员：
 
 ```
-#include 
+[[include]] 
 
 struct Date {
     int year;
@@ -256,7 +256,7 @@ int main() {
 **共用体**（union）是一种特殊的数据类型，它允许在相同的内存位置存储不同的数据类型。所有成员共享同一块内存，同时只能有一个成员有效。
 
 ```
-#include 
+[[include]] 
 
 union Data {
     int i;
@@ -320,7 +320,7 @@ enum Weekday today = WEDNESDAY;
 ### 枚举的使用
 
 ```
-#include 
+[[include]] 
 
 enum Weekday {
     SUNDAY = 0,    // 可以指定值
@@ -360,7 +360,7 @@ int main() {
 `typedef`用于为已有类型定义新的名称：
 
 ```
-#include 
+[[include]] 
 
 // 为基本类型定义别名
 typedef int INTEGER;
@@ -397,10 +397,10 @@ int main() {
 ## 综合示例：学生信息管理系统
 
 ```
-#include 
-#include 
+[[include]] 
+[[include]] 
 
-#define MAX_STUDENTS 100
+[[define]] MAX_STUDENTS 100
 
 // 定义日期结构体
 typedef struct {

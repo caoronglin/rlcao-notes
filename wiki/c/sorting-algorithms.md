@@ -365,9 +365,9 @@ O(log n) - 递归调用栈的深度
 ### 实际应用示例
 
 ```
-#include 
-#include 
-#include 
+[[include]] 
+[[include]] 
+[[include]] 
 
 // 生成随机数组
 void generateRandomArray(int arr[], int n) {

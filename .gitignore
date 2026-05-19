@@ -1,6 +1,8 @@
 # 整个 Obsidian 配置目录（包含所有插件设置，避免密钥泄露）
 .obsidian/
-
+日记/
+panel/
+项目/
 # 图床中转目录
 assets/
 

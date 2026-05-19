@@ -1,8 +1,8 @@
 {
 	"nodes":[
 		{"id":"b7b0d1ceb832a69d","type":"file","file":"panel/欢迎日期.md","x":-2000,"y":-920,"width":1840,"height":180,"color":"4"},
-		{"id":"a064e13148604d4d","x":-2000,"y":-740,"width":400,"height":400,"type":"file","file":"panel/项目看板.md"},
-		{"id":"f6d2c8d28a97502e","x":-800,"y":-96,"width":400,"height":400,"type":"file","file":"panel/阅读进度.md"}
+		{"id":"a064e13148604d4d","type":"file","file":"panel/项目看板.md","x":-2000,"y":-740,"width":400,"height":820},
+		{"id":"f6d2c8d28a97502e","type":"file","file":"panel/阅读进度.md","x":-1600,"y":-740,"width":1160,"height":820}
 	],
 	"edges":[]
 }

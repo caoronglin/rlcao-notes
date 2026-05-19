@@ -1,9 +1,0 @@
-{
-	"nodes":[
-		{"id":"f31ab12a1d6afadc","x":21,"y":155,"width":250,"height":60,"type":"text","text":""},
-		{"id":"20f439dbc2f78cc5","type":"file","file":"panel/01.md","x":16,"y":0,"width":400,"height":400},
-		{"id":"9fd517e5372409e6","type":"text","text":"// 获取所有任务并进行过滤\nconst allTasks = dv.pages()\n  .file.tasks\n  .where(t => !t.completed);  // 只显示未完成任务\n \n// 按项目标签分组任务\nconst tasksByProject = allTasks\n  .where(t => t.tags && t.tags.length > 0)\n  .groupBy(t => t.tags[0]);  // 按第一个标签分组\n \ndv.header(2, \"任务概览\");\ndv.paragraph(`当前共有 ${allTasks.length} 个未完成任务`);\n","x":-93,"y":-30,"width":250,"height":60},
-		{"id":"a948a45a31220c0d","type":"text","text":"","x":-125,"y":-30,"width":185,"height":60}
-	],
-	"edges":[]
-}

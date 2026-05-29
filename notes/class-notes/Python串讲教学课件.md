@@ -4,20 +4,6 @@
 > **知识来源**：Python 知识库（西北农林科技大学《大学程序设计 Python》课程体系）  
 
 ---
-
-## 目录
-
-1. [第1章 Python 语言基础](#第1章-python-语言基础)
-2. [第2章 Python 代码基础](#第2章-python-代码基础)
-3. [第3章 基本控制结构](#第3章-基本控制结构) ⭐ 重点
-4. [第4章 复合数据类型](#第4章-复合数据类型) ⭐ 重点
-5. [第5章 程序设计方法与算法](#第5章-程序设计方法与算法) ⭐ 难点
-6. [第6章 函数与模块化程序设计](#第6章-函数与模块化程序设计) ⭐ 核心
-7. [第7章 文件操作](#第7章-文件操作)
-8. [第9章 软件开发基础](#第9章-软件开发基础)
-
----
-
 ## 第1章 Python 语言基础
 
 ### 1.1 核心知识点
@@ -33,6 +19,20 @@
 | 格式化输出 | `format()`、`f-string`、`%.2f` |
 
 > ⚠️ **易错提醒**：`input()` 始终返回字符串类型，数值计算前必须用 `int()`、`float()` 或 `eval()` 转换！
+>
+> ⚠️ **安全警示**：`eval()` 可执行任意 Python 代码（如 `eval(input())` 时输入 `__import__('os').system('ls')` 会执行系统命令），**生产环境禁用**。教学示例中使用 `eval()` 仅为简化多值输入（如 `r, h = eval(input(...))`），**课堂上务必强调其安全风险**。推荐安全替代方案：
+> ```python
+> # 方法一：逐值输入（推荐）
+> r = float(input("请输入半径 r: "))
+> h = float(input("请输入高 h: "))
+> 
+> # 方法二：逗号分隔 + map 转换
+> r, h = map(float, input("请输入半径 r, h (逗号分隔): ").split(','))
+> 
+> # 方法三：安全字面量解析（仅支持常量）
+> import ast
+> r, h = ast.literal_eval(input("..."))
+> ```
 
 ---
 
@@ -45,8 +45,8 @@
 ```python
 import math
 
-r = eval(input("请输入半径 r: "))
-h = eval(input("请输入高 h: "))
+r = float(input("请输入半径 r: "))
+h = float(input("请输入高 h: "))
 
 # 表面积 S = 2πr² + 2πrh
 S = 2 * math.pi * r ** 2 + 2 * math.pi * r * h
@@ -66,8 +66,8 @@ print("表面积={:.2f}, 体积={:.2f}".format(S, V))
 ```python
 import math
 
-a, b, c = eval(input("请输入三个整数（用逗号分隔）: "))
-result = math.gcd(math.gcd(a, b), c)
+a, b, c = map(int, input("请输入三个整数（用空格分隔）: ").split())
+result = math.gcd(a, b, c)   # Python 3.9+ 支持多个参数
 print("最大公约数为", result)
 ```
 
@@ -101,7 +101,7 @@ else:
 | 字符串操作 | 索引、切片 `[start:end:step]`、`len()`、`split()` |
 | 转义字符 | `\n`（换行）、`\t`（制表符）、`\\`（反斜杠） |
 | 类型转换 | `int()`、`float()`、`str()`、`bool()` |
-| 注释 | 单行 `#`、多行 `"""..."""` |
+| 注释 | 单行 `#`（唯一标准注释）；`"""..."""` 为**多行字符串/文档字符串**，常作多行注释的替代写法但非标准注释 |
 
 ---
 
@@ -191,8 +191,8 @@ print("字母 t 出现了", count, "次")
 #### 例题 6：BMI 指数判断（多分支经典）
 
 ```python
-height = eval(input("请输入您的身高(米): "))
-weight = eval(input("请输入您的体重(千克): "))
+height = float(input("请输入您的身高(米): "))
+weight = float(input("请输入您的体重(千克): "))
 BMI = weight / height / height
 print("您的BMI指数是: {:.1f}".format(BMI))
 
@@ -215,7 +215,7 @@ else:
 #### 例题 7：成绩等级判断（百分制 → 五分制）
 
 ```python
-mark = eval(input("请输入学生的考试成绩(0-100)："))
+mark = float(input("请输入学生的考试成绩(0-100)："))
 if mark >= 90:
     print(mark, "分，优秀")
 elif mark >= 80:
@@ -233,8 +233,8 @@ else:
 > 规则：1-4 站 3 元/人，5-9 站 4 元/人，9 站以上 5 元/人。
 
 ```python
-person = eval(input("请输入乘车人数："))
-n = eval(input("请输入乘坐站数："))
+person = int(input("请输入乘车人数："))
+n = int(input("请输入乘坐站数："))
 
 # 方法一：多分支
 if n > 9:
@@ -265,7 +265,7 @@ print("应付款为：", pay)
 
 ```python
 is_member = input("是否会员？(y/n): ")
-amount = eval(input("消费金额: "))
+amount = float(input("消费金额: "))
 
 if is_member == 'y':
     if amount >= 200:
@@ -530,7 +530,7 @@ for i in range(5, 0, -1):
 ```python
 ls1 = [1, 2, 3, 4, 5]                    # 直接创建
 ls2 = list(range(1, 6))                  # list() 转换
-ls3 = eval(input())                       # eval 输入
+ls3 = list(map(int, input().split()))     # 空格分隔输入列表
 ls4 = [i**2 for i in range(1, 11)]       # 列表生成式（推导式）
 ls5 = [[0]*4 for _ in range(3)]          # 二维列表（3行4列）
 ```
@@ -562,8 +562,11 @@ scores[::-1] # [92, 94, 95, 96, 98]（反转）
 | 统计函数 | `min(ls)`, `max(ls)`, `sum(ls)` | 数值列表专用 |
 
 > ⚠️ **深浅拷贝**：
-> - `ls2 = ls1.copy()` → 深拷贝（独立空间）
-> - `ls2 = ls1` → 浅拷贝（共享空间，改一个影响另一个）
+> - `ls2 = ls1` → 引用赋值（共享空间，改一个影响另一个）
+> - `ls2 = ls1.copy()` → **浅拷贝**（仅顶层独立；若列表中还有可变对象，嵌套层仍共享引用）
+> - `ls3 = copy.deepcopy(ls1)` → **深拷贝**（完全独立，需 `import copy`）
+>
+> 💡 **验证**：`ls1 = [[1,2],[3,4]]; ls2 = ls1.copy(); ls2[0][0]=99` → `ls1[0][0]` 也会变为 99！
 
 ---
 
@@ -604,14 +607,18 @@ print("平均年龄: {:.1f}".format(avg_age))
 
 ```python
 n = int(input("评委人数: "))
-scores = []
-for i in range(n):
-    scores.append(float(input("第{}位评委打分: ".format(i+1))))
 
-scores.sort()
-# 去掉一个最高分和一个最低分
-final_score = sum(scores[1:-1]) / (len(scores) - 2)
-print("选手最终得分: {:.1f}".format(final_score))
+if n < 3:
+    print("评委人数不足3人，无法计算！")
+else:
+    scores = []
+    for i in range(n):
+        scores.append(float(input("第{}位评委打分: ".format(i+1))))
+
+    scores.sort()
+    # 去掉一个最高分和一个最低分
+    final_score = sum(scores[1:-1]) / (len(scores) - 2)
+    print("选手最终得分: {:.1f}".format(final_score))
 ```
 
 ---
@@ -626,7 +633,7 @@ result = [(x, y, z)
           for x in range(0, 21) 
           for y in range(0, 34) 
           for z in range(0, 101) 
-          if x + y + z == 100 and 5*x + 3*y + z/3 == 100]
+          if x + y + z == 100 and z % 3 == 0 and 5*x + 3*y + z//3 == 100]
 
 for r in result:
     print("鸡翁: {}, 鸡母: {}, 鸡雏: {}".format(*r))
@@ -907,7 +914,7 @@ print("近似根:", x1)
 for x in range(0, 21):          # 公鸡最多 20 只
     for y in range(0, 34):      # 母鸡最多 33 只
         z = 100 - x - y         # 减少一重循环
-        if 5*x + 3*y + z/3 == 100:
+        if z % 3 == 0 and 5*x + 3*y + z//3 == 100:
             print("鸡翁: {}, 鸡母: {}, 鸡雏: {}".format(x, y, z))
 ```
 
@@ -1354,14 +1361,14 @@ print(palindrome_primes(2, 200))  # [2, 3, 5, 7, 11, 101, 131, 151, 181, 191]
 
 ### 7.2 读写模式速查
 
-| 模式 | 读 | 写 | 文件不存在 | 覆盖写 |
-|:---:|:---:|:---:|:---:|:---:|
-| `'r'` | ✅ | ❌ | 报错 | — |
-| `'r+'` | ✅ | ✅ | 报错 | 是 |
-| `'w'` | ❌ | ✅ | 新建 | 是 |
-| `'w+'` | ✅ | ✅ | 新建 | 是 |
-| `'a'` | ❌ | ✅ | 新建 | 否（追加） |
-| `'a+'` | ✅ | ✅ | 新建 | 否（追加） |
+| 模式 | 读 | 写 | 文件不存在 | 说明 |
+|:---:|:---:|:---:|:---:|:---|
+| `'r'` | ✅ | ❌ | 报错 | 只读模式（默认） |
+| `'r+'` | ✅ | ✅ | 报错 | **可读可写，不清空文件**，写入从指针位置覆写 |
+| `'w'` | ❌ | ✅ | 新建 | **清空重建**，覆盖全部原有内容 |
+| `'w+'` | ✅ | ✅ | 新建 | **清空重建**，可读写 |
+| `'a'` | ❌ | ✅ | 新建 | 追加写，不覆盖原有内容 |
+| `'a+'` | ✅ | ✅ | 新建 | 追加并读写，不覆盖原有内容 |
 
 ---
 
@@ -1438,7 +1445,9 @@ def file_stats(filename):
 
     chars = len(content)
     words = len(content.split())
-    lines = content.count('\n') + 1
+    lines = content.count('\n') + (0 if content.endswith('\n') else 1)  # ⚠️ 处理末尾无换行符的情况
+    if not content:
+        lines = 0                                                       # ⚠️ 处理空文件
 
     print("字符数: {}, 单词数: {}, 行数: {}".format(chars, words, lines))
 
@@ -1452,14 +1461,14 @@ file_stats('test.txt')
 
 ### 9.1 核心知识点
 
-| 知识点 | 说明 |
-|--------|------|
-| 软件工程概念 | 系统化、规范化、可量化的软件开发方法 |
-| 软件生命周期 | 需求分析 → 设计 → 编码 → 测试 → 维护 |
-| 模块化设计 | **高内聚、低耦合**；自顶向下设计，自底向上实现 |
-| 代码规范 | PEP 8 编码风格、命名规范、注释规范 |
-| 调试方法 | print 调试、断点调试、异常处理 `try...except` |
-| 测试方法 | 单元测试、集成测试、黑盒/白盒测试 |
+| 知识点 | 说明                                                |
+| ------ | ------------------------------------------------- |
+| 软件工程概念 | 系统化、规范化、可量化的软件开发方法                                |
+| 软件生命周期 | 需求分析 → 设计 → 编码 → 测试 → 维护                          |
+| 模块化设计 | **高内聚、低耦合**；自顶向下设计，自底向上实现                         |
+| 代码规范 | PEP 8 编码风格、命名规范、注释规范                              |
+| 调试方法 | print 调试、断点调试[[Python串讲教学课件]]、异常处理 `try...except` |
+| 测试方法 | 单元测试、集成测试、黑盒/白盒测试                                 |
 
 ---
 
@@ -1537,14 +1546,14 @@ for s in students:
 
 ### 一、语法易错
 
-| 序号 | 易错点 | 说明 |
-|:---:|------|------|
-| 1 | `input()` 返回字符串 | 数值计算前必须用 `int()`/`float()`/`eval()` 转换 |
-| 2 | `=` vs `==` | `=` 是赋值，`==` 是判断相等 |
-| 3 | `else` 后不能跟条件 | `else a<b:` ❌ → `else:` ✅ |
-| 4 | 冒号不能忘 | `if`/`elif`/`else`/`for`/`while`/`def` 后必须有冒号 |
-| 5 | 缩进一致 | Python 用缩进表示代码块，必须统一（4 空格） |
-| 6 | `range(m, n)` 不含 n | `range(1, 5)` → 1, 2, 3, 4（不含 5） |
+| 序号  | 易错点                | 说明                                            |
+| :-: | ------------------ | --------------------------------------------- |
+|  1  | `input()` 返回字符串    | 数值计算前必须用 `int()`/`float()`/`eval()` 转换        |
+|  2  | `=` vs `==`        | `=` 是赋值，`==` 是判断相等                            |
+|  3  | `else` 后不能跟条件      | `else a<b:` ❌ → `else:` ✅                     |
+|  4  | 冒号不能忘              | `if`/`elif`/`else`/`for`/`while`/`def` 后必须有冒号 |
+|  5  | 缩进一致               | Python 用缩进表示代码块，必须统一（4 空格）                    |
+|  6  | `range(m, n)` 不含 n | `range(1, 5)` → 1, 2, 3, 4（不含 5）              |
 
 ### 二、逻辑易错
 
@@ -1554,7 +1563,7 @@ for s in students:
 | 2 | 外循环中必须重置内循环累积变量 | 如阶乘和的 `T = 1` 必须放在外循环内 |
 | 3 | `break` vs `continue` | break = 退出整个循环；continue = 跳过本次 |
 | 4 | `for...else` 中 break 不执行 else | 正常遍历完才执行 else |
-| 5 | 浅拷贝 vs 深拷贝 | `ls2 = ls1` 共享空间；`ls2 = ls1.copy()` 独立 |
+| 5 | 浅拷贝 vs 深拷贝 | `ls2 = ls1` 共享空间；`ls2 = ls1.copy()` 浅拷贝（嵌套层仍共享）；`copy.deepcopy()` 才是完全独立 |
 | 6 | 默认参数必须放最后 | `def f(a, b=1)` ✅；`def f(a=1, b)` ❌ |
 
 ### 三、数据类型易错

@@ -2,6 +2,7 @@
 Numpy提供了高性能数组与矩阵运算处理能力
 - 快速高效的多维数组对象$ndarray$
 - 线性代数运算，舒立叶变换
+$$ \text{A} + \text{SAM} \xrightarrow{\text{Hia5}} \text{m}^6\text{A} + \text{SAH} $$
 ## 数组创建
 - 通过$array()$创建数组
 ```python

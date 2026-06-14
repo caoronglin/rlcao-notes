@@ -1,0 +1,107 @@
+/* ========================================
+   🎯 Dashboard 美化 - Home.canvas 看板专用
+   ======================================== */
+
+/* ── Canvas 卡片美化 ── */
+.canvas-node .canvas-node-container {
+  border-radius: 12px !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  transition: box-shadow 0.2s ease;
+}
+.canvas-node:hover .canvas-node-container {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+/* ── Dataview 表格美化 ── */
+.markdown-preview-view table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 0.9em;
+}
+.markdown-preview-view table thead th {
+  background: var(--color-base-05);
+  font-weight: 600;
+  padding: 8px 12px;
+  border-bottom: 2px solid var(--color-base-30);
+}
+.markdown-preview-view table tbody td {
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--color-base-10);
+}
+.markdown-preview-view table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ── 看板统计卡片容器 ── */
+.dataview-result-background-preview span:has(> div[style*="display:flex"]) {
+  display: block;
+}
+
+/* ── 进度条配色 ── */
+span:has(> span[style*="letter-spacing"]) {
+  display: block;
+}
+
+/* ── Canvas 内部 Markdown 优化 ── */
+.canvas-node .markdown-preview-view {
+  padding: 8px 12px;
+}
+.canvas-node .markdown-preview-view h1,
+.canvas-node .markdown-preview-view h2 {
+  margin-top: 0.4em;
+  margin-bottom: 0.3em;
+  border-bottom: none;
+}
+.canvas-node .markdown-preview-view h3,
+.canvas-node .markdown-preview-view h4 {
+  margin-top: 0.3em;
+  margin-bottom: 0.2em;
+}
+.canvas-node .markdown-preview-view p {
+  margin-block: 0.3em;
+}
+
+/* ── 内联代码在 Canvas 中 ── */
+.canvas-node .markdown-preview-view code {
+  background: var(--color-base-10);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+
+/* ── Dataview table 在 Canvas 中紧凑显示 ── */
+.canvas-node .markdown-preview-view table {
+  font-size: 0.82em;
+}
+.canvas-node .markdown-preview-view table thead th {
+  padding: 4px 8px;
+  font-size: 0.85em;
+}
+.canvas-node .markdown-preview-view table tbody td {
+  padding: 3px 8px;
+}
+
+/* ── 标签美化 ── */
+.canvas-node .markdown-preview-view a.tag {
+  background: var(--interactive-accent);
+  color: var(--text-on-accent) !important;
+  padding: 1px 8px;
+  border-radius: 10px;
+  font-size: 0.75em;
+  border: none;
+}
+
+/* ── Canvas 节点标题栏隐藏（更清爽） ── */
+.canvas-node:not(.is-focused) .canvas-node-label {
+  display: none;
+}
+
+/* ── 热力图方块间距调整 ── */
+.canvas-node table[style*="border-collapse: separate"] td {
+  transition: transform 0.1s;
+}
+.canvas-node table[style*="border-collapse: separate"] td:hover {
+  transform: scale(1.3);
+}

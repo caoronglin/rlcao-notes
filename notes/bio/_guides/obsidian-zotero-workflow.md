@@ -4,6 +4,7 @@
 > - [手把手教程！zotero和obsidian如何联动](https://zhuanlan.zhihu.com/p/672287270) — Zotero Integration 注释同步
 > - [Obsidian+Zotero打造最强科研工具链](https://zhuanlan.zhihu.com/p/639325772) — Mdnotes + DataView 文献管理
 > - [打造自己的工作台](https://zhuanlan.zhihu.com/p/409409946) — Obsidian Workspace 布局
+> - [项目看板 2.0：一个研究生的 Obsidian 项目管理实践](https://sspai.com/post/98928) — 项目看板 + 里程碑规划
 
 ---
 
@@ -16,8 +17,9 @@
 5. [工作台布局](#5-工作台布局)
 6. [DataView 查询集](#6-dataview-查询集)
 7. [标签体系](#7-标签体系)
-8. [Git 备份策略](#8-git-备份策略)
-9. [日常使用流程](#9-日常使用流程)
+8. [项目管理：项目看板 2.0](#8-项目管理项目看板-20)
+9. [Git 备份策略](#9-git-备份策略)
+10. [日常使用流程](#10-日常使用流程)
 
 ---
 
@@ -375,7 +377,114 @@ sort 年份 desc
 
 ---
 
-## 8. Git 备份策略
+## 8. 项目管理：项目看板 2.0
+
+> 参考：[项目看板 2.0：一个研究生的 Obsidian 项目管理实践](https://sspai.com/post/98928) — 西郊次生林
+
+研究生阶段的科研项目往往没有明确的路径可循，需要不断试错。传统的甘特图规划不适合这类探索性项目。**项目看板 2.0** 提出了一套基于 **里程碑规划 + PARA 标签 + 周志 + Canvas** 的方案。
+
+### 8.1 核心理念
+
+| 理念 | 说明 |
+|------|------|
+| **里程碑规划** | 用成就节点代替精确排期，适合探索性项目 |
+| **PARA 标签法** | 用标签代替文件夹，项目知识卡片打上项目标签 |
+| **周志系统** | 所有待办、灵感、碎碎念写在周志中，Dataview 汇总 |
+| **Canvas 路线图** | 用 Obsidian Canvas 绘制里程碑图，红色=活跃路径 |
+
+### 8.2 所需插件
+
+| 插件 | 作用 |
+|------|------|
+| **Tasks** | 高级任务管理（已安装） |
+| **Periodic Notes** | 自动创建周志文件 |
+| **Calendar** | 日历视图，快速跳转 |
+| **Dataview** | 任务/笔记汇总（已安装） |
+
+### 8.3 标签体系（PARA 标签法）
+
+为每个项目分配一个唯一标签，格式：`#project/项目名`
+
+```
+#project/my-research      ← 我的研究项目
+#project/literature-review ← 文献综述项目
+```
+
+笔记打上项目标签后，Dataview 自动汇总到项目看板：
+
+```dataview
+table 创建日期, 标签
+from #project/my-research
+sort 创建日期 desc
+```
+
+### 8.4 项目看板模板
+
+位置：`muban/project-dashboard-template.md`
+
+在 Obsidian 中用 Templater 新建项目时选择此模板：
+- 自动创建项目看板
+- 预留 Canvas 规划图引用
+- Dataview 自动汇总项目笔记、任务、周志
+
+### 8.5 里程碑规划（Canvas）
+
+用 Obsidian 核心插件 Canvas 绘制路线图：
+1. 新建 Canvas：`项目/XXX/XXX-plan.canvas`
+2. 每个节点是一个里程碑
+3. 用箭头连接里程碑顺序
+4. **红色节点** = 当前活跃路径
+5. 项目看板用 `![[XXX-plan.canvas]]` 嵌入
+
+### 8.6 周志系统
+
+使用 Periodic Notes 插件，所有项目共用一套周志：
+- 文件名格式：`YYYY-Www`（如 `2026-W24`）
+- 各项目日志用一级标题区分
+- 待办任务直接写在对应标题下
+- Dataview 自动汇总到各项目看板
+
+### 8.7 任务管理
+
+**轻量方式** — 直接 Markdown 任务列表，Dataview 汇总：
+```markdown
+- [ ] 分析单细胞数据
+- [x] 阅读文献
+```
+
+**高级方式** — Tasks 插件，支持开始/截止日期、优先级、重复：
+```markdown
+- [ ] 完成实验设计 📅 2026-06-20 ⏫ 🔁 every week
+```
+
+汇总到项目看板的 Tasks 查询：
+```tasks
+not done
+path includes 项目/周志
+sort by priority
+```
+
+### 8.8 完整工作流
+
+```
+每天打开 Obsidian
+  ↓
+点击项目看板（从首页/面板）
+  ↓
+查看待办任务 → 开始工作
+  ↓
+工作过程中零碎信息记入周志
+  ↓
+有价值的想法 → 整理为知识卡片 + 打项目标签
+  ↓
+每周复盘 → 修改 Canvas 路线图 → 规划下批任务
+  ↓
+项目完成 → 项目看板 finished: true（归档）
+```
+
+---
+
+## 9. Git 备份策略
 
 本库已启用 Git，通过 `D:/data/rlcao/.gitignore` 控制备份范围。
 
@@ -416,7 +525,7 @@ git push
 
 ---
 
-## 9. 日常使用流程
+## 10. 日常使用流程
 
 ### 发现一篇论文时
 
@@ -463,3 +572,4 @@ cd D:/data/rlcao && git add . && git commit -m "vault backup: $(date +'%Y-%m-%d 
 1. [第37期 手把手教程！zotero和obsidian如何联动](https://zhuanlan.zhihu.com/p/672287270) — Zotero Integration 注释同步方案
 2. [Obsidian+Zotero打造最强科研工具链](https://zhuanlan.zhihu.com/p/639325772) — Mdnotes + DataView 文献管理方案
 3. [打造自己的工作台【玩转Obsidian的保姆级教程】](https://zhuanlan.zhihu.com/p/409409946) — Workspace 布局方案
+4. [项目看板 2.0：一个研究生的 Obsidian 项目管理实践](https://sspai.com/post/98928) — 里程碑规划 + PARA 标签 + 周志

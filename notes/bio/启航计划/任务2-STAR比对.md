@@ -1,18 +1,17 @@
 ---
+title: 任务2-STAR比对
+date: 2025-08-01
+updated: 2025-08-01
+tags:
+  - 生信
+  - bio/启航计划
+  - bio/RNA-seq
+  - bio/alignment
+status: completed
+notebook: bio
 abbrlink: 34fab8c5
-banner: ''
 categories:
   - - 启航计划
-date: '2025-08-01T17:54:48.482502+08:00'
-excerpt: "使用STAR（https://github.com/alexdobin/STAR?tab=readme-ov-file）将RNA-seq的reads比对到参考基因组上，比对对象是已经经过过滤后的文件\_一、准备\_（1）安装软件\_1）二进制安装\_STAR_2.7.11b.zip\_环境变量处理\_2）conda\_安装\_conda\_create\_-n\_myenv\_conda\_activate\_myenv\_c..."
-menu_id: ''
-notebook: bio
-sticky: ''
-tags: [生信]
-title: 任务二
-topic: ''
-updated: '2025-08-01T17:55:37.694+08:00'
-wiki: ''
 ---
 
 **使用STAR（**[https://github.com/alexdobin/STAR?tab=readme-ov-file](https://github.com/alexdobin/STAR?tab=readme-ov-file)）将RNA-seq的reads比对到参考基因组上，比对对象是已经经过过滤后的文件

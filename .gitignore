@@ -16,3 +16,6 @@ assets/
 .DS_Store
 *.tmp
 *.bak
+
+# 保留本地文献/附件，不同步到 GitHub
+*.pdf

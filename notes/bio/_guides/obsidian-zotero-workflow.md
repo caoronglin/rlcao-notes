@@ -174,7 +174,7 @@ DOI:: {{DOI}}
 pdf:: {{pdfAttachments}}
 zotero:: {{localLibrary}}
 备注::
-阅读状态:: #status/to_read
+阅读状态:: [[status/to_read]]
 ---
 ```
 
@@ -189,7 +189,7 @@ zotero:: {{localLibrary}}
 作者:: Smith J; Wang L
 日期:: 2024-03-15
 出处:: Nature Biotechnology
-标签:: #scRNA-seq #macaque
+标签:: [[scRNA-seq]] [[macaque]]
 citekey:: smith2024
 DOI:: 10.1038/s41587-024-xxxxx
 pdf:: [PDF](attachments::Smith_2024.pdf)
@@ -287,7 +287,7 @@ zotero:: [Zotero](zotero://select/library/items/ABCDEF)
 
 ```dataview
 table 日期, 出处, 作者, 阅读状态, 备注
-from #paper
+from [[paper]]
 sort 日期 desc
 ```
 
@@ -295,7 +295,7 @@ sort 日期 desc
 
 ```dataview
 table 日期, 出处, 作者, 阅读状态
-from #paper and #scRNA-seq
+from [[paper]] and [[scRNA-seq]]
 sort 日期 desc
 ```
 
@@ -303,7 +303,7 @@ sort 日期 desc
 
 ```dataview
 table 日期, 出处, 作者, 标签
-from #status/reading
+from [[status/reading]]
 sort 日期 desc
 ```
 
@@ -311,14 +311,14 @@ sort 日期 desc
 
 ```dataview
 table 日期, 出处, 作者机构, 备注, pdf
-from #bio/single-cell
+from [[bio/single-cell]]
 sort 日期 asc
 ```
 
 ### 6.5 待读论文
 
 ```dataview
-task from #paper
+task from [[paper]]
 where !completed
 ```
 
@@ -326,7 +326,7 @@ where !completed
 
 ```dataview
 table length(rows) as "文献数量"
-from #paper
+from [[paper]]
 where 年份 != null
 group by 年份 as "年份"
 sort 年份 desc
@@ -406,15 +406,15 @@ sort 年份 desc
 为每个项目分配一个唯一标签，格式：`#project/项目名`
 
 ```
-#project/my-research      ← 我的研究项目
-#project/literature-review ← 文献综述项目
+[[project/my-research]]      ← 我的研究项目
+[[project/literature-review]] ← 文献综述项目
 ```
 
 笔记打上项目标签后，Dataview 自动汇总到项目看板：
 
 ```dataview
 table 创建日期, 标签
-from #project/my-research
+from [[project/my-research]]
 sort 创建日期 desc
 ```
 
@@ -531,7 +531,7 @@ git push
 
 ```
 1. 浏览器 → Zotero Connector 一键抓取
-2. Zotero 中打标签 (#scRNA-seq, #status/to_read)
+2. Zotero 中打标签 (#scRNA-seq, [[status/to_read]])
 3. Zotero → 右键 → Mdnotes → 创建完整导出笔记
 4. 自动生成 Markdown 笔记到 notes/bio/ 下
 ```

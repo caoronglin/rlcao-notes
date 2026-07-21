@@ -13,13 +13,13 @@ print(a_arr)
 >字符串一般不作为array的参数
 - 创建等差数组
 ```python
-#np.arrage([star],end,[step],dtype=None)
+[[np]].arrage([star],end,[step],dtype=None)
 import numpy as np
 a=np.arrage(5)
 ```
 - 创建一个全零数组
 ```python
-#np.zeros(shape)
+[[np]].zeros(shape)
 ```
 - $ones()$ 创建全是一的数组
 ## 数组属性

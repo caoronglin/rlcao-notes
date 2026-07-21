@@ -5,9 +5,9 @@
 期刊::
 年份::
 DOI::
-标签:: #paper
+标签:: [[paper]]
 citekey::
-阅读状态:: #status/to_read
+阅读状态:: [[status/to_read]]
 评分::
 ---
 

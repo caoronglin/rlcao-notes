@@ -10,7 +10,7 @@ citekey:: "<%= it.citekey %>"
 url:: "<%= it.url %>"
 标签:: <%= JSON.stringify(it.tags) %>
 收藏夹:: <%= JSON.stringify(it.collections) %>
-阅读状态:: #status/to_read
+阅读状态:: [[status/to_read]]
 备注::
 zotero:: [Zotero](<%= it.uri %>)
 pdf:: [PDF](<%= it.fileLink %>)

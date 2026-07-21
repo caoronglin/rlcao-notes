@@ -9,7 +9,7 @@ DOI:: {{DOI}}
 pdf:: {{pdfAttachments}}
 zotero:: {{localLibrary}}
 备注::
-阅读状态:: #status/to_read
+阅读状态:: [[status/to_read]]
 ---
 
 # {{title}}

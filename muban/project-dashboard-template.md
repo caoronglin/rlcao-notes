@@ -19,7 +19,7 @@ alias:
 
 ```dataview
 table 创建日期, 标签
-from #project/<% tp.file.title %>
+from [[project/]]<% tp.file.title %>
 sort 创建日期 desc
 ```
 

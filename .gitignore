@@ -1,21 +1,57 @@
-# 整个 Obsidian 配置目录（包含所有插件设置，避免密钥泄露）
+# ===== Obsidian 配置目录（含插件设置，避免密钥泄露）=====
 .obsidian/
-日记/
-panel/
-项目/
-# 图床中转目录
+
+# 图床中转目录（附件走外链，本地不备份）
 assets/
 
-# 每个子目录下的 vault 文件夹
-**/vault/
+# ===== 不同步到 GitHub 的目录 =====
+# 说明：原规则写的是 "日记/ panel/ 项目/"，但笔记已整体搬进 vault/，
+# 导致这三条规则长期空转。这里修正为搬迁后的真实路径，保持原有意图。
+vault/日记/
+vault/panel/
+vault/项目/
+
+# ===== 已废弃的致命规则（保留此注释以防回退）=====
+# 原为：**/vault/
+# 该写法会匹配任意层级名为 vault 的目录，包括库根的主笔记目录，
+# 导致 vault/ 下所有笔记从未被 git 跟踪。已移除，请勿再加回。
 
 # 回收站
 .trash/
+.trash-1000/
+
+# 本地临时备份文件
+.gitignore.bak-*
 
 # 系统文件
 .DS_Store
+Thumbs.db
+desktop.ini
 *.tmp
 *.bak
 
-# 保留本地文献/附件，不同步到 GitHub
+# ===== 本地文献/附件，不同步到 GitHub =====
 *.pdf
+
+# ===== Python 虚拟环境与大数据文件 =====
+# .jupymd 是 jupymd 插件创建的 venv，体积约 1.9 GB
+.jupymd/
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+
+# 单细胞/矩阵数据，单文件常超 GitHub 100 MB 硬上限
+*.h5ad
+*.h5
+*.loom
+*.mtx
+
+# 生信原始数据与数据库（体积大、可重生成，不进笔记仓库）
+.lamindb/
+*.bam
+*.bai
+*.sam
+*.fq
+*.fastq
+*.sra

@@ -55,3 +55,12 @@ __pycache__/
 *.fq
 *.fastq
 *.sra
+
+# ===== 大体积二进制资料 =====
+# 2026-09-11 已从 git 历史中移除（仓库 204MB → 33MB），勿再提交
+*.zip
+*.docx
+*.doc
+*.fa
+*.fasta
+*.db

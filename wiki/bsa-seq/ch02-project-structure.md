@@ -28,9 +28,9 @@ tags: [PyBSASeq, 环境配置, conda, 依赖]
         └── bulks.csv      35,234,505 B   626,966 行
 ```
 
-> `docs/refernces/` 的目录名拼写是 `refernces`（缺一个 e），按原样记录。
-> 第三篇论文（G3 2021，无亲本基因组的 BSA-Seq）本仓库没有 PDF，
-> 需要通过 doi:10.1093/g3journal/jkab400 自行获取。
+>`docs/refernces/` 的目录名拼写是 `refernces`（缺一个 e），按原样记录。
+>第三篇论文（G3 2021，无亲本基因组的 BSA-Seq）本仓库没有 PDF，
+>需要通过 doi:10.1093/g3journal/jkab400 自行获取。
 
 要点：
 

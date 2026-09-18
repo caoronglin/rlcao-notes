@@ -1,5 +1,7 @@
+# HPC使用指南(部分)
 
 ## $ssh$欢迎banner
+
 >登录$ssh$的提示  
 
 ---
@@ -20,36 +22,50 @@ Welcome to Ubuntu 26.04 LTS (GNU/Linux 7.0.0-15-generic x86_64)
 ================================================================================
 Last login: Thu Jun  4 17:40:50 2026 from 10.115.125.62
 ```
+
 ---
 
 ## 终端选择
+
 ### 介绍
+
 |**特性**|**Bash (Bourne Again Shell)**|**Zsh (Z Shell)**|**Fish (Friendly Interactive Shell)**|
 |---|---|---|---|
 |**普及度**|极高，绝大多数 Linux 发行版的默认 Shell。|高，macOS 默认，Linux 下极受欢迎的替代品。|中等，以追求极致开箱即用体验的用户为主。|
 |**POSIX 兼容性**|完全兼容。|极高，基本兼容绝大多数 Bash 脚本。|**不兼容**。采用自有语法，无法直接运行标准 Bash 脚本。|
 |**开箱即用体验**|极简，无自动补全或语法高亮，需手动配置。|较差，原生状态与 Bash 类似，但可通过框架（如 Oh My Zsh）实现极强定制。|**极佳**，自带强大的语法高亮、基于历史记录的自动建议。|
 |**扩展性**|弱，脚本配置繁琐。|极强，拥有庞大的插件生态。|中等，插件系统较为封闭，但自带功能已满足多数需求。|
+
 ### 安装
+
 #### $zsh$
+
 ---
+
 ```shell
 chsh -s $(which zsh)
 ```
+
 ---
 
 #### $fish$
+
 ---
+
 ```shell
 chsh -s $(which fish)
 ```
+
 ---
 
 ## 安装conda/mamba
+
 >mamba是用C重写的conda，比conda更好用，推荐使用mamba进行环境管理
 
 ## 安装
+
 ### $conda$
+
 ---
 
 ```shell
@@ -57,8 +73,11 @@ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash Miniconda3-latest-Linux-x86_64.sh
 source ~/.bashrc conda --version
 ```
+
 ---
+
 ## $mamba$
+
 ---
 
 ```shell
@@ -76,9 +95,13 @@ $HOME/miniforge3/bin/mamba shell init
 # 第四步：让环境变量生效（或者你也可以关闭当前终端并重新打开）
 source ~/.bashrc
 ```
+
 ---
+
 ## 推荐配置
+
 ---
+
 ```shell
 channels:
   - conda-forge
@@ -95,32 +118,46 @@ custom_channels:
   pytorch: https://mirrors.ustc.edu.cn/anaconda/cloud
   bioconda: https://mirrors.ustc.edu.cn/anaconda/cloud/bioconda
 ```
+
 ### 基础命令
-##### 创建环境
+
+#### 创建环境
+
 ```shell
 mamba create -n 环境名
 ```
-##### 删除环境
+
+#### 删除环境
+
 ```shell
 mamba env remove -n 环境名
 ```
-###### 更新环境
+
+##### 更新环境
+
 ```shell
 mamba update --all
 ```
+
 ---
+
 ## 垃圾清理
+
 >在数据分析的时候难免产生过多垃圾，可使用清理
+
 ---
 
 ```shell
 ncdu
 # 按q退出
 ```
+
 ----
 
 ![[Pasted image 20260604174927.png]]
+
 >详细参数
+
 ---
 
 ```shell
@@ -165,24 +202,32 @@ Interface options:
   --no-confirm-delete        Don't ask confirmation before deletion
   --color SCHEME             off / dark / dark-bg
 ```
+
 ---
+
 ## 文件查看
+
 ### $cat$
+
 >一次性将文件全部内容输出到屏幕上。适合查看**短小文件**
 
 #### 常见用法
+
 ---
 
 ```shell
 cat filename
 cat -n filename [[输出行号]]
 ```
+
 ---
 
 ### $less$
+
 >一页一页查看文件内容，支持上下翻页和搜索关键字。**最推荐用于长文件**。
 
 #### 常见用法
+
 ----
 
 ```shell
@@ -193,36 +238,47 @@ less filename
 # PageUp -向上翻页
 # q      -退出
 ```
+
 ----
 
 ### $more$
 
 >与 `less` 类似，但功能较受限，**只能向下翻页**（不支持向上）。分页查看，只能向后翻页
+
 #### 常见用法
+
 ---
+
 ```shell
 more filename           # 分页查看
 #   空格键   - 向下翻页
 #   q        - 退出
 #   /关键字  - 搜索
 ```
+
 ---
 
 ### $head$
 
 >查看文件开头部分，默认显示文件**开头10行**，可通过 `-n` 参数自定义行数。
+
 #### 常见用法
+
 ---
+
 ```shell
 head filename            # 显示前10行
 head -n 20 filename      # 显示前20行
 ```
+
 ---
 
 ### $tail$
 
 >查看文件结尾部分，默认显示文件**最后10行**。特别适合查看日志文件的最新记录。
+
 #### 常见用法
+
 ---
 
 ```shell
@@ -230,6 +286,7 @@ tail filename            # 显示最后10行
 tail -n 5 filename       # 显示最后5行
 tail -f filename         # 实时追踪文件新增内容（常用于监控日志）
 ```
+
 ---
 
 ### $grep$
@@ -237,6 +294,7 @@ tail -f filename         # 实时追踪文件新增内容（常用于监控日�
 >按模式搜索文件内容，**不是查看全文**，而是根据关键字或正则表达式打印匹配的行。是生信中最常用的文件内容搜索命令。
 
 #### 常见用法
+
 ```shell
 grep "pattern" filename     # 搜索包含 pattern 的行
 grep -i "pattern" filename  # 忽略大小写
@@ -247,6 +305,7 @@ grep -c "pattern" filename  # 统计匹配行数
 ---
 
 ### 对比
+
 | 命令     | 适用场景      | 特点            |
 | ------ | --------- | ------------- |
 | `cat`  | 极短文件      | 全部输出，无法暂停     |
@@ -255,8 +314,11 @@ grep -c "pattern" filename  # 统计匹配行数
 | `head` | 只看开头      | 默认10行         |
 | `tail` | 只看结尾/实时监控 | 默认10行，支持 `-f` |
 | `grep` | 搜索关键字行    | 按模式匹配，支持正则    |
+
 ## 后台运行命令
+
 ### $nohup$
+
 >忽略挂断信号执行命令
 
 | 特性       | 说明                                                                     |
@@ -266,7 +328,9 @@ grep -c "pattern" filename  # 统计匹配行数
 | **日志管理** | 默认会将标准输出保存在当前目录的 `nohup.out` 文件中；如果重定向了输出则保存在指定文件。                     |
 | **进程控制** | 命令执行后会返回 PID，用户只能通过 PID 来**监控或终止**该进程。                                 |
 | **使用场景** | 适合**单个简单命令**需要长时间运行且不关心交互的情况。                                          |
-### $screen$ 
+
+### $screen$
+
 >终端多路复用器（经典工具）
 
 | 特性      | 说明                                                 |
@@ -274,7 +338,9 @@ grep -c "pattern" filename  # 统计匹配行数
 | **本质**  | 终端复用器（Terminal Multiplexer），能创建**多个虚拟终端会话**。       |
 | **持久化** | 会**话内的窗口和进程**与物理终端分离，即使断开连接，进程在后台持续运行，下次可**重新连接**。 |
 | **多窗口** | 单个会话内可创建多个窗口，每个窗口独立运行命令。                           |
+
 ### $tmux$
+
 >现代终端多路复用器
 
 |特性|说明|
@@ -283,6 +349,7 @@ grep -c "pattern" filename  # 统计匹配行数
 |**持久化**|会话在后台持久存在，**即使 SSH 断开或关闭终端，都可通过重新连接恢复**，所有窗口及其进程保持不变。|
 |**多窗口 - 多面板**|不仅支持多个窗口（windows），还支持在窗口内**垂直/水平分割面板（panes）**。|
 |**配置增强**|可通过 `~/.tmux.conf` 文件自定义行为（例如将默认前缀键由 `Ctrl-b` 改为 `Ctrl-a`）。|
+
 >**注意**：每一个TMUX都是一个新的线程，建议少用
 
 #### 基本命令
@@ -295,13 +362,16 @@ tmux attach -d -t my_project     # 强制分离其他连接并重新连接
 ```
 
 #### 基本快捷键
+
 |快捷键|功能|
 |---|---|
 |`Ctrl-a d`|分离当前会话|
 |`Ctrl-a c`|创建新窗口|
 |`Ctrl-a n / p`|切换到下/上一个窗口|
 |`Ctrl-a ?`|列出所有快捷键|
+
 ### 对比
+
 |维度|nohup|screen|tmux|
 |---|---|---|---|
 |**主要目的**|防止命令被终端关闭中断|保持会话持久化 + 多窗口|保持会话持久化 + 多窗口 + 面板|
@@ -311,9 +381,13 @@ tmux attach -d -t my_project     # 强制分离其他连接并重新连接
 |**配置灵活性**|无|有限|丰富的配置和插件支持|
 |**参考资料推荐度**|简单任务|推荐（与 tmux 并列）|**重点推荐**（资料大篇幅覆盖）|
 |**适用场景**|一个命令在后台跑完即可|需要多个工作环境并持久化|复杂项目开发、多维分析流程管理|
+
 ## 公共数据下载
+
 ### 使用$NGDC$
+
 >国内镜像，速度快，SRA推荐使用
+
 ```bash
 #!/bin/bash
 # 下载 NGDC (BIG 镜像) 的 SRA 数据，并转换为适合入库的格式
@@ -347,7 +421,9 @@ export max_retries error_log
 # 使用 xargs 并行执行（跳过空行）
 grep -v '^$' "$list_file" | xargs -n 1 -P "$parallel" -I {} bash -c 'download_one "$@"' _ {}
 ```
+
 ### 使用$AWS$
+
 ```bash
 #!/bin/bash
 # SRR号列表文件

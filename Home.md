@@ -2,6 +2,8 @@
 cssclasses: knowledge-home
 ---
 
+# Home
+
 ![[panel/hero]]
 
 ## 操作台

@@ -3,10 +3,7 @@ wiki: Linux
 title: 第五章、Linux 的文件权限与目录配置
 date: 2024-01-01
 updated: 2024-01-01
-tags:
-  - Linux
-  - 文件权限
-  - 用户管理
+tags: [Linux, 文件权限, 用户管理]
 ---
 
 # 第五章、Linux 的文件权限与目录配置
@@ -16,6 +13,7 @@ tags:
 ### Linux 的多用户多任务
 
 Linux 是一个**多用户、多任务**的操作系统：
+
 - **多用户**：多个用户可以同时使用系统
 - **多任务**：系统可以同时运行多个程序
 
@@ -30,6 +28,7 @@ Linux 系统中的每个文件都有三种身份：
 | **others (o)** | 其他人（非所有者且非群组成员） |
 
 **特殊身份：**
+
 - **root**：超级管理员，拥有系统最高权限，不受权限限制
 
 ### 使用者与群组的关系
@@ -59,12 +58,14 @@ finger username              # 显示用户信息（需安装finger包）
 ```
 
 **id 命令输出示例：**
+
 ```bash
 $ id
 uid=1000(username) gid=1000(username) groups=1000(username),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),120(lpadmin),131(lxd),132(sambashare)
 ```
 
 **输出说明：**
+
 - **uid**：用户ID
 - **gid**：主要群组ID
 - **groups**：所属的所有群组
@@ -82,6 +83,7 @@ ls -ld directory             # 查看目录本身的信息（而非内容）
 ```
 
 **输出示例：**
+
 ```bash
 $ ls -l
 -rw-r--r-- 1 user group 1234 Jan  1 10:00 file.txt
@@ -145,6 +147,7 @@ lrwxrwxrwx 1 user group   11 Jan  1 08:00 link -> /path/to/target
 | **x (执行)** | 可以进入目录（cd），访问目录中的文件 |
 
 ⚠️ **重要说明：**
+
 - 对目录有 **w** 权限，就可以删除目录中的任何文件，即使对该文件没有权限！
 - 要访问目录中的文件，需要对目录有 **x** 权限
 
@@ -175,6 +178,7 @@ x = execute (执行)
 ```
 
 **示例：**
+
 ```bash
 chmod u+x script.sh          # 给所有者添加执行权限
 chmod go-w file.txt          # 移除群组和其他人的写权限
@@ -211,6 +215,7 @@ chmod +t directory           # 设置粘滞位
 | 0 | --- | 无权限 |
 
 **语法：**
+
 ```bash
 chmod XYZ file
 # X = 所有者权限
@@ -219,6 +224,7 @@ chmod XYZ file
 ```
 
 **示例：**
+
 ```bash
 chmod 755 script.sh          # -rwxr-xr-x (所有者全权限，其他读+执行)
 chmod 644 file.txt           # -rw-r--r-- (所有者读写，其他只读)
@@ -444,6 +450,7 @@ setfacl -R -m u:username:rx dir/     # 递归设置
 ```
 
 **示例：**
+
 ```bash
 # 允许特定用户读写文件
 setfacl -m u:alice:rw file.txt
@@ -531,6 +538,7 @@ FHS (Filesystem Hierarchy Standard) 定义了 Linux 系统中目录的用途和�
   - **伪设备**：如 /dev/null（黑洞）、/dev/zero（零字节）、/dev/random（随机数）、/dev/urandom
 
 **常用设备文件：**
+
 ```bash
 /dev/sda          # 第一块SCSI/SATA硬盘
 /dev/sda1         # 第一块硬盘的第一个分区
@@ -573,16 +581,19 @@ FHS (Filesystem Hierarchy Standard) 定义了 Linux 系统中目录的用途和�
 
 - **用途**：普通用户的主目录
 - **结构**：
+
   ```
   /home/
   ├── alice/          # 用户alice的主目录
   ├── bob/            # 用户bob的主目录
   └── charlie/        # 用户charlie的主目录
   ```
+
 - **环境变量**：`$HOME` 或 `~` 指向当前用户的主目录
 - **注意**：root 用户的主目录是 `/root`，不在 `/home` 下
 
 **用户主目录中的常见文件：**
+
 ```bash
 ~/.bashrc             # bash配置
 ~/.bash_profile       # 登录bash配置
@@ -610,6 +621,7 @@ FHS (Filesystem Hierarchy Standard) 定义了 Linux 系统中目录的用途和�
   - `/lib32`：32位库（在32位系统上）
 
 **常见库文件：**
+
 ```bash
 /lib/x86_64-linux-gnu/libc.so.6     # C标准库
 /lib/x86_64-linux-gnu/libm.so.6     # 数学库
@@ -620,6 +632,7 @@ FHS (Filesystem Hierarchy Standard) 定义了 Linux 系统中目录的用途和�
 ```
 
 **查看程序依赖的库：**
+
 ```bash
 ldd /bin/ls                  # 查看ls命令依赖的库
 ldd /usr/bin/python3         # 查看python3依赖的库
@@ -634,6 +647,7 @@ ldd /usr/bin/python3         # 查看python3依赖的库
 - **现代趋势**：`/media` 越来越常用，`/mnt` 更多用于临时手动挂载
 
 **查看挂载的文件系统：**
+
 ```bash
 mount                        # 显示所有挂载点
 df -h                        # 查看磁盘使用情况
@@ -651,6 +665,7 @@ blkid                        # 查看块设备UUID
   - 可以方便地安装和卸载
 
 **典型结构：**
+
 ```
 /opt/
 ├── google/
@@ -690,6 +705,7 @@ cat /proc/cpuinfo | grep "model name" | head -1
 ```
 
 **查看进程信息：**
+
 ```bash
 ls /proc/$$                  # 查看当前shell的信息
 ls /proc/1/                  # 查看init/systemd进程
@@ -706,6 +722,7 @@ ls /proc/1/                  # 查看init/systemd进程
 ```
 
 **通过 /proc 调整内核参数：**
+
 ```bash
 # 查看当前值
 cat /proc/sys/net/ipv4/ip_forward
@@ -786,6 +803,7 @@ sysctl -p                    # 重新加载配置
 ```
 
 **常用操作：**
+
 ```bash
 # 查看CPU信息
 ls /sys/devices/system/cpu/
@@ -803,6 +821,7 @@ echo 1 > /sys/class/leds/input0::capslock/brightness
 ```
 
 **通过 /sys 调整内核参数：**
+
 ```bash
 # 开启/关闭IP转发（临时，重启失效）
 echo 1 > /proc/sys/net/ipv4/ip_forward
@@ -905,11 +924,13 @@ sysctl -w vm.swappiness=10
 #### 绝对路径与相对路径
 
 **绝对路径 (Absolute Path)**：
+
 - 从根目录 `/` 开始的完整路径
 - 不管当前在什么位置，都能准确找到
 - 示例：`/home/user/documents/file.txt`
 
 **相对路径 (Relative Path)**：
+
 - 相对于当前目录的路径
 - 不从 `/` 开始
 - 依赖当前所在位置
@@ -923,6 +944,7 @@ sysctl -w vm.swappiness=10
 | `-` | 上一次所在的目录 |
 
 **相对路径示例：**
+
 ```bash
 # 当前目录：/home/user
 ./file.txt                   # 当前目录下的 file.txt → /home/user/file.txt
@@ -935,6 +957,7 @@ sysctl -w vm.swappiness=10
 #### 路径切换命令
 
 **`cd` - 切换目录**
+
 ```bash
 cd /path/to/directory        # 切换到绝对路径
 cd relative/path             # 切换到相对路径
@@ -948,6 +971,7 @@ pwd                          # 显示当前路径
 ```
 
 **`pwd` - 显示当前路径**
+
 ```bash
 pwd                          # 显示逻辑路径（可能包含符号链接）
 pwd -P                       # 显示物理路径（解析所有符号链接）
@@ -956,6 +980,7 @@ pwd -P                       # 显示物理路径（解析所有符号链接）
 #### 目录操作命令
 
 **`mkdir` - 创建目录**
+
 ```bash
 mkdir dirname                # 创建单个目录
 mkdir dir1 dir2 dir3         # 创建多个目录
@@ -965,6 +990,7 @@ mkdir -v dirname             # 显示创建过程
 ```
 
 **`rmdir` - 删除空目录**
+
 ```bash
 rmdir dirname                # 删除空目录
 rmdir -p parent/child        # 递归删除空目录
@@ -974,6 +1000,7 @@ rmdir dir1 dir2              # 删除多个空目录
 ⚠️ **注意：** `rmdir` 只能删除**空目录**。要删除非空目录，使用 `rm -r`。
 
 **`rm` - 删除文件或目录**
+
 ```bash
 rm file.txt                  # 删除文件
 rm -r directory              # 递归删除目录及其内容
@@ -985,6 +1012,7 @@ rm -r *                      # 删除当前目录下所有内容（危险！）
 ```
 
 ⚠️ **危险命令警告：**
+
 ```bash
 rm -rf /                     # 删除整个系统！永远不要执行！
 rm -rf /*                    # 同上
@@ -995,17 +1023,19 @@ rm -rf .*                    # 删除所有隐藏文件和上级目录！
 
 ### 文件与目录的默认权限
 
-#### umask
+#### Umask
 
 **umask**（user file-creation mode mask）决定了新创建文件和目录的**默认权限**。
 
 **查看 umask：**
+
 ```bash
 umask                        # 显示umask值（四位八进制数）
 umask -S                     # 以符号模式显示
 ```
 
 **默认权限计算：**
+
 - **文件**：`666 - umask`
 - **目录**：`777 - umask`
 
@@ -1018,13 +1048,16 @@ umask -S                     # 以符号模式显示
 | 077 | 600 (rw-------) | 700 (rwx------) | 仅用户可访问（安全） |
 
 **设置 umask：**
+
 ```bash
 umask 022                    # 设置umask为022
 umask 027                    # 更严格：组可读，其他人无权限
 ```
 
 **永久设置 umask：**
+
 编辑 `~/.bashrc` 或 `~/.profile`：
+
 ```bash
 echo "umask 022" >> ~/.bashrc
 ```
@@ -1039,6 +1072,7 @@ ls -l /usr/bin/passwd
 ```
 
 **为什么需要 SUID？**
+
 - 普通用户需要修改自己的密码
 - 密码存储在 `/etc/shadow`，只有 root 可写
 - 通过 SUID，passwd 以 root 身份运行，可以修改 shadow 文件
@@ -1056,6 +1090,7 @@ ls -ld /shared
 ```
 
 **效果：**
+
 - 任何人在此目录创建的文件，群组都是 `developers`
 - 实现组内文件共享
 
@@ -1067,6 +1102,7 @@ ls -ld /tmp
 ```
 
 **效果：**
+
 - 所有人都可以在 /tmp 读写文件
 - 但只能删除自己创建的文件
 - 保护了用户的临时文件不被他人删除

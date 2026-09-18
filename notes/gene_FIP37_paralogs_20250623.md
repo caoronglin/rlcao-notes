@@ -1,8 +1,8 @@
 # 大豆 FIP37/WTAP 同源基因家族分析（V4 版本）
 
-> 四个 paralog：Glyma.04G186400 / Glyma.05G040200 / Glyma.06G179400 / Glyma.17G086600
-> 基因组版本：**Wm82.gnm4.ann1**（V4）
-> 数据来源：SoyBase + GlycineMine + CoNekT（表达数据仅 gnm2），检索日期 2025-06-23
+>四个 paralog：Glyma.04G186400 / Glyma.05G040200 / Glyma.06G179400 / Glyma.17G086600
+>基因组版本：**Wm82.gnm4.ann1**（V4）
+>数据来源：SoyBase + GlycineMine + CoNekT（表达数据仅 gnm2），检索日期 2025-06-23
 
 ---
 
@@ -37,7 +37,7 @@
 | **物种** | *Glycine max* cv. Williams 82 |
 | **丰度** | ⚠️ 低丰度（gnm2 CoNekT） | ⚠️ 低丰度 | ⚠️ 低丰度 | ⚠️ 低丰度 |
 
-### gnm2 vs gnm4 关键差异
+### Gnm2 Vs Gnm4 关键差异
 
 | 属性 | gnm2 | gnm4 | 变化 |
 |:---|:---|:---|:---|
@@ -51,7 +51,7 @@
 | 06G179400 Transcripts | 3 → 3 proteins | 2 → 1 protein | 基因模型更保守 |
 | 17G086600 Transcripts | 2 → 2 proteins | 4 → 2 proteins | 转录本增加 |
 
-> ⚠️ **表达数据（CoNekT）仅在 gnm2 版本可用**。gnm4 版本无独立的 CoNekT 表达数据，但基因功能注释（GO/InterPro）跨版本一致。
+>⚠️ **表达数据（CoNekT）仅在 gnm2 版本可用**。gnm4 版本无独立的 CoNekT 表达数据，但基因功能注释（GO/InterPro）跨版本一致。
 
 ---
 
@@ -67,13 +67,13 @@
 | **免疫表型** | **m6A writer 突变体（fip37/vir/mta）触发自身免疫**：PR1 上调 300+ 倍，对 *P. syringae* 和 *B. cinerea* 抗性增强 | PLOS Genetics, 2025 |
 | **蛋白互作** | 与 FKBP12 直接物理互作（酵母双杂 + pull-down），与 MTA 互作 | Vespa et al., 2004 |
 
-> **核心生物学意义**：FIP37 通过介导干细胞关键基因（如 STM、WUS）mRNA 的 m6A 修饰来调控其稳定性，维持分生组织稳态。m6A writer 活性丧失 → 防御基因去抑制 → 自身免疫激活。
+>**核心生物学意义**：FIP37 通过介导干细胞关键基因（如 STM、WUS）mRNA 的 m6A 修饰来调控其稳定性，维持分生组织稳态。m6A writer 活性丧失 → 防御基因去抑制 → 自身免疫激活。
 
 ---
 
-## 三、表达谱（CoNekT gnm2 TPM）
+## 三、表达谱（CoNekT Gnm2 TPM）
 
-> ⚠️ 仅 gnm2 版本有此数据，gnm4 对应基因的功能注释相同，表达趋势可参考。
+>⚠️ 仅 gnm2 版本有此数据，gnm4 对应基因的功能注释相同，表达趋势可参考。
 
 ### 3.1 组织表达对比
 
@@ -87,7 +87,7 @@
 | Leaves | 1.57 | 0.42 | 1.16 | 0.47 |
 | Green Pods | 1.98 | **0.22** | 0.41 | 1.50 |
 
-> **模式**：04G186400 表达量最高，05G040200 最低。四个基因均在**根尖**和**茎尖分生组织**中表达最高（与拟南芥 FIP37 在 SAM 中的核心功能一致）。
+>**模式**：04G186400 表达量最高，05G040200 最低。四个基因均在**根尖**和**茎尖分生组织**中表达最高（与拟南芥 FIP37 在 SAM 中的核心功能一致）。
 
 ### 3.2 根毛侵染实验（HA1）
 
@@ -101,7 +101,7 @@
 | 48HA1_UN_RH | **3.80** | 0.70 | **1.72** | **2.20** |
 | 48HA1_Scrip_Root | 1.02 | **1.41** | 1.38 | 0.71 |
 
-> ↑ = 侵染组高于对照组；↓ = 侵染组低于对照组
+>↑ = 侵染组高于对照组；↓ = 侵染组低于对照组
 
 ---
 
@@ -146,7 +146,7 @@
 | 4 | Glyma.08G347800 | 0.909 | Ras GTPase 激活结合蛋白（核转运因子） |
 | 5 | Glyma.19G072400 | 0.904 | COP9 信号体复合体亚基 2 |
 
-> 🔑 **最关键的共表达**：06G179400 与 Glyma.08G346700（FKBP 型 PPIase）共表达，这正是 FIP37 的已知互作伙伴 FKBP12 的同源基因——在分子层面验证了该基因家族功能的保守性！
+>🔑 **最关键的共表达**：06G179400 与 Glyma.08G346700（FKBP 型 PPIase）共表达，这正是 FIP37 的已知互作伙伴 FKBP12 的同源基因——在分子层面验证了该基因家族功能的保守性！
 
 ---
 
@@ -167,7 +167,7 @@ FIP37/MTA/VIR 复合体           m6A 水平下降
                                 → 但伴随发育缺陷
 ```
 
-### 5.2 四个 paralog 的胁迫表达总结（基于 gnm2 表达数据）
+### 5.2 四个 Paralog 的胁迫表达总结（基于 Gnm2 表达数据）
 
 | 基因 | 侵染响应趋势 | gnm4 位置 | 功能推断 |
 |:---|:---|:---|:---|
@@ -199,7 +199,7 @@ FIP37/MTA/VIR 复合体           m6A 水平下降
 
 ---
 
-## V4 (gnm4) 完整标识符速查
+## V4 (Gnm4) 完整标识符速查
 
 | 基因 | 完整 gnm4 ID |
 |:---|:---|
@@ -212,13 +212,14 @@ FIP37/MTA/VIR 复合体           m6A 水平下降
 
 | 数据库 | URL | 提供数据 |
 |:---|:---|:---|
-| GlycineMine | https://mines.legumeinfo.org/glycinemine/ | gnm4 基因模型、位置、注释统计 |
-| SoyBase | https://www.soybase.org/ | 跨版本基因搜索 |
-| CoNekT | https://conekt.legumeinfo.org/ | gnm2 表达谱 + 共表达网络 |
+| GlycineMine | <https://mines.legumeinfo.org/glycinemine/> | gnm4 基因模型、位置、注释统计 |
+| SoyBase | <https://www.soybase.org/> | 跨版本基因搜索 |
+| CoNekT | <https://conekt.legumeinfo.org/> | gnm2 表达谱 + 共表达网络 |
 | 拟南芥 FIP37 文献 | Shen et al., 2016 *Dev Cell*; Vespa et al., 2004 *Plant Physiol* | 功能与机制 |
 | m6A + 免疫 | PLOS Genetics, 2025; PMC10226572, 2023 | 免疫表型 |
 
 ---
 
 *整理日期：2025-06-23*
+
 *工具链：GlycineMine（gnm4 注释）→ CoNekT（gnm2 表达+共表达）→ Exa 文献搜索*

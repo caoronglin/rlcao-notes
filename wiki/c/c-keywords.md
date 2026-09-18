@@ -8,7 +8,7 @@ updated: 2026-02-01 13:00:55
 
 # C语言32个关键字
 
-> ⭐ 高优先级：必须掌握，所有 C 语言程序都由这些关键字组合而成
+>⭐ 高优先级：必须掌握，所有 C 语言程序都由这些关键字组合而成
 
 ## 什么是关键字？
 
@@ -74,19 +74,19 @@ updated: 2026-02-01 13:00:55
 
 | 关键字 | 说明 | 示例 |
 | --- | --- | --- |
-| `if` | 条件判断语句 | `if (x > 0) { ... }` |
-| `else` | 与 if 配合使用，条件不满足时执行 | `else { ... }` |
-| `switch` | 多分支选择语句 | `switch (day) { ... }` |
-| `case` | `switch` 中的分支标签 | `case 1: ...;` |
-| `default` | `switch` 中的默认分支 | `default: ...;` |
+| `if` | 条件判断语句 | `if (x > 0) { … }` |
+| `else` | 与 if 配合使用，条件不满足时执行 | `else { … }` |
+| `switch` | 多分支选择语句 | `switch (day) { … }` |
+| `case` | `switch` 中的分支标签 | `case 1: …;` |
+| `default` | `switch` 中的默认分支 | `default: …;` |
 
 ### 循环语句
 
 | 关键字 | 说明 | 示例 |
 | --- | --- | --- |
-| `for` | `for` 循环语句 | `for (int i = 0; i < 10; i++) { ... }` |
-| `while` | `while` 循环语句 | `while (condition) { ... }` |
-| `do` | `do-while` 循环语句，先执行后判断 | `do { ... } while (condition);` |
+| `for` | `for` 循环语句 | `for (int i = 0; i < 10; i++) { … }` |
+| `while` | `while` 循环语句 | `while (condition) { … }` |
+| `do` | `do-while` 循环语句，先执行后判断 | `do { … } while (condition);` |
 
 ### 跳转语句
 
@@ -116,7 +116,7 @@ struct    switch   typedef  union    unsigned  void
 volatile  while
 ```
 
-> 💡 C99 新增 `_Bool`、`_Complex`、`_Imaginary`；C11 新增 `_Alignas`、`_Generic` 等。传统的 32 个关键字仍是最核心、最常用的一组。
+>💡 C99 新增 `_Bool`、`_Complex`、`_Imaginary`；C11 新增 `_Alignas`、`_Generic` 等。传统的 32 个关键字仍是最核心、最常用的一组。
 
 ## 学习建议
 

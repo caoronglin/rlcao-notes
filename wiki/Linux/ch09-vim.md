@@ -3,32 +3,31 @@ wiki: Linux
 title: 第九章、vim 程序编辑器
 date: 2024-01-01
 updated: 2024-01-01
-tags:
-  - Linux
-  - vim
-  - 编辑器
+tags: [Linux, vim, 编辑器]
 ---
 
 # 第九章、vim 程序编辑器
 
-## 9.1 vi 与 vim
+## 9.1 Vi 与 Vim
 
-### vi 编辑器简介
+### Vi 编辑器简介
 
 **vi**（Visual Editor）是 Unix/Linux 系统中最经典的文本编辑器，由 Bill Joy 于 1976 年开发。
 
 **vi 的特点：**
+
 - 所有 Unix/Linux 系统都预装
 - 轻量级，启动快速
 - 不需要图形界面，适合远程编辑
 - 功能强大，效率高（掌握后）
 
 **vi 的缺点：**
+
 - 学习曲线陡峭
 - 没有语法高亮（原始版本）
 - 操作不够直观
 
-### vim 编辑器简介
+### Vim 编辑器简介
 
 **vim**（Vi IMproved）是 Bram Moolenaar 于 1991 年开发的 vi 改进版本。
 
@@ -47,7 +46,7 @@ tags:
 | **图形界面** | gvim 提供 GUI 版本 |
 | **跨平台** | 支持 Linux、Windows、macOS |
 
-### 检查 vim 安装
+### 检查 Vim 安装
 
 ```bash
 # 检查是否安装 vim
@@ -92,24 +91,27 @@ vim 有三种基本工作模式：
 ```
 
 **1. 正常模式（Normal Mode）**
+
 - 默认进入的模式
 - 用于浏览、移动光标、删除、复制、粘贴等
 - 按 `i`、`a`、`o` 等进入插入模式
 - 按 `:` 进入命令行模式
 
 **2. 插入模式（Insert Mode）**
+
 - 用于输入和编辑文本
 - 左下角显示 "-- INSERT --"
 - 按 `Esc` 返回正常模式
 
 **3. 命令行模式（Command Mode / Ex Mode）**
+
 - 用于执行保存、退出、搜索、替换等命令
 - 左下角显示 `:` 或 `/` 或 `?`
 - 按 `Esc` 或 `Enter` 执行后返回正常模式
 
-## 9.2 vi 的使用
+## 9.2 Vi 的使用
 
-### 启动和退出 vim
+### 启动和退出 Vim
 
 **启动 vim：**
 
@@ -453,7 +455,7 @@ N                       # 上一个匹配
 :mkvimrc ~/.myvimrc     # 保存当前设置到文件
 ```
 
-### vim 高级技巧
+### Vim 高级技巧
 
 **1. 寄存器使用：**
 
@@ -1024,30 +1026,35 @@ call plug#end()
 这是一个非常全面的 `.vimrc` 配置文件，涵盖了 vim 的各个方面。以下是使用这个配置的方法：
 
 1. **安装 vim-plug**（如果你需要使用插件部分）：
+
 ```bash
 curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 ```
 
-2. **创建配置文件**：
+1. **创建配置文件**：
+
 ```bash
 cp ~/.vimrc ~/.vimrc.backup  # 备份原有配置（如果有）
 vim ~/.vimrc
 # 粘贴上面的配置内容
 ```
 
-3. **创建必要的目录**：
+1. **创建必要的目录**：
+
 ```bash
 mkdir -p ~/.vim/backup ~/.vim/swap ~/.vim/undo ~/.vim/plugged
 ```
 
-4. **安装插件**（如果使用插件部分）：
+1. **安装插件**（如果使用插件部分）：
+
 ```bash
 vim
 :PlugInstall
 ```
 
 这个配置包含了以下主要功能：
+
 - 基本设置（编码、行号、搜索等）
 - 缩进和制表符设置
 - 折叠和语法高亮

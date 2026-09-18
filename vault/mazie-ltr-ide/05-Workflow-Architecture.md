@@ -296,7 +296,7 @@ read evidence 文件格式：
 
 实现步骤：
 
-1. split-read 初筛：`check_name_sorted()` 先把 split BAM 改为 queryname 排序，再用 `pybedtools.BedTool(...).bam_to_bed()` 转 BED。
+1. split-read 初筛：`check_name_sorted()` 先把 split BAM 改为 queryname 排序，再用 `pybedtools.BedTool(…).bam_to_bed()` 转 BED。
 2. 质量过滤：插入使用 `quality_filter_ins`；默认 `>=5`，strict 模式 `>=10`。
 3. BEDPE 组装：`convert_split_pairbed()` 将同一 read 的两段 split alignment 转成 BEDPE。
 4. 候选插入筛选：`split_ins` 保留两段 split alignment 距离超过 5 kb 或跨染色体的 reads。
@@ -311,7 +311,7 @@ read evidence 文件格式：
 
 single-end 插入发现没有 discordant read 证据，因此 `discover_se()` 只保留 high-confidence split clusters。其输出格式与 paired-end 插入一致，便于 cohort 合并。
 
-插入算法的核心判定是“一个 read 或 read pair 同时提供 TE 侧证据和 genome 侧锚定证据”。TE 侧证据来自与已知 TE 注释的 overlap；genome 侧锚定坐标用于定义新插入位点。
+插入算法的核心判定是"一个 read 或 read pair 同时提供 TE 侧证据和 genome 侧锚定证据"。TE 侧证据来自与已知 TE 注释的 overlap；genome 侧锚定坐标用于定义新插入位点。
 
 ### 5.5 缺失发现算法实现
 
@@ -331,7 +331,7 @@ paired-end 实现步骤：
 
 single-end 缺失发现只有 split-read evidence；`annotate_deletions_se()` 的 TE 长度判定使用 `length > gapsize + 50` 过滤候选，不使用 discordant reads。
 
-缺失算法的核心判定是“reads 跨越了参考 TE 原本所在区域，且 TE 区域覆盖度相对背景下降”。这与插入算法相反：插入是发现 reference 中没有的 TE 侧证据，缺失是发现 reference TE 区域在样本中被跨越或低覆盖。
+缺失算法的核心判定是"reads 跨越了参考 TE 原本所在区域，且 TE 区域覆盖度相对背景下降"。这与插入算法相反：插入是发现 reference 中没有的 TE 侧证据，缺失是发现 reference TE 区域在样本中被跨越或低覆盖。
 
 ### 5.6 群体精炼算法实现
 
@@ -340,7 +340,7 @@ single-end 缺失发现只有 split-read evidence；`annotate_deletions_se()` �
 实现步骤：
 
 1. `readNames()` 读取所有样本名。
-2. `getOtherLines()` 对每个 merged event 计算“没有在该事件 accession 列表里的样本”，即 inverse accession list。
+2. `getOtherLines()` 对每个 merged event 计算"没有在该事件 accession 列表里的样本"，即 inverse accession list。
 3. 每个样本只检查自己在 inverse accession list 中的事件。
 4. `find_reads_conc()` 检查主 BAM 中是否有连续覆盖该坐标的 concordant reads；如果连续覆盖存在，通常说明没有该变异，不继续 rescue。
 5. `find_reads()` 在 split BAM 中取出落在候选坐标的 read names。
@@ -401,7 +401,7 @@ tepid-refine ... --statistical --stats-alpha 0.01
 
 1. `merge_insertions.py -f insertions` 合并各样本插入位点。
 2. `merge_deletions.py -f deletions` 合并各样本缺失位点。
-3. `flip_deletions.py` 把“缺失该 TE 的样本列表”翻转成“含有该 TE 的样本列表”，让插入和缺失共享 presence/absence 语义。
+3. `flip_deletions.py` 把"缺失该 TE 的样本列表"翻转成"含有该 TE 的样本列表"，让插入和缺失共享 presence/absence 语义。
 4. `tepid-refine` 对每个样本检查 cohort master coordinates，输出 second-pass 和 ambiguous 文件。
 5. `genotype.py` 合并 refined 和 ambiguous 信息，生成最终 TSV。
 
@@ -418,7 +418,7 @@ tepid-refine ... --statistical --stats-alpha 0.01
 | `ambiguous_insertion_<sample>.bed` | 覆盖度不足或证据不够的插入位点 |
 | `ambiguous_deletion_<sample>.bed` | 覆盖度不足或证据不够的缺失位点 |
 
-`genotype.py` 输出每个变异位点的两类 accession 列表：含有该事件的样本，以及明确不含该事件的样本。ambiguous 样本会从“明确不含”列表中移除。
+`genotype.py` 输出每个变异位点的两类 accession 列表：含有该事件的样本，以及明确不含该事件的样本。ambiguous 样本会从"明确不含"列表中移除。
 
 ## 6. LTR Bin Matrix 目标
 
@@ -504,7 +504,7 @@ flowchart TD
 | `merge_matrix` | 所有样本 bin counts | `final/final_LTR_<bins_size>bp_matrix.tsv` | 合并为样本矩阵，缺失 bin 记 0 |
 | `provenance_report` | 无 | `output/report/*.tsv` | 写出版本和输出清单 |
 
-### 6.4 LTR helper 算法细节
+### 6.4 LTR Helper 算法细节
 
 LTR bin matrix 目标是对历史 FIFO shell driver 的参数化翻译，核心 helper 在 `tepid/ltr_pipeline.py`。
 
@@ -699,7 +699,7 @@ head output/final/final_LTR_100bp_matrix.tsv
 | retained 1 kb bins           | `596,885`     | `temp/SRR11301984/bam/SRR11301984_bin_counts.txt`                   | count 过滤后的 1 kb windows                                                                 |
 | final matrix rows            | `596,886`     | `final/final_LTR_1000bp_matrix.tsv`                                 | header 1 行 + retained bins 596,885 行                                                    |
 
-注意：`mapped_reads` 来自第一步 LTR Bowtie2 BAM 的 flagstat；`unique_insertions` 来自后续 flagged reads 的 BWA genome remap，两者不是同一个分母，不能直接解释为 “unique / mapped rate”。
+注意：`mapped_reads` 来自第一步 LTR Bowtie2 BAM 的 flagstat；`unique_insertions` 来自后续 flagged reads 的 BWA genome remap，两者不是同一个分母，不能直接解释为 "unique / mapped rate"。
 
 unique insertion BED 前几行如下：
 
@@ -948,7 +948,7 @@ snakemake ltr_pipeline_all --configfile config.snakemake.yaml --cores 32
 
 ## 14. 文献与方法依据
 
-### 14.1 TEPID 与 TE polymorphism 方法
+### 14.1 TEPID 与 TE Polymorphism 方法
 
 | 主题 | 文献 |
 | --- | --- |

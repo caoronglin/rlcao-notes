@@ -1,6 +1,6 @@
 # SoyBase 大豆基因搜索流程
 
-> 以 `Glyma.08G293900` 为例，含生物胁迫表达分析
+>以 `Glyma.08G293900` 为例，含生物胁迫表达分析
 
 ---
 
@@ -55,7 +55,7 @@ glyma.Wm82.gnm2.ann1.Glyma.08G293900  ← 完整带前缀格式（CoNekT/Glycine
 | Wm82.gnm4.ann1 | Gm08:40,305,378–40,328,753 | (-) |
 | Wm82.gnm6.ann1 | Gm08:43,324,898–43,348,323 | (-) |
 
-> **注意**：不同基因组版本坐标不一致，需根据所用注释版本选择。
+>**注意**：不同基因组版本坐标不一致，需根据所用注释版本选择。
 
 ---
 
@@ -70,6 +70,7 @@ glyma.Wm82.gnm2.ann1.Glyma.08G293900  ← 完整带前缀格式（CoNekT/Glycine
 | 下载表达数据 | `https://conekt.legumeinfo.org/profile/download/plot/{内部ID}` |
 
 实际操作步骤：
+
 1. 用完整 ID 访问 CoNekT → 获得 `内部ID`（如 49431）
 2. 访问 `/profile/view/{内部ID}` → 获取组织特异性指标（SPM/entropy/tau）
 3. 访问 `/profile/download/plot/{内部ID}` → 下载 TSV 格式表达矩阵
@@ -111,7 +112,7 @@ glyma.Wm82.gnm2.ann1.Glyma.08G293900  ← 完整带前缀格式（CoNekT/Glycine
 https://conekt.legumeinfo.org/network/download/neighbors/{network_id}
 ```
 
-> `network_id` 从 CoNekT 基因页面的 "Co-expression Networks" 区域获取（如 69944）。
+>`network_id` 从 CoNekT 基因页面的 "Co-expression Networks" 区域获取（如 69944）。
 
 ### 3.2 数据格式
 
@@ -150,6 +151,7 @@ TSV 文件，列含义：
 ### 4.2 外部文献搜索
 
 用 `Exa web_search` 搜索 `"Glyma.08G293900" expression soybean`：
+
 - 若直接命中 → 提取文献中该基因的胁迫表达数据
 - 若无直接命中 → 搜索相关胁迫类型 + soybean RNA-seq，间接推断
 - 查看 meta-analysis 文献（如 2025 Mol Genet Genomics 的生物/非生物胁迫交叉分析）
@@ -213,4 +215,5 @@ https://data.soybase.org/Glycine/max/expression/
 ---
 
 *整理日期：2026-06-23*
+
 *数据来源：SoyBase (soybase.org) + CoNekT (conekt.legumeinfo.org)*

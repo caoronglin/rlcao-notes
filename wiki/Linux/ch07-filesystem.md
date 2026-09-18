@@ -3,10 +3,7 @@ wiki: Linux
 title: 第七章、Linux 磁盘与文件系统管理
 date: 2024-01-01
 updated: 2024-01-01
-tags:
-  - Linux
-  - 文件系统
-  - 磁盘管理
+tags: [Linux, 文件系统, 磁盘管理]
 ---
 
 # 第七章、Linux 磁盘与文件系统管理
@@ -34,7 +31,7 @@ tags:
 | **nfs** | 网络文件系统 | 文件共享 |
 | **cifs/smb** | Windows 网络共享 | Samba 共享 |
 
-### ext4 文件系统详解
+### Ext4 文件系统详解
 
 **ext4 的主要特性：**
 
@@ -563,7 +560,7 @@ findmnt /dev/sdb1
 
 如前所述，`/etc/fstab` 是 Linux 系统中最常用的开机挂载配置方式。
 
-### 使用 systemd mount 单元
+### 使用 Systemd Mount 单元
 
 对于使用 systemd 的系统，可以使用 mount 单元来管理挂载：
 
@@ -612,13 +609,14 @@ sudo systemctl start mnt-data.automount
 
 ## 7.5 内存交换空间（swap）的管理
 
-### 什么是 swap
+### 什么是 Swap
 
 Swap（交换空间）是当物理内存不足时，系统用来临时存放数据的空间。可以是：
+
 - **交换分区**：专用的磁盘分区
 - **交换文件**：普通文件作为交换空间
 
-### 查看 swap 状态
+### 查看 Swap 状态
 
 ```bash
 # 查看 swap 使用情况
@@ -700,7 +698,7 @@ sudo swapoff -a
 sudo swapon -a
 ```
 
-### 调整 swappiness
+### 调整 Swappiness
 
 `vm.swappiness` 参数控制系统使用 swap 的倾向：
 
@@ -726,7 +724,7 @@ sudo sysctl -p
 # 60-100：对响应时间要求不高的系统
 ```
 
-### 删除 swap
+### 删除 Swap
 
 ```bash
 # 交换分区

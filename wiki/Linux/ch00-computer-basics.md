@@ -3,10 +3,7 @@ wiki: Linux
 title: 第零章、计算机概论
 date: 2024-01-01
 updated: 2024-01-01
-tags:
-  - Linux
-  - 计算机基础
-  - 硬件
+tags: [Linux, 计算机基础, 硬件]
 ---
 
 # 第零章、计算机概论

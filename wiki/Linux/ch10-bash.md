@@ -3,11 +3,7 @@ wiki: Linux
 title: 第十章、认识与学习BASH
 date: 2024-01-01
 updated: 2024-01-01
-tags:
-  - Linux
-  - Shell
-  - Bash
-  - 命令行
+tags: [Linux, Shell, Bash, 命令行]
 ---
 
 # 第十章、认识与学习BASH
@@ -19,6 +15,7 @@ tags:
 **Shell** 是一个命令行解释器，它是用户与操作系统内核之间的接口。
 
 **主要功能：**
+
 1. **命令执行**：解释用户输入的命令并执行
 2. **程序启动**：启动和管理程序
 3. **输入输出重定向**：控制数据流向
@@ -43,6 +40,7 @@ Linux 系统中有多种 Shell，常见的有：
 ### 查看和切换 Shell
 
 **查看当前使用的 Shell：**
+
 ```bash
 echo $SHELL                  # 显示当前用户的默认Shell
 echo $0                      # 显示当前Shell
@@ -50,11 +48,13 @@ ps -p $$                     # 显示当前进程信息
 ```
 
 **查看系统安装的所有 Shell：**
+
 ```bash
 cat /etc/shells              # 列出系统可用的Shell
 ```
 
 **临时切换 Shell：**
+
 ```bash
 /bin/sh                      # 切换到sh
 /bin/bash                    # 切换到bash
@@ -63,6 +63,7 @@ exit                         # 退出当前Shell，返回上一层
 ```
 
 **永久修改默认 Shell：**
+
 ```bash
 chsh                         # 交互式修改
 chsh -s /bin/zsh             # 直接指定Shell
@@ -300,6 +301,7 @@ command &
 #### 配置文件加载顺序
 
 **登录 Shell 的加载顺序：**
+
 ```
 登录
   │
@@ -317,6 +319,7 @@ command &
 ```
 
 **非登录交互式 Shell：**
+
 ```
 ~/.bashrc
   │
@@ -324,6 +327,7 @@ command &
 ```
 
 **非交互式 Shell（执行脚本）：**
+
 ```
 $BASH_ENV 指定的文件（如果存在）
 ```
@@ -331,27 +335,32 @@ $BASH_ENV 指定的文件（如果存在）
 #### 主要配置文件说明
 
 **`/etc/profile`**
+
 - 系统全局配置文件，对所有用户生效
 - 只在登录时加载一次
 - 设置全局环境变量和启动程序
 - 通常包含对 `/etc/profile.d/` 的引用
 
 **`~/.bash_profile`, `~/.bash_login`, `~/.profile`**
+
 - 用户个人配置文件，按顺序加载第一个存在的
 - 只在登录时加载
 - 设置用户特定的环境变量
 - 通常调用 `~/.bashrc`
 
 **`~/.bashrc`**
+
 - 每次打开新的交互式 shell 时加载
 - 设置命令别名、函数、提示符等
 - 设置用户特定的环境变量
 
 **`/etc/bash.bashrc` 或 `/etc/bashrc`**
+
 - 系统级的 bashrc，对所有用户生效
 - 在某些发行版中存在
 
 **`/etc/profile.d/`**
+
 - 目录，包含多个脚本文件
 - 被 `/etc/profile` 调用
 - 方便软件包添加自己的环境设置
@@ -359,6 +368,7 @@ $BASH_ENV 指定的文件（如果存在）
 #### 配置文件示例
 
 **`/etc/profile` 示例：**
+
 ```bash
 # /etc/profile
 
@@ -387,6 +397,7 @@ fi
 ```
 
 **`~/.bash_profile` 示例：**
+
 ```bash
 # ~/.bash_profile
 
@@ -413,6 +424,7 @@ fi
 ```
 
 **`~/.bashrc` 示例：**
+
 ```bash
 # ~/.bashrc
 
@@ -541,6 +553,7 @@ echo "Uptime: $(uptime -p 2>/dev/null || uptime)"
 ```
 
 **最佳实践：**
+
 1. 系统级环境变量 → `/etc/profile`
 2. 用户环境变量 → `~/.bash_profile` 或 `~/.profile`
 3. 交互式设置（别名、函数、提示符） → `~/.bashrc`
@@ -565,6 +578,7 @@ echo "Uptime: $(uptime -p 2>/dev/null || uptime)"
 ### 变量的定义和使用
 
 **定义变量：**
+
 ```bash
 # 基本语法：变量名=值（等号两边不能有空格！）
 name="John Doe"
@@ -577,6 +591,7 @@ $name="John"        # 错误：变量名不能用$开头
 ```
 
 **使用变量：**
+
 ```bash
 # 使用$符号引用变量
 echo $name
@@ -596,6 +611,7 @@ echo "${test_var}world"    # 正确：输出 Helloworld
 ### 环境变量
 
 **查看环境变量：**
+
 ```bash
 env                          # 显示所有环境变量
 printenv                     # 同上
@@ -604,6 +620,7 @@ echo $PATH                   # 同上
 ```
 
 **设置环境变量：**
+
 ```bash
 # 临时设置（当前Shell）
 export PATH=$PATH:/new/path
@@ -651,6 +668,7 @@ source ~/.bashrc             # 立即生效
 | `$-` | 当前 Shell 的标志位 | `himBH` |
 
 **位置参数示例：**
+
 ```bash
 #!/bin/bash
 # test_args.sh
@@ -665,11 +683,13 @@ echo "Number of arguments: $#"
 ```
 
 运行：
+
 ```bash
 ./test_args.sh arg1 arg2 arg3 arg4 arg5 arg6 arg7 arg8 arg9 arg10
 ```
 
 **`$*` 和 `$@` 的区别：**
+
 ```bash
 #!/bin/bash
 # difference.sh
@@ -686,6 +706,7 @@ done
 ```
 
 运行：
+
 ```bash
 ./difference.sh "hello world" foo bar
 # 输出：
@@ -700,6 +721,7 @@ done
 ### 变量的操作
 
 **删除变量：**
+
 ```bash
 unset var                    # 删除变量
 unset -v var                 # 同上（明确指定变量）
@@ -707,6 +729,7 @@ unset -f function_name       # 删除函数
 ```
 
 **只读变量：**
+
 ```bash
 readonly var=value           # 定义只读变量
 readonly var                 # 将已有变量设为只读
@@ -715,12 +738,14 @@ readonly -p                  # 显示所有只读变量
 ```
 
 **本地变量：**
+
 ```bash
 local var=value              # 在函数中定义局部变量
 local var                    # 声明局部变量，不赋值
 ```
 
 **默认值：**
+
 ```bash
 ${var:-default}              # 如果var未定义或为空，返回default，var不变
 ${var:=default}              # 如果var未定义或为空，将var设为default并返回
@@ -729,6 +754,7 @@ ${var:+replacement}          # 如果var已定义且非空，返回replacement�
 ```
 
 **示例：**
+
 ```bash
 #!/bin/bash
 
@@ -753,6 +779,7 @@ debug_mode=${DEBUG:+"--debug"}
 ```
 
 **字符串操作：**
+
 ```bash
 # 获取字符串长度
 ${#var}
@@ -785,6 +812,7 @@ ${var,,pattern}              # 匹配pattern的字符转小写
 ```
 
 **示例：**
+
 ```bash
 #!/bin/bash
 
@@ -816,6 +844,7 @@ echo "${str^}"                 # 输出: Hello world (只有首字母大写)
 ### 数组
 
 **定义数组：**
+
 ```bash
 # 方式1：空格分隔的值
 arr=(value1 value2 value3)
@@ -837,6 +866,7 @@ read -a arr <<< "a b c"
 ```
 
 **访问数组元素：**
+
 ```bash
 arr=(apple banana cherry date)
 
@@ -851,6 +881,7 @@ echo "${#arr[@]}"              # 数组长度
 ```
 
 **数组操作：**
+
 ```bash
 arr=(a b c d e)
 
@@ -890,6 +921,7 @@ done
 ```
 
 **关联数组（Bash 4.0+）：**
+
 ```bash
 # 声明关联数组
 declare -A assoc
@@ -943,6 +975,7 @@ unset assoc[age]
 ### 输出重定向
 
 **覆盖输出到文件：**
+
 ```bash
 command > file               # 标准输出重定向到文件（覆盖）
 command 1> file              # 同上（显式指定文件描述符1）
@@ -951,12 +984,14 @@ command 1>> file             # 同上
 ```
 
 **错误输出重定向：**
+
 ```bash
 command 2> file              # 标准错误重定向到文件（覆盖）
 command 2>> file             # 标准错误追加到文件
 ```
 
 **同时重定向标准输出和标准错误：**
+
 ```bash
 # 方法1：分别重定向
 command > stdout.log 2> stderr.log
@@ -979,6 +1014,7 @@ command &> /dev/null         # Bash 4.0+
 ### 输入重定向
 
 **从文件输入：**
+
 ```bash
 command < file               # 从文件读取输入
 cat < file.txt               # 从文件读取并显示
@@ -986,6 +1022,7 @@ sort < input.txt             # 从文件读取并排序
 ```
 
 **Here Document（多行输入）：**
+
 ```bash
 command << EOF
 line 1
@@ -1015,6 +1052,7 @@ EOF
 ```
 
 **Here String（单行输入）：**
+
 ```bash
 command <<< "string"
 
@@ -1029,12 +1067,14 @@ awk '{print $1}' <<< "one two three"
 管道 `|` 将一个命令的标准输出连接到另一个命令的标准输入。
 
 **基本用法：**
+
 ```bash
 command1 | command2          # command1的输出作为command2的输入
 command1 | command2 | command3  # 多级管道
 ```
 
 **常用组合：**
+
 ```bash
 # 查找并排序
 ls -la | sort
@@ -1058,6 +1098,7 @@ ps aux | grep "[n]ginx" | awk '{print $2}' | xargs kill -9
 ```
 
 **管道与重定向结合：**
+
 ```bash
 # 将管道的输出保存到文件
 ls -la | sort > sorted.txt
@@ -1077,6 +1118,7 @@ cat input.txt | tee /dev/tty | wc -l
 ### 高级重定向
 
 **进程替换：**
+
 ```bash
 # 将命令的输出作为文件
 command <(list)
@@ -1092,6 +1134,7 @@ comm -12 <(sort file1) <(sort file2)
 ```
 
 **文件描述符操作：**
+
 ```bash
 # 打开文件描述符
 exec 3> output.txt           # 打开文件描述符3用于写入
@@ -1151,11 +1194,13 @@ command1; command2; command3
 ```
 
 **特点：**
+
 - 无论前一个命令是否成功，都执行后一个命令
 - 命令按顺序依次执行
 - 退出状态是最后一个命令的退出状态
 
 **示例：**
+
 ```bash
 # 顺序执行多个命令
 echo "Step 1"; echo "Step 2"; echo "Step 3"
@@ -1177,11 +1222,13 @@ command1 && command2 && command3
 ```
 
 **特点：**
+
 - 前一个命令**成功**（退出状态为0）时，才执行后一个命令
 - 如果某个命令失败，后续的命令不会执行
 - 常用于条件判断
 
 **示例：**
+
 ```bash
 # 确保目录存在后才进入
 mkdir -p /tmp/test && cd /tmp/test
@@ -1216,11 +1263,13 @@ command1 || command2 || command3
 ```
 
 **特点：**
+
 - 前一个命令**失败**（退出状态非0）时，才执行后一个命令
 - 如果某个命令成功，后续的命令不会执行
 - 常用于提供备选方案或错误处理
 
 **示例：**
+
 ```bash
 # 如果目录不存在则创建
 [ -d /tmp/test ] || mkdir /tmp/test
@@ -1328,6 +1377,7 @@ pgrep mysqld && mysqladmin ping || systemctl restart mysql
 | `255` | 退出状态码超出范围 |
 
 **查看退出状态：**
+
 ```bash
 ls /existing/dir
 echo $?                      # 输出: 0
@@ -1340,6 +1390,7 @@ echo $?                      # 输出: 127
 ```
 
 **在脚本中使用退出状态：**
+
 ```bash
 #!/bin/bash
 
@@ -1354,6 +1405,7 @@ fi
 ```
 
 **自定义退出状态：**
+
 ```bash
 #!/bin/bash
 
@@ -1414,13 +1466,14 @@ exit $SUCCESS
 ```
 
 **关键点：**
+
 - 管道连接的是**标准输出**到**标准输入**
 - 管道中的每个命令在**子shell**中执行
 - 管道可以包含任意数量的命令
 
 ### 常用管道命令
 
-#### 1. cut - 切割提取
+#### 1. Cut - 切割提取
 
 从每行中提取指定部分：
 
@@ -1444,6 +1497,7 @@ cut --complement -f 1 file.txt  # 提取除第1字段外的所有字段
 ```
 
 **管道示例：**
+
 ```bash
 # 提取用户名
 grep "bin/bash" /etc/passwd | cut -d ':' -f 1
@@ -1458,7 +1512,7 @@ ps aux | grep nginx | grep -v grep | cut -c 10-15
 cat data.csv | cut -d ',' -f 1,3,5 | sort
 ```
 
-#### 2. grep - 文本过滤
+#### 2. Grep - 文本过滤
 
 使用正则表达式搜索文本：
 
@@ -1501,6 +1555,7 @@ grep -E "a{2,4}" file        # 2到4个a
 ```
 
 **管道示例：**
+
 ```bash
 # 查找并过滤
 ps aux | grep nginx | grep -v grep
@@ -1524,7 +1579,7 @@ ifconfig | grep "inet " | grep -v 127.0.0.1 | awk '{print $2}'
 cat file.txt | tr ' ' '\n' | sort | uniq -c | sort -nr | head -20
 ```
 
-#### 3. sort - 文本排序
+#### 3. Sort - 文本排序
 
 对文本行进行排序：
 
@@ -1561,6 +1616,7 @@ ps aux | sort -k 3 -nr | head -5  # 按CPU使用率排序
 ```
 
 **管道示例：**
+
 ```bash
 # 排序并去重
 cat file.txt | sort -u
@@ -1575,7 +1631,7 @@ ps aux | sort -k 4 -nr | head -10
 ps aux | grep -E "(nginx|php)" | sort -k 3 -nr | awk '{print $2, $11}'
 ```
 
-#### 4. uniq - 去重
+#### 4. Uniq - 去重
 
 过滤或报告重复的行（需要先排序）：
 
@@ -1604,6 +1660,7 @@ sort file.txt | uniq -u
 ```
 
 **管道示例：**
+
 ```bash
 # 统计IP访问频率
 awk '{print $1}' access.log | sort | uniq -c | sort -nr | head -20
@@ -1618,7 +1675,7 @@ find /path -type f -exec md5sum {} \; | sort | uniq -d -w32
 ps aux | awk '{print $11}' | sort | uniq -c | sort -nr
 ```
 
-#### 5. wc - 统计
+#### 5. Wc - 统计
 
 统计行数、单词数、字节数：
 
@@ -1639,6 +1696,7 @@ grep pattern file | wc -l    # 统计匹配行数
 ```
 
 **管道示例：**
+
 ```bash
 # 统计代码行数
 find . -name "*.py" | xargs wc -l
@@ -1653,7 +1711,7 @@ who | wc -l
 awk '{print $1}' access.log | sort | uniq | wc -l
 ```
 
-#### 6. tee - 双向输出
+#### 6. Tee - 双向输出
 
 同时将输出显示在屏幕并保存到文件：
 
@@ -1672,7 +1730,7 @@ echo "content" | sudo tee /etc/config.conf
 cat file.txt | tee /dev/tty | wc -l
 ```
 
-#### 7. tr - 字符转换
+#### 7. Tr - 字符转换
 
 转换或删除字符：
 
@@ -1702,7 +1760,7 @@ echo "hello" | tr 'A-Za-z' 'N-ZA-Mn-za-m'
 echo "uryyb" | tr 'A-Za-z' 'N-ZA-Mn-za-m'
 ```
 
-#### 8. split - 文件分割
+#### 8. Split - 文件分割
 
 将大文件分割成多个小文件：
 

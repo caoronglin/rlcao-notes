@@ -1,6 +1,6 @@
 # Hermes WSD509 RDS 方案生成评测包
 
-> 用途：把 WSD509 多用户 RDS 服务器搭建/排障任务脱敏后，交给 Hermes 或其他模型生成完整运维方案，用于测试模型在 Windows Server / AD DS / RDS / PowerShell / GPO 领域的能力。
+>用途：把 WSD509 多用户 RDS 服务器搭建/排障任务脱敏后，交给 Hermes 或其他模型生成完整运维方案，用于测试模型在 Windows Server / AD DS / RDS / PowerShell / GPO 领域的能力。
 
 ## 文件结构
 
@@ -29,7 +29,7 @@ hermes-wsd509-rds-eval/
 | 域名 | `example.local` |
 | NetBIOS | `EXAMPLE` |
 | 用户名 | `U25alpha`, `U25beta`, `U26gamma`, `U25test` |
-| Obsidian 路径 | `D:\Vault\Private\...` |
+| Obsidian 路径 | `D:\Vault\Private\…` |
 | 用户数据目录 | `E:\Users\<user>` |
 | 个人软件目录 | `D:\PerUser\<user>\Apps` |
 | 公共目录 | `D:\Public` |

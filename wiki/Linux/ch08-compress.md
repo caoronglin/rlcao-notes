@@ -19,6 +19,7 @@ tags: [Linux, 压缩, 打包, 备份]
 ### 压缩的原理
 
 压缩通过消除数据中的冗余信息来减小文件大小：
+
 - **无损压缩**：可以完全恢复原始数据（gzip、bzip2、xz）
 - **有损压缩**：牺牲部分质量换取更高压缩率（jpeg、mp3）
 
@@ -34,7 +35,7 @@ tags: [Linux, 压缩, 打包, 备份]
 | **zip** | .zip | 中等 | 快 | Windows 兼容 |
 | **compress** | .Z | 低 | 快 | 已过时，很少使用 |
 
-### gzip 和 zcat
+### Gzip 和 Zcat
 
 **gzip - 最流行的压缩工具：**
 
@@ -89,7 +90,7 @@ gzcat file.gz > output.txt  # 解压到文件
 zcat file.gz | grep pattern  # 管道处理
 ```
 
-### bzip2 和 bzcat
+### Bzip2 和 Bzcat
 
 **bzip2 - 更高压缩率：**
 
@@ -133,7 +134,7 @@ bzgrep "pattern" file.bz2
 bzgrep "pattern" *.bz2      # 搜索多个文件
 ```
 
-### xz 和 xzcat
+### Xz 和 Xzcat
 
 **xz - 最高压缩率（现代标准）：**
 
@@ -203,17 +204,18 @@ ls -lh test.file*
 
 ## 8.3 打包指令：tar
 
-### tar 命令概述
+### Tar 命令概述
 
 tar（Tape Archive）是 Linux/Unix 系统中最常用的归档工具，将多个文件或目录打包成单一文件（称为 tar 归档或 tarball），常与压缩工具结合使用。
 
 **tar 的特点：**
+
 - 保留文件的权限、所有者、时间戳等信息
 - 支持多种压缩格式
 - 可以增量备份
 - 支持远程备份
 
-### tar 基本语法
+### Tar 基本语法
 
 ```bash
 tar [选项] [归档文件] [文件或目录...]
@@ -252,7 +254,7 @@ tar [选项] [归档文件] [文件或目录...]
 | `-h` | 显示帮助信息 |
 | `--version` | 显示版本信息 |
 
-### tar 实战示例
+### Tar 实战示例
 
 **1. 创建归档：**
 
@@ -454,7 +456,7 @@ tar -czvf backup.tar.gz /home --exclude='*.mp4' --exclude='cache' --exclude-vcs
 
 ### 压缩工具详解
 
-#### gzip 详解
+#### Gzip 详解
 
 ```bash
 # 压缩级别测试
@@ -479,7 +481,7 @@ find /path/to/dir -type f -exec gzip {} \;
 find /path/to/dir -type f | xargs gzip
 ```
 
-#### bzip2 详解
+#### Bzip2 详解
 
 ```bash
 # bzip2 通常比 gzip 压缩率更高但速度更慢
@@ -499,7 +501,7 @@ bzip2recover corrupted.bz2
 pbzip2 -p4 file    # 使用4个线程
 ```
 
-#### xz 详解
+#### Xz 详解
 
 ```bash
 # xz 提供最高的压缩率，但速度最慢
@@ -525,7 +527,7 @@ xz --lzma2=preset=9,dict=64MiB file   # 使用大字典获得更好压缩率
 
 ### 现代压缩工具
 
-#### zstd - 快速压缩
+#### Zstd - 快速压缩
 
 ```bash
 # 安装
@@ -560,7 +562,7 @@ for level in 1 3 9; do
 done
 ```
 
-#### pigz - 并行 gzip
+#### Pigz - 并行 Gzip
 
 ```bash
 # 安装
@@ -575,7 +577,7 @@ unpigz file.gz            # 解压
 # 保持与 gzip 兼容的选项
 ```
 
-#### pbzip2 - 并行 bzip2
+#### Pbzip2 - 并行 Bzip2
 
 ```bash
 # 安装
@@ -679,7 +681,7 @@ rm -f ${TEST_FILE} ${TEST_FILE}.*
 echo "Done!"
 ```
 
-### 使用 tar 进行完整系统备份
+### 使用 Tar 进行完整系统备份
 
 ```bash
 #!/bin/bash
@@ -757,7 +759,7 @@ else
 fi
 ```
 
-### 使用 tar 进行增量备份
+### 使用 Tar 进行增量备份
 
 ```bash
 #!/bin/bash

@@ -38,7 +38,7 @@ comment_title:                       # 评论区自定义标题
 topic:                               # 所属话题/专栏 id（v1.25.0+）
 wiki:                                # 所属 wiki 项目 ID
 notebook:                            # 所属笔记本
-references:                          # 参考资料列表
+references: [# 参考资料列表]
   - ''
 
 # ========== 元信息 ==========
@@ -60,59 +60,82 @@ mermaid: false                       # Mermaid 图表
 
 <!--
 ╔══════════════════════════════════════════════════╗
-║         Stellar 常用标签组件速查                  ║
+║ Stellar 常用标签组件速查 ║
 ╠══════════════════════════════════════════════════╣
-║                                                  ║
-║ 📝 文本修饰                                      ║
-║   {% mark 红 color:red %}                        ║
-║   {% mark 绿 color:green %}                      ║
-║   {% mark 蓝 color:blue %}                       ║
-║   {% mark 亮 color:light %}                      ║
-║   {% mark 警告 color:warning %}                  ║
-║   {% mark 错误 color:error %}                    ║
-║                                                  ║
-║ 🔗 链接卡片                                      ║
-║   {% link 标题 https://example.com 描述 %}       ║
-║                                                  ║
-║ 🖼️ 图片                                          ║
-║   {% image URL 描述 download:bool ratio:W/H %}   ║
-║                                                  ║
-║ 💬 引用块                                        ║
-║   {% quot 引用文字 icon:hashtag %}                ║
-║   {% quot 热门话题 icon:default %}                ║
-║                                                  ║
-║ 🏷️ 标签链接                                      ║
-║   {% hashtag Stellar https://xaoxuu.com %}       ║
-║   {% hashtag Hexo https://hexo.io/ %}            ║
-║                                                  ║
-║ 📦 折叠容器                                      ║
-║   {% folding 标题 %}                              ║
-║   内容…                                          ║
-║   {% endfolding %}                               ║
-║                                                  ║
-║ 📑 分栏容器                                      ║
-║   {% tabs %}                                     ║
-║   <!-- tab 标签1 -->内容1<!-- endtab -->         ║
-║   <!-- tab 标签2 -->内容2<!-- endtab -->         ║
-║   {% endtabs %}                                  ║
-║                                                  ║
-║ 📊 时间线                                        ║
-║   {% timeline %}                                 ║
-║   <!-- node 2024 年 -->内容…                      ║
-║   {% endtimeline %}                              ║
-║                                                  ║
-║ 🎯 OKR 目标管理                                   ║
-║   {% okr %}                                      ║
-║   KR1: 关键结果                                  ║
-║   {% endokr %}                                   ║
-║                                                  ║
-║ ℹ️ 注记块                                        ║
-║   {% note 标题 color:blue %}                     ║
-║   内容…                                          ║
-║   {% endnote %}                                  ║
-║                                                  ║
-║ 📄 引用文献行                                    ║
-║   {% copy "这里面是引用" %}                       ║
-║                                                  ║
+║ ║
+║ 📝 文本修饰 ║
+║ {% mark 红 color:red %} ║
+║ {% mark 绿 color:green %} ║
+║ {% mark 蓝 color:blue %} ║
+║ {% mark 亮 color:light %} ║
+║ {% mark 警告 color:warning %} ║
+║ {% mark 错误 color:error %} ║
+║ ║
+║ 🔗 链接卡片 ║
+║ {% link 标题 https://example.com 描述 %} ║
+║ ║
+║ 🖼️ 图片 ║
+║ {% image URL 描述 download:bool ratio:W/H %} ║
+║ ║
+║ 💬 引用块 ║
+║ {% quot 引用文字 icon:hashtag %} ║
+║ {% quot 热门话题 icon:default %} ║
+║ ║
+║ 🏷️ 标签链接 ║
+║ {% hashtag Stellar https://xaoxuu.com %} ║
+║ {% hashtag Hexo https://hexo.io/ %} ║
+║ ║
+║ 📦 折叠容器 ║
+║ {% folding 标题 %} ║
+║ 内容… ║
+║ {% endfolding %} ║
+║ ║
+║ 📑 分栏容器 ║
+║ {% tabs %} ║
+║ <!-- tab 标签1 -->内容1<!-- endtab --> ║
+
+║ <!-- tab 标签2 -->内容2<!-- endtab --> ║
+
+║ {% endtabs %} ║
+
+║ ║
+
+║ 📊 时间线 ║
+
+║ {% timeline %} ║
+
+║ <!-- node 2024 年 -->内容… ║
+
+║ {% endtimeline %} ║
+
+║ ║
+
+║ 🎯 OKR 目标管理 ║
+
+║ {% okr %} ║
+
+║ KR1: 关键结果 ║
+
+║ {% endokr %} ║
+
+║ ║
+
+║ ℹ️ 注记块 ║
+
+║ {% note 标题 color:blue %} ║
+
+║ 内容… ║
+
+║ {% endnote %} ║
+
+║ ║
+
+║ 📄 引用文献行 ║
+
+║ {% copy "这里面是引用" %} ║
+
+║ ║
+
 ╚══════════════════════════════════════════════════╝
+
 -->

@@ -1,6 +1,6 @@
 # 推荐 Skills
 
-> 这些能力不是完成方案的最低要求，但会显著提高 Hermes 输出质量。
+>这些能力不是完成方案的最低要求，但会显著提高 Hermes 输出质量。
 
 ---
 
@@ -134,4 +134,4 @@ Get-CimInstance -ClassName Win32_DeviceGuard -Namespace root\Microsoft\Windows\D
 - 对 ACL/GPO 修改提供备份方案。
 - 输出回滚命令或恢复思路。
 - 将运维流程写成可复用 Markdown Runbook。
-- 将“需要现场验证”的项明确列出。
+- 将"需要现场验证"的项明确列出。

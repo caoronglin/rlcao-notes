@@ -3,10 +3,7 @@ wiki: Linux
 title: 第四章、首次登陆与线上求助
 date: 2024-01-01
 updated: 2024-01-01
-tags:
-  - Linux
-  - 基础命令
-  - 帮助系统
+tags: [Linux, 基础命令, 帮助系统]
 ---
 
 # 第四章、首次登陆与线上求助
@@ -26,6 +23,7 @@ tags:
 如果进入的是图形界面，可以打开**终端 (Terminal)** 来使用命令行。
 
 **打开终端的方法：**
+
 - 桌面右键 → 打开终端
 - 应用程序菜单 → 系统工具 → 终端
 - 快捷键：`Ctrl + Alt + T`（Ubuntu）
@@ -60,6 +58,7 @@ quit                         # 退出bc
 ```
 
 **使用管道直接计算：**
+
 ```bash
 echo "1+2+3" | bc              # 输出：6
 echo "scale=2; 10/3" | bc      # 输出：3.33
@@ -126,6 +125,7 @@ ls *.txt                     # 列出所有txt文件（通配符）
 ```
 
 **输出示例：**
+
 ```
 -rw-r--r-- 1 user group 1234 Jan  1 10:00 file.txt
 drwxr-xr-x 2 user group 4096 Jan  1 09:00 directory/
@@ -202,6 +202,7 @@ mv -v source dest            # 显示详细信息
 #### 8. 查看文件内容
 
 **`cat` - 显示整个文件内容**
+
 ```bash
 cat file.txt                 # 显示文件内容
 cat -n file.txt              # 显示行号
@@ -211,6 +212,7 @@ cat > file.txt               # 创建文件并输入内容
 ```
 
 **`less` - 分页浏览（推荐）**
+
 ```bash
 less file.txt                # 分页查看
 # 在 less 中的操作：
@@ -222,6 +224,7 @@ less file.txt                # 分页查看
 ```
 
 **`head` - 显示文件开头**
+
 ```bash
 head file.txt                # 显示前10行
 head -n 20 file.txt          # 显示前20行
@@ -230,6 +233,7 @@ head -c 100 file.txt         # 显示前100字节
 ```
 
 **`tail` - 显示文件结尾**
+
 ```bash
 tail file.txt                # 显示后10行
 tail -n 20 file.txt          # 显示后20行
@@ -238,6 +242,7 @@ tail -f /var/log/syslog      # 实时查看系统日志
 ```
 
 **`wc` - 统计文件**
+
 ```bash
 wc file.txt                  # 输出行数、词数、字节数
 wc -l file.txt               # 只显示行数
@@ -246,6 +251,7 @@ wc -c file.txt               # 只显示字节数
 ```
 
 **`sort` - 排序**
+
 ```bash
 sort file.txt                # 按字母顺序排序
 sort -r file.txt             # 逆序排序
@@ -255,6 +261,7 @@ sort -t: -k3 -n /etc/passwd  # 按第3字段（UID）数字排序
 ```
 
 **`uniq` - 去重**
+
 ```bash
 uniq file.txt                # 删除相邻的重复行
 uniq -c file.txt             # 统计每行出现的次数
@@ -265,6 +272,7 @@ uniq -u file.txt             # 只显示不重复的行
 ### 搜索与查找
 
 **`find` - 查找文件（强大但较慢）**
+
 ```bash
 find /path -name "file.txt"          # 按名称查找
 find /path -name "*.txt"             # 查找所有txt文件
@@ -278,6 +286,7 @@ find /path -type f -exec ls -l {} \; # 对找到的文件执行命令
 ```
 
 **`locate` - 快速查找（基于数据库）**
+
 ```bash
 locate filename              # 快速查找文件
 locate -i filename           # 忽略大小写
@@ -286,6 +295,7 @@ sudo updatedb                # 更新locate数据库
 ```
 
 **`grep` - 文本搜索（常用）**
+
 ```bash
 grep "pattern" file.txt              # 在文件中搜索
 grep -i "pattern" file.txt           # 忽略大小写
@@ -301,6 +311,7 @@ ps aux | grep "nginx"                # 管道结合使用
 ```
 
 **`which` / `whereis` - 查找命令位置**
+
 ```bash
 which ls                     # 查找命令的可执行文件位置
 which -a python              # 查找所有匹配的路径
@@ -311,6 +322,7 @@ whereis -b ls                # 只找二进制文件
 ### 系统信息
 
 **`uname` - 系统信息**
+
 ```bash
 uname -a                     # 显示所有系统信息
 uname -r                     # 显示内核版本
@@ -319,6 +331,7 @@ uname -n                     # 显示主机名
 ```
 
 **`hostname` - 主机名**
+
 ```bash
 hostname                     # 显示主机名
 hostname -i                  # 显示IP地址
@@ -326,6 +339,7 @@ hostnamectl                  # 显示和修改主机名信息
 ```
 
 **`whoami` / `who` / `w` - 用户信息**
+
 ```bash
 whoami                       # 显示当前用户名
 who                          # 显示已登录用户
@@ -337,6 +351,7 @@ lastlog                      # 显示所有用户的最后登录时间
 ```
 
 **`df` - 磁盘空间**
+
 ```bash
 df                           # 显示文件系统磁盘使用情况
 df -h                        # 人类可读格式（推荐）
@@ -346,6 +361,7 @@ df -h /home                  # 查看特定目录所在分区的空间
 ```
 
 **`du` - 目录大小**
+
 ```bash
 du                           # 显示目录大小
 du -h                        # 人类可读格式
@@ -355,6 +371,7 @@ du -ah /path | sort -rh | head -20  # 找出最大的20个文件/目录
 ```
 
 **`free` - 内存使用**
+
 ```bash
 free                         # 显示内存使用情况
 free -h                      # 人类可读格式（推荐）
@@ -364,6 +381,7 @@ free -s 5                    # 每5秒刷新一次
 ```
 
 **`top` / `htop` - 系统进程**
+
 ```bash
 top                          # 实时显示系统进程（按q退出）
 top -u username              # 只显示某用户的进程
@@ -372,6 +390,7 @@ top -d 5                     # 每5秒刷新
 ```
 
 在 top 中可用的操作：
+
 - `P` - 按CPU使用率排序
 - `M` - 按内存使用率排序
 - `T` - 按运行时间排序
@@ -379,6 +398,7 @@ top -d 5                     # 每5秒刷新
 - `q` - 退出
 
 **`ps` - 进程状态**
+
 ```bash
 ps                           # 显示当前终端的进程
 ps aux                       # 显示所有进程的详细信息（推荐）
@@ -391,6 +411,7 @@ ps -p PID -o pid,ppid,cmd,%cpu,%mem  # 显示指定PID的特定信息
 ```
 
 **`lscpu` / `cat /proc/cpuinfo` - CPU信息**
+
 ```bash
 lscpu                        # 显示CPU架构信息
 cat /proc/cpuinfo            # 详细的CPU信息
@@ -400,6 +421,7 @@ nproc                        # 显示可用CPU核心数
 ```
 
 **`lsblk` / `fdisk` - 磁盘信息**
+
 ```bash
 lsblk                        # 列出所有块设备
 df -h                        # 查看磁盘使用情况
@@ -410,6 +432,7 @@ blkid                        # 查看块设备的UUID
 ```
 
 **`ifconfig` / `ip` / `ss` - 网络信息**
+
 ```bash
 ifconfig                     # 显示网络接口信息
 ip addr                      # 显示IP地址（现代命令）
@@ -423,6 +446,7 @@ hostname -I                  # 查看本机IP地址
 ```
 
 **`env` / `printenv` - 环境变量**
+
 ```bash
 env                          # 显示所有环境变量
 printenv                     # 显示所有环境变量
@@ -434,6 +458,7 @@ export VAR=value             # 设置环境变量
 ```
 
 **`history` - 命令历史**
+
 ```bash
 history                      # 显示命令历史
 history | less               # 分页显示
@@ -448,6 +473,7 @@ history -w                   # 将历史写入文件
 ### 关机与重启
 
 **`shutdown` - 安全关机**
+
 ```bash
 shutdown now                 # 立即关机
 shutdown +5                  # 5分钟后关机
@@ -459,6 +485,7 @@ shutdown -h now              # 立即关机并停止电源
 ```
 
 **`reboot` / `poweroff` / `halt`**
+
 ```bash
 reboot                       # 重启
 poweroff                     # 关机并断电
@@ -470,15 +497,16 @@ systemctl poweroff           # 使用systemctl关机
 ```
 
 **`sync` - 同步数据到磁盘**
+
 ```bash
 sync                         # 将内存中的数据写入磁盘
 ```
 
 ⚠️ **重要提示**：关机或重启前，建议先执行 `sync` 命令，确保数据已写入磁盘。
 
-## 4.3 Linux系统的线上求助man page与info page
+## 4.3 Linux系统的线上求助man Page与info Page
 
-### man page 手册页
+### Man Page 手册页
 
 Linux 系统内置了详细的帮助文档，称为 **manual pages（手册页）**，简称 man page。
 
@@ -508,6 +536,7 @@ man -k keyword               # 搜索包含关键词的手册页（等同于 apr
 | 9 | 内核例程 |
 
 **指定章节查看：**
+
 ```bash
 man 1 ls                     # 查看第1章节的ls命令
 man 5 passwd                 # 查看第5章节的passwd文件格式
@@ -548,7 +577,7 @@ BUGS                        # 已知问题
 AUTHOR                      # 作者信息
 ```
 
-### info page 信息页
+### Info Page 信息页
 
 GNU 项目开发的另一种帮助系统，比 man page 更详细，支持超链接导航。
 
@@ -577,7 +606,7 @@ info coreutils               # 查看核心工具集的info文档
 | `q` | 退出 |
 | `?` / `h` | 显示帮助 |
 
-#### info page 的优点
+#### Info Page 的优点
 
 1. **超链接导航**：可以像浏览网页一样跳转
 2. **层级结构**：清晰的章节组织
@@ -597,11 +626,12 @@ systemctl --help
 ```
 
 优点：
+
 - 快速查看，无需进入 man page
 - 显示常用选项
 - 适合快速参考
 
-#### 2. whatis 命令
+#### 2. Whatis 命令
 
 显示命令的简要描述：
 
@@ -611,7 +641,7 @@ whatis cp                    # cp (1)              - copy files and directories
 whatis man                   # man (1)             - an interface to the on-line reference manuals
 ```
 
-#### 3. apropos 命令
+#### 3. Apropos 命令
 
 通过关键词搜索相关的命令：
 
@@ -659,11 +689,11 @@ ls /usr/share/doc/bash/      # 查看 bash 的额外文档
 
 ## 4.4 超简单文书编辑器：nano
 
-### nano 简介
+### Nano 简介
 
 **nano** 是一个简单易用的文本编辑器，适合初学者。它比 vi/vim 更容易上手。
 
-### 启动 nano
+### 启动 Nano
 
 ```bash
 nano                         # 打开新文件
@@ -718,18 +748,20 @@ GNU nano 2.9.3               filename.txt
 #### 搜索和替换
 
 **搜索：**
+
 1. 按 `Ctrl + W`
 2. 输入要搜索的文本
 3. 按 `Enter`
 4. 按 `Alt + W` 查找下一个
 
 **替换：**
+
 1. 按 `Ctrl + \`
 2. 输入要搜索的文本，按 `Enter`
 3. 输入替换文本，按 `Enter`
 4. 按 `Y` 确认替换，`N` 跳过，`A` 全部替换
 
-### nano 配置
+### Nano 配置
 
 #### 配置文件位置
 
@@ -768,7 +800,7 @@ set wordwrap
 set tabsize 4
 ```
 
-### nano 与 vi/vim 的选择
+### Nano 与 vi/vim 的选择
 
 | 编辑器 | 优点 | 缺点 | 适用场景 |
 |--------|------|------|----------|
@@ -776,6 +808,7 @@ set tabsize 4
 | **vi/vim** | 功能强大，效率高 | 学习曲线陡峭 | 专业用户，频繁编辑 |
 
 **建议：**
+
 - 初学者先用 nano 入门
 - 熟练后学习 vim，提高工作效率
 - 服务器环境通常都有 vi，nano 可能需要额外安装
@@ -837,11 +870,12 @@ shutdown -c
 ```
 
 **发送消息给所有用户：**
+
 ```bash
 shutdown +10 "System will shutdown for maintenance in 10 minutes. Please save your work."
 ```
 
-#### poweroff
+#### Poweroff
 
 直接关闭系统并切断电源。
 
@@ -851,7 +885,7 @@ poweroff -f                  # 强制关机
 poweroff -p                  # 关机并断电（默认）
 ```
 
-#### halt
+#### Halt
 
 停止系统运行，但不一定断电。
 
@@ -861,7 +895,7 @@ halt -p                      # 停止系统并断电
 halt -f                      # 强制停止
 ```
 
-#### reboot
+#### Reboot
 
 重启系统。
 
@@ -871,7 +905,7 @@ reboot now                   # 立即重启
 reboot -f                    # 强制重启
 ```
 
-#### init
+#### Init
 
 通过改变运行级别来关机或重启。
 
@@ -895,6 +929,7 @@ Linux 系统有不同的运行级别，对应不同的系统状态：
 | 6 | 重启 |
 
 **查看当前运行级别：**
+
 ```bash
 runlevel                     # 显示之前的和当前的运行级别
 who -r                       # 显示当前运行级别
@@ -902,6 +937,7 @@ systemctl get-default        # 查看默认启动目标
 ```
 
 **切换运行级别：**
+
 ```bash
 init 3                       # 切换到命令行模式
 init 5                       # 切换到图形界面
@@ -909,22 +945,25 @@ systemctl isolate multi-user.target  # 切换到多用户目标
 systemctl isolate graphical.target   # 切换到图形目标
 ```
 
-### 使用 systemd 管理电源
+### 使用 Systemd 管理电源
 
 现代 Linux 发行版（如 CentOS 7+、Ubuntu 15+）使用 systemd 作为初始化系统。
 
 **关机：**
+
 ```bash
 systemctl poweroff           # 关机
 systemctl halt               # 停止系统
 ```
 
 **重启：**
+
 ```bash
 systemctl reboot             # 重启
 ```
 
 **挂起和休眠：**
+
 ```bash
 systemctl suspend            # 挂起（保存到内存）
 systemctl hibernate          # 休眠（保存到硬盘）

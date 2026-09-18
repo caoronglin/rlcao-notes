@@ -3,13 +3,13 @@ title: "<% tp.file.title %>"
 created: <% tp.date.now("YYYY-MM-DD") %>
 finished: false
 tags: ["project/<% tp.file.title %>"]
-alias:
+alias: []
 ---
 
 # <% tp.file.title %>
 
-> [!INFO] 项目状态
-> **状态**: 进行中 | **启动**: <% tp.date.now("YYYY-MM-DD") %>
+>[!INFO] 项目状态
+>**状态**: 进行中 | **启动**: <% tp.date.now("YYYY-MM-DD") %>
 
 ## 项目规划
 
@@ -41,7 +41,7 @@ sort by priority
 
 ## 项目日志
 
-> 日志记录在 `项目/周志/` 中，按周归类
+>日志记录在 `项目/周志/` 中，按周归类
 
 ```dataview
 list
@@ -51,5 +51,3 @@ sort file.name desc
 ```
 
 ## 参考资料
-
--

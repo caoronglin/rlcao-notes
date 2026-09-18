@@ -3,10 +3,7 @@ wiki: Linux
 title: 第二章、主机规划与磁盘分区
 date: 2024-01-01
 updated: 2024-01-01
-tags:
-  - Linux
-  - 磁盘分区
-  - 硬件
+tags: [Linux, 磁盘分区, 硬件]
 ---
 
 # 第二章、主机规划与磁盘分区
@@ -110,7 +107,7 @@ hostnamectl
 
 ### 常用分区工具
 
-#### fdisk (MBR分区)
+#### Fdisk (MBR分区)
 
 ```bash
 # 查看分区表
@@ -131,7 +128,7 @@ fdisk /dev/sda
 # q - 不保存退出
 ```
 
-#### gdisk / cgdisk (GPT分区)
+#### Gdisk / Cgdisk (GPT分区)
 
 ```bash
 # GPT分区工具
@@ -149,7 +146,7 @@ gdisk交互命令（类似fdisk）：
 # q - 退出
 ```
 
-#### parted (MBR和GPT都支持)
+#### Parted (MBR和GPT都支持)
 
 ```bash
 # 查看分区表
@@ -168,7 +165,7 @@ parted /dev/sda rm 2
 parted /dev/sda set 1 boot on
 ```
 
-#### lsblk / blkid
+#### Lsblk / Blkid
 
 ```bash
 # 查看块设备信息
@@ -288,7 +285,7 @@ findmnt --verify
 | /tmp | 10GB+ | ext4 | 临时文件，或使用tmpfs |
 | swap | 4-16GB | swap | 根据内存大小决定 |
 
-#### swap大小建议
+#### Swap大小建议
 
 | 内存大小 | 推荐swap大小 | 说明 |
 |----------|--------------|------|
@@ -299,6 +296,7 @@ findmnt --verify
 | > 32GB | 4GB或禁用 | 根据使用情况决定 |
 
 **swap文件替代分区：**
+
 ```bash
 # 创建swap文件
 sudo dd if=/dev/zero of=/swapfile bs=1M count=4096

@@ -1,9 +1,7 @@
 ---
 title: "<% tp.file.title %>"
 date: <% tp.date.now("YYYY-MM-DD") %>
-tags:
-  - 生信
-  - bio/pipeline
+tags: [生信, bio/pipeline]
 status: ongoing
 notebook: bio
 ---
@@ -16,15 +14,13 @@ notebook: bio
 
 ## 输入数据
 
-- 
-
 ## 步骤
 
-### 1. 
+### 1
 
-### 2. 
+### 2
 
-### 3. 
+### 3
 
 ## 关键参数
 
@@ -34,12 +30,8 @@ notebook: bio
 
 ## 结果
 
-- 
-
 ## 踩坑记录
 
 > 
 
 ## 参考资料
-
-- 

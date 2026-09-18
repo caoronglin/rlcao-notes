@@ -1,12 +1,14 @@
 # TEPID 流程、执行逻辑与代码架构说明
 
 本文档整理当前代码库中的主要运行流程、样本数据分析方法、代码结构、算法原理和运维注意事项。内容基于当前仓库实现而写，最后整理日期为 2026-05-23。
+
   mamba run -n tepid-py314 snakemake ltr_then_tepid_all \
-    --configfile config.snakemake.yaml \
-    --cores 32 \
-    --keep-going \
-    --rerun-incomplete \
-    --rerun-triggers mtime
+	--configfile config.snakemake.yaml \
+	--cores 32 \
+	--keep-going \
+	--rerun-incomplete \
+	--rerun-triggers mtime
+
 ## 1. 项目定位
 
 TEPID 用于从 Illumina 测序 reads 中识别转座子多态性，核心目标是得到样本或群体层面的 TE presence/absence 信息。
@@ -64,6 +66,7 @@ flowchart LR
 | `tepid-discover`     | `tepid.cli:discover_main`       | 单样本 TE 插入/缺失发现           |
 | `tepid-refine`       | `tepid.cli:refine_main`         | 群体坐标二次检索和精炼              |
 | `tepid-ltr-pipeline` | `tepid.ltr_pipeline:main`       | LTR Snakemake helper 子命令 |
+
 `Scripts/tepid-map`、`Scripts/tepid-map-se`、`Scripts/tepid-discover`、`Scripts/tepid-refine` 和 `Scripts/tepid-ltr-pipeline` 是源码树内的兼容包装脚本。当前项目使用 Hatch/`pyproject.toml` 构建，不再依赖 `setup.py`。
 
 ## 3. 环境与依赖

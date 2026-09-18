@@ -3,10 +3,7 @@ wiki: Linux
 title: 第一章、Linux是什么与如何学习
 date: 2024-01-01
 updated: 2024-01-01
-tags:
-  - Linux
-  - 操作系统
-  - 学习方法
+tags: [Linux, 操作系统, 学习方法]
 ---
 
 # 第一章、Linux是什么与如何学习
@@ -128,24 +125,29 @@ Linux 的成功得益于**开源协作模式**：
 Linux 在服务器市场占据**主导地位**：
 
 **Web服务器**
+
 - 超过 70% 的网站使用 Linux 服务器
 - Apache、Nginx 等主流 Web 服务器原生支持 Linux
 
 **数据库服务器**
+
 - MySQL、PostgreSQL、MongoDB 等数据库首选 Linux 平台
 - 高性能、稳定可靠
 
 **云计算平台**
+
 - Amazon AWS、Google Cloud、Microsoft Azure 都基于 Linux
 - OpenStack、Kubernetes 等云原生技术源于 Linux
 
 ### 移动设备与嵌入式
 
 **Android系统**
+
 - 全球超过 70% 的智能手机使用 Android
 - Android 基于 Linux 内核
 
 **物联网设备**
+
 - 智能路由器、智能家居设备
 - 工业控制系统、医疗设备
 - 汽车电子系统（如 Tesla）
@@ -155,15 +157,18 @@ Linux 在服务器市场占据**主导地位**：
 虽然 Linux 桌面市场份额较小，但在特定领域表现出色：
 
 **开发者工作站**
+
 - 软件开发者首选（尤其是 Web 开发、数据科学）
 - 与服务器环境一致，便于开发部署
 
 **科学计算与工程**
+
 - 高性能计算（HPC）
 - 3D 渲染、动画制作（好莱坞大片制作）
 - 金融建模、基因分析
 
 **教育与政府**
+
 - 学校计算机教室
 - 政府部门（节省软件授权费用）
 
@@ -181,18 +186,22 @@ Linux 在超级计算机领域**绝对垄断**：
 ### 技术发展趋势
 
 **容器化与微服务**
+
 - Docker、Kubernetes 成为行业标准
 - 云原生应用开发模式
 
 **DevOps与自动化**
+
 - CI/CD 流水线
 - 基础设施即代码 (IaC)
 
 **人工智能与大数据**
+
 - TensorFlow、PyTorch 等 AI 框架首选 Linux
 - Hadoop、Spark 大数据平台
 
 **边缘计算**
+
 - 5G 网络推动边缘计算发展
 - Linux 在边缘设备中的重要性增加
 
@@ -201,12 +210,14 @@ Linux 在超级计算机领域**绝对垄断**：
 ### 学习前的准备
 
 **心态准备**
+
 1. **耐心**：Linux 学习曲线较陡，需要持续投入
 2. **实践**：多动手操作，不要只看不动手
 3. **思考**：理解原理，不只是记忆命令
 4. **坚持**：遇到困难不放弃，逐步积累
 
 **环境准备**
+
 1. **安装 Linux 系统**
    - 物理机安装（推荐，体验最佳）
    - 虚拟机（VMware、VirtualBox）
@@ -285,11 +296,13 @@ Linux 在超级计算机领域**绝对垄断**：
 ### 学习资源推荐
 
 **在线文档**
+
 - [鸟哥的 Linux 私房菜](https://linux.vbird.org/) - 最经典的 Linux 教程
 - [Linux 中国](https://linux.cn/) - 中文 Linux 社区
 - [Arch Wiki](https://wiki.archlinux.org/) - 详细的 Linux 技术文档
 
 **在线学习平台**
+
 - [Linux Foundation](https://www.linuxfoundation.org/) - Linux 官方基金会
 - [Coursera](https://www.coursera.org/) - Linux 相关课程
 - [Udemy](https://www.udemy.com/) - Linux 实战课程
@@ -297,16 +310,19 @@ Linux 在超级计算机领域**绝对垄断**：
 **书籍推荐**
 
 **入门**
+
 - 《鸟哥的 Linux 私房菜 基础学习篇》- 必读经典
 - 《Linux 命令行与 Shell 脚本编程大全》
 - 《Unix/Linux 编程实践教程》
 
 **进阶**
+
 - 《深入理解 Linux 内核》
 - 《Linux 设备驱动程序》
 - 《Unix 环境高级编程》
 
 **实践项目**
+
 - [Linux Journey](https://linuxjourney.com/) - 交互式学习
 - [OverTheWire: Bandit](https://overthewire.org/wargames/bandit/) - 通过游戏学习 Linux 命令
 - [Vim Adventures](https://vim-adventures.com/) - 学习 Vim 编辑器

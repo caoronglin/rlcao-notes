@@ -1,7 +1,9 @@
 # LTR 表达矩阵 — 全面质量与可信度分析报告
 
 **报告生成时间**: 2026-04-29 16:08:00
+
 **数据来源**: 10x Genomics scRNA-seq → Cell Ranger → Scanpy 处理
+
 **物种**: 玉米 (Zea mays), 参考基因组 Zm-B73-REFERENCE-NAM-5.0
 
 ---
@@ -20,8 +22,8 @@
 | 表达矩阵大小     | 22,322 × 40     |
 
 ## 二、组织分布
-⚠️upload failed, check dev console
 
+⚠️upload failed, check dev console
 
 leaf(20), Seedling(3), Maize root meristem(9), shoot apex (SAM+P6)(4), V2 seedling leaf 2 distal 6cm(2), 2cm root tips(2)
 
@@ -45,6 +47,7 @@ leaf(20), Seedling(3), Maize root meristem(9), shoot apex (SAM+P6)(4), V2 seedli
 ### 3.2 表达值范围检查
 
 表达值在 ±3 范围内的比例: **100.0%**
+
 （scRNA-seq log-normalized 数据通常在 ±3 范围内，超出可能为异常值）
 
 ### 3.3 LTR 类型分布
@@ -88,6 +91,7 @@ leaf(20), Seedling(3), Maize root meristem(9), shoot apex (SAM+P6)(4), V2 seedli
 ---
 
 ## 四、按组织 LTR 表达统计
+
 不表达检出
 
 | 组织                            | 样本数 | LTR检出数 | 检出率(%) | 平均总表达     |
@@ -157,6 +161,7 @@ leaf(20), Seedling(3), Maize root meristem(9), shoot apex (SAM+P6)(4), V2 seedli
 - **SRR30334527** (Seedling): 仅 173 个细胞 → LTR表达估计不可靠，建议排除
 
 **细胞数失衡**:
+
 - 最大值: 69,732 个细胞
 - 最小值: 173 个细胞
 - CV (变异系数): 1.54
@@ -173,7 +178,6 @@ leaf(20), Seedling(3), Maize root meristem(9), shoot apex (SAM+P6)(4), V2 seedli
 
 ### 6.3 LTR 生物学合理性
 
-
 | 指标 | 数值 | 解读 |
 |------|------|------|
 | 负值占比 | 13.7% | ⚠️ 抑制模式不显著 |
@@ -181,7 +185,6 @@ leaf(20), Seedling(3), Maize root meristem(9), shoot apex (SAM+P6)(4), V2 seedli
 | 至少5个样本表达的LTR | 411 / 22,322 | ✅ 仅少数LTR跨组织表达（符合TE组织特异性预期） |
 
 ### 6.4 总体可信度评分
-
 
 | 评估维度 | 分数 | 说明 |
 |----------|------|------|

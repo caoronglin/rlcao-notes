@@ -2,11 +2,7 @@
 title: 任务2-STAR比对
 date: 2025-08-01
 updated: 2025-08-01
-tags:
-  - 生信
-  - bio/启航计划
-  - bio/RNA-seq
-  - bio/alignment
+tags: [生信, bio/启航计划, bio/RNA-seq, bio/alignment]
 status: completed
 notebook: bio
 abbrlink: 34fab8c5

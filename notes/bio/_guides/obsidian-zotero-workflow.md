@@ -1,6 +1,6 @@
 # Obsidian + Zotero 科研工作台完整配置指南
 
-> 综合三篇知乎文章的最佳实践：
+>综合三篇知乎文章的最佳实践：
 > - [手把手教程！zotero和obsidian如何联动](https://zhuanlan.zhihu.com/p/672287270) — Zotero Integration 注释同步
 > - [Obsidian+Zotero打造最强科研工具链](https://zhuanlan.zhihu.com/p/639325772) — Mdnotes + DataView 文献管理
 > - [打造自己的工作台](https://zhuanlan.zhihu.com/p/409409946) — Obsidian Workspace 布局
@@ -89,17 +89,21 @@
 2. 在「Citation key formula」中设置格式，推荐：`[auth:lower][year]` → 生成如 `smith2024`
 3. 确保「Automatically update citation keys on change」勾选
 
-### 2.3 zotero-markdb-connect 配置
+### 2.3 Zotero-markdb-connect 配置
 
 1. 安装后在 Zotero → 工具 → markdb 首选项
 2. 设置 **同步文件夹路径** 为 Obsidian 库中存放批注笔记的目录，例如：
+
    ```
    D:/data/rlcao/notes/bio/_annotations/
    ```
+
 3. 设置 Obsidian 库名（vault name）：
+
    ```
    rlcao
    ```
+
 4. 设置默认文件过滤器为：`*.md`
 5. 联动使用 Better BibTex 的 `citekey` 来识别条目
 
@@ -107,9 +111,11 @@
 
 1. 打开 Zotero → 工具 → Mdnotes 首选项
 2. 设置**模板目录**指向：
+
    ```
    D:/data/rlcao/muban/
    ```
+
 3. 确保模板文件命名为 `Mdnotes Default Template.md`（不要改这个名字）
 4. 在 Zotero → 编辑 → 首选项 → 高级 → 编辑器
 5. 搜索 `mdnotes.placeholder.` 可以自定义占位符
@@ -134,14 +140,19 @@
 
 1. 在 Obsidian 社区插件中安装 Zotero Integration
 2. 插件设置 → Note Import Location：
+
    ```
    notes/bio/_annotations/
    ```
+
 3. Import Formats → 设置导入格式模板路径：
+
    ```
    muban/zotero-annotation-template.md
    ```
+
 4. 设置图片附件路径：
+
    ```
    assets/zotero-annotations/
    ```
@@ -149,6 +160,7 @@
 ### 3.3 模板配置
 
 确认 Obsidian 核心插件中的「模板」功能已开启：
+
 - 设置 → 核心插件 → 模板 → 启用
 - 模板文件夹位置：`muban/`
 
@@ -160,7 +172,7 @@
 
 ### 4.1 Mdnotes Default Template
 
-> 位置：`muban/mdnotes-default-template.md`
+>位置：`muban/mdnotes-default-template.md`
 
 ```yaml
 ---
@@ -179,11 +191,13 @@ zotero:: {{localLibrary}}
 ```
 
 **语法说明：**
+
 - `::` 是 DataView 的键值对语法，双冒号后自动识别为字段
 - `{{}}` 是 Mdnotes 占位符，由插件自动填充
 - `#status/to_read` 是嵌套标签（Obsidian 支持），用于过滤查询
 
 **自动填充效果：**
+
 ```yaml
 ---
 作者:: Smith J; Wang L
@@ -199,11 +213,12 @@ zotero:: [Zotero](zotero://select/library/items/ABCDEF)
 
 ### 4.2 Zotero Annotation Template
 
-> 位置：`muban/zotero-annotation-template.md`
+>位置：`muban/zotero-annotation-template.md`
 
 这个模板用于 Zotero Integration 导入批注。Jinja2 语法动态渲染每条批注。
 
 **颜色映射规则：**
+
 | 颜色 | 含义 | 本文采用的语义 |
 |------|------|---------------|
 | 🔵 `#2ea8e5` (蓝) | 关键概念/定义 | 方法要点 |
@@ -214,7 +229,7 @@ zotero:: [Zotero](zotero://select/library/items/ABCDEF)
 
 ### 4.3 Research Note Template
 
-> 位置：`muban/research-note-template.md`
+>位置：`muban/research-note-template.md`
 
 用于手动新建论文笔记（当不需要全量 Mdnotes 导出时）。通过 Obsidian 核心插件「模板」插入。
 
@@ -227,6 +242,7 @@ zotero:: [Zotero](zotero://select/library/items/ABCDEF)
 ### 开启工作区
 
 设置 → 核心插件 → 工作区 → 启用
+
 左侧栏会出现「管理工作区布局」图标。
 
 ### 布局 A：文献阅读
@@ -379,7 +395,7 @@ sort 年份 desc
 
 ## 8. 项目管理：项目看板 2.0
 
-> 参考：[项目看板 2.0：一个研究生的 Obsidian 项目管理实践](https://sspai.com/post/98928) — 西郊次生林
+>参考：[项目看板 2.0：一个研究生的 Obsidian 项目管理实践](https://sspai.com/post/98928) — 西郊次生林
 
 研究生阶段的科研项目往往没有明确的路径可循，需要不断试错。传统的甘特图规划不适合这类探索性项目。**项目看板 2.0** 提出了一套基于 **里程碑规划 + PARA 标签 + 周志 + Canvas** 的方案。
 
@@ -423,6 +439,7 @@ sort 创建日期 desc
 位置：`muban/project-dashboard-template.md`
 
 在 Obsidian 中用 Templater 新建项目时选择此模板：
+
 - 自动创建项目看板
 - 预留 Canvas 规划图引用
 - Dataview 自动汇总项目笔记、任务、周志
@@ -430,6 +447,7 @@ sort 创建日期 desc
 ### 8.5 里程碑规划（Canvas）
 
 用 Obsidian 核心插件 Canvas 绘制路线图：
+
 1. 新建 Canvas：`项目/XXX/XXX-plan.canvas`
 2. 每个节点是一个里程碑
 3. 用箭头连接里程碑顺序
@@ -439,6 +457,7 @@ sort 创建日期 desc
 ### 8.6 周志系统
 
 使用 Periodic Notes 插件，所有项目共用一套周志：
+
 - 文件名格式：`YYYY-Www`（如 `2026-W24`）
 - 各项目日志用一级标题区分
 - 待办任务直接写在对应标题下
@@ -447,17 +466,20 @@ sort 创建日期 desc
 ### 8.7 任务管理
 
 **轻量方式** — 直接 Markdown 任务列表，Dataview 汇总：
+
 ```markdown
 - [ ] 分析单细胞数据
 - [x] 阅读文献
 ```
 
 **高级方式** — Tasks 插件，支持开始/截止日期、优先级、重复：
+
 ```markdown
 - [ ] 完成实验设计 📅 2026-06-20 ⏫ 🔁 every week
 ```
 
 汇总到项目看板的 Tasks 查询：
+
 ```tasks
 not done
 path includes 项目/周志
@@ -521,7 +543,7 @@ git commit -m "feat: 添加科研工作台模板和配置指南"
 git push
 ```
 
-> 建议配置远程仓库（GitHub/Gitee），实现多设备同步和灾难恢复。
+>建议配置远程仓库（GitHub/Gitee），实现多设备同步和灾难恢复。
 
 ---
 
@@ -561,7 +583,7 @@ git push
 cd D:/data/rlcao && git add . && git commit -m "vault backup: $(date +'%Y-%m-%d %H:%M:%S')"
 ```
 
-> 可配置 cron 任务自动执行每日备份。
+>可配置 cron 任务自动执行每日备份。
 
 ---
 

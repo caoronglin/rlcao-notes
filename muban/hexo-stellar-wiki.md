@@ -40,7 +40,7 @@ comment_title:
 # ========== 元信息 ==========
 author:
 references:
-  - ''
+  - ""
 indexing: true
 comments: true
 
@@ -52,7 +52,7 @@ mermaid: false
 
 # {{title}}
 
-> <small>本文档属于 **{{wiki}}** 项目</small>
+><small>本文档属于 **{{wiki}}** 项目</small>
 
 <!-- more -->
 
@@ -60,4 +60,4 @@ mermaid: false
 
 ## 正文
 
-> 参考：[Stellar Wiki 文档系统](https://xaoxuu.com/wiki/stellar/wiki-settings/)
+>参考：[Stellar Wiki 文档系统](https://xaoxuu.com/wiki/stellar/wiki-settings/)

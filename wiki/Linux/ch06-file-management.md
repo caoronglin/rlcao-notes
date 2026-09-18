@@ -3,10 +3,7 @@ wiki: Linux
 title: 第六章、Linux 文件与目录管理
 date: 2024-01-01
 updated: 2024-01-01
-tags:
-  - Linux
-  - 文件管理
-  - 目录操作
+tags: [Linux, 文件管理, 目录操作]
 ---
 
 # 第六章、Linux 文件与目录管理
@@ -28,6 +25,7 @@ tags:
 #### 常见目录操作命令
 
 **`cd` - 切换目录**
+
 ```bash
 cd /etc                      # 切换到绝对路径
 cd ../..                     # 切换到上上级目录
@@ -37,12 +35,14 @@ cd /var/log && pwd           # 组合使用
 ```
 
 **`pwd` - 显示当前路径**
+
 ```bash
 pwd                          # 显示逻辑路径（可能包含符号链接）
 pwd -P                       # 显示物理路径（解析符号链接）
 ```
 
 **`mkdir` - 创建目录**
+
 ```bash
 mkdir dirname                # 创建单个目录
 mkdir -p a/b/c/d             # 递归创建多级目录
@@ -52,12 +52,14 @@ mkdir -v newdir              # 显示创建过程
 ```
 
 **`rmdir` - 删除空目录**
+
 ```bash
 rmdir emptydir               # 删除空目录
 rmdir -p a/b/c               # 递归删除空目录
 ```
 
 **`rm` - 删除文件或目录**
+
 ```bash
 rm file.txt                  # 删除文件
 rm -r directory              # 递归删除目录
@@ -81,6 +83,7 @@ env | grep PATH              # 在环境变量中查找PATH
 ```
 
 **PATH 输出示例：**
+
 ```
 /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
 ```
@@ -98,6 +101,7 @@ env | grep PATH              # 在环境变量中查找PATH
 #### 修改 PATH
 
 **临时修改（当前终端会话）：**
+
 ```bash
 # 追加目录到PATH
 export PATH=$PATH:/new/directory
@@ -110,7 +114,9 @@ export PATH=/bin:/usr/bin:/usr/local/bin
 ```
 
 **永久修改（对所有用户）：**
+
 编辑 `/etc/profile` 或 `/etc/environment`：
+
 ```bash
 sudo nano /etc/profile
 
@@ -119,7 +125,9 @@ export PATH=$PATH:/opt/myapp/bin
 ```
 
 **永久修改（仅对当前用户）：**
+
 编辑 `~/.bashrc` 或 `~/.profile`：
+
 ```bash
 nano ~/.bashrc
 
@@ -163,11 +171,12 @@ echo $PATH | tr ':' '\n' | wc -l
 
 ### 文件与目录的检视：ls
 
-#### ls 命令详解
+#### Ls 命令详解
 
 `ls` (list) 命令用于列出目录内容，是使用最频繁的命令之一。
 
 **基本用法：**
+
 ```bash
 ls                           # 列出当前目录内容
 ls /path/to/directory        # 列出指定目录内容
@@ -208,6 +217,7 @@ ls -i                        # 显示 inode 号
 #### 输出解析
 
 **`ls -l` 输出格式：**
+
 ```
 -rwxr-xr-x 1 user group 12345 Jan  1 10:00 filename
 │└┬┘└┬┘└┬┘ │  │    │     │    │   │    │
@@ -225,6 +235,7 @@ ls -i                        # 显示 inode 号
 ```
 
 **文件类型标识：**
+
 - `-` 普通文件
 - `d` 目录
 - `l` 符号链接
@@ -236,23 +247,27 @@ ls -i                        # 显示 inode 号
 #### 实用技巧
 
 **1. 列出最近修改的文件：**
+
 ```bash
 ls -lt | head -10            # 最近修改的10个文件
 ls -ltr | tail -10           # 最早修改的10个文件
 ```
 
 **2. 按大小排序：**
+
 ```bash
 ls -lS | head -10            # 最大的10个文件
 ls -lSr | head -10           # 最小的10个文件
 ```
 
 **3. 查找大文件：**
+
 ```bash
 ls -lhS | grep -E "^-.+[MG]"  # 显示大于1MB的文件
 ```
 
 **4. 统计文件数量：**
+
 ```bash
 ls | wc -l                   # 当前目录文件数
 ls -a | wc -l                # 包括隐藏文件
@@ -261,12 +276,14 @@ ls -l | grep "^d" | wc -l     # 只统计目录
 ```
 
 **5. 显示文件大小总和：**
+
 ```bash
 ls -l | awk '{sum+=$5} END {print sum}'           # 字节数
 ls -l | awk '{sum+=$5} END {printf "%.2f MB\n", sum/1024/1024}'
 ```
 
 **6. 查找空文件或空目录：**
+
 ```bash
 ls -l | grep "^-\s*1\s.*\s0\s"  # 空文件（硬链接数为1，大小为0）
 find . -type f -empty              # 更准确的空文件查找
@@ -274,6 +291,7 @@ find . -type d -empty              # 空目录
 ```
 
 **7. 使用通配符列出特定文件：**
+
 ```bash
 ls *.txt                     # 所有txt文件
 ls file?.txt                 # file0.txt, file1.txt 等（单个字符）
@@ -284,6 +302,7 @@ ls **/*.txt                  # 递归查找所有txt文件（需要启用globsta
 ```
 
 **8. 结合其他命令使用：**
+
 ```bash
 # 查找并删除旧文件
 ls -t /path/*.log | tail -n +8 | xargs rm -f
@@ -295,11 +314,12 @@ ls -t | head -20 | tar -czf recent.tar.gz -T -
 ls -d *.txt | xargs -I {} cp {} /backup/
 ```
 
-### 复制、删除与移动：cp, rm, mv
+### 复制、删除与移动：cp, Rm, Mv
 
-#### cp (复制)
+#### Cp (复制)
 
 **基本语法：**
+
 ```bash
 cp [选项] 源文件 目标文件
 cp [选项] 源文件... 目标目录
@@ -321,6 +341,7 @@ cp [选项] 源文件... 目标目录
 | `-v` | 显示详细过程 |
 
 **示例：**
+
 ```bash
 # 基本复制
 cp file.txt /backup/
@@ -349,9 +370,10 @@ cp *.txt /backup/
 pv source.iso | cp /dev/stdin /dest/backup.iso
 ```
 
-#### rm (删除)
+#### Rm (删除)
 
 **基本语法：**
+
 ```bash
 rm [选项] 文件...
 ```
@@ -368,6 +390,7 @@ rm [选项] 文件...
 | `--no-preserve-root` | 允许删除根目录（极度危险！） |
 
 **示例：**
+
 ```bash
 # 删除文件
 rm file.txt
@@ -401,6 +424,7 @@ find /path -name "*.log" -mtime +30 -delete
 ```
 
 ⚠️ **极度危险命令（永远不要执行）：**
+
 ```bash
 rm -rf /                     # 删除整个系统！
 rm -rf /*                    # 同上
@@ -409,9 +433,10 @@ rm -rf .                     # 删除当前目录
 rm -rf .*                    # 删除所有隐藏文件和上级目录
 ```
 
-#### mv (移动/重命名)
+#### Mv (移动/重命名)
 
 **基本语法：**
+
 ```bash
 mv [选项] 源文件 目标文件    # 重命名或移动单个文件
 mv [选项] 源文件... 目标目录  # 移动多个文件到目录
@@ -430,6 +455,7 @@ mv [选项] 源文件... 目标目录  # 移动多个文件到目录
 | `--suffix` | 指定备份文件的后缀 |
 
 **示例：**
+
 ```bash
 # 重命名文件
 mv oldname.txt newname.txt
@@ -527,6 +553,7 @@ cat file.txt | more          # 分页显示
 ```
 
 **在 more 中的操作：**
+
 - `空格` - 下一页
 - `Enter` - 下一行
 - `b` - 上一页
@@ -576,6 +603,7 @@ ls -la | less                # 管道结合使用
 | `h` | 显示帮助 |
 
 **less 的高级用法：**
+
 ```bash
 # 同时查看多个文件
 less file1.txt file2.txt file3.txt
@@ -596,7 +624,7 @@ less file1.txt file2.txt file3.txt
 # v - 用默认编辑器编辑文件
 ```
 
-#### head 和 tail
+#### Head 和 Tail
 
 **`head`** - 显示文件开头部分
 
@@ -621,6 +649,7 @@ tail -F file.txt             # 追踪文件，即使文件被重命名或删除�
 ```
 
 **`tail -f` 的典型用法：**
+
 ```bash
 # 实时监控日志文件
 tail -f /var/log/syslog
@@ -638,6 +667,7 @@ nohup tail -f /var/log/app.log &
 ```
 
 **head 和 tail 的组合使用：**
+
 ```bash
 # 显示第10行
 head -10 file.txt | tail -1
@@ -660,6 +690,7 @@ find [搜索路径] [表达式]
 ```
 
 **默认行为：**
+
 - 如果不指定路径，使用当前目录 `.`
 - 递归搜索所有子目录
 
@@ -826,7 +857,7 @@ find /source -name "*.tmp" -exec mv {} /tmp/ \;
 find /path -name "*.txt" -exec mv {} {}.bak \;
 ```
 
-**`-exec ... +` 选项（更高效）：**
+**`-exec … +` 选项（更高效）：**
 
 ```bash
 # 将多个文件作为参数一次性传递给命令（类似xargs）
@@ -851,7 +882,7 @@ find /path -name "*.log" -ok rm {} \;
 find /path -type f -ok chmod 600 {} \;
 ```
 
-#### 结合管道和 xargs
+#### 结合管道和 Xargs
 
 对于复杂的操作，可以将 find 的结果通过管道传递给 xargs 或其他命令：
 
@@ -873,7 +904,7 @@ find /path -type f | xargs du -h | sort -h
 find /path -name "*.log" -exec ls -lh {} \; | awk '{print $5, $9}'
 ```
 
-#### find 的优化技巧
+#### Find 的优化技巧
 
 ```bash
 # 1. 限制搜索深度
@@ -896,7 +927,7 @@ find /path -name "*.txt" -ls
 find /path -name "*.txt" | parallel -j 4 gzip
 ```
 
-#### 实用 find 命令合集
+#### 实用 Find 命令合集
 
 ```bash
 # ===== 文件清理 =====

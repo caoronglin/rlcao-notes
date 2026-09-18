@@ -136,7 +136,7 @@
 
 ### 4.1 在 iTOL 中可视化
 
-1. 打开 https://itol.embl.de/
+1. 打开 <https://itol.embl.de/>
 2. 上传 `top800_tree_v2_superfamily.tree`
 3. 支持率自动显示在分支上
 4. 建议设置：
@@ -236,4 +236,3 @@ LTRRT 核苷酸序列 (bedtools getfasta)
 5. Katoh & Standley (2013). MAFFT v7. *MBE* 30(4):772-780.
 6. Guindon et al. (2010). SH-aLRT. *Systematic Biology* 59(3):307-321.
 ![image.png](https://img.cnortles.top/assets/2026-04-dd6051387b88436d8a1a0de45c0b2fb0.avif)
-

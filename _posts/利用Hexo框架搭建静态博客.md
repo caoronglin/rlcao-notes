@@ -1,4 +1,3 @@
-
 # 前言
 
 有很多开源的动态博客框架，我们为什么要用静态博客框架呢？让我们先看看什么是Hexo
@@ -11,10 +10,10 @@ Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 [Markdown](h
 
 ## 安装node.js
 
-### windows安装
+### Windows安装
 
 1. 前往node.js[官网](https://nodejs.org/zh-cn/)下载（推荐下载LTS版本）
-2. 按照安装提示进行安装（一定要选“添加到环境变量/ADD TO PATH”，这样会给后期减少很多麻烦）
+2. 按照安装提示进行安装（一定要选"添加到环境变量/ADD TO PATH"，这样会给后期减少很多麻烦）
 3. 安装Git
 
 ### Linux安装
@@ -30,7 +29,7 @@ apt-get install git-core
 npm config set registry http://registry.npm.taobao.org/（这一步将NPM源切换为国内淘宝源，可以不做）
 ```
 
-2. centos
+1. centos
 
 ```
 yum install nodejs
@@ -39,7 +38,7 @@ yum install git-core
 npm config set registry http://registry.npm.taobao.org/
 ```
 
-3. 利用[宝塔面板安装](https://www.bt.cn)
+1. 利用[宝塔面板安装](https://www.bt.cn)
 ![image.png](https://img.cnortles.top/assets/2026-04-082e95185cb84441a2a713b104d72a19.avif)
 安装node管理器
 ![image.png](https://img.cnortles.top/assets/2026-04-abaee286c5a346308d6f66ed0a1f97d3.avif)
@@ -51,7 +50,7 @@ npm config set registry http://registry.npm.taobao.org/
 echo 'PATH="$PATH:./node_modules/.bin"' >> ~/.profile
 ```
 
-### docker安装
+### Docker安装
 
 期待后续更新
 
@@ -73,7 +72,7 @@ npm install / cnpm install
 hexo s //（在线预览博客，需要放行4000端口）or hexo s -p+端口号
 ```
 
-好了，就这样一个静态博客就初始化好了（可以通过http://localhost:4000/127.0.0.1:4000访问）
+好了，就这样一个静态博客就初始化好了（可以通过<http://localhost:4000/127.0.0.1>:4000访问）
 
 ![](https://cdn.nlark.com/yuque/0/2022/png/25845402/1642940588547-ed6b7a77-7d6b-4c9c-a54a-e4c0adc8a46a.png)
 
@@ -168,7 +167,7 @@ hexo s //npx hexo s
 
 ![](https://cdn.nlark.com/yuque/0/2022/jpeg/25845402/1642941819956-c8926e7e-e7cd-4258-b8a0-eb373dd1fe25.jpeg)
 
-在hexo5.0以上，会自动合并两个配置，默认读取“_config.butterfly.yml”后续关于主题的魔改也会在这里修改
+在hexo5.0以上，会自动合并两个配置，默认读取"_config.butterfly.yml"后续关于主题的魔改也会在这里修改
 
 # 主题魔改
 

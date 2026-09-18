@@ -5,9 +5,11 @@ abbrlink: c9158f08
 date: 2026-02-01 13:00:55
 updated: 2026-02-01 13:00:55
 ---
+
 # 第8章 文件操作
 
 ⭐
+
 实用章节 重点掌握 文件操作实现数据的持久化存储
 
 ## 本章概述
@@ -48,7 +50,7 @@ FILE *fp;  // 文件指针
 
 ## 文件的打开与关闭
 
-### 打开文件 fopen
+### 打开文件 Fopen
 
 ```
 FILE *fopen(const char *filename, const char *mode);
@@ -66,7 +68,7 @@ FILE *fopen(const char *filename, const char *mode);
 | `"r+"` | 以读写方式打开文件 |
 | `"w+"` | 以读写方式打开文件（会覆盖） |
 
-### 关闭文件 fclose
+### 关闭文件 Fclose
 
 ```
 int fclose(FILE *stream);
@@ -252,7 +254,7 @@ int main() {
 }
 ```
 
-#### 💡 二进制文件 vs 文本文件
+#### 💡 二进制文件 Vs 文本文件
 
 * **二进制文件**：存储效率高，读写速度快，但不可读
 * **文本文件**：可读性好，便于调试，但效率较低
@@ -267,7 +269,7 @@ int main() {
 | `fseek(fp, offset, origin)` | 将文件位置指针移到指定位置 |
 | `ftell(fp)` | 获取当前文件位置 |
 
-### fseek的使用
+### Fseek的使用
 
 ```
 [[include]] 
@@ -545,7 +547,7 @@ int main() {
 * 计算机网络
 * 数据库系统
 
-#### 💡 持续学习建议
+### 💡 持续学习建议
 
 * 多编写实际项目巩固知识
 * 阅读优秀开源代码

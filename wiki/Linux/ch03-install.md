@@ -3,10 +3,7 @@ wiki: Linux
 title: 第三章、安装 CentOS 7.x
 date: 2024-01-01
 updated: 2024-01-01
-tags:
-  - Linux
-  - CentOS
-  - 安装
+tags: [Linux, CentOS, 安装]
 ---
 
 # 第三章、安装 CentOS 7.x
@@ -18,12 +15,14 @@ tags:
 在开始安装 CentOS 7 之前，需要规划好以下内容：
 
 **硬件要求检查：**
+
 - CPU：64位处理器
 - 内存：至少 1GB（推荐 2GB 以上）
 - 硬盘：至少 20GB 可用空间
 - 网络：以太网或无线网卡
 
 **下载 CentOS 7：**
+
 ```bash
 # 官方下载地址
 https://www.centos.org/download/
@@ -66,13 +65,15 @@ CentOS-7-x86_64-Minimal-2009.iso # 最小化安装（约 900MB）
 ### 制作启动介质
 
 **使用 Rufus（Windows）：**
-1. 下载 Rufus：https://rufus.ie/
+
+1. 下载 Rufus：<https://rufus.ie/>
 2. 插入 U 盘（至少 8GB）
 3. 选择 ISO 文件
 4. 分区类型：GPT 或 MBR（根据电脑支持）
 5. 点击开始
 
 **使用 dd（Linux/Mac）：**
+
 ```bash
 # 查看 U 盘设备名
 lsblk
@@ -90,12 +91,14 @@ sync
 ### 安装步骤
 
 **1. 启动安装程序**
+
 - 插入启动 U 盘
 - 开机按 F12/F2/Del 进入 BIOS/UEFI
 - 选择从 U 盘启动
 - 选择 "Install CentOS 7"
 
 **2. 选择语言**
+
 - 安装过程语言：中文 → 简体中文
 - 键盘布局：汉语
 
@@ -104,19 +107,24 @@ sync
 配置以下项目：
 
 **日期和时间**
+
 - 选择时区：亚洲/上海
 - 开启网络时间同步
 
 **键盘**
+
 - 添加布局：汉语
 
 **语言支持**
+
 - 添加中文支持
 
 **安装源**
+
 - 自动检测到的安装介质
 
 **软件选择**
+
 - 最小安装（服务器推荐）
 - 带 GUI 的服务器（需要图形界面）
 - GNOME 桌面（桌面使用）
@@ -125,9 +133,11 @@ sync
 **安装位置（关键）**
 
 **自动分区：**
+
 - 选择 "自动配置分区"
 
 **手动分区（推荐）：**
+
 1. 选择 "我要配置分区"
 2. 选择分区方案：标准分区
 3. 点击 "+" 添加分区：
@@ -139,29 +149,34 @@ sync
 | /home | 剩余 | ext4 |
 | swap | 4GB | swap |
 
-4. 接受更改
+1. 接受更改
 
 **网络和主机名**
+
 - 配置网络连接
 - 设置主机名（如：centos7-server）
 
 **4. 开始安装**
+
 - 点击 "开始安装"
 - 设置 ROOT 密码
 - 创建用户（可选但推荐）
 
 **5. 完成安装**
+
 - 安装完成后点击 "重启"
 - 移除安装介质
 
 ### 安装后的基本配置
 
 **1. 更新系统**
+
 ```bash
 sudo yum update -y
 ```
 
 **2. 配置网络**
+
 ```bash
 # 查看IP地址
 ip addr
@@ -184,6 +199,7 @@ sudo systemctl restart network
 ```
 
 **3. 配置防火墙**
+
 ```bash
 # 查看防火墙状态
 sudo systemctl status firewalld
@@ -199,6 +215,7 @@ sudo systemctl disable firewalld
 ```
 
 **4. 安装常用工具**
+
 ```bash
 # 安装基本工具
 sudo yum install -y vim wget curl net-tools telnet tree htop
@@ -215,11 +232,13 @@ sudo yum install -y epel-release
 ### Windows + Linux 双系统
 
 **安装顺序：**
+
 1. 先安装 Windows（如果还没有）
 2. 为 Linux 预留空间（压缩卷）
 3. 安装 Linux 到预留空间
 
 **注意事项：**
+
 - 关闭 Windows 的快速启动
 - 关闭 Secure Boot（或配置 Linux 支持）
 - 使用相同的启动模式（UEFI 或 Legacy）

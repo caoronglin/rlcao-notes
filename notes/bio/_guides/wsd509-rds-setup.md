@@ -1,6 +1,6 @@
 # WSD509 远程桌面服务器运维手册
 
-> Windows Server 2025 | 单机域 `wsad.local` | RDS 多用户办公环境 | Tesla P100 GPU
+>Windows Server 2025 | 单机域 `wsad.local` | RDS 多用户办公环境 | Tesla P100 GPU
 
 ---
 
@@ -166,7 +166,7 @@ S25zhining,S25zhining,Zhining,Song,
 S26luyu,S26luyu,Yu,Lu,Init#2026!Strong
 ```
 
-> `InitialPassword` 留空则自动生成密码。密码日志写入 `F:\Backup\NewUsers_*.csv`，自动锁 ACL。
+>`InitialPassword` 留空则自动生成密码。密码日志写入 `F:\Backup\NewUsers_*.csv`，自动锁 ACL。
 
 ### 创建用户自动完成
 
@@ -289,7 +289,7 @@ Set-GPRegistryValue -Name 'WSD509-RDS-GPU' `
 nvidia-smi --query-gpu=encoder.stats.sessionCount,encoder.stats.averageFps,utilization.gpu --format=csv -l 1
 ```
 
-> RDP 协议上限约 60 FPS。`DWMFRAMEINTERVAL=15` 即上限 60 FPS。
+>RDP 协议上限约 60 FPS。`DWMFRAMEINTERVAL=15` 即上限 60 FPS。
 
 ---
 
@@ -418,7 +418,7 @@ $utf8Bom = New-Object System.Text.UTF8Encoding($true)
 [System.IO.File]::WriteAllText($path, $text, $utf8Bom)
 ```
 
-> 不建议开启 Windows 全局 UTF-8 Beta，有兼容风险。
+>不建议开启 Windows 全局 UTF-8 Beta，有兼容风险。
 
 ---
 
@@ -513,7 +513,7 @@ Linux 上没有 mstsc.exe。Remmina 无 H.264 开关一般是 FreeRDP 版本旧�
 
 ## 11. FSLogix 架构参考
 
-### 当前 vs FSLogix
+### 当前 Vs FSLogix
 
 | 方面 | 当前方案 | FSLogix |
 |------|---------|---------|
@@ -578,7 +578,7 @@ Get-CimInstance -ClassName Win32_DeviceGuard -Namespace root\Microsoft\Windows\D
 
 **修复**：`powershell.exe -ExecutionPolicy Bypass -NoProfile -File "脚本路径"`
 
-### 13.3 中文乱码（涓汉...）
+### 13.3 中文乱码（涓汉…）
 
 **症状**：快捷方式名称乱码
 
@@ -679,6 +679,6 @@ gpresult /h F:\Backup\gpresult.html /f
 
 ---
 
-> **最后更新**：2026-06-14
+>**最后更新**：2026-06-14
 >
-> 本手册对应 WSD509 服务器配置，请保持更新。
+>本手册对应 WSD509 服务器配置，请保持更新。

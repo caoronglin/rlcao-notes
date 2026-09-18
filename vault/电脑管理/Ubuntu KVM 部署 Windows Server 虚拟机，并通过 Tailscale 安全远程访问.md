@@ -1,3 +1,4 @@
+# Ubuntu KVM 部署 Windows Server 虚拟机，并通过 Tailscale 安全远程访问
 
 ## 1. 方案概述
 
@@ -176,7 +177,7 @@ Cockpit 默认通过 9090 端口访问，并使用系统账号登录。([Cockpit
 
 ---
 
-## 6. 创建非 root 虚拟机管理用户
+## 6. 创建非 Root 虚拟机管理用户
 
 创建用户：
 
@@ -265,7 +266,7 @@ sudo setfacl -m u:libvirt-qemu:r <BASE_DIR>/iso/*.iso
 
 ---
 
-## 9. 创建 raw 磁盘
+## 9. 创建 Raw 磁盘
 
 ```bash
 qemu-img create -f raw <BASE_DIR>/images/winserver-system.raw 300G
@@ -399,7 +400,7 @@ Enter
 Windows Server 2025 Datacenter Evaluation（桌面体验）
 ```
 
-不建议选择不带“桌面体验”的 Server Core，因为后续配置驱动、Tailscale、RDP 会更麻烦。
+不建议选择不带"桌面体验"的 Server Core，因为后续配置驱动、Tailscale、RDP 会更麻烦。
 
 ---
 
@@ -835,7 +836,7 @@ virsh --connect qemu:///system dumpxml <VM_NAME> \
   > <BASE_DIR>/backup/<VM_NAME>.xml
 ```
 
-### 24.2 关机备份 raw 磁盘
+### 24.2 关机备份 Raw 磁盘
 
 ```bash
 virsh --connect qemu:///system shutdown <VM_NAME>
@@ -970,17 +971,16 @@ flowchart LR
 ## 28. 相关链接
 
 - Ubuntu Server libvirt/KVM 官方文档：安装 `qemu-kvm`、`libvirt-daemon-system`，并配置 libvirt 管理用户。([Ubuntu](https://ubuntu.com/server/docs/how-to/virtualisation/libvirt/?utm_source=chatgpt.com "Libvirt - Ubuntu Server documentation"))
-    
+	
 - Cockpit 官方文档：Cockpit 是 Linux 的 Web 管理界面，通常通过 9090 端口访问。([Cockpit Project](https://cockpit-project.org/guide/latest/?utm_source=chatgpt.com "Cockpit documentation - Cockpit Project"))
-    
+	
 - Tailscale 官方 RDP 文档：通过 Tailnet 安全访问 Windows RDP，无需暴露端口。([Tailscale](https://tailscale.com/docs/solutions/access-remote-desktops-using-windows-rdp?utm_source=chatgpt.com "Access remote desktops using Windows RDP · Tailscale Docs"))
-    
+	
 - VirtIO Windows 驱动安装文档：Windows 安装阶段可加载 VirtIO 存储驱动。([virtio-win](https://virtio-win.github.io/Knowledge-Base/Driver-installation.html?utm_source=chatgpt.com "Driver installation | virtio-win"))
-    
+	
 - Red Hat Windows VM 优化文档：Hyper-V enlightenments 与 `hypervclock` 可用于优化 Windows 虚拟机。([docs.redhat.com](https://docs.redhat.com/zh-cn/documentation/red_hat_enterprise_linux/10/html/configuring_and_managing_windows_virtual_machines/enabling-hyper-v-enlightenments?utm_source=chatgpt.com "4.2. Enabling Hyper-V enlightenments | Configuring and managing Windows ..."))
-    
+	
 - Microsoft RDS CAL 文档：多人长期远程桌面需要合法 RDS CAL。([Microsoft Learn](https://learn.microsoft.com/zh-cn/windows-server/remote/remote-desktop-services/rds-client-access-license?utm_source=chatgpt.com "使用客户端访问许可证（CAL）许可远程桌面服务 | Microsoft ..."))
-    
 
 ---
 

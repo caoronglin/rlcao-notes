@@ -1,10 +1,10 @@
-# LTR 表达矩阵 — CPM 方法学文档 (v2.0)
+# LTR 表达矩阵 — CPM 方法学文档 (V2.0)
 
-> **项目**: 玉米 (Zea mays) 转座子 LTR 单细胞表达谱分析  
-> **方法**: CPM (Counts Per Million) 归一化，从原始 UMI 计数直接计算  
-> **参考基因组**: Zm-B73-REFERENCE-NAM-5.0  
-> **生成时间**: 2026-04-30  
-> **旧版 (log1p)**: 已归档至 `log1p/` 目录
+>**项目**: 玉米 (Zea mays) 转座子 LTR 单细胞表达谱分析  
+>**方法**: CPM (Counts Per Million) 归一化，从原始 UMI 计数直接计算  
+>**参考基因组**: Zm-B73-REFERENCE-NAM-5.0  
+>**生成时间**: 2026-04-30  
+>**旧版 (log1p)**: 已归档至 `log1p/` 目录
 
 ---
 

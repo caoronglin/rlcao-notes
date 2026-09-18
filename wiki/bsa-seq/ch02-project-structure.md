@@ -14,16 +14,23 @@ tags: [PyBSASeq, 环境配置, conda, 依赖]
 ├── PyBSASeq.py              100,691 B   2,089 行   主程序（唯一脚本）
 ├── README.md                  8,487 B             使用说明 + 引用信息
 ├── LICENSE                   35,149 B             GNU GPL v3
-├── s12859-020-3435-8.pdf  2,005,575 B              BMC Bioinformatics 2020 论文原文
+├── docs/
+│   └── refernces/                                  参考文献 PDF（目录名拼写如此）
+│       ├── s12859-020-3435-8.pdf   2,005,575 B     BMC Bioinformatics 2020（PyBSASeq）
+│       └── jkae035.pdf               791,927 B     G3 2024（k-mer BSA，见第十一章）
 ├── .gitignore                                      忽略 Results/、FilteredSVs/、Data/
 └── Data/
-    ├── Rice/                                       水稻测试数据（Lahari/Yang 等）
+    ├── Rice/                                       水稻测试数据（Yang 等）
     │   ├── parents.csv    22,499,171 B   428,126 行
     │   └── bulks.csv      21,650,755 B   409,212 行
     └── Maize/                                      玉米测试数据（Zheng et al. 2020）
         ├── parents.csv    32,984,810 B   626,966 行
         └── bulks.csv      35,234,505 B   626,966 行
 ```
+
+> `docs/refernces/` 的目录名拼写是 `refernces`（缺一个 e），按原样记录。
+> 第三篇论文（G3 2021，无亲本基因组的 BSA-Seq）本仓库没有 PDF，
+> 需要通过 doi:10.1093/g3journal/jkab400 自行获取。
 
 要点：
 

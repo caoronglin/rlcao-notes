@@ -164,5 +164,14 @@ PyBSASeq 换了一个检测单元：不再看单个 SNP 有多显著，而是看
 3. Magwene PM, Willis JH, Kelly JK. The statistics of bulk segregant analysis using next generation sequencing. *PLoS Comput Biol* 2011;7:e1002255.（G 统计量法原始文献）
 4. Mansfeld BN, Grumet R. QTLseqr: an R package for bulk segregant analysis with next-generation sequencing. *Plant Genome* 2018;11.
 5. Yang Z, et al. Mapping of quantitative trait loci underlying cold tolerance in rice seedlings via high-throughput sequencing of pooled extremes. *PLoS One* 2013;8:e68433.（论文的测试数据来源）
+6. Zhang J, Panthee DR. PyBSASeq: a simple and effective algorithm for bulked segregant analysis with whole-genome sequencing data. *BMC Bioinformatics* 2020;21:99.
+7. Zhang J, Panthee DR. Next-generation sequencing-based bulked segregant analysis without sequencing the parental genomes. *G3* 2021;jkab400.
+8. Sonsungsan P, et al. A k-mer-based bulked segregant analysis approach to map seed traits in unphased heterozygous potato genomes. *G3* 2024;14(4):jkae035.（另一种技术路线，见[第十一章](ch11-related-methods-kmer.md)）
+
+> **一个重要的分支：不比对参考基因组的 BSA**
+> 本项目的所有方法都建立在"GATK 比对到参考基因组得到 AD"之上。
+> 若物种没有高质量参考基因组、基因组高度杂合或多倍体，可以改走 **k-mer 富集**路线
+> （直接比较混池间的 k-mer 计数，不需比对）。两种路线的对比见
+> [第十一章、相关方法](ch11-related-methods-kmer.md)。
 
 → 下一章：[第二章、项目结构与运行环境](ch02-project-structure.md)

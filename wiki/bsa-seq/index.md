@@ -11,9 +11,10 @@ tags: [BSA-Seq, QTL, 生信, Python, PyBSASeq]
 
 - 代码位置：`/mnt/smb/t25ronglin/code/bsa-seq/`
 - 核心脚本：`PyBSASeq.py`（2089 行，version 3.1415）
-- 参考论文：
+- 参考论文（本地 PDF 在 `docs/refernces/`）：
   1. Zhang J, Panthee DR. **PyBSASeq: a simple and effective algorithm for bulked segregant analysis with whole-genome sequencing data.** *BMC Bioinformatics* 21, 99 (2020). doi:10.1186/s12859-020-3435-8
   2. Zhang J, Panthee DR. **Next-generation sequencing-based bulked segregant analysis without sequencing the parental genomes.** *G3* (2021). doi:10.1093/g3journal/jkab400
+  3. Sonsungsan P, *et al.* **A k-mer-based bulked segregant analysis approach to map seed traits in unphased heterozygous potato genomes.** *G3* 14(4), jkae035 (2024). doi:10.1093/g3journal/jkae035（相关方法，见第十一章）
 
 ## 笔记目录
 
@@ -38,6 +39,7 @@ tags: [BSA-Seq, QTL, 生信, Python, PyBSASeq]
 
 - [第九章、函数速查表](ch09-api-reference.md)
 - [第十章、排错、性能与已知问题](ch10-troubleshooting.md)
+- [第十一章、相关方法：无参考基因组的 k-mer BSA](ch11-related-methods-kmer.md)
 
 ## 一句话总结
 

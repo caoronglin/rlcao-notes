@@ -308,7 +308,7 @@ int main() {
 
 ## 预处理命令
 
-### [[define]] 宏定义
+### `define` 宏定义
 
 ```
 [[define]] PI 3.14159           // 常量宏
@@ -322,7 +322,7 @@ int main() {
 }
 ```
 
-### [[include]] 文件包含
+### `include` 文件包含
 
 ```
 [[include]]        // 系统头文件

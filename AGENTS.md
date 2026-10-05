@@ -91,21 +91,50 @@ notes/class-notes/分子生物学/笔记和课后习题详解/第0N章 *.md  ←
 
 ### 3.3 改名前必须审计链接
 
+审计脚本必须同时处理**四种情况**，否则会大量误报（2026-10-05 实测：朴素写法误报率超过 60%）：
+
+1. 围栏代码块 —— 用逐行开关，不能用 `re.sub(r'```.*?```')`（围栏不配对时会整体错位）
+2. 行内代码 `` `...` `` —— Obsidian 不解析其中的链接
+3. `[[目标|别名]]` 的别名式写法 —— 只匹配裸形式会漏
+4. 路径后缀解析 —— `[[答题/01_宏观认知.html]]` 由 Obsidian 按路径尾部匹配到 `notes/考证/.../答题/01_宏观认知.html`
+
 ```bash
-# 排除围栏代码块（否则 [[include]] 之类的伪链接会刷屏）
-python3 - <<'EOF'
+python3 - <<'PY'
 import re,io,os
-files=[os.path.join(r,n) for r,d,f in os.walk('.')
-       if not any(x in r for x in ['.git','.obsidian','.trash'])
-       for n in f if n.endswith('.md')]
-names={os.path.basename(p)[:-3] for p in files}
-for p in files:
-    s=re.sub(r'```.*?```','',io.open(p,encoding='utf-8',errors='ignore').read(),flags=re.S)
-    for m in re.findall(r'\[\[([^\]\|]+)(?:\|[^\]]*)?\]\]',s):
-        b=m.strip()
-        if b.startswith('<%') or b.startswith('http') or '/' in b: continue
-        if b not in names: print('❌ %s -> [[%s]]'%(p,b))
-EOF
+from collections import Counter
+mds=[];allp=[]
+for r,d,f in os.walk('.'):
+    if any(x in r for x in ['.git','.obsidian','.trash']): continue
+    for n in f:
+        p=os.path.normpath(os.path.join(r,n)); allp.append(p)
+        if n.endswith('.md'): mds.append(p)
+STEM={os.path.basename(p)[:-3] for p in allp if p.endswith('.md')}
+PATH=set(allp); PATH_NOMD={p[:-3] for p in allp if p.endswith('.md')}
+DIRS={os.path.normpath(os.path.join(r,n)) for r,d,f in os.walk('.')
+      if not any(x in r for x in ['.git','.obsidian','.trash']) for n in d}
+def strip_code(s):
+    out=[];inf=False
+    for ln in s.split('\n'):
+        if ln.lstrip().startswith('```'): inf=not inf; out.append(''); continue
+        out.append('' if inf else ln)
+    return re.sub(r'`[^`\n]*`','','\n'.join(out))
+def ok(b,d):
+    b=b.strip(); nb=os.path.normpath(os.path.join(d,b)) if b else b
+    if b.endswith('/'):
+        t=b.strip('/'); return any(x==t or x.endswith('/'+t) for x in DIRS)
+    if b in STEM or b in PATH or b in PATH_NOMD: return True
+    if nb in PATH or nb in PATH_NOMD: return True
+    return any(p==b or p.endswith('/'+b) for p in PATH)
+bad=[]
+for p in mds:
+    s=strip_code(io.open(p,encoding='utf-8',errors='ignore').read()); d=os.path.dirname(p)
+    for raw in re.findall(r'\[\[([^\]]+)\]\]',s):
+        b=raw.split('|')[0].strip()
+        if b.startswith('<%') or b.startswith('#') or b.startswith('http'): continue
+        if not ok(b,d): bad.append((p,b))
+print('md %d ｜ 悬空 %d'%(len(mds),len(bad)))
+for (p,b),n in Counter(bad).items(): print('  [[%s]] ×%d  <- %s'%(b,n,p))
+PY
 ```
 
 ### 3.4 移动文件一律用 `git mv`
@@ -196,11 +225,27 @@ find . -type f -not -path './.git/*' > /tmp/files-before.txt
 
 | # | 事项 | 说明 |
 |---|---|---|
-| 1 | 约 48 条悬空短链接 | 主要是 `[[白银御行]]` `[[酶工程课程大纲]]` `[[课堂笔记]]` 等未落地的占位链接，以及 `[[难点图解.html]]` ×4。`notes/class-notes/遗传学/` 530 个文件中 526 个是 jpg、仅 2 个 md，实为扫描档案 |
+| 1 | `muban/` 内 4 条模板占位链接**故意保留** | `[[status/to_read]]` ×3、`[[paper]]` ×1。链接语法本身是模板的目的，不是缺陷。除这 4 条外，全库悬空链接为 0（2026-10-05 清理后） |
 | 2 | lamindb 实例已失效 | `notes/bio/生信学习/单细胞/笔记/my_data/.lamindb/` 记录的是 **Windows 路径** `D:/data/rlcao/...`，当前平台为 Linux |
-| 3 | Zotero 工作流未接通 | `muban/zotero-annotation-template.md` 存在，但 `assets/zotero-annotations/` 为空（已归档），`assets/zotlit-img/` 同 |
-| 4 | `notes/class-notes/遗传学/` 命名不当 | 526 张 jpg 的扫描档案放在「课堂笔记」下 |
-| 5 | `_posts/高中常见激素.md` 等 4 篇的 date 取自 git 首次提交日 | 未经作者确认真实发表日期，核实后可改 |
+| 3 | Zotero 工作流未接通 | `muban/zotero-annotation-template.md` 存在，但 `assets/zotero-annotations/` 与 `assets/zotlit-img/` 已归档为空 |
+| 4 | `notes/class-notes/遗传学/` 命名不当 | 530 个文件中 526 个是 jpg、仅 2 个 md，实为扫描档案；第 2、4 章尚未转录 |
+| 5 | `wiki/c/chapter6.md` 有 20 处 C 宏被误转成 wikilink | 均在代码块内，Obsidian 渲染无害，保留原样；标题行 2 处已修为行内代码 |
+| 6 | `_posts` 4 篇的 date 取自 git 首次提交日 | 未经作者确认真实发表日期，核实后可改 |
+
+### 8.1 2026-10-05 链接清理记录
+
+初判 48 条悬空链接，复核后**真实悬空仅 32 条**，其余为误报。处置如下：
+
+| 类别 | 条数 | 处置 |
+|---|---|---|
+| 指向已改名文件 | 4 | 重定向到现名；同步去掉已失效的「（待创建）」标注 |
+| 标签被误写成 wikilink | 1 行 | 还原为真正的 Obsidian 标签 `#课堂笔记` 等 |
+| C 宏误转（标题行） | 2 | 改为行内代码 `` `define` `` |
+| 概念前瞻链接（笔记未写就绪） | 15 | 转为纯文本，**不伪造目标文件** |
+| 目录从未创建 | 1 | 删除 `notes/bio/_index.md` 的导航行，而非预建空目录（PARA §3.3） |
+| 模板占位符 | 4 | **保留** |
+
+⚠️ 概念前瞻链接转为纯文本后，「想写但还没写」的信号随之消失。如需保留该信号，改用 `TODO` 前缀或 `[^1]` 脚注，不要用空悬空链接。
 
 ---
 

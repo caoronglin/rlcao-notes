@@ -1,5 +1,7 @@
 ---
-wiki: Linux
+collection:
+  profile: wiki
+  id: Linux
 title: 第三章、安装 CentOS 7.x
 date: 2024-01-01
 updated: 2024-01-01

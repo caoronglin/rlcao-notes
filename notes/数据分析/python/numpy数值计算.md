@@ -1,3 +1,10 @@
+---
+collection:
+  profile: notebook
+  id: 数据分析
+title: numpy数值计算
+date: '2026-05-29 20:38:56'
+---
 # 数组对象
 Numpy提供了高性能数组与矩阵运算处理能力
 - 快速高效的多维数组对象$ndarray$

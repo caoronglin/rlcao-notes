@@ -1,5 +1,7 @@
 ---
-wiki: Linux
+collection:
+  profile: wiki
+  id: Linux
 title: 第二章、主机规划与磁盘分区
 date: 2024-01-01
 updated: 2024-01-01

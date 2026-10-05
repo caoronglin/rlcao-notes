@@ -1,5 +1,7 @@
 ---
-wiki: Linux
+collection:
+  profile: wiki
+  id: Linux
 title: 第一章、Linux是什么与如何学习
 date: 2024-01-01
 updated: 2024-01-01

@@ -1,5 +1,7 @@
 ---
-wiki: Linux
+collection:
+  profile: wiki
+  id: Linux
 title: 第五章、Linux 的文件权限与目录配置
 date: 2024-01-01
 updated: 2024-01-01

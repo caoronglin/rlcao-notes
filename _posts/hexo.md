@@ -1,19 +1,14 @@
 ---
 abbrlink: 697f76e7
-banner: https://s2.loli.net/2022/07/21/yvOSZWJj5LzheT4.png
+cover: https://s2.loli.net/2022/07/21/yvOSZWJj5LzheT4.png
 categories:
 - - 建站
 date: '2024-07-22T23:25:49.343254+08:00'
 excerpt: 前言 有很多开源的动态博客框架，我们为什么要用静态博客框架呢？让我们先看看什么是Hexo Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 Markdown（或其他渲染引擎）解析文章，在几秒内，即可利用靓丽的主题生成静态网页。 众所周知，白嫖让我们快乐，利用Hexo搭建的博客可以解锁更多的白嫖技巧（后续文章更新） 初始化博客 安装node.js windows安装  前往node.js官...
-menu_id: ''
-notebook: ''
-sticky: ''
 tags:
 - hexo
 title: 利用Hexo框架搭建静态博客
-topic: ''
 updated: '2024-08-02T20:55:48.984+08:00'
-wiki: ''
 ---
 # 前言
 

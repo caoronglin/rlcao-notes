@@ -1,6 +1,8 @@
 ---
-wiki: Linux
-menu_id: Linux
+collection:
+  profile: wiki
+  id: Linux
+active_menu: Linux
 title: Linux 学习笔记目录
 tags:
   - Linux

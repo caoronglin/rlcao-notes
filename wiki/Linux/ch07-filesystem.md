@@ -1,5 +1,7 @@
 ---
-wiki: Linux
+collection:
+  profile: wiki
+  id: Linux
 title: 第七章、Linux 磁盘与文件系统管理
 date: 2024-01-01
 updated: 2024-01-01

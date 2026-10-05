@@ -1,6 +1,8 @@
 ---
+collection:
+  profile: wiki
+  id: c
 title: 常见排序算法详解
-wiki: c
 abbrlink: 129b5d6f
 date: 2026-02-01 13:00:55
 updated: 2026-02-01 13:00:55

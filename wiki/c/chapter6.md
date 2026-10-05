@@ -1,6 +1,8 @@
 ---
+collection:
+  profile: wiki
+  id: c
 title: 第6章 函数
-wiki: c
 abbrlink: 9905d90f
 date: 2026-02-01 13:00:55
 updated: 2026-02-01 13:00:55

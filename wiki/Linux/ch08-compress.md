@@ -1,5 +1,7 @@
 ---
-wiki: Linux
+collection:
+  profile: wiki
+  id: Linux
 title: 第八章、文件与文件系统的压缩、打包与备份
 date: 2024-01-01
 updated: 2024-01-01

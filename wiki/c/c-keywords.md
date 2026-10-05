@@ -1,6 +1,8 @@
 ---
+collection:
+  profile: wiki
+  id: c
 title: C语言32个关键字
-wiki: c
 abbrlink: 930820e
 date: 2026-02-01 13:00:55
 updated: 2026-02-01 13:00:55

@@ -1,6 +1,8 @@
 ---
+collection:
+  profile: wiki
+  id: c
 title: 第7章 结构体与共用体
-wiki: c
 abbrlink: 576f8ca7
 date: 2026-02-01 13:00:55
 updated: 2026-02-01 13:00:55

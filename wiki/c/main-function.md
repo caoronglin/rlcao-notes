@@ -1,6 +1,8 @@
 ---
+collection:
+  profile: wiki
+  id: c
 title: main函数详解
-wiki: c
 abbrlink: 633e6b2b
 date: 2026-02-01 13:00:55
 updated: 2026-02-01 13:00:55

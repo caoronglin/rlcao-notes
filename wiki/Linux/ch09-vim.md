@@ -1,5 +1,7 @@
 ---
-wiki: Linux
+collection:
+  profile: wiki
+  id: Linux
 title: 第九章、vim 程序编辑器
 date: 2024-01-01
 updated: 2024-01-01

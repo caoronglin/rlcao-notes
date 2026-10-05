@@ -1,19 +1,17 @@
 ---
+collection:
+  profile: notebook
+  id: bio
 abbrlink: ''
-banner: ''
 categories:
 - - 启航计划
 date: '2025-08-01T17:49:24.513485+08:00'
 excerpt: 任务1:从Ensembl数据库下载最新的人类参考基因组序列（fasta格式）以及对应的注释文件（GFF格式） 任务2:下载人类GM2878的转录组测序数据（GEO:GSE88583） https://www.encodeproject.org/experiments/ENCSR843RJV/ 并进行质量检测（FastQC）和过滤（TrimGalore） 一、准备 （1） 所需软件  📎MobaX...
-menu_id: notes
-notebook: bio
-sticky: ''
+active_menu: notes
 tags:
 - 生信
 title: 任务一
-topic: ''
 updated: '2025-08-02T10:21:23.162+08:00'
-wiki: ''
 ---
 **任务1:从Ensembl数据库下载最新的人类参考基因组序列（fasta格式）以及对应的注释文件（GFF格式）**
 

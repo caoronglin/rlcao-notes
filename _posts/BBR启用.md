@@ -1,3 +1,11 @@
+---
+title: BBR启用
+date: '2026-04-25T00:00:00+08:00'
+categories:
+- - Linux
+tags: [linux, 网络优化]
+---
+
 # BBR启用
 
 BBR（Bottleneck Bandwidth and Round-trip propagation time）是 Google 开发的 TCP 拥塞控制算法，能显著提升高延迟、高丢包场景下的网络吞吐量和稳定性（特别适合 VPS/服务器回国线路、科学上网节点、文件传输等）。

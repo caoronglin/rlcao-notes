@@ -1,4 +1,8 @@
-
+---
+title: 标签速查字典
+date: 2026-05-29 20:38:56
+disableNunjucks: true
+---
 %% various complements dictionary %%
 emoji>>>{% emoji blobcat <CARET>ablobcatattentionreverse %},插入表情标签,,emoj,表情
 mark>>>{% mark <CARET> color: %},插入标记标签,,mark,标记

@@ -1,44 +1,86 @@
 ---
-# Hexo 内置核心字段
-title: "<% tp.file.title %>" # 标题，自动使用文件名
-date: <% tp.date.now("YYYY-MM-DD HH:mm:ss") %> # 自动填入当前时间
-updated: <% tp.file.last_modified_date("YYYY-MM-DD HH:mm:ss") %> # 最后更新时间
-layout: post # 布局，通常为 post
-tags: [""]
-categories: [""]
-sticky: # 文章置顶，数字越大越靠前
-comments: true # 是否开启评论，默认 true
-permalink: # 自定义文章永久链接
-excerpt: # 纯文本摘要，若不填默认截取文章前部分
-published: true # 是否发布到线上
-description: # SEO 描述，通常会自动生成
-cover: # 文章封面图
+title: "<% tp.file.title %>"
+date: <% tp.date.now("YYYY-MM-DD HH:mm:ss") %>
+updated: <% tp.file.last_modified_date("YYYY-MM-DD HH:mm:ss") %>
+layout: post
+tags: []
+categories: []
+published: true
+description: ''
+excerpt: ''
+cover: ''
+permalink: ''
 
-# Stellar 主题特有字段
-author: # 文章作者，1.23.0+ 可用
-banner: # 页面顶部横幅背景图（可填链接或本地路径）
-banner_info: # 横幅信息配置
-poster: # 文章封面，支持更复杂配置
-  topic: # 封面主题
-  headline: # 封面标题
-  caption: # 封面字幕
-  color: # 封面颜色
-topic: # 所属话题/专栏，1.25.0+ 可用
-sidebar: # 侧边栏配置，1.0.0~1.26.8
-leftbar: # 左侧边栏配置，1.27.0+ 可用
-rightbar: # 右侧边栏配置，1.27.0+ 可用
-wiki: # 所属 wiki，填写项目 ID
-menu_id: # 高亮菜单项的 id
-comment_title: # 评论区自定义标题
-indent: false # 段落是否首行缩进
-h1: # 页内一级标题，若不填则使用 title
-type: # 页面类型，1.26.0+ 可用
-references: # 参考资料
-breadcrumb: true # 是否显示面包屑导航
-indexing: true # 是否允许搜索引擎收录
+# Stellar v2 主题特有字段
+# v1 的 menu_id 已改为 active_menu，值须与 _config.stellar.yml 的 leftbar.menu 中某个 id 对应
+active_menu: post
 
-# 第三方插件支持（按需开启）
-mathjax: false # 启用 MathJax 渲染数学公式
-katex: false # 启用 KaTeX 渲染数学公式（一般二选一）
-mermaid: false # 启用 Mermaid 图表
+# 卡片封面 / 内容横幅：根级 cover 同时用于两者
+# banner 控制横幅上的文字与开关
+banner:
+  enabled: true
+  headline: ''
+  tagline: ''
+
+# 排版与作者
+#   article.style: tech | story
+#   article.paragraph_indent: auto | always | never（v1 的 indent: true/false）
+#   article.author 指向 source/_data/authors.yml 中的作者 id
+article:
+  style: tech
+  paragraph_indent: auto
+  author: null
+  ai_label: manual
+
+# 列表与置顶（仅 Post / Topic / Notebook 支持）
+listing:
+  priority: 0
+
+# 内容页脚（v1 的 license / references / share 已并入 footer）
+footer:
+  references: []
+  license: true
+  share: true
+
+# 可见性：控制是否进入列表与站内搜索
+visibility:
+  listed: true
+  searchable: true
+
+# 评论（页面级覆盖全站 comments 配置）
+comments:
+  enabled: true
+  provider: null
+  title: null
+  id: null
+
+# 区域覆盖：leftbar / rightbar 为 Region 对象，widgets 数组整体替换，[] 表示清空
+#   topbar / leftbar / rightbar 都支持 enabled 与 widgets
+leftbar:
+  enabled: true
+  widgets: []
+rightbar:
+  enabled: true
+  widgets: []
+
+# 公式与图表（v1 的 katex / mathjax / mermaid 已并入 render）
+render:
+  math: false
+  diagrams: false
+
+# 归属 Wiki / Topic / Notebook（三选一）
+#   笔记本成员的源文件必须放在 notes/<notebook>/ 下（rlcao-notes 仓库）
+#   Topic 成员属于 posts，Wiki 与 Notebook 属于 pages
+collection:
+  profile: notebook
+  id: bio
+
+# 原样注入本页面的可信 HTML（字符串，不做转义）
+#   head_begin / head_end / body_begin / body_end
+#   站点级配置写 _config.stellar.yml，本页配置会追加在其后
+inject:
+  head_begin: ''
+  head_end: ''
+  body_begin: ''
+  body_end: ''
 ---

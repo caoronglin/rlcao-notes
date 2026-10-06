@@ -5,10 +5,11 @@ collection:
 title: 参看文档
 date: '2026-10-05'
 updated: '2026-10-05T22:26:27.000000+08:00'
-active_menu: notes
+active_menu: explore
 tags:
-- 生信
-- 教材
+  - 生信
+  - 教材
+banner:
   tagline: 多源融合教材 · 供查证与回溯
 ---
 

@@ -3,11 +3,12 @@ title: 参看文档
 collection:
   profile: wiki
   id: 生信学笔记
-active_menu: 生信学笔记
+active_menu: wiki
 date: '2026-10-05'
 tags:
-- 生信
-- 教材
+  - 生信
+  - 教材
+banner:
   tagline: 多源融合教材 · 供查证与回溯
 ---
 

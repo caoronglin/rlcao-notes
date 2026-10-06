@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>难点图解 · 信息系统管理工程师</title>
+<!--
+  ============================================================
+  难点图解 · 纯 CSS 流程可视化（单文件 / 零依赖 / 离线可用）
+  · 内容均取自《信息系统管理工程师教程（第2版）》原文
+  · 嵌入：![[难点图解.html]]  或  ![[难点图解.html|820x900]]
+  ============================================================
+-->
+<style>
+:root{
+  --bg:#f5f6f8; --card:#fff; --text:rgba(0,0,0,.88); --text2:rgba(0,0,0,.6); --text3:rgba(0,0,0,.42);
+  --border:#e8e8e8; --accent:#2b8a3e; --accent-bg:rgba(43,138,62,.08); --accent-bd:rgba(43,138,62,.3);
+  --warn:#d46b08; --warn-bg:rgba(212,107,8,.08); --warn-bd:rgba(212,107,8,.3);
+  --blue:#1677ff; --blue-bg:rgba(22,119,255,.08); --blue-bd:rgba(22,119,255,.3);
+  --purple:#722ed1; --purple-bg:rgba(114,46,209,.08); --purple-bd:rgba(114,46,209,.3);
+  --r:10px;
+}
+@media (prefers-color-scheme:dark){
+  :root{ --bg:#16181c; --card:#1e2126; --text:rgba(255,255,255,.85); --text2:rgba(255,255,255,.6); --text3:rgba(255,255,255,.4);
+         --border:#2e3238; --accent:#4caf6d; --accent-bg:rgba(76,175,109,.12); --accent-bd:rgba(76,175,109,.35);
+         --warn:#e8a33d; --warn-bg:rgba(232,163,61,.12); --warn-bd:rgba(232,163,61,.35);
+         --blue:#4c9aff; --blue-bg:rgba(76,154,255,.12); --blue-bd:rgba(76,154,255,.35);
+         --purple:#a97bf0; --purple-bg:rgba(169,123,240,.12); --purple-bd:rgba(169,123,240,.35); }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-size:14px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:860px;margin:0 auto;padding:22px 22px 56px}
+h1{font-size:19px;margin:0 0 4px;letter-spacing:-.01em}
+.sub{color:var(--text3);font-size:12.5px;margin:0 0 20px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;margin-bottom:16px}
+.card h2{font-size:15px;margin:0 0 3px;display:flex;align-items:center;gap:8px}
+.chap{font-size:11px;font-weight:500;color:var(--text3);border:1px solid var(--border);border-radius:20px;padding:1px 8px}
+.hint{color:var(--text3);font-size:12.5px;margin:0 0 14px}
+/* 流程条 */
+.flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:0}
+.step{position:relative;flex:1 1 0;min-width:96px;background:var(--accent-bg);border:1px solid var(--accent-bd);
+  border-radius:8px;padding:9px 8px;text-align:center;font-size:12.5px;color:var(--text);margin-right:16px;margin-bottom:8px}
+.step:last-child{margin-right:0}
+.step::after{content:"";position:absolute;right:-12px;top:50%;transform:translateY(-50%);
+  width:0;height:0;border-left:7px solid var(--accent-bd);border-top:6px solid transparent;border-bottom:6px solid transparent}
+.step:last-child::after{display:none}
+.step .n{display:block;font-size:10.5px;color:var(--text3);margin-bottom:3px}
+.step.blue{background:var(--blue-bg);border-color:var(--blue-bd)} .step.blue::after{border-left-color:var(--blue-bd)}
+.step.warn{background:var(--warn-bg);border-color:var(--warn-bd)} .step.warn::after{border-left-color:var(--warn-bd)}
+.step.purple{background:var(--purple-bg);border-color:var(--purple-bd)} .step.purple::after{border-left-color:var(--purple-bd)}
+/* 等级条 */
+.levels{display:grid;gap:8px}
+.lv{display:flex;align-items:center;gap:12px;background:var(--accent-bg);border:1px solid var(--accent-bd);
+  border-left-width:4px;border-radius:7px;padding:8px 12px}
+.lv b{font-size:13px;flex:none;min-width:78px}
+.lv span{font-size:12.5px;color:var(--text2)}
+.lv:nth-child(4),.lv:nth-child(5){background:var(--warn-bg);border-color:var(--warn-bd)}
+/* 网格 */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.gi{background:var(--blue-bg);border:1px solid var(--blue-bd);border-radius:7px;padding:8px 10px;font-size:12.5px}
+.gi b{display:block;font-size:11px;color:var(--text3);font-weight:500;margin-bottom:2px}
+/* 分层 */
+.tier{display:grid;gap:6px}
+.t{background:var(--purple-bg);border:1px solid var(--purple-bd);border-radius:7px;padding:9px 12px;font-size:12.5px}
+.t b{font-size:13px} .t i{font-style:normal;color:var(--text2);font-size:12px}
+/* 对照 */
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cmp>div{background:var(--card);border:1px dashed var(--border);border-radius:7px;padding:9px 11px;font-size:12.5px}
+.cmp .k{font-size:12.5px;font-weight:600;display:block;margin-bottom:4px}
+.cmp .v{color:var(--text2)}
+.foot{color:var(--text3);font-size:12px;text-align:center;margin-top:22px}
+@media(max-width:600px){ .cmp{grid-template-columns:1fr} .step{min-width:120px} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>难点图解</h1>
+  <p class="sub">内容全部取自《信息系统管理工程师教程（第2版）》原文 · 供理解流程用，作答仍以教材表述为准</p>
+
+  <div class="card">
+    <h2>事件管理过程 <span class="chap">教材 8.4.3</span></h2>
+    <p class="hint">案例题高频：给运维场景要求补流程。原文顺序如下——</p>
+    <div class="flow">
+      <div class="step"><span class="n">1</span>事件接收和记录</div>
+      <div class="step"><span class="n">2</span>分类和初步支持</div>
+      <div class="step"><span class="n">3</span>调查和诊断</div>
+      <div class="step"><span class="n">4</span>解决与恢复</div>
+      <div class="step"><span class="n">5</span>事件关闭</div>
+    </div>
+    <p class="hint" style="margin:12px 0 0">目标是「在成本允许的范围内尽快恢复正常服务」——答题时先写目标，再写步骤。</p>
+  </div>
+
+  <div class="card">
+    <h2>信息安全等级保护 · 实施方法 <span class="chap">教材 16.5.4</span></h2>
+    <div class="flow">
+      <div class="step blue"><span class="n">1</span>安全定级</div>
+      <div class="step blue"><span class="n">2</span>基本安全要求分析</div>
+      <div class="step blue"><span class="n">3</span>系统特定安全要求分析</div>
+      <div class="step blue"><span class="n">4</span>风险评估</div>
+      <div class="step blue"><span class="n">5</span>改进和选择安全措施</div>
+      <div class="step blue"><span class="n">6</span>实施</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>等保五级 <span class="chap">教材 16.5.2</span></h2>
+    <p class="hint">按「受损害客体」与「损害程度」定级，<b>级别是系统的客观属性</b>，不取决于已采取的措施。</p>
+    <div class="levels">
+      <div class="lv"><b>第一级</b><span>自主保护级</span></div>
+      <div class="lv"><b>第二级</b><span>指导保护级</span></div>
+      <div class="lv"><b>第三级</b><span>监督保护级</span></div>
+      <div class="lv"><b>第四级</b><span>强制保护级</span></div>
+      <div class="lv"><b>第五级</b><span>专控保护级</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>运维过程全图 <span class="chap">教材 8.4</span></h2>
+    <p class="hint">第 8 章运维过程共 10 项，案例题常见问法是"指出缺失的过程"——记住全部 10 项。</p>
+    <div class="grid">
+      <div class="gi"><b>8.4.1</b>服务级别管理</div>
+      <div class="gi"><b>8.4.2</b>服务报告管理</div>
+      <div class="gi"><b>8.4.3</b>事件管理</div>
+      <div class="gi"><b>8.4.4</b>问题管理</div>
+      <div class="gi"><b>8.4.5</b>配置管理</div>
+      <div class="gi"><b>8.4.6</b>变更管理</div>
+      <div class="gi"><b>8.4.7</b>发布管理</div>
+      <div class="gi"><b>8.4.8</b>可用性和连续性管理</div>
+      <div class="gi"><b>8.4.9</b>系统容量管理</div>
+      <div class="gi"><b>8.4.10</b>运维安全管理</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>项目管理五大过程组 <span class="chap">教材 10.1–10.5</span></h2>
+    <div class="flow">
+      <div class="step purple"><span class="n">10.1</span>启动</div>
+      <div class="step purple"><span class="n">10.2</span>规划</div>
+      <div class="step purple"><span class="n">10.3</span>执行</div>
+      <div class="step purple"><span class="n">10.4</span>监控</div>
+      <div class="step purple"><span class="n">10.5</span>收尾</div>
+    </div>
+    <p class="hint" style="margin:12px 0 0">教材按过程组编排（非十大知识领域）。监控与执行并行持续，不是串行末端。</p>
+  </div>
+
+  <div class="card">
+    <h2>易混对照：三个"生命周期" <span class="chap">跨章节</span></h2>
+    <div class="cmp">
+      <div><span class="k">信息系统生命周期</span><span class="v">规划（立项）→ 开发 → 运维 → 消亡</span></div>
+      <div><span class="k">IT 服务生命周期</span><span class="v">战略规划 → 设计实现 → 运营提升 → 退役终止</span></div>
+      <div><span class="k">项目生命周期</span><span class="v">启动 → 计划 → 执行 → 收尾</span></div>
+      <div><span class="k">开发阶段细分</span><span class="v">总体规划 → 系统分析 → 系统设计 → 系统实施 → 系统验收</span></div>
+    </div>
+    <p class="hint" style="margin:12px 0 0">三个都叫"生命周期"但阶段不同，是选择题的经典干扰点。</p>
+  </div>
+
+  <div class="card">
+    <h2>资源类运维通用四段式 <span class="chap">教材 11 / 13 / 14 章</span></h2>
+    <p class="hint">应用系统、机房、物理/虚拟/平台资源、桌面终端、外设——<b>全部按同一四段展开</b>，是最好用的记忆模板与答题骨架。</p>
+    <div class="flow">
+      <div class="step warn"><span class="n">1</span>例行操作</div>
+      <div class="step warn"><span class="n">2</span>响应支持</div>
+      <div class="step warn"><span class="n">3</span>优化改善</div>
+      <div class="step warn"><span class="n">4</span>调研评估</div>
+    </div>
+  </div>
+
+  <p class="foot">来源：《信息系统管理工程师教程（第2版）》| 对应考纲见「知识体系」 | 练习见「答题/」目录</p>
+</div>
+</body>
+</html>

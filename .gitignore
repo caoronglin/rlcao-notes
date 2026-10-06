@@ -16,3 +16,13 @@ assets/
 .DS_Store
 *.tmp
 *.bak
+
+# 大体积资料文件：仅本地保留，不进版本控制
+*.h5ad
+*.zip
+*.pdf
+*.docx
+*.db
+*.ipynb
+*.loom
+*.mtx

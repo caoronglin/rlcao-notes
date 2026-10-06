@@ -1,16 +1,15 @@
 ---
+title: "利用Hexo框架搭建静态博客"
+date: '2024-07-22T23:25:49+08:00'
+updated: '2024-08-02T20:55:48+08:00'
 abbrlink: 697f76e7
-cover: https://s2.loli.net/2022/07/21/yvOSZWJj5LzheT4.png
-categories:
-- - 建站
-date: '2024-07-22T23:25:49.343254+08:00'
-excerpt: 前言 有很多开源的动态博客框架，我们为什么要用静态博客框架呢？让我们先看看什么是Hexo Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 Markdown（或其他渲染引擎）解析文章，在几秒内，即可利用靓丽的主题生成静态网页。 众所周知，白嫖让我们快乐，利用Hexo搭建的博客可以解锁更多的白嫖技巧（后续文章更新） 初始化博客 安装node.js windows安装  前往node.js官...
-tags:
-- hexo
-title: 利用Hexo框架搭建静态博客
-updated: '2024-08-02T20:55:48.984+08:00'
+categories: []
+tags: [hexo]
+active_menu: post
+description: "有很多开源的动态博客框架，我们为什么要用静态博客框架呢？让我们先看看什么是Hexo Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 Markdown（或其他渲染引擎）解析文章，在几秒内，即可利用靓丽的主题生成…"
+article:
+  style: tech
 ---
-# 前言
 
 **有很多开源的动态博客框架，我们为什么要用静态博客框架呢？让我们先看看什么是Hexo**
 
@@ -22,10 +21,10 @@ Hexo 是一个快速、简洁且高效的博客框架。Hexo 使用 [Markdown](h
 
 ## 安装node.js
 
-### windows安装
+### Windows安装
 
 1. **前往node.js**[官网](https://nodejs.org/zh-cn/)下载（推荐下载LTS版本）
-2. **按照安装提示进行安装（一定要选“添加到环境变量/ADD TO PATH”，这样会给后期减少很多麻烦）**
+2. **按照安装提示进行安装（一定要选"添加到环境变量/ADD TO PATH"，这样会给后期减少很多麻烦）**
 3. **安装Git**
 
 ### Linux安装
@@ -41,7 +40,7 @@ apt-get install git-core
 npm config set registry http://registry.npm.taobao.org/（这一步将NPM源切换为国内淘宝源，可以不做）
 ```
 
-2. **centos**
+1. **centos**
 
 ```bash
 yum install nodejs
@@ -50,7 +49,7 @@ yum install git-core
 npm config set registry http://registry.npm.taobao.org/
 ```
 
-3. **利用**[宝塔面板安装](https://www.bt.cn)
+1. **利用**[宝塔面板安装](https://www.bt.cn)
 
 **安装node管理器**
 
@@ -64,7 +63,7 @@ npm config set registry http://registry.npm.taobao.org/
 echo 'PATH="$PATH:./node_modules/.bin"' >> ~/.profile
 ```
 
-### docker安装
+### Docker安装
 
 **期待后续更新**
 
@@ -86,7 +85,7 @@ npm install / cnpm install
 hexo s //（在线预览博客，需要放行4000端口）or hexo s -p+端口号
 ```
 
-**好了，就这样一个静态博客就初始化好了（可以通过http://localhost:4000/127.0.0.1:4000访问）**
+**好了，就这样一个静态博客就初始化好了（可以通过<http://localhost:4000/127.0.0.1>:4000访问）**
 
 ![](https://img.cnortles.top/blog/25/8/c175f68ec3ad6f1e0ee00d9b9d5251ec.png)
 
@@ -177,8 +176,7 @@ hexo s //npx hexo s
 
 **为了方便主题更新，请将主题目录下的\_config.yml（原文件不要删除！！！）复制到博客根目录下并改为\_config.butterfly.yml**
 
-**在hexo5.0以上，会自动合并两个配置，默认读取“\_config.butterfly.yml”后续关于主题的魔改也会在这里修改**
-
+**在hexo5.0以上，会自动合并两个配置，默认读取"\_config.butterfly.yml"后续关于主题的魔改也会在这里修改**
 
 # 番外
 

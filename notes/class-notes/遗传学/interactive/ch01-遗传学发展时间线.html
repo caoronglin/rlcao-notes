@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>遗传学发展时间线 · 第一章 绪论</title>
+<style>
+  :root{
+    --primary:#1677ff; --primary-1:#e6f4ff; --primary-6:#1677ff; --primary-7:#0958d9;
+    --bg:#f5f7fa; --card:#ffffff; --border:#e8ecf2; --text:#1f2329; --text-2:#5c6470; --text-3:#8a929e;
+    --s1:#8c9aab; --s2:#4c6ef5; --s3:#12b886; --s4:#f59f00;
+    --ok:#52c41a; --err:#ff4d4f; --radius:8px; --shadow:0 1px 2px rgba(0,0,0,.03),0 2px 8px rgba(0,0,0,.04);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#16181d; --card:#1f2329; --border:#2c3138; --text:#e8eaed; --text-2:#a9b0ba; --text-3:#7b838e;
+           --primary-1:#111d33; --shadow:0 1px 2px rgba(0,0,0,.3); }
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    background:var(--bg); color:var(--text); line-height:1.65; font-size:14px;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:20px 16px 40px}
+  /* ---------- header ---------- */
+  .hero{
+    background:linear-gradient(135deg,#1677ff 0%,#40a9ff 55%,#69c0ff 100%);
+    border-radius:12px;padding:22px 24px;color:#fff;margin-bottom:18px;
+    box-shadow:0 4px 16px rgba(22,119,255,.18);
+  }
+  .hero h1{margin:0 0 6px;font-size:21px;font-weight:600;letter-spacing:.3px}
+  .hero p{margin:0;font-size:13px;opacity:.92}
+  .stats{display:flex;gap:22px;margin-top:16px;flex-wrap:wrap}
+  .stat b{display:block;font-size:22px;font-weight:600;line-height:1.2}
+  .stat span{font-size:12px;opacity:.88}
+  /* ---------- section ---------- */
+  .sec{margin-bottom:22px}
+  .sec-title{font-size:15px;font-weight:600;margin:0 0 12px;display:flex;align-items:center;gap:8px}
+  .sec-title::before{content:"";width:3px;height:15px;border-radius:2px;background:var(--primary)}
+  .sec-hint{font-size:12px;color:var(--text-3);font-weight:400;margin-left:auto}
+  /* ---------- stage cards ---------- */
+  .stages{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  @media(max-width:640px){.stages{grid-template-columns:repeat(2,1fr)}}
+  .stage{
+    background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);
+    padding:12px 12px 11px;cursor:pointer;transition:.18s;position:relative;overflow:hidden;
+  }
+  .stage:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+  .stage .bar{position:absolute;left:0;top:0;bottom:0;width:3px}
+  .stage .nm{font-size:13.5px;font-weight:600;margin-bottom:3px;padding-left:8px}
+  .stage .yr{font-size:11.5px;color:var(--text-3);padding-left:8px;font-variant-numeric:tabular-nums}
+  .stage.on{border-color:var(--primary);background:var(--primary-1)}
+  .stage .ct{position:absolute;right:10px;top:11px;font-size:11px;color:var(--text-3);
+    background:var(--bg);border-radius:10px;padding:1px 7px;font-variant-numeric:tabular-nums}
+  /* ---------- timeline ---------- */
+  .tl{position:relative;padding-left:26px;margin-top:4px}
+  .tl::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;
+    background:linear-gradient(180deg,var(--s1),var(--s2),var(--s3),var(--s4));opacity:.35;border-radius:1px}
+  .ev{position:relative;margin-bottom:8px}
+  .ev .dot{position:absolute;left:-26px;top:12px;width:11px;height:11px;border-radius:50%;
+    border:2.5px solid var(--card);box-shadow:0 0 0 1.5px currentColor;background:currentColor}
+  .ev-card{
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+    padding:9px 13px;cursor:pointer;transition:.15s;
+  }
+  .ev-card:hover{border-color:var(--primary);box-shadow:var(--shadow)}
+  .ev-row{display:flex;align-items:baseline;gap:10px}
+  .ev-yr{font-weight:600;font-size:13px;font-variant-numeric:tabular-nums;min-width:42px;color:var(--primary-6)}
+  .ev-ti{font-size:13.5px;font-weight:500;flex:1}
+  .ev-tag{font-size:10.5px;padding:1px 7px;border-radius:9px;background:var(--bg);color:var(--text-3);white-space:nowrap}
+  .ev-more{max-height:0;overflow:hidden;transition:max-height .25s ease;font-size:12.5px;color:var(--text-2)}
+  .ev.open .ev-more{max-height:220px;margin-top:7px;padding-top:7px;border-top:1px dashed var(--border)}
+  .hidden{display:none!important}
+  /* ---------- quiz ---------- */
+  .quiz{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px}
+  .q-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:12.5px;color:var(--text-3)}
+  .q-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:14px}
+  .q-bar i{display:block;height:100%;background:var(--primary);width:0;transition:width .3s}
+  .q-stem{font-size:14.5px;font-weight:500;margin-bottom:12px;line-height:1.6}
+  .opt{
+    border:1.5px solid var(--border);border-radius:var(--radius);padding:9px 13px;margin-bottom:8px;
+    cursor:pointer;transition:.15s;display:flex;gap:10px;align-items:flex-start;font-size:13.5px;
+  }
+  .opt:hover{border-color:var(--primary);background:var(--primary-1)}
+  .opt .k{font-weight:600;color:var(--text-3);min-width:16px}
+  .opt.sel{border-color:var(--primary);background:var(--primary-1)}
+  .opt.right{border-color:var(--ok);background:rgba(82,196,26,.09)}
+  .opt.wrong{border-color:var(--err);background:rgba(255,77,79,.09)}
+  .opt.right .k{color:var(--ok)} .opt.wrong .k{color:var(--err)}
+  .fb{margin-top:11px;padding:10px 13px;border-radius:var(--radius);font-size:13px;line-height:1.7;display:none}
+  .fb.show{display:block}
+  .fb.y{background:rgba(82,196,26,.09);border-left:3px solid var(--ok)}
+  .fb.n{background:rgba(255,77,79,.09);border-left:3px solid var(--err)}
+  .fb b{font-weight:600}
+  .btns{display:flex;gap:9px;margin-top:14px;flex-wrap:wrap}
+  button{
+    font-family:inherit;font-size:13.5px;border-radius:var(--radius);border:1px solid var(--border);
+    background:var(--card);color:var(--text);padding:7px 17px;cursor:pointer;transition:.15s;
+  }
+  button:hover{border-color:var(--primary);color:var(--primary)}
+  button.pri{background:var(--primary);border-color:var(--primary);color:#fff}
+  button.pri:hover{background:var(--primary-7);color:#fff}
+  button:disabled{opacity:.45;cursor:not-allowed}
+  .done{text-align:center;padding:18px 8px}
+  .done .big{font-size:38px;font-weight:600;color:var(--primary)}
+  .done .sub{color:var(--text-2);font-size:13.5px;margin-top:2px}
+  .history{margin-top:12px;font-size:12px;color:var(--text-3);border-top:1px dashed var(--border);padding-top:10px}
+  .history table{width:100%;border-collapse:collapse;font-size:12px}
+  .history td{padding:3px 4px;border-bottom:1px solid var(--border);color:var(--text-2)}
+  .history td:last-child{text-align:right;font-variant-numeric:tabular-nums}
+  .foot{text-align:center;font-size:11.5px;color:var(--text-3);margin-top:22px;line-height:1.8}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="hero">
+    <h1>遗传学发展时间线</h1>
+    <p>刘祖洞《遗传学》（第4版）· 第一章 绪论 &nbsp;|&nbsp; 点击阶段筛选 · 点击事件查看详情</p>
+    <div class="stats">
+      <div class="stat"><b>4</b><span>发展阶段</span></div>
+      <div class="stat"><b id="nEv">36</b><span>里程碑事件</span></div>
+      <div class="stat"><b>1809</b><span>起点（拉马克）</span></div>
+      <div class="stat"><b id="nQ">6</b><span>自测题</span></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h2 class="sec-title">四个发展阶段<span class="sec-hint">再点一次取消筛选</span></h2>
+    <div class="stages" id="stages"></div>
+  </div>
+
+  <div class="sec">
+    <h2 class="sec-title">里程碑事件<span class="sec-hint" id="filterHint"></span></h2>
+    <div class="tl" id="tl"></div>
+  </div>
+
+  <div class="sec">
+    <h2 class="sec-title">自测 · 第一章</h2>
+    <div class="quiz" id="quiz"></div>
+  </div>
+
+  <div class="foot">
+    零依赖单文件 · 数据仅存于本机浏览器 localStorage<br>
+    内容依据教材第一章整理
+  </div>
+</div>
+
+<script>
+/* ============ 数据 ============ */
+const STAGES = [
+  {id:0, nm:"达尔文时期", yr:"19世纪初 — 1900", color:"var(--s1)", key:"#8c9aab"},
+  {id:1, nm:"孟德尔时期", yr:"1900 — 1950",    color:"var(--s2)", key:"#4c6ef5"},
+  {id:2, nm:"分子遗传时期", yr:"1950 — 2000",  color:"var(--s3)", key:"#12b886"},
+  {id:3, nm:"基因组时期", yr:"2000 — 至今",    color:"var(--s4)", key:"#f59f00"}
+];
+
+const EVENTS = [
+  {y:1809, s:0, t:"拉马克提出获得性状遗传学说", tag:"进化", d:"法国学者拉马克提出「用进废退」的获得性状遗传学说，认为生物性状会主动适应环境并按适应方向进化。分子遗传学发展后该学说逐渐被抛弃，但表观遗传学兴起后其思想被重新审视。"},
+  {y:1822, s:0, t:"奈特开展豌豆杂交试验", tag:"杂交", d:"英国植物学家奈特对豌豆红花/白花性状进行杂交试验，首先得到近似 3:1 的分离比结果。但受时代局限，未能突破当时的科学局限。"},
+  {y:1859, s:0, t:"达尔文《物种起源》", tag:"进化", d:"提出自然选择、生存斗争的进化学说。虽然能解释生物进化现象，但达尔文未能说明发生生物变异的根本原因和生物生存的基本机制。"},
+  {y:1866, s:0, t:"孟德尔发表《植物杂交试验》", tag:"★奠基", d:"孟德尔以豌豆为主要材料，历时 8 年（1858—1865）试验，应用统计方法分析数据，提出遗传因子分离和重组假设。论文发表后未受重视，沉睡 34 年。"},
+  {y:1869, s:0, t:"米歇尔分离出核酸", tag:"分子", d:"瑞士生物学家米歇尔从白细胞的细胞核中分离出核酸，是核酸化学研究的起点。"},
+  {y:1882, s:0, t:"弗莱明记录染色体行为", tag:"细胞", d:"德国胚胎学家弗莱明记录了染色体在有丝分裂中的行为，奠定了细胞遗传学的研究基础。"},
+  {y:1900, s:1, t:"孟德尔定律再发现", tag:"★学科诞生", d:"德弗里斯（月见草等）、科伦斯（玉米和豌豆）、切尔马克（豌豆）三位植物学家在不同地点、不同材料上得出与孟德尔相同的规律并引用其工作。遗传学与这个「再发现」一起诞生。"},
+  {y:1903, s:1, t:"Boveri–Sutton 染色体理论", tag:"细胞", d:"美国生物学家萨顿和德国生物学家博韦里发现孟德尔关于遗传因子的描述与减数分裂中染色体行为相符，提出染色体是遗传物质载体的假设。"},
+  {y:1905, s:1, t:"加洛德发现尿黑酸症", tag:"医学", d:"英国医生加洛德发现尿黑酸症，开创了人类医学遗传研究。"},
+  {y:1906, s:1, t:"贝特森定名 genetics", tag:"术语", d:"英国遗传学家贝特森积极推广孟德尔理论，并首次将研究生物性状遗传和变异的新学科定名为遗传学（genetics）。"},
+  {y:1908, s:1, t:"哈代–温伯格定律", tag:"群体", d:"德国物理学家温伯格和英国数学家哈代分别发现遗传平衡定律，奠定了群体遗传学研究的重要基础。"},
+  {y:1909, s:1, t:"约翰森提出「gene」", tag:"术语", d:"丹麦植物学家约翰森提出 gene 一词，用于描述孟德尔所说的遗传因子。"},
+  {y:1910, s:1, t:"摩尔根揭示基因直线排列", tag:"★经典", d:"美国遗传学家摩尔根利用果蝇为材料，与斯特蒂文特、布里奇斯、马勒等研究性状遗传方式，得出连锁交换定律，确定基因直线排列在染色体上。同时期埃默森等在玉米工作中得到同样结论，形成以染色体学说为核心的基因论。"},
+  {y:1928, s:1, t:"格里菲斯肺炎双球菌实验", tag:"分子", d:"英国生物学家格里菲斯通过肺炎双球菌实验发现了在细菌之间转移的遗传物质（转化现象）。"},
+  {y:1941, s:1, t:"「一个基因一个酶」学说", tag:"★功能", d:"美国遗传学家比德尔和塔特姆利用粗糙链孢霉的生化突变型提出「一个基因一个酶」假说，把基因与蛋白质的功能结合起来。"},
+  {y:1944, s:1, t:"艾弗里证明遗传物质是 DNA", tag:"★本质", d:"美国细菌学家艾弗里与麦克劳德、麦卡蒂等从肺炎链球菌转化实验中发现转化因子是 DNA 而不是蛋白质。1952 年赫尔希和蔡斯用噬菌体感染实验进一步证实。"},
+  {y:1950, s:2, t:"查加夫法则", tag:"分子", d:"奥地利生物化学家查加夫发现不同物种 DNA 碱基组成不同，但每种 DNA 中 A=T、G=C，为双螺旋结构提供化学依据。"},
+  {y:1950, s:2, t:"麦克林托克发现转座子", tag:"★跳跃基因", d:"美国细胞遗传学家麦克林托克首次报道玉米籽粒色斑不稳定遗传，发现基因在染色体上可移动的性质。"},
+  {y:1953, s:2, t:"Watson–Crick DNA 双螺旋", tag:"★分子遗传学开端", d:"美国分子生物学家沃森和英国分子生物学家克里克发现 DNA 双螺旋结构，阐明遗传物质的自体复制，开创了分子遗传学这一新领域。"},
+  {y:1956, s:2, t:"人类 23 对染色体", tag:"细胞", d:"美籍华裔科学家蒋有兴和瑞典细胞学家莱万发现人类共有 23 对染色体。"},
+  {y:1961, s:2, t:"操纵子模型", tag:"调控", d:"法国生物学家雅各布和莫诺利用大肠杆菌提出操纵子模型，揭示了基因表达受到环境因素的调控。"},
+  {y:1966, s:2, t:"遗传密码破译", tag:"★中心法则", d:"美国生物化学家尼伦伯格等揭示了遗传密码，确立遗传信息传递规则。"},
+  {y:1974, s:2, t:"简悦威：DNA 分析用于遗传测试", tag:"医学", d:"美籍华裔医学家简悦威成功将 DNA 分析技术应用于 α-地中海贫血患者的遗传测试，并进一步应用于多种孟德尔疾病的产前诊断。"},
+  {y:1976, s:2, t:"利根川进：基因重排", tag:"调控", d:"日本生物学家利根川进揭示在 B 细胞成熟过程中免疫球蛋白基因通过基因重排实现基因表达调控。"},
+  {y:1977, s:2, t:"DNA 测序技术建立", tag:"技术", d:"英国生物化学家桑格和美国生物学家吉尔伯特等建立 DNA 测序技术。"},
+  {y:1977, s:2, t:"断裂基因（内含子）", tag:"★基因结构", d:"美国遗传学家夏普和英国分子生物学家罗伯茨观察到腺病毒基因的断裂现象，揭示真核基因的编码序列被内含子间隔开的重要特点。"},
+  {y:1985, s:2, t:"PCR 技术", tag:"技术", d:"美国生物化学家穆里斯等创建 PCR 技术，成功实现体外 DNA 的快速扩增。"},
+  {y:1990, s:2, t:"人类基因组计划启动", tag:"★基因组", d:"HGP 正式启动，来自美国、英国、法国、德国、日本和中国的六国科学家参与其中。"},
+  {y:1997, s:2, t:"克隆羊「多莉」", tag:"克隆", d:"英国罗斯林研究所培育出转基因克隆羊「多莉」。"},
+  {y:1998, s:2, t:"RNA 干扰现象", tag:"调控", d:"美国生物学家法尔和梅洛等揭示了 RNA 干扰（RNAi）现象。"},
+  {y:2001, s:3, t:"人类基因组草图公布", tag:"★基因组学时代", d:"国际人类基因组计划合作组织（HUGO）和美国塞莱拉公司分别在《自然》和《科学》上同时公布人类基因组草图图谱及初步分析结果。"},
+  {y:2003, s:3, t:"ENCODE 与表观基因组计划", tag:"基因组注释", d:"NHGRI 启动「DNA 元件的百科全书」（ENCODE）计划，旨在编写人类基因组「元件目录」；同年人类表观基因组计划实施，目标是绘制 DNA 甲基化可变位点图谱。"},
+  {y:2005, s:3, t:"二代测序商业化 / 首个 GWAS", tag:"技术·统计", d:"罗氏 454 测序系统开始商业化运行，代表第二代测序技术的普及；同年爱德华兹团队利用全基因组关联分析（GWAS）完成年龄相关性黄斑变性易感因素筛选，是关联分析方法的首项标志性成果。"},
+  {y:2006, s:3, t:"iPS 诱导多能干细胞", tag:"细胞重编程", d:"日本学者山中伸弥将 4 种转录因子编码基因导入小鼠成纤维细胞，首次成功将已分化体细胞重编程为诱导多能干细胞（iPS cells）。同年 TCGA 癌症基因组图谱计划启动。"},
+  {y:2007, s:3, t:"NIPT 无创产前筛查", tag:"医学", d:"中国香港中文大学病理学家卢煜明利用孕妇外周血成功进行 21 三体的无创产前筛查。同年中国完成首个汉族男性全基因组测序。"},
+  {y:2008, s:3, t:"千人基因组计划", tag:"基因组", d:"由英国 Sanger 研究所、中国深圳华大基因研究院、美国 NHGRI 发起，测定全球 27 个族群 2500 人基因组，目标建成开放公共的人类基因组参照数据库。"},
+  {y:2010, s:3, t:"首例人造生命 Synthia", tag:"合成生物学", d:"美国克雷格文特尔研究所宣布世界首例人造生命 Synthia 诞生——只含人工合成基因组序列、能够自我复制的人造生物体。"},
+  {y:2012, s:3, t:"CRISPR/Cas9 基因编辑", tag:"★基因编辑", d:"卡彭蒂耶和杜德娜成功开发 CRISPR/Cas9 系统并应用于真核细胞基因编辑；2013 年张锋首次将其应用于哺乳动物和人类细胞，迅速带动全球多物种基因编辑。"},
+  {y:2016, s:3, t:"TWAS 全转录组关联分析", tag:"统计", d:"美国加州大学洛杉矶分校波格丹等建立与 GWAS 相似的全转录组关联分析方法，利用转录组范围关联研究确定基因表达与性状的关联关系。"},
+  {y:2017, s:3, t:"免疫治疗走向临床", tag:"医学", d:"FDA 先后通过抗 PD-1 抗体 Keytruda 用于 MSI-H/dMMR 肿瘤，以及 CAR-T 疗法 Kymriah 用于儿童和年轻成人 B 细胞急性淋巴细胞白血病。"},
+  {y:2018, s:3, t:"克隆猕猴", tag:"克隆", d:"中国科学院神经科学研究所孙强团队利用体细胞核移植技术克隆出两只猕猴，首次实现非人灵长类动物的体细胞克隆。"}
+];
+
+const QUIZ = [
+  {q:"遗传学作为独立学科诞生的标志是？", o:["孟德尔 1866 年发表《植物杂交试验》","1900 年孟德尔定律的再发现","1903 年 Boveri–Sutton 提出染色体理论","1906 年贝特森定名 genetics"], a:1,
+   e:"孟德尔论文发表后沉睡 34 年；1900 年德弗里斯、科伦斯、切尔马克分别在不同地点、不同材料上得出相同结论并引用孟德尔工作，遗传学与这个「再发现」一起诞生。"},
+  {q:"下列哪项**不属于**教材划分的遗传学发展阶段？", o:["达尔文时期","孟德尔时期","分子遗传时期","表观遗传时期"], a:3,
+   e:"教材划分为四阶段：达尔文时期、孟德尔时期、分子遗传时期、基因组时期。表观遗传学是当今研究热点，但不是教材划分的发展阶段名称。"},
+  {q:"达尔文进化论的主要局限是什么？", o:["否认生物会发生变异","未说明发生生物变异的根本原因和生存机制","未提出自然选择概念","主张获得性状遗传"], a:1,
+   e:"教材明确指出：达尔文学说虽能解释生物进化现象，但受学科发展局限，没有能够解释发生生物变异的根本原因和生物生存的基本机制。"},
+  {q:"「一基因一酶」学说与「DNA 是遗传物质」的证明，哪个在先？", o:["一基因一酶在先（1941）","DNA 是遗传物质在先（1944）","两者同年","都不对"], a:0,
+   e:"比德尔和塔特姆 1941 年用粗糙链孢霉生化突变型提出「一个基因一个酶」；艾弗里等 1944 年才通过肺炎链球菌转化实验证明遗传物质是 DNA。先建立基因—蛋白质功能联系，再确证化学本质。"},
+  {q:"镰状细胞贫血的研究思路属于？", o:["正向遗传学","反向遗传学","都不是","两者结合"], a:0,
+   e:"正向遗传学是「从表型变异到基因型变异」：先分离病变蛋白 → 据肽链氨基酸序列推测 DNA 序列 → cDNA 文库筛选编码基因 → 染色体定位。反向遗传学的例子是亨廷顿舞蹈症。"},
+  {q:"下列关于表观遗传的说法，正确的是？", o:["伴随 DNA 序列的改变","发生在 DNA 序列不变时的可遗传基因功能改变","只存在于植物中","属于经典遗传学范畴"], a:1,
+   e:"表观遗传指在未发生基因组 DNA 序列改变的情况下，基因功能发生的可遗传改变，包括 DNA 甲基化、RNA 干扰、组蛋白修饰等。它正因「序列不变也可遗传」而对传统基因学说构成挑战。"}
+];
+
+/* ============ localStorage ============ */
+const LSK = "genetics_ch01_v1";
+function load(){ try{ return JSON.parse(localStorage.getItem(LSK)) || {records:[],best:0,total:0}; }catch(e){ return {records:[],best:0,total:0}; } }
+function save(s){ try{ localStorage.setItem(LSK, JSON.stringify(s)); }catch(e){} }
+let store = load();
+
+/* ============ 渲染阶段卡片 ============ */
+let filter = null;
+const elStages = document.getElementById('stages');
+STAGES.forEach(s=>{
+  const n = EVENTS.filter(e=>e.s===s.id).length;
+  const d = document.createElement('div');
+  d.className='stage'; d.style.color=s.key;
+  d.innerHTML = `<div class="bar" style="background:${s.key}"></div>
+    <div class="ct">${n}</div>
+    <div class="nm" style="color:var(--text)">${s.nm}</div>
+    <div class="yr">${s.yr}</div>`;
+  d.onclick = ()=>{ filter = (filter===s.id)?null:s.id; renderStages(); renderTL(); };
+  elStages.appendChild(d);
+});
+function renderStages(){
+  [...elStages.children].forEach((c,i)=> c.classList.toggle('on', filter===i));
+}
+
+/* ============ 渲染时间线 ============ */
+const elTL = document.getElementById('tl');
+function renderTL(){
+  elTL.innerHTML='';
+  const list = EVENTS.filter(e=> filter===null || e.s===filter).sort((a,b)=>a.y-b.y);
+  document.getElementById('filterHint').textContent =
+    filter===null ? `共 ${list.length} 条 · 全时段` : `${STAGES[filter].nm} · ${list.length} 条`;
+  list.forEach(e=>{
+    const st = STAGES[e.s];
+    const d = document.createElement('div');
+    d.className='ev'; d.style.color = st.key;
+    d.innerHTML = `<div class="dot"></div>
+      <div class="ev-card">
+        <div class="ev-row">
+          <span class="ev-yr">${e.y}</span>
+          <span class="ev-ti">${e.t}</span>
+          <span class="ev-tag">${e.tag}</span>
+        </div>
+        <div class="ev-more">${e.d}</div>
+      </div>`;
+    d.querySelector('.ev-card').onclick = ()=> d.classList.toggle('open');
+    elTL.appendChild(d);
+  });
+}
+
+/* ============ 自测 ============ */
+let qi=0, sel=null, answered=false, score=0, log=[];
+const elQ = document.getElementById('quiz');
+function renderQuiz(){
+  if(qi >= QUIZ.length){ return renderDone(); }
+  const q = QUIZ[qi];
+  elQ.innerHTML = `
+    <div class="q-top"><span>第 ${qi+1} / ${QUIZ.length} 题</span><span>本轮得分 ${score}</span></div>
+    <div class="q-bar"><i style="width:${qi/QUIZ.length*100}%"></i></div>
+    <div class="q-stem">${q.q}</div>
+    <div id="opts">${q.o.map((o,i)=>
+      `<div class="opt" data-i="${i}"><span class="k">${"ABCD"[i]}</span><span>${o}</span></div>`).join('')}</div>
+    <div class="fb" id="fb"></div>
+    <div class="btns" id="btns"></div>`;
+  elQ.querySelectorAll('.opt').forEach(el=>{
+    el.onclick = ()=>{
+      if(answered) return;
+      sel = +el.dataset.i;
+      elQ.querySelectorAll('.opt').forEach(x=>x.classList.remove('sel'));
+      el.classList.add('sel');
+      elQ.querySelector('#btns').innerHTML = '<button class="pri" id="sub">提交答案</button>';
+      elQ.querySelector('#sub').onclick = submit;
+    };
+  });
+}
+function submit(){
+  if(answered || sel===null) return;
+  answered = true;
+  const q = QUIZ[qi], ok = sel===q.a;
+  if(ok) score++;
+  log.push({q:qi, sel:sel, ok:ok});
+  elQ.querySelectorAll('.opt').forEach(el=>{
+    const i=+el.dataset.i;
+    el.classList.remove('sel');
+    if(i===q.a) el.classList.add('right');
+    else if(i===sel) el.classList.add('wrong');
+  });
+  const fb = elQ.querySelector('#fb');
+  fb.className = 'fb show ' + (ok?'y':'n');
+  fb.innerHTML = `<b>${ok?'✓ 正确':'✗ 再想想'}</b>　正确答案：${"ABCD"[q.a]}<br>${q.e}`;
+  elQ.querySelector('#btns').innerHTML =
+    `<button class="pri" id="nx">${qi===QUIZ.length-1?'查看结果':'下一题'}</button>`;
+  elQ.querySelector('#nx').onclick = ()=>{ qi++; sel=null; answered=false; renderQuiz(); };
+}
+function renderDone(){
+  const pct = Math.round(score/QUIZ.length*100);
+  store.total++; store.best = Math.max(store.best, score);
+  store.records.unshift({d:new Date().toLocaleString('zh-CN',{hour12:false}).slice(0,16), s:score, n:QUIZ.length});
+  store.records = store.records.slice(0,20);
+  save(store);
+  elQ.innerHTML = `
+    <div class="done">
+      <div class="big">${score} / ${QUIZ.length}</div>
+      <div class="sub">正确率 ${pct}%　·　历史最高 ${store.best} / ${QUIZ.length}　·　累计练习 ${store.total} 次</div>
+      <div class="btns" style="justify-content:center;margin-top:16px">
+        <button class="pri" id="again">再练一次</button>
+        <button id="clr">清空记录</button>
+      </div>
+      ${store.records.length>1 ? `<div class="history">
+        <div style="margin-bottom:6px">练习历史（最近 ${Math.min(store.records.length,20)} 次）</div>
+        <table>${store.records.map(r=>`<tr><td>${r.d}</td><td>${r.s} / ${r.n}</td></tr>`).join('')}</table>
+      </div>` : ''}
+    </div>`;
+  elQ.querySelector('#again').onclick = ()=>{ qi=0;sel=null;answered=false;score=0;log=[];renderQuiz(); };
+  elQ.querySelector('#clr').onclick = ()=>{
+    if(confirm('确定清空本机保存的练习记录？')){
+      store={records:[],best:0,total:0}; save(store); renderDone();
+    }
+  };
+}
+
+/* ============ init ============ */
+document.getElementById('nEv').textContent = EVENTS.length;
+document.getElementById('nQ').textContent = QUIZ.length;
+renderStages(); renderTL(); renderQuiz();
+</script>
+</body>
+</html>

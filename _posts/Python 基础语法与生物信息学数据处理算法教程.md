@@ -1,3 +1,14 @@
+---
+title: Python 基础语法与生物信息学数据处理算法教程
+date: '2026-04-25T00:00:00+08:00'
+categories: []
+tags:
+  - python
+  - 生信
+abbrlink: c607963
+---
+
+# Python 基础语法与生物信息学数据处理算法教程
 
 ---
 
@@ -896,6 +907,7 @@ print()
 ![动态规划矩阵](dp_matrix.png)
 
 上图展示了Needleman-Wunsch算法的动态规划矩阵：
+
 - **颜色深浅**表示得分高低（深色=高分）
 - **蓝色箭头**表示回溯路径，从右下角到左上角
 - 对角线移动表示匹配/不匹配
@@ -973,6 +985,7 @@ print(f"序列2: {align2}")
 ![序列比对](sequence_alignment.png)
 
 上图展示了序列比对的可视化结果：
+
 - **绿色块**：匹配的碱基
 - **红色块**：不匹配的碱基
 - **实线**：匹配连接
@@ -980,7 +993,7 @@ print(f"序列2: {align2}")
 
 ---
 
-### 3.2 k-mer分析
+### 3.2 K-mer分析
 
 k-mer是指序列中长度为k的所有子串，广泛用于序列组装、比对和分类。
 
@@ -1053,6 +1066,7 @@ print(f"\n序列相似度 (k=2): {similarity:.2f}")
 ![k-mer频率](kmer_frequency.png)
 
 上图展示了2-mer和3-mer的频率分布：
+
 - 左图：所有16种2-mer的频率
 - 右图：最常见的8种3-mer
 - 可用于识别序列特征和模式
@@ -1172,6 +1186,7 @@ print(f"GC含量范围: {min(gc_values):.1f}% - {max(gc_values):.1f}%")
 ![GC含量分析](gc_content.png)
 
 上图展示了基因组GC含量的滑动窗口分析：
+
 - **青色区域**：GC含量曲线
 - **红色虚线**：平均GC含量
 - **橙色区域**：基因区域（通常GC含量较高）
@@ -1275,6 +1290,7 @@ for label, cluster in zip(sample_labels, cluster_labels):
 ![聚类树状图](dendrogram.png)
 
 上图展示了层次聚类的结果：
+
 - **Y轴**：距离（不相似度）
 - **X轴**：样本
 - **树状结构**：显示样本间的层次关系
@@ -1367,6 +1383,7 @@ print(f"对PC1贡献最大的5个基因索引: {top_genes_pc1}")
 ![PCA分析](pca_analysis.png)
 
 上图展示了PCA分析结果：
+
 - **左图**：PCA散点图，不同颜色代表不同组别
 - **右图**：各主成分解释的方差比例
 - PC1和PC2通常能解释大部分变异
@@ -1491,6 +1508,7 @@ for pos, score, match in matches:
 ![序列Motif](sequence_motif.png)
 
 上图展示了序列Motif的位置权重矩阵（PWM）：
+
 - **堆叠高度**：该位置的信息含量
 - **字母大小**：该碱基在该位置的出现频率
 - **颜色**：A=红, C=蓝, G=橙, T=绿
@@ -1719,15 +1737,18 @@ analysis.volcano_plot()
 ### 推荐资源
 
 **在线教程**：
+
 - [Biopython官方教程](https://biopython.org/wiki/Documentation)
 - [Rosalind](http://rosalind.info/) - 生信编程练习平台
 - [Python for Biologists](https://pythonforbiologists.com/)
 
 **书籍**：
+
 - 《Python生物信息学数据管理》
 - 《Bioinformatics with Python Cookbook》
 
 **实践项目**：
+
 - 编写FASTA/FASTQ解析器
 - 实现简单的序列比对工具
 - 分析真实的RNA-seq数据
@@ -1767,7 +1788,6 @@ def find_motif(sequences, motif):
 
 ---
 
-> **结语**：Python是生物信息学领域最重要的编程语言之一。掌握Python基础语法和常用库后，你可以处理从序列分析到高通量测序数据的各种任务。建议多动手实践，通过实际项目加深理解。
+>**结语**：Python是生物信息学领域最重要的编程语言之一。掌握Python基础语法和常用库后，你可以处理从序列分析到高通量测序数据的各种任务。建议多动手实践，通过实际项目加深理解。
 
 ---
-

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>互动答题 · 环境测试</title>
+<style>
+  :root { --bg:#1e2329; --card:#283038; --fg:#e8e6e3; --muted:#8b949e;
+          --accent:#51cf66; --danger:#ff6b6b; --border:#3a444d; }
+  * { box-sizing: border-box; }
+  body { margin:0; padding:32px; color:var(--fg); background:var(--bg);
+         font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; line-height:1.6; }
+  .wrap { max-width:640px; margin:0 auto; }
+  h1 { font-size:20px; margin:0 0 6px; letter-spacing:-.02em; }
+  .sub { color:var(--muted); font-size:13px; margin-bottom:22px; }
+  #score { position:sticky; top:0; z-index:2; background:var(--bg); padding:8px 0 14px;
+           font-size:13px; font-weight:600; color:var(--accent); }
+  .q { background:var(--card); border:1px solid var(--border); border-radius:12px;
+       padding:18px 20px; margin-bottom:14px; }
+  .q h2 { font-size:15px; font-weight:600; margin:0 0 13px; }
+  .opt { display:block; width:100%; text-align:left; padding:11px 14px; margin-bottom:8px;
+         font-size:14px; color:var(--fg); background:var(--bg);
+         border:1px solid var(--border); border-radius:8px; cursor:pointer;
+         transition:background .15s, border-color .15s; font-family:inherit; }
+  .opt:last-child { margin-bottom:0; }
+  .opt:hover { border-color:var(--accent); }
+  .opt.right { background:rgba(81,207,102,.15); border-color:var(--accent); }
+  .opt.wrong { background:rgba(255,107,107,.15); border-color:var(--danger); }
+  .hint { margin-top:18px; padding:12px 14px; border-radius:8px; font-size:13px;
+          background:rgba(81,207,102,.08); border:1px solid rgba(81,207,102,.3); color:var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>互动答题 · 环境测试</h1>
+  <div class="sub">用途：验证 Obsidian 内 HTML 的 JavaScript 能否正常执行</div>
+
+  <div id="score">已答 0 / 3　得分 0</div>
+
+  <div class="q" data-answer="b">
+    <h2>1. 这个页面里的按钮能点击吗？</h2>
+    <button class="opt" data-k="a">不能，Obsidian 会禁用脚本</button>
+    <button class="opt" data-k="b">能，而且有即时反馈</button>
+  </div>
+
+  <div class="q" data-answer="c">
+    <h2>2. 1 + 1 = ?</h2>
+    <button class="opt" data-k="a">3</button>
+    <button class="opt" data-k="b">11</button>
+    <button class="opt" data-k="c">2</button>
+  </div>
+
+  <div class="q" data-answer="a">
+    <h2>3. 玉米的基因组大小约为？</h2>
+    <button class="opt" data-k="a">2.3 Gb</button>
+    <button class="opt" data-k="b">120 Mb</button>
+    <button class="opt" data-k="c">16 Gb</button>
+  </div>
+
+  <div class="hint" id="hint">提示：点任意选项即可作答，答完会显示得分。</div>
+</div>
+
+<script>
+  const state = { answered: 0, score: 0, done: new Set() };
+  const qs = [...document.querySelectorAll('.q')];
+  const scoreEl = document.getElementById('score');
+  const hintEl = document.getElementById('hint');
+
+  qs.forEach((q, i) => {
+    q.querySelectorAll('.opt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (state.done.has(i)) return;
+        state.done.add(i);
+        const right = q.dataset.answer;
+        q.querySelectorAll('.opt').forEach(b => {
+          if (b.dataset.k === right) b.classList.add('right');
+          else if (b === btn) b.classList.add('wrong');
+        });
+        state.answered++;
+        if (btn.dataset.k === right) state.score++;
+        scoreEl.textContent = `已答 ${state.answered} / ${qs.length}　得分 ${state.score}`;
+        if (state.answered === qs.length) {
+          const tail = state.score === qs.length ? '　🎉 全对' : '';
+          hintEl.textContent = `✅ JavaScript 正常执行，互动答题可用。${tail}`;
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>

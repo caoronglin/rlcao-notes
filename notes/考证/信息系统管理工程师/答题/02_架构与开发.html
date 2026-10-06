@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="auto">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>教材同步练习 · ②架构与开发</title>
+<!--
+  ============================================================
+  答题模板 · Ant Design Pro 视觉复刻（单文件 / 零依赖 / 离线可用）
+  ------------------------------------------------------------
+  · 题库：改下方 QUESTIONS 数组（支持 n 个选项，answer 用选项的 key）
+  · 记录：localStorage（浏览器端数据库），按文件路径隔离，跨次累积
+  · 主题：跟随系统，右上角可手动切换 亮/暗
+  · 嵌入 Obsidian：![[本文件.html]]  或  ![[本文件.html|760x520]]
+  ============================================================
+-->
+<style>
+/* ===================== Ant Design 5 / Pro 设计令牌 ===================== */
+:root {
+  --primary:#1677ff; --primary-hover:#4096ff; --primary-active:#0958d9;
+  --primary-bg:rgba(22,119,255,.1); --primary-border:rgba(22,119,255,.35);
+  --success:#52c41a; --success-bg:rgba(82,196,26,.1); --success-border:rgba(82,196,26,.35);
+  --error:#ff4d4f;   --error-bg:rgba(255,77,79,.1);   --error-border:rgba(255,77,79,.35);
+  --warning:#faad14;
+  --text:rgba(0,0,0,.88); --text-2:rgba(0,0,0,.65); --text-3:rgba(0,0,0,.45); --text-4:rgba(0,0,0,.25);
+  --border:#d9d9d9; --border-2:#f0f0f0;
+  --bg-layout:#f5f5f5; --bg-container:#fff; --bg-spotlight:rgba(0,0,0,.02); --bg-hover:rgba(0,0,0,.04);
+  --radius:8px; --radius-sm:6px; --radius-lg:12px;
+  --shadow:0 1px 2px 0 rgba(0,0,0,.03),0 1px 6px -1px rgba(0,0,0,.02),0 2px 4px 0 rgba(0,0,0,.02);
+  --shadow-hover:0 6px 16px 0 rgba(0,0,0,.08),0 3px 6px -4px rgba(0,0,0,.12),0 9px 28px 8px rgba(0,0,0,.05);
+}
+[data-theme="dark"] {
+  --primary:#1668dc; --primary-hover:#3c89e8; --primary-active:#1554ad;
+  --primary-bg:rgba(22,104,220,.18); --primary-border:rgba(22,104,220,.45);
+  --text:rgba(255,255,255,.85); --text-2:rgba(255,255,255,.65); --text-3:rgba(255,255,255,.45); --text-4:rgba(255,255,255,.25);
+  --border:#424242; --border-2:#303030;
+  --bg-layout:#141414; --bg-container:#1f1f1f; --bg-spotlight:rgba(255,255,255,.04); --bg-hover:rgba(255,255,255,.08);
+  --shadow:0 1px 2px 0 rgba(0,0,0,.24),0 1px 6px -1px rgba(0,0,0,.16),0 2px 4px 0 rgba(0,0,0,.16);
+  --shadow-hover:0 6px 16px 0 rgba(0,0,0,.32),0 3px 6px -4px rgba(0,0,0,.4),0 9px 28px 8px rgba(0,0,0,.24);
+}
+* { box-sizing:border-box; }
+html,body { margin:0; padding:0; }
+body {
+  background:var(--bg-layout); color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  font-size:14px; line-height:1.5714; -webkit-font-smoothing:antialiased;
+}
+.wrap { max-width:900px; margin:0 auto; padding:20px 24px 48px; }
+
+/* ===================== PageContainer（Pro 页面容器） ===================== */
+.page-head { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:20px; }
+.page-title { font-size:20px; font-weight:600; line-height:1.4; margin:0 0 4px; letter-spacing:-.01em; }
+.page-desc { color:var(--text-3); font-size:13px; margin:0; }
+.head-actions { display:flex; gap:8px; flex:none; }
+
+/* ===================== Card ===================== */
+.card {
+  background:var(--bg-container); border:1px solid var(--border-2);
+  border-radius:var(--radius); box-shadow:var(--shadow); margin-bottom:16px; overflow:hidden;
+}
+.card-head {
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:14px 20px; border-bottom:1px solid var(--border-2);
+}
+.card-title { font-size:15px; font-weight:600; }
+.card-body { padding:20px; }
+
+/* ===================== Statistic（Pro 统计卡） ===================== */
+.stat-row { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:16px; }
+@media (max-width:640px){ .stat-row { grid-template-columns:repeat(2,1fr); } }
+.stat { background:var(--bg-container); border:1px solid var(--border-2); border-radius:var(--radius);
+        box-shadow:var(--shadow); padding:16px 18px; transition:box-shadow .2s; }
+.stat:hover { box-shadow:var(--shadow-hover); }
+.stat-label { color:var(--text-3); font-size:13px; margin-bottom:6px; }
+.stat-value { font-size:26px; font-weight:600; line-height:1.2; font-variant-numeric:tabular-nums; letter-spacing:-.02em; }
+.stat-suffix { font-size:13px; font-weight:400; color:var(--text-3); margin-left:3px; }
+.stat.primary .stat-value { color:var(--primary); }
+.stat.success .stat-value { color:var(--success); }
+
+/* ===================== Button ===================== */
+.btn {
+  display:inline-flex; align-items:center; justify-content:center; gap:6px;
+  height:32px; padding:0 15px; font-size:14px; font-family:inherit;
+  border-radius:var(--radius-sm); border:1px solid var(--border); background:var(--bg-container);
+  color:var(--text); cursor:pointer; transition:all .2s; white-space:nowrap;
+}
+.btn:hover { color:var(--primary); border-color:var(--primary); }
+.btn-primary { background:var(--primary); border-color:var(--primary); color:#fff; font-weight:500; }
+.btn-primary:hover { background:var(--primary-hover); border-color:var(--primary-hover); color:#fff; }
+.btn-primary:disabled { background:var(--bg-hover); border-color:var(--border); color:var(--text-4); cursor:not-allowed; }
+.btn-text { border-color:transparent; background:transparent; padding:0 8px; }
+.btn-text:hover { background:var(--bg-hover); border-color:transparent; }
+.btn-lg { height:40px; padding:0 20px; font-size:15px; }
+
+/* ===================== Tag ===================== */
+.tag {
+  display:inline-flex; align-items:center; height:22px; padding:0 8px; font-size:12px;
+  border-radius:4px; background:var(--bg-spotlight); color:var(--text-2); border:1px solid transparent;
+}
+.tag.primary { background:var(--primary-bg); color:var(--primary); border-color:var(--primary-border); }
+.tag.success { background:var(--success-bg); color:var(--success); border-color:var(--success-border); }
+.tag.error   { background:var(--error-bg);   color:var(--error);   border-color:var(--error-border); }
+
+/* ===================== Progress ===================== */
+.progress { height:8px; border-radius:100px; background:var(--bg-spotlight); overflow:hidden; }
+.progress-inner { height:100%; border-radius:100px; background:var(--primary); transition:width .3s cubic-bezier(.4,0,.2,1); }
+.progress-inner.done { background:var(--success); }
+
+/* ===================== 题目 ===================== */
+.q-stem { font-size:16px; font-weight:500; line-height:1.6; margin:0 0 18px; }
+.q-index { color:var(--text-3); font-weight:400; margin-right:6px; }
+.options { display:flex; flex-direction:column; gap:10px; }
+.opt {
+  display:flex; align-items:flex-start; gap:10px; width:100%; text-align:left;
+  padding:12px 15px; font-size:14px; font-family:inherit; line-height:1.6;
+  background:var(--bg-container); color:var(--text);
+  border:1px solid var(--border); border-radius:var(--radius-sm);
+  cursor:pointer; transition:all .2s;
+}
+.opt:hover:not(.locked) { border-color:var(--primary); color:var(--primary); background:var(--primary-bg); }
+.opt-key {
+  flex:none; width:20px; height:20px; border-radius:50%; margin-top:1px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; font-weight:600; text-transform:uppercase;
+  background:var(--bg-spotlight); color:var(--text-2);
+}
+.opt:hover:not(.locked) .opt-key { background:var(--primary); color:#fff; }
+.opt.correct { border-color:var(--success); background:var(--success-bg); color:var(--success); }
+.opt.correct .opt-key { background:var(--success); color:#fff; }
+.opt.wrong { border-color:var(--error); background:var(--error-bg); color:var(--error); }
+.opt.wrong .opt-key { background:var(--error); color:#fff; }
+.opt.locked { cursor:default; }
+.opt.locked:not(.correct):not(.wrong) { opacity:.55; }
+
+/* ===================== Alert（解析框） ===================== */
+.alert { display:flex; gap:10px; padding:12px 15px; border-radius:var(--radius-sm); border:1px solid transparent; font-size:13px; line-height:1.6; margin-top:16px; }
+.alert-info { background:var(--primary-bg); border-color:var(--primary-border); color:var(--text-2); }
+.alert-success { background:var(--success-bg); border-color:var(--success-border); color:var(--text-2); }
+.alert-error { background:var(--error-bg); border-color:var(--error-border); color:var(--text-2); }
+.alert b { color:var(--text); }
+
+/* ===================== Result（结果页） ===================== */
+.result { text-align:center; padding:24px 20px 8px; }
+.result-score { font-size:56px; font-weight:600; line-height:1.1; letter-spacing:-.03em; font-variant-numeric:tabular-nums; }
+.result-score.good { color:var(--success); }
+.result-score.mid { color:var(--primary); }
+.result-score.bad { color:var(--error); }
+.result-sub { color:var(--text-3); font-size:13px; margin-top:8px; }
+.result-title { font-size:17px; font-weight:600; margin:12px 0 0; }
+.result-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border-2); border-radius:var(--radius-sm); overflow:hidden; margin-top:22px; }
+.result-cell { background:var(--bg-container); padding:14px 12px; }
+.result-cell-label { color:var(--text-3); font-size:12px; margin-bottom:4px; }
+.result-cell-value { font-size:18px; font-weight:600; font-variant-numeric:tabular-nums; }
+
+/* ===================== 历史记录 ===================== */
+.hist-row { display:flex; align-items:center; gap:12px; padding:11px 0; border-bottom:1px solid var(--border-2); font-size:13px; }
+.hist-row:last-child { border-bottom:none; }
+.hist-no { flex:none; width:24px; height:24px; border-radius:50%; background:var(--bg-spotlight);
+           display:flex; align-items:center; justify-content:center; font-size:12px; color:var(--text-3); }
+.hist-date { flex:1; color:var(--text-3); font-variant-numeric:tabular-nums; }
+.hist-score { font-weight:600; font-variant-numeric:tabular-nums; }
+.hist-score.good { color:var(--success); } .hist-score.bad { color:var(--error); }
+.empty { text-align:center; color:var(--text-3); font-size:13px; padding:26px 0; }
+
+/* ===================== 工具栏细节 ===================== */
+.icon-btn { width:32px; height:32px; padding:0; font-size:15px; }
+.toast {
+  position:fixed; left:50%; bottom:32px; transform:translateX(-50%) translateY(12px);
+  background:var(--bg-container); color:var(--text); border:1px solid var(--border-2);
+  box-shadow:var(--shadow-hover); border-radius:var(--radius-sm); padding:9px 16px; font-size:13px;
+  opacity:0; pointer-events:none; transition:all .25s;
+}
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+code { background:var(--bg-spotlight); padding:1px 6px; border-radius:4px; font-size:.92em;
+       font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- PageContainer -->
+  <div class="page-head">
+    <div>
+      <h1 class="page-title" id="pageTitle">知识自测</h1>
+      <p class="page-desc" id="pageDesc">做好准备就点击「开始答题」，成绩会自动记录</p>
+    </div>
+    <div class="head-actions">
+      <button class="btn icon-btn" id="themeBtn" title="切换主题">🌙</button>
+      <button class="btn icon-btn" id="resetBtn" title="清空全部记录">🗑</button>
+    </div>
+  </div>
+
+  <!-- Statistic 行 -->
+  <div class="stat-row">
+    <div class="stat primary">
+      <div class="stat-label">累计答题</div>
+      <div class="stat-value" id="sTimes">0<span class="stat-suffix">次</span></div>
+    </div>
+    <div class="stat success">
+      <div class="stat-label">历史最高</div>
+      <div class="stat-value" id="sBest">—</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">平均得分</div>
+      <div class="stat-value" id="sAvg">—</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">总正确率</div>
+      <div class="stat-value" id="sRate">—</div>
+    </div>
+  </div>
+
+  <!-- 主区域 -->
+  <div class="card">
+    <div class="card-head">
+      <span class="card-title" id="cardTitle">准备就绪</span>
+      <span class="tag" id="cardTag">共 0 题</span>
+    </div>
+    <div class="card-body" id="stage"></div>
+  </div>
+
+  <!-- 历史记录 -->
+  <div class="card">
+    <div class="card-head">
+      <span class="card-title">答题记录</span>
+      <button class="btn btn-text" id="copyBtn">复制统计</button>
+    </div>
+    <div class="card-body" id="history"></div>
+  </div>
+
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =====================================================================
+   ①  题库：把下面的题目换成你自己的即可
+   ===================================================================== */
+const META = {"title": "教材同步练习 · ②架构与开发", "desc": "信息系统架构 · 软件开发过程 · 系统集成实施　共 12 题（源：第2版教材本章练习）"};
+
+const QUESTIONS = [
+  {
+    "stem": "【第3章 信息系统架构】安全架构的三道防线不包括________________。",
+    "options": {
+      "A": "系统安全架构",
+      "B": "安全技术体系架构",
+      "C": "审计架构",
+      "D": "物理架构"
+    },
+    "answer": "d",
+    "explain": "教材第 3 章「本章练习」原题，答案以教材为准。"
+  },
+  {
+    "stem": "【第3章 信息系统架构】云原生的代码通常包括________________。",
+    "options": {
+      "A": "业务代码、服务软件和处理非功能特性的代码",
+      "B": "业务代码、服务软件和处理功能性特性的代码",
+      "C": "业务代码、三方软件和处理非功能特性的代码",
+      "D": "业务代码、三方软件和处理功能性特性的代码"
+    },
+    "answer": "c",
+    "explain": "教材第 3 章「本章练习」原题，答案以教材为准。"
+  },
+  {
+    "stem": "【第3章 信息系统架构】软件定义网络（SDN）的整体架构由下到上分为________________。",
+    "options": {
+      "A": "应用平面、数据平面、控制平面",
+      "B": "控制平面、应用平面、数据平面",
+      "C": "应用平面、控制平面、数据平面",
+      "D": "数据平面、控制平面、应用平面"
+    },
+    "answer": "d",
+    "explain": "教材第 3 章「本章练习」原题，答案以教材为准。"
+  },
+  {
+    "stem": "【第6章 软件开发过程管理】信息系统开发的________________阶段需要与客户进行沟通，了解客户的需求。",
+    "options": {
+      "A": "需求分析",
+      "B": "系统设计",
+      "C": "编码",
+      "D": "测试"
+    },
+    "answer": "a",
+    "explain": "教材第 6 章「本章练习」原题，答案以教材为准。"
+  },
+  {
+    "stem": "【第6章 软件开发过程管理】________________不属于敏捷模型的优点。",
+    "options": {
+      "A": "灵活地应对需求的变化",
+      "B": "强调团队的协作和持续改进",
+      "C": "适用于需求不稳定、项目相对复杂、时间敏感的情况",
+      "D": "在每个迭代进行风险分析，降低风险"
+    },
+    "answer": "d",
+    "explain": "教材第 6 章「本章练习」原题，答案以教材为准。"
+  },
+  {
+    "stem": "【第6章 软件开发过程管理】软件需求层次不包括________________。",
+    "options": {
+      "A": "业务需求",
+      "B": "用户需求",
+      "C": "系统需求",
+      "D": "治理需求"
+    },
+    "answer": "d",
+    "explain": "教材第 6 章「本章练习」原题，答案以教材为准。"
+  },
+  {
+    "stem": "【第6章 软件开发过程管理】代码审查的主要目的是________________。",
+    "options": {
+      "A": "保证代码的质量和规范性",
+      "B": "提高代码审查的效率和质量",
+      "C": "识别代码的更改和差异",
+      "D": "进行代码的结构、复杂度、重复度和依赖性分析"
+    },
+    "answer": "a",
+    "explain": "教材第 6 章「本章练习」原题，答案以教材为准。"
+  },
+  {
+    "stem": "【第6章 软件开发过程管理】________________不属于软件工厂建设方法的组成部分。",
+    "options": {
+      "A": "组织建设",
+      "B": "资源部署",
+      "C": "网络安全",
+      "D": "业务管理"
+    },
+    "answer": "c",
+    "explain": "教材第 6 章「本章练习」原题，答案以教材为准。"
+  },
+  {
+    "stem": "【第7章 系统集成实施管理】需求分析与转化阶段输出的需求类型不包括________________。",
+    "options": {
+      "A": "客户需求",
+      "B": "功能需求",
+      "C": "性能需求",
+      "D": "设计需求"
+    },
+    "answer": "d",
+    "explain": "教材第 7 章「本章练习」原题，答案以教材为准。"
+  },
+  {
+    "stem": "【第7章 系统集成实施管理】________________不属于设计开发过程输出的工作产品。",
+    "options": {
+      "A": "解决方案",
+      "B": "需求说明书",
+      "C": "设计细节和文档",
+      "D": "开发的产品"
+    },
+    "answer": "b",
+    "explain": "教材第 7 章「本章练习」原题，答案以教材为准。"
+  },
+  {
+    "stem": "【第7章 系统集成实施管理】________________属于实施交付过程的活动。",
+    "options": {
+      "A": "设计开发过程",
+      "B": "测试、验证、确认",
+      "C": "准备产品集成",
+      "D": "定义规程、技术规范"
+    },
+    "answer": "c",
+    "explain": "教材第 7 章「本章练习」原题，答案以教材为准。"
+  },
+  {
+    "stem": "【第7章 系统集成实施管理】________________属于验证与确认过程的活动。",
+    "options": {
+      "A": "准备评估、执行验证与确认",
+      "B": "将设计实现为产品或产品组件",
+      "C": "准备产品集成、安装部署并交付",
+      "D": "选择和开发备选解决方案、开发所选解决方案的详细设计"
+    },
+    "answer": "a",
+    "explain": "教材第 7 章「本章练习」原题，答案以教材为准。"
+  }
+];
+
+/* =====================================================================
+   ②  存储层：localStorage 作为浏览器端数据库
+   （按文件路径隔离，不同答题文件的记录互不干扰）
+   ===================================================================== */
+const STORE_KEY = "quiz_store_v1";
+
+const store = {
+  read() {
+    try { return JSON.parse(localStorage.getItem(STORE_KEY)) || this.blank(); }
+    catch (e) { return this.blank(); }
+  },
+  blank() { return { times: 0, best: null, totalScore: 0, totalCorrect: 0, totalQuestions: 0, history: [] }; },
+  write(d) { try { localStorage.setItem(STORE_KEY, JSON.stringify(d)); } catch (e) {} },
+  addRun(run) {
+    const d = this.read();
+    d.times += 1;
+    d.totalScore += run.score;
+    d.totalCorrect += run.correct;
+    d.totalQuestions += run.total;
+    d.best = d.best === null ? run.score : Math.max(d.best, run.score);
+    d.history.unshift({ at: run.at, score: run.score, total: run.total, correct: run.correct, seconds: run.seconds });
+    d.history = d.history.slice(0, 20);
+    this.write(d);
+    return d;
+  },
+  clear() { this.write(this.blank()); },
+};
+
+/* =====================================================================
+   ③  主题
+   ===================================================================== */
+const themeBtn = document.getElementById("themeBtn");
+function applyTheme(mode) {
+  const sysDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const dark = mode === "dark" || (mode === "auto" && sysDark);
+  document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+  themeBtn.textContent = dark ? "☀️" : "🌙";
+}
+let themeMode = localStorage.getItem("quiz_theme") || "auto";
+applyTheme(themeMode);
+window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => { if (themeMode === "auto") applyTheme("auto"); });
+themeBtn.onclick = () => {
+  const nowDark = document.documentElement.getAttribute("data-theme") === "dark";
+  themeMode = nowDark ? "light" : "dark";
+  localStorage.setItem("quiz_theme", themeMode);
+  applyTheme(themeMode);
+};
+
+/* =====================================================================
+   ④  工具
+   ===================================================================== */
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const KEY_OF = i => String.fromCharCode(97 + i); // 0→a, 1→b ...
+
+function toast(msg) {
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove("show"), 1800);
+}
+function fmtDate(ts) {
+  const d = new Date(ts), p = n => String(n).padStart(2, "0");
+  return `${d.getMonth() + 1}/${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+}
+function fmtSec(s) { return s < 60 ? `${s} 秒` : `${Math.floor(s / 60)} 分 ${s % 60} 秒`; }
+
+/* =====================================================================
+   ⑤  渲染：统计 + 历史
+   ===================================================================== */
+function renderStats() {
+  const d = store.read();
+  $("sTimes").innerHTML = `${d.times}<span class="stat-suffix">次</span>`;
+  $("sBest").innerHTML = d.best === null ? "—" : `${d.best}<span class="stat-suffix">分</span>`;
+  $("sAvg").innerHTML = d.times ? `${Math.round(d.totalScore / d.times)}<span class="stat-suffix">分</span>` : "—";
+  $("sRate").innerHTML = d.totalQuestions ? `${Math.round(d.totalCorrect / d.totalQuestions * 100)}<span class="stat-suffix">%</span>` : "—";
+}
+
+function renderHistory() {
+  const d = store.read();
+  const box = $("history");
+  if (!d.history.length) {
+    box.innerHTML = `<div class="empty">还没有答题记录，完成一次自测后这里会出现成绩</div>`;
+    return;
+  }
+  box.innerHTML = d.history.map((h, i) => {
+    const pct = Math.round(h.score / h.total * 100);
+    const cls = pct >= 80 ? "good" : pct < 60 ? "bad" : "";
+    return `<div class="hist-row">
+      <span class="hist-no">${i + 1}</span>
+      <span class="hist-date">${fmtDate(h.at)} · 用时 ${fmtSec(h.seconds)}</span>
+      <span class="tag ${cls === "good" ? "success" : cls === "bad" ? "error" : "primary"}">${pct}%</span>
+      <span class="hist-score ${cls}">${h.score} / ${h.total}</span>
+    </div>`;
+  }).join("");
+}
+
+/* =====================================================================
+   ⑥  答题流程
+   ===================================================================== */
+let session = null;
+
+function stageIntro() {
+  $("cardTitle").textContent = "准备就绪";
+  $("cardTag").textContent = `共 ${QUESTIONS.length} 题`;
+  $("cardTag").className = "tag";
+  $("stage").innerHTML = `
+    <div style="text-align:center;padding:22px 0 14px">
+      <div style="font-size:15px;color:var(--text-2);margin-bottom:6px">
+        本次共 <b style="color:var(--text)">${QUESTIONS.length}</b> 道单选题
+      </div>
+      <div style="font-size:13px;color:var(--text-3);margin-bottom:22px">答完即出成绩，记录自动保存</div>
+      <button class="btn btn-primary btn-lg" id="startBtn">开始答题</button>
+    </div>`;
+  $("startBtn").onclick = startQuiz;
+}
+
+function startQuiz() {
+  session = { idx: 0, correct: 0, locked: false, startedAt: Date.now() };
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[session.idx];
+  const total = QUESTIONS.length;
+  const pct = session.idx / total * 100;
+  const keys = Object.keys(q.options);
+
+  $("cardTitle").textContent = `第 ${session.idx + 1} 题 / 共 ${total} 题`;
+  $("cardTag").textContent = "单选";
+  $("cardTag").className = "tag primary";
+
+  $("stage").innerHTML = `
+    <div class="progress" style="margin-bottom:22px"><div class="progress-inner" style="width:${pct}%"></div></div>
+    <p class="q-stem"><span class="q-index">${session.idx + 1}.</span>${esc(q.stem)}</p>
+    <div class="options" id="opts">
+      ${keys.map((k, i) => `<button class="opt" data-k="${k}">
+        <span class="opt-key">${k.toUpperCase()}</span><span>${esc(q.options[k])}</span>
+      </button>`).join("")}
+    </div>
+    <div id="after"></div>`;
+
+  session.locked = false;
+  $("opts").querySelectorAll(".opt").forEach(btn => {
+    btn.onclick = () => pick(btn, q);
+  });
+}
+
+function pick(btn, q) {
+  if (session.locked) return;
+  session.locked = true;
+
+  const chosen = btn.dataset.k;
+  const right = chosen === q.answer;
+  if (right) session.correct++;
+
+  $("opts").querySelectorAll(".opt").forEach(b => {
+    b.classList.add("locked");
+    if (b.dataset.k === q.answer) b.classList.add("correct");
+    else if (b === btn) b.classList.add("wrong");
+    b.onclick = right && b.dataset.k === q.answer ? () => next() : null;
+  });
+
+  const isLast = session.idx === QUESTIONS.length - 1;
+  $("cardTag").textContent = right ? "回答正确" : "回答错误";
+  $("cardTag").className = `tag ${right ? "success" : "error"}`;
+
+  $("after").innerHTML = `
+    <div class="alert ${right ? "alert-success" : "alert-error"}">
+      <span style="flex:none">${right ? "✓" : "✕"}</span>
+      <span><b>${right ? "答对了" : "正确答案是 " + q.answer.toUpperCase()}</b>　${esc(q.explain || "")}</span>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:18px">
+      <button class="btn btn-primary" id="nextBtn">${isLast ? "查看成绩" : "下一题"}</button>
+    </div>`;
+  $("nextBtn").onclick = next;
+
+  const bar = document.querySelector(".progress-inner");
+  if (bar) bar.style.width = `${(session.idx + 1) / QUESTIONS.length * 100}%`;
+}
+
+function next() {
+  if (session.idx < QUESTIONS.length - 1) {
+    session.idx++;
+    renderQuestion();
+  } else {
+    finish();
+  }
+}
+
+function finish() {
+  const total = QUESTIONS.length;
+  const seconds = Math.max(1, Math.round((Date.now() - session.startedAt) / 1000));
+  const run = { at: Date.now(), score: session.correct, total, correct: session.correct, seconds };
+  store.addRun(run);
+
+  const pct = Math.round(run.score / total * 100);
+  const cls = pct >= 80 ? "good" : pct >= 60 ? "mid" : "bad";
+  const word = pct >= 80 ? "表现出色" : pct >= 60 ? "继续加油" : "需要复习";
+
+  $("cardTitle").textContent = "本次成绩";
+  $("cardTag").textContent = `${pct}%`;
+  $("cardTag").className = `tag ${pct >= 80 ? "success" : pct >= 60 ? "primary" : "error"}`;
+
+  $("stage").innerHTML = `
+    <div class="result">
+      <div class="result-score ${cls}">${run.score}<span style="font-size:22px;color:var(--text-3)"> / ${total}</span></div>
+      <p class="result-title">${word}</p>
+      <p class="result-sub">用时 ${fmtSec(seconds)}</p>
+      <div class="result-grid">
+        <div class="result-cell"><div class="result-cell-label">正确率</div><div class="result-cell-value">${pct}%</div></div>
+        <div class="result-cell"><div class="result-cell-label">答对</div><div class="result-cell-value">${run.correct} 题</div></div>
+        <div class="result-cell"><div class="result-cell-label">本次是第</div><div class="result-cell-value">${store.read().times} 次</div></div>
+      </div>
+      <div style="display:flex;justify-content:center;gap:10px;margin-top:24px">
+        <button class="btn btn-primary" id="againBtn">再答一次</button>
+        <button class="btn" id="backBtn">返回</button>
+      </div>
+    </div>`;
+
+  $("againBtn").onclick = startQuiz;
+  $("backBtn").onclick = stageIntro;
+
+  renderStats();
+  renderHistory();
+}
+
+/* =====================================================================
+   ⑦  工具栏动作
+   ===================================================================== */
+$("resetBtn").onclick = () => {
+  const d = store.read();
+  if (!d.times) return toast("暂无记录可清空");
+  if (confirm(`确定清空全部答题记录吗？\n当前累计 ${d.times} 次，此操作不可撤销。`)) {
+    store.clear();
+    renderStats(); renderHistory();
+    toast("记录已清空");
+  }
+};
+
+$("copyBtn").onclick = async () => {
+  const d = store.read();
+  if (!d.times) return toast("暂无记录");
+  const lines = [
+    `答题统计（${new Date().toLocaleString("zh-CN")}）`,
+    `累计答题：${d.times} 次`,
+    `历史最高：${d.best} 分`,
+    `平均得分：${Math.round(d.totalScore / d.times)} 分`,
+    `总正确率：${Math.round(d.totalCorrect / d.totalQuestions * 100)}%`,
+    "",
+    "最近记录：",
+    ...d.history.slice(0, 10).map(h =>
+      `  ${fmtDate(h.at)}  ${h.score}/${h.total}  ${Math.round(h.score / h.total * 100)}%  用时 ${fmtSec(h.seconds)}`),
+  ].join("\n");
+  try {
+    await navigator.clipboard.writeText(lines);
+    toast("统计已复制到剪贴板");
+  } catch (e) {
+    prompt("复制下面内容：", lines);
+  }
+};
+
+/* =====================================================================
+   ⑧  初始化
+   ===================================================================== */
+$("pageTitle").textContent = META.title;
+$("pageDesc").textContent = META.desc;
+document.title = META.title;
+renderStats();
+renderHistory();
+stageIntro();
+</script>
+</body>
+</html>

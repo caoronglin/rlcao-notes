@@ -1,0 +1,82 @@
+% 图 1：模式形成与形态发生的信号—力学耦合（自绘，v2 干净版）
+% 设计要点：四行左右对应，中间只放 3 个接口标签，无交叉箭头。
+% 编译：xelatex figures/fig1.tex → fig1.pdf（矢量）
+\documentclass[border=5pt]{standalone}
+\usepackage{ctex}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,backgrounds,fit}
+
+% —— 配色（低饱和，学术风）——
+\definecolor{cLBG}{HTML}{EEF4EF}   % 左面板底
+\definecolor{cLLN}{HTML}{5E7F68}   % 左描边
+\definecolor{cRBG}{HTML}{EDF1F7}   % 右面板底
+\definecolor{cRLN}{HTML}{5A6E8C}   % 右描边
+\definecolor{cCHP}{HTML}{FAF2E6}   % 接口标签底
+\definecolor{cCHL}{HTML}{9A7B4F}   % 接口描边
+\definecolor{cTXT}{HTML}{1F2328}   % 主文字
+\definecolor{cSUB}{HTML}{5A6169}   % 次级文字
+
+\begin{document}
+% 图内统一用无衬线，更清晰
+\sffamily\color{cTXT}
+\begin{tikzpicture}[
+    font=\footnotesize,
+    node distance=0pt,
+    row/.style={draw, rounded corners=2pt, align=left, inner sep=5pt,
+                text width=52mm, minimum height=13mm},
+    lrow/.style={row, fill=cLBG, draw=cLLN},
+    rrow/.style={row, fill=cRBG, draw=cRLN},
+    chip/.style={draw, rounded corners=8pt, fill=cCHP, draw=cCHL,
+                 align=center, inner sep=3.5pt, font=\scriptsize},
+    arr/.style={-{Stealth[length=2.4mm]}, line width=0.7pt, draw=cCHL},
+    fb/.style={-{Stealth[length=2.2mm]}, line width=0.7pt, densely dashed, draw=cSUB},
+    scalebar/.style={draw=none, align=center, font=\scriptsize, text=cSUB},
+  ]
+
+  % ============ 行内容 ============
+  \node[lrow] (L1) at (-6.4, 3.55)
+    {\textbf{干细胞微环境反馈}\\[1pt]{\scriptsize\color{cSUB}CLV3--WUS 环；CLE16/17 经 BAM 受体代偿；DA1 切割 WUS 定大小}};
+  \node[lrow, below=9mm of L1] (L2)
+    {\textbf{生长素的分区作用}\\[1pt]{\scriptsize\color{cSUB}局部合成 + 运输共同塑造 CZ / PZ / RM}};
+  \node[lrow, below=9mm of L2] (L3)
+    {\textbf{预模式对均匀信号的读出}\\[1pt]{\scriptsize\color{cSUB}均匀生长素 + AS2--KAN1 $\rightarrow$ ARF 二元响应}};
+  \node[lrow, below=9mm of L3] (L4)
+    {\textbf{水通量图式}\\[1pt]{\scriptsize\color{cSUB}器官汇强度差异划定茎尖边界域}};
+
+  \node[rrow] (R1) at (6.4, 3.55)
+    {\textbf{细胞壁承力网络}\\[1pt]{\scriptsize\color{cSUB}纤维素直接承力；果胶、木葡聚糖弱承力}};
+  \node[rrow, below=9mm of R1] (R2)
+    {\textbf{各向异性生长}\\[1pt]{\scriptsize\color{cSUB}微管 $\rightarrow$ CSC $\rightarrow$ 纤维素排列 $\rightarrow$ 生长方向}};
+  \node[rrow, below=9mm of R2] (R3)
+    {\textbf{扩张与应力闭环}\\[1pt]{\scriptsize\color{cSUB}壁松弛 $\rightarrow$ 膨压降 $\rightarrow$ 水分回流 $\rightarrow$ 细胞扩大}};
+  \node[rrow, below=9mm of R3] (R4)
+    {\textbf{分裂面定向}\\[1pt]{\scriptsize\color{cSUB}拉伸部位微管富集 $\rightarrow$ 分裂面重定向}};
+
+  % ============ 接口标签（只放 3 个） ============
+  \node[chip, text width=27mm] (C1) at (0, 3.55) {基因 $\rightarrow$ 力学\\{\scriptsize CSC--微管连续体}};
+  \node[chip, text width=27mm] (C2) at (0, 1.28) {位置信息 $\rightarrow$ 图式\\{\scriptsize 决定生长速率与方向}};
+  \node[chip, text width=27mm] (C3) at (0, -0.99) {力学 $\rightarrow$ 命运\\{\scriptsize 微管稳定、分裂定向}};
+
+  % ============ 横向连接（无交叉） ============
+  \draw[arr] (L1.east) -- (C1.west);
+  \draw[arr] (C1.east) -- (R1.west);
+  \draw[arr] (L2.east) -- (C2.west);
+  \draw[arr] (C2.east) -- (R2.west);
+  \draw[arr] (L3.east) -- (C3.west);
+  \draw[arr] (C3.east) -- (R3.west);
+  \draw[arr] (L4.east) -- (R4.west);
+
+  % ============ 反馈虚线 ============
+  \draw[fb] (R4.south) .. controls +(0,-2.6) and +(0,-2.6) .. (L4.south)
+      node[pos=0.5, below=1pt, font=\scriptsize, text=cSUB, align=center]
+      {反馈：形变反过来改变应力与水力图式};
+
+  % ============ 层级标尺 ============
+  \node[scalebar] (sc) at (0,-4.55)
+    {层级：纤维 fiber $\rightarrow$ 壁 wall $\rightarrow$ 细胞 cell $\rightarrow$ 组织 tissue
+     \quad（应力各级均存在，数值逐级不同，不可跨级套用）};
+  \node[scalebar] (out) at (0,-5.5)
+    {输出：器官的大小、形状、数目与排列};
+
+\end{tikzpicture}
+\end{document}

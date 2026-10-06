@@ -1,0 +1,502 @@
+[
+ {
+  "title": "Interactive CLV3, CLE16, and CLE17 signaling mediates stem cell homeostasis in the Arabidopsis shoot apical meristem",
+  "year": 2022,
+  "journal": "Development",
+  "doi": "10.1242/dev.200787",
+  "cites": 30,
+  "oa": true,
+  "pmid": "36111520",
+  "authors": [
+   "Thái Q. Ðào",
+   "Naama C. Weksler",
+   "Hannah M.-H. Liu",
+   "Samuel Leiboff"
+  ],
+  "platform": "openalex",
+  "tag": "A1",
+  "found_by": [
+   "crossref",
+   "openalex"
+  ],
+  "block": "1 模式形成·分生组织干细胞与命运指定",
+  "is_oa": true,
+  "pmcid": null,
+  "pdf": "https://journals.biologists.com/dev/article-pdf/149/19/dev200787/2172474/dev200787.pdf",
+  "pdf_host": "publisher",
+  "all_pdf": [
+   "https://journals.biologists.com/dev/article-pdf/149/19/dev200787/2172474/dev200787.pdf"
+  ]
+ },
+ {
+  "title": "A network of CLAVATA receptors buffers auxin-dependent meristem maintenance",
+  "year": 2023,
+  "journal": "Nature Plants",
+  "doi": "10.1038/s41477-023-01485-y",
+  "cites": 38,
+  "oa": true,
+  "pmid": "37550370",
+  "authors": [
+   "Amala John",
+   "Elizabeth Sarkel",
+   "Daniel S. Jones",
+   "Cara L. Soyars"
+  ],
+  "platform": "openalex",
+  "tag": "A3",
+  "found_by": [
+   "openalex"
+  ],
+  "block": "1 模式形成·分生组织干细胞与命运指定",
+  "is_oa": true,
+  "pmcid": null,
+  "pdf": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11070199/pdf/nihms-1987721.pdf",
+  "pdf_host": "repository",
+  "all_pdf": [
+   "https://pmc.ncbi.nlm.nih.gov/articles/PMC11070199/pdf/nihms-1987721.pdf"
+  ]
+ },
+ {
+  "title": "Local auxin biosynthesis promotes shoot patterning and stem cell differentiation in Arabidopsis shoot apex",
+  "year": 2023,
+  "journal": "Development",
+  "doi": "10.1242/dev.202014",
+  "cites": 19,
+  "oa": true,
+  "pmid": "38054970",
+  "authors": [
+   "Shalini Yadav",
+   "Harish Kumar",
+   "Monika Mahajan",
+   "S. Sahu"
+  ],
+  "platform": "openalex",
+  "tag": "A1",
+  "found_by": [
+   "openalex"
+  ],
+  "block": "1 模式形成·分生组织干细胞与命运指定",
+  "is_oa": true,
+  "pmcid": null,
+  "pdf": "https://journals.biologists.com/dev/article-pdf/150/23/dev202014/3267209/dev202014.pdf",
+  "pdf_host": "publisher",
+  "all_pdf": [
+   "https://journals.biologists.com/dev/article-pdf/150/23/dev202014/3267209/dev202014.pdf"
+  ]
+ },
+ {
+  "title": "The peptidase DA1 cleaves and destabilizes WUSCHEL to control shoot apical meristem size",
+  "year": 2024,
+  "journal": "Nature Communications",
+  "doi": "10.1038/s41467-024-48361-7",
+  "cites": 20,
+  "oa": true,
+  "pmid": "38821962",
+  "authors": [
+   "Guicai Cui",
+   "Yu Li",
+   "Yu Li",
+   "Leiying Zheng"
+  ],
+  "platform": "openalex",
+  "tag": "A9",
+  "found_by": [
+   "crossref",
+   "openalex"
+  ],
+  "block": "1 模式形成·分生组织干细胞与命运指定",
+  "is_oa": true,
+  "pmcid": null,
+  "pdf": null,
+  "pdf_host": "publisher",
+  "all_pdf": [
+   "https://pmc.ncbi.nlm.nih.gov/articles/PMC11143343/pdf/41467_2024_Article_48361.pdf"
+  ]
+ },
+ {
+  "title": "KNUCKLES regulates floral meristem termination by controlling auxin distribution and cytokinin activity",
+  "year": 2024,
+  "journal": "The Plant Cell",
+  "doi": "10.1093/plcell/koae312",
+  "cites": 26,
+  "oa": true,
+  "pmid": "39576002",
+  "authors": [
+   "Guangling Wang",
+   "Zhang Wu",
+   "Bo Sun"
+  ],
+  "platform": "openalex",
+  "tag": "A2",
+  "found_by": [
+   "crossref",
+   "openalex"
+  ],
+  "block": "1 模式形成·分生组织干细胞与命运指定",
+  "is_oa": true,
+  "pmcid": null,
+  "pdf": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11663560/pdf/koae312.pdf",
+  "pdf_host": "repository",
+  "all_pdf": [
+   "https://pmc.ncbi.nlm.nih.gov/articles/PMC11663560/pdf/koae312.pdf"
+  ]
+ },
+ {
+  "title": "Specification of leaf dorsiventrality via a prepatterned binary readout of a uniform auxin input",
+  "year": 2022,
+  "journal": "Nature Plants",
+  "doi": "10.1038/s41477-022-01111-3",
+  "cites": 77,
+  "oa": false,
+  "pmid": "35318449",
+  "authors": [
+   "Agata Burian",
+   "Gaël Paszkiewicz",
+   "Khoa Thi Nguyen",
+   "Shreyas Meda"
+  ],
+  "platform": "openalex",
+  "tag": "A4",
+  "found_by": [
+   "openalex"
+  ],
+  "block": "2 模式形成·位置信息与器官起始",
+  "is_oa": false,
+  "pmcid": null,
+  "pdf": null,
+  "pdf_host": null,
+  "all_pdf": []
+ },
+ {
+  "title": "A CUC1/auxin genetic module links cell polarity to patterned tissue growth and leaf shape diversity in crucifer plants",
+  "year": 2024,
+  "journal": "Proceedings of the National Academy of Sciences",
+  "doi": "10.1073/pnas.2321877121",
+  "cites": 20,
+  "oa": true,
+  "pmid": "38905239",
+  "authors": [
+   "Ziliang Hu",
+   "David Wilson‐Sánchez",
+   "Neha Bhatia",
+   "Madlen I. Rast-Somssich"
+  ],
+  "platform": "openalex",
+  "tag": "A2",
+  "found_by": [
+   "europepmc",
+   "openalex"
+  ],
+  "pmcid": null,
+  "block": "2 模式形成·位置信息与器官起始",
+  "is_oa": true,
+  "pdf": null,
+  "pdf_host": "publisher",
+  "all_pdf": [
+   "https://hal.science/hal-04644421v1/document",
+   "https://pmc.ncbi.nlm.nih.gov/articles/PMC11214078/pdf/pnas.202321877.pdf"
+  ]
+ },
+ {
+  "title": "Water fluxes pattern growth and identity in shoot meristems",
+  "year": 2024,
+  "journal": "Nature Communications",
+  "doi": "10.1038/s41467-024-51099-x",
+  "cites": 21,
+  "oa": true,
+  "pmid": "39138210",
+  "authors": [
+   "Juan Alonso‐Serra",
+   "Ibrahim Cheddadi",
+   "Annamária Kiss",
+   "Guillaume Cerutti"
+  ],
+  "platform": "openalex",
+  "tag": "A6",
+  "found_by": [
+   "openalex"
+  ],
+  "block": "2 模式形成·位置信息与器官起始",
+  "is_oa": true,
+  "pmcid": null,
+  "pdf": "https://www.nature.com/articles/s41467-024-51099-x.pdf",
+  "pdf_host": "publisher",
+  "all_pdf": [
+   "https://www.nature.com/articles/s41467-024-51099-x.pdf",
+   "https://cnrs.hal.science/hal-04680262v1/file/s41467-024-51099-x.pdf",
+   "https://pmc.ncbi.nlm.nih.gov/articles/PMC11322635/pdf/41467_2024_Article_51099.pdf"
+  ]
+ },
+ {
+  "title": "Structure and growth of plant cell walls",
+  "year": 2023,
+  "journal": "Nature Reviews Molecular Cell Biology",
+  "doi": "10.1038/s41580-023-00691-y",
+  "cites": 436,
+  "oa": true,
+  "pmid": "38102449",
+  "authors": [
+   "Daniel J. Cosgrove"
+  ],
+  "platform": "openalex",
+  "tag": "B1",
+  "found_by": [
+   "openalex"
+  ],
+  "block": "3 形态发生·细胞壁力学与各向异性生长",
+  "is_oa": true,
+  "pmcid": null,
+  "pdf": "https://www.osti.gov/servlets/purl/2352283",
+  "pdf_host": "repository",
+  "all_pdf": [
+   "https://www.osti.gov/servlets/purl/2352283"
+  ]
+ },
+ {
+  "title": "The mechanics of plant morphogenesis",
+  "year": 2023,
+  "journal": "Science",
+  "doi": "10.1126/science.ade8055",
+  "cites": 154,
+  "oa": true,
+  "pmid": "36730409",
+  "authors": [
+   "Enrico Coen",
+   "Daniel J. Cosgrove"
+  ],
+  "platform": "openalex",
+  "tag": "A4",
+  "found_by": [
+   "crossref",
+   "openalex"
+  ],
+  "block": "3 形态发生·细胞壁力学与各向异性生长",
+  "is_oa": true,
+  "pmcid": null,
+  "pdf": "https://scholarsphere.psu.edu/resources/e976fcf1-d507-43a0-9af5-4f74a8081fc1/downloads/31484",
+  "pdf_host": "repository",
+  "all_pdf": [
+   "https://scholarsphere.psu.edu/resources/e976fcf1-d507-43a0-9af5-4f74a8081fc1/downloads/31484",
+   "https://www.osti.gov/servlets/purl/2212482"
+  ]
+ },
+ {
+  "title": "Microtubule-based perception of mechanical conflicts controls plant organ morphogenesis",
+  "year": 2022,
+  "journal": "Science Advances",
+  "doi": "10.1126/sciadv.abm4974",
+  "cites": 45,
+  "oa": true,
+  "pmid": "35138892",
+  "authors": [
+   "Dorothee Stӧckle",
+   "Blanca Jazmín Reyes‐Hernández",
+   "Amaya Vilches Barro",
+   "Milica Nenadić"
+  ],
+  "platform": "openalex",
+  "tag": "A4",
+  "found_by": [
+   "europepmc",
+   "openalex"
+  ],
+  "pmcid": null,
+  "block": "3 形态发生·细胞壁力学与各向异性生长",
+  "is_oa": true,
+  "pdf": "https://www.science.org/doi/pdf/10.1126/sciadv.abm4974?download=true",
+  "pdf_host": "publisher",
+  "all_pdf": [
+   "https://www.science.org/doi/pdf/10.1126/sciadv.abm4974?download=true",
+   "https://iris.unil.ch/bitstreams/b00275e5-c514-4d56-adfd-bb56eb4c4523/download"
+  ]
+ },
+ {
+  "title": "Growth anisotropy of the extracellular matrix shapes a developing organ",
+  "year": 2023,
+  "journal": "Nature Communications",
+  "doi": "10.1038/s41467-023-36739-y",
+  "cites": 87,
+  "oa": true,
+  "pmid": "36869053",
+  "authors": [
+   "Stefan Harmansa",
+   "Alexander Erlich",
+   "Christophe Eloy",
+   "Giuseppe Zurlo"
+  ],
+  "platform": "openalex",
+  "tag": "B3",
+  "found_by": [
+   "openalex"
+  ],
+  "block": "3 形态发生·细胞壁力学与各向异性生长",
+  "is_oa": true,
+  "pmcid": null,
+  "pdf": "https://www.nature.com/articles/s41467-023-36739-y.pdf",
+  "pdf_host": "publisher",
+  "all_pdf": [
+   "https://www.nature.com/articles/s41467-023-36739-y.pdf",
+   "https://hal.science/hal-04245559v1/document",
+   "https://pmc.ncbi.nlm.nih.gov/articles/PMC9984492/pdf/41467_2023_Article_36739.pdf"
+  ]
+ },
+ {
+  "title": "Mechanical forces in plant tissue matrix orient cell divisions via microtubule stabilization",
+  "year": 2024,
+  "journal": "Developmental Cell",
+  "doi": "10.1016/j.devcel.2024.03.009",
+  "cites": 37,
+  "oa": true,
+  "pmid": "38579717",
+  "authors": [
+   "Lukas Hoermayer",
+   "Juan Carlos Montesinos",
+   "Nicola Trozzi",
+   "Leonhard Spona"
+  ],
+  "platform": "openalex",
+  "tag": "B3",
+  "found_by": [
+   "openalex"
+  ],
+  "block": "3 形态发生·细胞壁力学与各向异性生长",
+  "is_oa": true,
+  "pmcid": null,
+  "pdf": "https://ars.els-cdn.com/content/image/1-s2.0-S1534580724001771-fx1_lrg.jpg",
+  "pdf_host": "publisher",
+  "all_pdf": [
+   "https://ars.els-cdn.com/content/image/1-s2.0-S1534580724001771-fx1_lrg.jpg",
+   "https://serval.unil.ch/resource/serval:BIB_0F9F11EAAA0C.P001/REF.pdf",
+   "https://iris.unil.ch/bitstreams/f635441c-7356-42ee-bfd7-1b6a98bbbd96/download",
+   "https://roderic.uv.es/bitstreams/9b0f2b05-20f3-49b7-aab9-1e4be049a569/download"
+  ]
+ },
+ {
+  "title": "Tethering of cellulose synthase to microtubules dampens mechano-induced cytoskeletal organization in Arabidopsis pavement cells",
+  "year": 2022,
+  "journal": "Nature Plants",
+  "doi": "10.1038/s41477-022-01218-7",
+  "cites": 64,
+  "oa": true,
+  "pmid": "35982303",
+  "authors": [
+   "René Schneider",
+   "David W. Ehrhardt",
+   "Elliot M. Meyerowitz",
+   "Arun Sampathkumar"
+  ],
+  "platform": "openalex",
+  "tag": "B2",
+  "found_by": [
+   "europepmc",
+   "openalex"
+  ],
+  "pmcid": null,
+  "block": "3 形态发生·细胞壁力学与各向异性生长",
+  "is_oa": true,
+  "pdf": "https://www.nature.com/articles/s41477-022-01218-7.pdf",
+  "pdf_host": "publisher",
+  "all_pdf": [
+   "https://www.nature.com/articles/s41477-022-01218-7.pdf"
+  ]
+ },
+ {
+  "title": "Mechanochemical Principles of Spatial and Temporal Patterns in Cells and Tissues",
+  "year": 2022,
+  "journal": "Annual Review of Cell and Developmental Biology",
+  "doi": "10.1146/annurev-cellbio-120420-095337",
+  "cites": 86,
+  "oa": true,
+  "pmid": "35562852",
+  "authors": [
+   "Anaïs Bailles",
+   "Emily W. Gehrels",
+   "Thomas Lecuit"
+  ],
+  "platform": "openalex",
+  "tag": "B3",
+  "found_by": [
+   "openalex"
+  ],
+  "block": "4 耦合机制·模型与新兴技术",
+  "is_oa": true,
+  "pmcid": null,
+  "pdf": "https://www.annualreviews.org/doi/pdf/10.1146/annurev-cellbio-120420-095337",
+  "pdf_host": "publisher",
+  "all_pdf": [
+   "https://www.annualreviews.org/doi/pdf/10.1146/annurev-cellbio-120420-095337"
+  ]
+ },
+ {
+  "title": "Control of Tissue Development by Morphogens",
+  "year": 2023,
+  "journal": "Annual Review of Cell and Developmental Biology",
+  "doi": "10.1146/annurev-cellbio-020823-011522",
+  "cites": 136,
+  "oa": true,
+  "pmid": "37418774",
+  "authors": [
+   "Anna Kicheva",
+   "James Briscoe"
+  ],
+  "platform": "openalex",
+  "tag": "B3",
+  "found_by": [
+   "openalex"
+  ],
+  "block": "4 耦合机制·模型与新兴技术",
+  "is_oa": true,
+  "pmcid": null,
+  "pdf": "https://www.annualreviews.org/doi/pdf/10.1146/annurev-cellbio-020823-011522",
+  "pdf_host": "publisher",
+  "all_pdf": [
+   "https://www.annualreviews.org/doi/pdf/10.1146/annurev-cellbio-020823-011522",
+   "https://research-explorer.ista.ac.at/download/14484/14491/2023_AnnualReviews_Kicheva.pdf"
+  ]
+ },
+ {
+  "title": "A 3D gene expression atlas of the floral meristem based on spatial reconstruction of single nucleus RNA sequencing data",
+  "year": 2022,
+  "journal": "Nature Communications",
+  "doi": "10.1038/s41467-022-30177-y",
+  "cites": 83,
+  "oa": true,
+  "pmid": "35595749",
+  "authors": [
+   "Manuel Neumann",
+   "Xiaocai Xu",
+   "Cezary Smaczniak",
+   "Julia Schumacher"
+  ],
+  "platform": "openalex",
+  "tag": "A1",
+  "found_by": [
+   "europepmc",
+   "openalex"
+  ],
+  "pmcid": null,
+  "block": "4 耦合机制·模型与新兴技术",
+  "is_oa": true,
+  "pdf": "https://www.nature.com/articles/s41467-022-30177-y.pdf",
+  "pdf_host": "publisher",
+  "all_pdf": [
+   "https://www.nature.com/articles/s41467-022-30177-y.pdf"
+  ]
+ },
+ {
+  "title": "Cell- and noncell-autonomous AUXIN RESPONSE FACTOR3 controls meristem proliferation and phyllotactic patterns",
+  "year": 2022,
+  "journal": "Plant Physiology",
+  "doi": "10.1093/plphys/kiac370",
+  "cites": 31,
+  "oa": true,
+  "pmid": "35972411",
+  "is_oa": true,
+  "pmcid": null,
+  "pdf": "https://academic.oup.com/plphys/article-pdf/190/4/2335/47382438/kiac370.pdf",
+  "pdf_host": "publisher",
+  "all_pdf": [
+   "https://academic.oup.com/plphys/article-pdf/190/4/2335/47382438/kiac370.pdf"
+  ]
+ }
+]

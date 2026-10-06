@@ -1,0 +1,539 @@
+rank	score	year	cites	oa	tag	journal	title	doi	pmid
+1	15	2023	436	True	B1	Nature Reviews Molecular Cell Biology	Structure and growth of plant cell walls	10.1038/s41580-023-00691-y	38102449
+2	14.5	2022	169	True	A3	International Journal of Molecular Sciences	Auxin/Cytokinin Antagonistic Control of the Shoot/Root Growth Ratio and Its Relevance for Adaptation to Drought and Nutrient Deficiency Stresses	10.3390/ijms23041933	35216049
+3	12.8	2025	116	True	A2	Nature Reviews Molecular Cell Biology	Mechanisms of auxin action in plant growth and development	10.1038/s41580-025-00851-2	40389696
+4	12.5	2022	194	True	B1	The Plant Cell	The cell biology of primary cell walls during salt stress	10.1093/plcell/koac292	36149287
+5	12.5	2024	192	True	B2	The Plant Cell	The plant cell wall—dynamic, strong, and adaptable—is a natural shapeshifter	10.1093/plcell/koad325	38301734
+6	12.2	2023	154	True	A4	Science	The mechanics of plant morphogenesis	10.1126/science.ade8055	36730409
+7	11.1	2022	131	True	B1	The Plant Cell	Plant–microbe interactions in the apoplast: Communication at the plant cell wall	10.1093/plcell/koac040	35157079
+8	10.8	2022	45	True	A4	Science Advances	Microtubule-based perception of mechanical conflicts controls plant organ morphogenesis	10.1126/sciadv.abm4974	35138892
+9	10.7	2022	44	True	A3	The Plant Cell	A SlCLV3-SlWUS module regulates auxin and ethylene homeostasis in low light-induced tomato flower abscission	10.1093/plcell/koac254	35972422
+10	10.5	2022	385	True	A3	Developmental Cell	A single-cell Arabidopsis root atlas reveals developmental trajectories in wild-type and cell identity mutants	10.1016/j.devcel.2022.01.008	35134336
+11	10.3	2023	87	True	B3	Nature Communications	Growth anisotropy of the extracellular matrix shapes a developing organ	10.1038/s41467-023-36739-y	36869053
+12	10.3	2024	107	True	B3	Annual Review of Biomedical Engineering	Histotripsy: A Method for Mechanical Tissue Ablation with Ultrasound	10.1146/annurev-bioeng-073123-022334	38346277
+13	10	2024	212	True	A3	Plants	Plant Growth Regulation in Cell and Tissue Culture In Vitro	10.3390/plants13020327	38276784
+14	10	2022	255	True	A4	None	Building an extensible cell wall.	10.1093/plphys/kiac184	35460252
+15	10	2022	245	True	B5	Nature Plants	The Cycas genome and the early evolution of seed plants	10.1038/s41477-022-01129-7	35437001
+16	9.8	2022	77	False	A4	Nature Plants	Specification of leaf dorsiventrality via a prepatterned binary readout of a uniform auxin input	10.1038/s41477-022-01111-3	35318449
+17	9.8	2022	147	True	B5	Frontiers in Plant Science	The Plant Invertase/Pectin Methylesterase Inhibitor Superfamily	10.3389/fpls.2022.863892	35401607
+18	9.8	2023	136	True	B3	Annual Review of Cell and Developmental Biology	Control of Tissue Development by Morphogens	10.1146/annurev-cellbio-020823-011522	37418774
+19	9.8	2023	155	True	A3	Journal of Experimental Botany	Auxin and abiotic stress responses	10.1093/jxb/erad325	37591508
+20	9.7	2023	143	True	A1	Proceedings of the National Academy of Sciences	Spatial transcriptomics reveals light-induced chlorenchyma cells involved in promoting shoot regeneration in tomato callus	10.1073/pnas.2310163120	37703282
+21	9.6	2024	62	True	B5	Frontiers in Plant Science	Enigmatic role of auxin response factors in plant growth and stress tolerance	10.3389/fpls.2024.1398818	38903418
+22	9.5	2024	20	True	A2	Proceedings of the National Academy of Sciences	A CUC1/auxin genetic module links cell polarity to patterned tissue growth and leaf shape diversity in crucifer plants	10.1073/pnas.2321877121	38905239
+23	9.5	2022	140	True	B3	Frontiers in Plant Science	Molecular Mechanisms of Plant Responses to Salt Stress	10.3389/fpls.2022.934877	35832230
+24	9.4	2022	99	True	B5	Seminars in Cell and Developmental Biology	From model organism to application: Bacteria-induced growth and development of the green seaweed Ulva and the potential of microbe leveraging in algal aquaculture	10.1016/j.semcdb.2022.04.007	35459546
+25	9.3	2022	127	True	B1	Molecular Plant	Cellulose synthesis in land plants	10.1016/j.molp.2022.12.015	36564945
+26	9.3	2023	17	True	B2	Cell Reports	Spatial consistency of cell growth direction during organ morphogenesis requires CELLULOSE SYNTHASE INTERACTIVE1	10.1016/j.celrep.2023.112689	37352099
+27	9.3	2022	127	True	B3	New Phytologist	Revisiting the relationship between turgor pressure and plant cell growth	10.1111/nph.18683	36527246
+28	9.3	2022	86	True	B3	Annual Review of Cell and Developmental Biology	Mechanochemical Principles of Spatial and Temporal Patterns in Cells and Tissues	10.1146/annurev-cellbio-120420-095337	35562852
+29	9.2	2022	64	True	B2	Nature Plants	Tethering of cellulose synthase to microtubules dampens mechano-induced cytoskeletal organization in Arabidopsis pavement cells	10.1038/s41477-022-01218-7	35982303
+30	9.0	2022	30	True	A1	Development	Interactive CLV3, CLE16, and CLE17 signaling mediates stem cell homeostasis in the Arabidopsis shoot apical meristem	10.1242/dev.200787	36111520
+31	8.8	2023	87	True	A3	Trends in Plant Science	Auxin–cytokinin interplay shapes root functionality under low-temperature stress	10.1016/j.tplants.2022.12.004	36599768
+32	8.8	2022	7	None	B2	Cellulose	Structural and mechanical anisotropy in rheotactically aligned bacterial cellulose	10.1007/s10570-022-04784-3	
+33	8.8	2022	46	True	B1	International Journal of Molecular Sciences	Arabinogalactan Proteins: Focus on the Role in Cellulose Synthesis and Deposition during Plant Cell Wall Biogenesis	10.3390/ijms23126578	35743022
+34	8.7	2023	13	True	B1	Biomacromolecules	Regiospecific Cellulose Orientation and Anisotropic Mechanical Property in Plant Cell Walls	10.1021/acs.biomac.3c00538	37704189
+35	8.6	2024	82	True	B1	Frontiers in Cell and Developmental Biology	Modeling the extracellular matrix in cell migration and morphogenesis: a guide for the curious biologist	10.3389/fcell.2024.1354132	38495620
+36	8.6	2025	2	None	B1	Cellulose	Mechanics of plant epidermal cell wall: effect of anisotropic alignment of cellulose microfibrils in the junction region	10.1007/s10570-025-06528-5	
+37	8.6	2022	31	True	A1	PLANT PHYSIOLOGY	Cell- and noncell-autonomous AUXIN RESPONSE FACTOR3 controls meristem proliferation and phyllotactic patterns	10.1093/plphys/kiac370	35972411
+38	8.5	2023	80	True	A1	Science Advances	WUSCHEL-RELATED HOMEOBOX 13 suppresses de novo shoot regeneration via cell fate control of pluripotent callus	10.1126/sciadv.adg6983	37418524
+39	8.4	2023	19	True	A1	Development	Local auxin biosynthesis promotes shoot patterning and stem cell differentiation in Arabidopsis shoot apex	10.1242/dev.202014	38054970
+40	8.3	2024	37	True	B3	Developmental Cell	Mechanical forces in plant tissue matrix orient cell divisions via microtubule stabilization	10.1016/j.devcel.2024.03.009	38579717
+41	8.3	2022	87	True	B4	Nature Physics	Macromolecular crowding limits growth under pressure	10.1038/s41567-022-01506-1	37152719
+42	8.3	2022	76	True	B2	Developmental Cell	Root twisting drives halotropism via stress-induced microtubule reorientation	10.1016/j.devcel.2022.09.012	36243013
+43	8.2	2023	34	True	B1	The Plant Cell	Anisotropic cell growth at the leaf base promotes age-related changes in leaf shape in Arabidopsis thaliana	10.1093/plcell/koad031	36748203
+44	8.2	2022	83	True	A1	Nature Communications	A 3D gene expression atlas of the floral meristem based on spatial reconstruction of single nucleus RNA sequencing data	10.1038/s41467-022-30177-y	35595749
+45	8.2	2024	83	True	B1	Nature Plants	Rapid alkalinization factor 22 has a structural and signalling role in root hair cell wall assembly	10.1038/s41477-024-01637-8	38467800
+46	8.1	2022	31	True	A1	The Plant Cell	De novo stem cell establishment in meristems requires repression of organ boundary cell fate	10.1093/plcell/koac269	36029254
+47	8.1	2022	51	True	B2	Current Biology	Cryo-electron tomography of the onion cell wall shows bimodally oriented cellulose fibers and reticulated homogalacturonan networks	10.1016/j.cub.2022.04.024	35508170
+48	8.0	2022	30	True	A1	Frontiers in Plant Science	Meristem Initiation and de novo Stem Cell Formation	10.3389/fpls.2022.891228	35557739
+49	8	2022	229	True	A3	None	microRNAs and Their Roles in Plant Development.	10.3389/fpls.2022.824240	35251094
+50	8	2023	164	True	A3	None	Burning questions for a warming and changing world: 15 unknowns in plant abiotic stress.	10.1093/plcell/koac263	36018271
+51	8	2024	196	True	A3	None	Proline and ROS: A Unified Mechanism in Plant Development and Stress Response?	10.3390/plants14010002	39795262
+52	8	2023	347	True	A5	None	&lt;i&gt;cis&lt;/i&gt;-Regulatory Elements in Plant Development, Adaptation, and Evolution.	10.1146/annurev-arplant-070122-030236	36608347
+53	8	2023	184	False	B1	None	Vascular mechanotransduction.	10.1152/physrev.00053.2021	36603156
+54	8	2023	351	True	B1	None	Biomimetic natural biomaterials for tissue engineering and regenerative medicine: new biosynthesis methods, recent advances, and emerging applications.	10.1186/s40779-023-00448-w	36978167
+55	8	2022	361	True	B3	Frontiers in Bioengineering and Biotechnology	Role of fibroblasts in wound healing and tissue remodeling on Earth and in space	10.3389/fbioe.2022.958381	36267456
+56	8	2022	752	True	B3	Signal Transduction and Targeted Therapy	The Hippo signalling pathway and its implications in human health and diseases	10.1038/s41392-022-01191-9	36347846
+57	8	2023	370	True	B3	ACS Nano	Sensing in Soft Robotics	10.1021/acsnano.3c04089	37530475
+58	8	2024	407	True	B3	Signal Transduction and Targeted Therapy	Cell–cell communication: new insights and clinical implications	10.1038/s41392-024-01888-z	39107318
+59	8	2024	3838	True	B3	None	Minimal information for studies of extracellular vesicles (MISEV2023): From basic to advanced approaches.	10.1002/jev2.12404	38326288
+60	8	2022	951	True	B3	None	The clinician's guide to prevention and treatment of osteoporosis.	10.1007/s00198-021-05900-y	35478046
+61	8	2023	369	True	B3	None	Pathophysiological mechanisms and therapeutic approaches in obstructive sleep apnea syndrome.	10.1038/s41392-023-01496-3	37230968
+62	8	2022	341	True	B3	None	The landscape of aging.	10.1007/s11427-022-2161-3	36066811
+63	8	2024	300	True	B3	None	Tumor initiation and early tumorigenesis: molecular mechanisms and interventional targets.	10.1038/s41392-024-01848-7	38890350
+64	8	2023	275	False	B3	None	International Consensus Statement on Obstructive Sleep Apnea.	10.1002/alr.23079	36068685
+65	8	2024	259	True	B3	None	Nanotechnology's frontier in combatting infectious and inflammatory diseases: prevention and treatment.	10.1038/s41392-024-01745-z	38378653
+66	8	2025	209	True	B3	None	Invasion and metastasis in cancer: molecular insights and therapeutic targets.	10.1038/s41392-025-02148-4	39979279
+67	8	2023	179	True	B3	None	The Concise Guide to PHARMACOLOGY 2023/24: Ion channels.	10.1111/bph.16178	38123150
+68	8	2022	163	True	B5	Plant Communications	Single-cell and spatial multi-omics in the plant sciences: Technical advances, applications, and perspectives	10.1016/j.xplc.2022.100508	36540021
+69	8	2025	1064	False	B5	None	2025 Heart Disease and Stroke Statistics: A Report of US and Global Data From the American Heart Association.	10.1161/cir.0000000000001303	39866113
+70	8	2022	727	True	B5	None	An introduction to spatial transcriptomics for biomedical research.	10.1186/s13073-022-01075-1	35761361
+71	8	2022	244	False	B5	None	Biogenesis and Regulatory Roles of Circular RNAs.	10.1146/annurev-cellbio-120420-125117	35609906
+72	8	2023	222	True	B5	None	Going circular: history, present, and future of circRNAs in cancer.	10.1038/s41388-023-02780-w	37587333
+73	8	2022	215	True	B5	None	Health Benefits and Pharmacological Properties of Stigmasterol.	10.3390/antiox11101912	36290632
+74	8	2023	200	True	B5	None	Nasopharyngeal carcinoma ecology theory: cancer as multidimensional spatiotemporal "unity of ecology and evolution" pathological ecosystem.	10.7150/thno.82690	37056571
+75	8	2023	546	True	C2	Journal of Integrative Plant Biology	Reactive oxygen species: Multidimensional regulators of plant adaptation to abiotic stress and development	10.1111/jipb.13601	38116735
+76	7.9	2023	28	True	A1	International Journal of Molecular Sciences	Stem Cells: Engines of Plant Growth and Development	10.3390/ijms241914889	37834339
+77	7.9	2023	38	True	A3	Nature Plants	A network of CLAVATA receptors buffers auxin-dependent meristem maintenance	10.1038/s41477-023-01485-y	37550370
+78	7.9	2024	38	True	B5	Nature Materials	Quantifying mechanical forces during vertebrate morphogenesis	10.1038/s41563-024-01942-9	38969783
+79	7.8	2024	26	True	A2	The Plant Cell	KNUCKLES regulates floral meristem termination by controlling auxin distribution and cytokinin activity	10.1093/plcell/koae312	39576002
+80	7.8	2022	156	True	A3	None	Roles of microRNAs in abiotic stress response and characteristics regulation of plant.	10.3389/fpls.2022.919243	36092392
+81	7.8	2022	155	False	B5	None	Mechanism of Action of Ribosomally Synthesized and Post-Translationally Modified Peptides.	10.1021/acs.chemrev.2c00210	36049139
+82	7.7	2022	23	None	B2	Proceedings of the National Academy of Sciences	Microtubule nucleation complex behavior is critical for cortical array homogeneity
+                    <i>and</i>
+                    xylem wall patterning	10.1073/pnas.2203900119	
+83	7.6	2023	52	True	B1	Annual Review of Cell and Developmental Biology	Tissue Morphogenesis Through Dynamic Cell and Matrix Interactions	10.1146/annurev-cellbio-020223-031019	37315160
+84	7.5	2025	21	True	B1	Frontiers in Plant Science	Integrative dynamics of cell wall architecture and plant growth under salt stress	10.3389/fpls.2025.1644412	40810018
+85	7.5	2023	151	True	B3	Frontiers in Immunology	Monocyte-endothelial cell interactions in vascular and tissue remodeling	10.3389/fimmu.2023.1196033	37483594
+86	7.5	2022	149	True	C2	Plant Biotechnology Journal	Application of developmental regulators to improve in planta or in vitro transformation in plants	10.1111/pbi.13837	35524453
+87	7.3	2022	47	True	A3	New Phytologist	CLAVATA modulates auxin homeostasis and transport to regulate stem cell identity and plant shape in a moss	10.1111/nph.17969	35032334
+88	7.3	2022	97	True	B5	International Journal of Molecular Sciences	MicroRNA398: A Master Regulator of Plant Development and Stress Responses	10.3390/ijms231810803	36142715
+89	7.3	2022	57	True	C1	Frontiers in Plant Science	The flowering transition pathways converge into a complex gene regulatory network that underlies the phase changes of the shoot apical meristem in Arabidopsis thaliana	10.3389/fpls.2022.852047	36017258
+90	7.3	2023	66	True	A4	Genome biology	Single-cell resolution analysis reveals the preparation for reprogramming the fate of stem cell niche in cotton lateral meristem	10.1186/s13059-023-03032-6	37626404
+91	7.2	2022	75	True	A3	Current Biology	Cytokinin promotes growth cessation in the Arabidopsis root	10.1016/j.cub.2022.03.019	35354067
+92	7.2	2022	145	True	B5	None	Natural Hydrogel-Based Bio-Inks for 3D Bioprinting in Tissue Engineering: A Review.	10.3390/gels8030179	35323292
+93	7.0	2026	0	None	A1	Molecular Plant	A CLV3-WUS positive feedback loop in individual cells enhances shoot stem cell thermotolerance in Arabidopsis	10.1016/j.molp.2026.07.009	
+94	7.0	2022	80	True	A3	PLANT PHYSIOLOGY	Abscisic acid promotes auxin biosynthesis to inhibit primary root elongation in rice	10.1093/plphys/kiac586	36535001
+95	7.0	2022	60	True	A3	None	Roles of Auxin in the Growth, Development, and Stress Tolerance of Horticultural Plants.	10.3390/cells11172761	36078168
+96	7.0	2024	10	None	B5	Frontiers in Plant Science	An insight into the roles of ubiquitin-specific proteases in plants: development and growth, morphogenesis, and stress response	10.3389/fpls.2024.1396634	
+97	7.0	2022	90	True	C1	International Journal of Molecular Sciences	Single-Cell RNA Sequencing for Plant Research: Insights and Possible Benefits	10.3390/ijms23094497	35562888
+98	7.0	2024	19	True	A1	Nature Communications	The peptidase DA1 cleaves and destabilizes WUSCHEL to control shoot apical meristem size	10.1038/s41467-024-48361-7	38821962
+99	7.0	2025	139	False	B3	None	Surface-Enhanced Raman Spectroscopy for Biomedical Applications: Recent Advances and Future Challenges.	10.1021/acsami.4c17502	39991932
+100	6.8	2023	17	None	B2	Nature Communications	Actomyosin and CSI1/POM2 cooperate to deliver cellulose synthase from Golgi to cortical microtubules in Arabidopsis	10.1038/s41467-023-43325-9	
+101	6.8	2022	56	True	A4	None	Auxin biosynthesis maintains embryo identity and growth during BABY BOOM-induced somatic embryogenesis.	10.1093/plphys/kiab558	34865162
+102	6.8	2024	136	True	B5	None	RNA modifications in cellular metabolism: implications for metabolism-targeted therapy and immunotherapy.	10.1038/s41392-024-01777-5	38531882
+103	6.8	2024	55	True	A3	AoB Plants	Humic acid improves wheat growth by modulating auxin and cytokinin biosynthesis pathways	10.1093/aobpla/plae018	38601216
+104	6.8	2022	135	True	A3	None	Cadmium Phytotoxicity, Tolerance, and Advanced Remediation Approaches in Agricultural Soils; A Comprehensive Review.	10.3389/fpls.2022.773815	35371142
+105	6.8	2022	95	True	B3	None	Rapid growth of Moso bamboo (Phyllostachys edulis): Cellular roadmaps, transcriptome dynamics, and environmental factors.	10.1093/plcell/koac193	35766883
+106	6.7	2025	134	True	B3	None	Nanoparticle Therapeutics in Clinical Perspective: Classification, Marketed Products, and Regulatory Landscape.	10.1002/smll.202502315	40454890
+107	6.7	2022	3	None	A1	Chaos: An Interdisciplinary Journal of Nonlinear Science	Nucleation of stem cell domains in a bistable activator–inhibitor model of the shoot apical meristem	10.1063/5.0093841	
+108	6.7	2023	23	True	A5	Development	Gibberellin and miRNA156-targeted SlSBP genes synergistically regulate tomato floral meristem determinacy and ovary patterning	10.1242/dev.201961	37823342
+109	6.6	2022	52	None	A1	Current Opinion in Plant Biology	Hormonal control of cell identity and growth in the shoot apical meristem	10.1016/j.pbi.2021.102111	
+110	6.6	2024	132	True	B5	None	Annexins-a family of proteins with distinctive tastes for cell signaling and membrane dynamics.	10.1038/s41467-024-45954-0	38383560
+111	6.5	2022	91	False	A2	None	Fourteen Stations of Auxin.	10.1101/cshperspect.a039859	34400554
+112	6.5	2022	91	True	B4	Plants	Plant Cell Wall Integrity Perturbations and Priming for Defense	10.3390/plants11243539	36559656
+113	6.5	2022	1	None	C1	Developmental Cell	Shoot meristem progenitors emerge from mechanical heterogeneities	10.1016/j.devcel.2022.08.004	
+114	6.5	2024	40	True	A1	International Journal of Molecular Sciences	The Shoot Apical Meristem: An Evolutionary Molding of Higher Plants	10.3390/ijms25031519	38338798
+115	6.5	2026	0	None	A3	Plant Cell, Tissue and Organ Culture (PCTOC)	Shoot apical meristem-dependent adventitious bud induction from embryo axes of castor bean (Ricinus communis L.) via optimized cytokinin-auxin ratio	10.1007/s11240-026-03475-2	
+116	6.5	2026	0	None	A3	Science Advances	Brassinosteroid signaling regulates shoot apical meristem homeostasis via orchestrating cytokinin and WUSCHEL activity	10.1126/sciadv.aed5120	
+117	6.5	2023	0	None	B1	The Plant Cell	Correction to: PECTATE LYASE LIKE12 patterns the guard cell wall to coordinate turgor pressure and wall mechanics for proper stomatal function in Arabidopsis	10.1093/plcell/koad302	
+118	6.5	2026	0	None	B1	Plant Science	Leaf cell wall mechanics reveal contrasting patterns of structural persistence and tissue plasticity in two temperate tree species	10.1016/j.plantsci.2026.113215	
+119	6.5	2025	130	True	B5	None	Gut Microbiota Dysbiosis: Pathogenesis, Diseases, Prevention, and Therapy.	10.1002/mco2.70168	40255918
+120	6.5	2024	79	True	A5	The Plant Cell	Reflections on the ABC model of flower development	10.1093/plcell/koae044	38345422
+121	6.5	2025	29	True	B3	Nature Reviews Molecular Cell Biology	Shaping epithelial tissues by stem cell mechanics in development and cancer	10.1038/s41580-024-00821-0	39881165
+122	6.4	2023	78	True	A2	Frontiers in Plant Science	Overview of molecular mechanisms of plant leaf development: a systematic review	10.3389/fpls.2023.1293424	38146273
+123	6.4	2024	28	True	A2	Annual Review of Plant Biology	Leaf Vein Patterning	10.1146/annurev-arplant-062923-030348	38382907
+124	6.3	2023	27	True	A1	eLife	The Arabidopsis SHORTROOT network coordinates shoot apical meristem development with auxin-dependent lateral organ initiation	10.7554/elife.83334	37862096
+125	6.3	2023	17	None	A1	Current Biology	Control of stem cell behavior by CLE-JINGASA signaling in the shoot apical meristem in Marchantia polymorpha	10.1016/j.cub.2023.10.054	
+126	6.3	2022	37	None	C2	Cells	miR172 Regulates WUS during Somatic Embryogenesis in Arabidopsis via AP2	10.3390/cells11040718	
+127	6.3	2023	6	None	B5	Quantitative Plant Biology	Model-based reconstruction of whole organ growth dynamics reveals invariant patterns in leaf morphogenesis	10.1017/qpb.2022.23	
+128	6.2	2023	45	True	A4	None	Auxin-dependent regulation of cell division rates governs root thermomorphogenesis.	10.15252/embj.2022111926	37071525
+129	6.2	2022	45	True	B2	Open Biology	Secondary cell wall patterning—connecting the dots, pits and helices	10.1098/rsob.210208	35506204
+130	6.2	2022	125	True	B5	None	Gene body methylation in cancer: molecular mechanisms and clinical applications.	10.1186/s13148-022-01382-9	36443876
+131	6.2	2025	4	None	A2	Nature Communications	Stochastic gene expression in auxin signaling in the floral meristem of Arabidopsis thaliana	10.1038/s41467-025-59943-4	
+132	6.2	2024	124	True	B3	Chemical Engineering Journal	Engineering multifunctional dynamic hydrogel for biomedical and tissue regenerative applications	10.1016/j.cej.2024.150403	
+133	6.1	2022	32	None	A3	Proceedings of the National Academy of Sciences	Cytokinin–CLAVATA cross-talk is an ancient mechanism regulating shoot meristem homeostasis in land plants	10.1073/pnas.2116860119	
+134	6.1	2022	32	True	B1	Journal of Cell Science	Mechanobiology of the cell wall – insights from tip-growing plant and fungal cells	10.1242/jcs.259208	36326245
+135	6.1	2022	122	True	B1	None	Sculpting tissues by phase transitions.	10.1038/s41467-022-28151-9	35115507
+136	6.1	2026	2	None	B5	Current Opinion in Plant Biology	The coupling of local and global growth patterns governs leaf morphogenesis	10.1016/j.pbi.2026.102872	
+137	6.0	2025	31	None	A1	Developmental Cell	ROS burst prolongs transcriptional condensation to slow shoot apical meristem maturation and achieve heat-stress resilience in tomato	10.1016/j.devcel.2025.03.007	
+138	6.0	2022	71	True	A2	The Plant Cell	Molecular mechanisms underlying leaf development, morphological diversification, and beyond	10.1093/plcell/koac118	35441681
+139	6.0	2024	31	True	B1	Proceedings of the National Academy of Sciences	The nonlinear mechanics of highly extensible plant epidermal cell walls	10.1073/pnas.2316396121	38165937
+140	6.0	2022	71	True	B1	Journal of Cell Science	Exploring cell and tissue mechanics with optical tweezers	10.1242/jcs.259355	35942913
+141	6.0	2024	31	True	B2	Science Advances	FERONIA adjusts CC1 phosphorylation to control microtubule array behavior in response to salt stress	10.1126/sciadv.adq8717	39612333
+142	6.0	2023	31	None	B4	Plant, Cell &amp; Environment	High vapour pressure deficit enhances turgor limitation of stem growth in an Asian tropical rainforest tree	10.1111/pce.14661	
+143	6.0	2023	41	True	B4	None	Cell wall dynamics stabilize tip growth in a filamentous fungus.	10.1371/journal.pbio.3001981	36649360
+144	6.0	2026	0	None	A1	BioSystems	Auxin accumulates in the Shoot Apical Meristem where the phyllotaxis inhibition potential exhibits local minima	10.1016/j.biosystems.2026.105817	
+145	6.0	2022	60	True	A2	Molecular Plant	Leaf morphogenesis: The multifaceted roles of mechanics	10.1016/j.molp.2022.05.015	35662674
+146	6.0	2022	40	True	A2	None	Developmental regulation of leaf venation patterns: monocot versus eudicots and the role of auxin.	10.1111/nph.17955	35020214
+147	6.0	2024	70	True	A3	The Plant Cell	Cytokinin: From autoclaved DNA to two-component signaling	10.1093/plcell/koad327	38163638
+148	6.0	2023	30	True	B1	International Journal of Molecular Sciences	Signals and Their Perception for Remodelling, Adjustment and Repair of the Plant Cell Wall	10.3390/ijms24087417	37108585
+149	6.0	2022	40	True	B1	Agronomy	The Impact of Cell Wall Feruloylation on Plant Growth, Responses to Environmental Stress, Plant Pathogens and Cell Wall Degradability	10.3390/agronomy12081847	
+150	6.0	2023	0	None	B1	Phycological Research	Anisotropic cell growth and cell wall structure in lenticular cell of <i>Valonia utricularis</i> (Ulvophyceae)	10.1111/pre.12520	
+151	6.0	2023	39	True	A1	Nature Communications	Nitric oxide controls shoot meristem activity via regulation of DNA methylation	10.1038/s41467-023-43705-1	38049411
+152	6.0	2023	29	True	A2	Cells	Nitrate, Auxin and Cytokinin—A Trio to Tango	10.3390/cells12121613	37371083
+153	6.0	2022	49	True	B5	Current Biology	Muscular hydraulics drive larva-polyp morphogenesis	10.1016/j.cub.2022.08.065	36115340
+154	5.8	2023	27	True	A2	Proceedings of the National Academy of Sciences	Genetic robustness control of auxin output in priming organ initiation	10.1073/pnas.2221606120	37399382
+155	5.8	2022	77	False	A3	None	Auxin in Root Development.	10.1101/cshperspect.a039933	34312248
+156	5.8	2024	25	True	A1	Plant and Cell Physiology	The Function of Florigen in the Vegetative-to-Reproductive Phase Transition in and around the Shoot Apical Meristem	10.1093/pcp/pcae001	38179836
+157	5.8	2024	25	True	B2	Plant Cell & Environment	AtCIPK20 regulates microtubule stability to mediate stomatal closure under drought stress in Arabidopsis	10.1111/pce.15112	39189953
+158	5.7	2022	114	True	A2	None	Using positional information to provide context for biological image analysis with MorphoGraphX 2.0.	10.7554/elife.72601	35510843
+159	5.7	2023	33	None	A2	Journal of Experimental Botany	The ratio of auxin to cytokinin controls leaf development and meristem initiation in
+                    <i>Physcomitrium patens</i>	10.1093/jxb/erad299	
+160	5.7	2024	33	True	A4	Nature Communications	A quantitative gibberellin signaling biosensor reveals a role for gibberellins in internode specification at the shoot apical meristem	10.1038/s41467-024-48116-4	38719832
+161	5.7	2024	73	True	B1	Journal of Experimental Botany	Plant cell wall structure and dynamics in plant–pathogen interactions and pathogen defence	10.1093/jxb/erae442	39470457
+162	5.7	2022	23	True	B2	The Plant Cell	HY5 inhibits lateral root initiation in Arabidopsis through negative regulation of the microtubule-stabilizing protein TPXL5	10.1093/plcell/koac358	36512471
+163	5.6	2023	62	True	A1	Frontiers in Plant Science	Cytokinins – regulators of de novo shoot organogenesis	10.3389/fpls.2023.1239133	37662179
+164	5.5	2021	111	True	A3	None	Phytohormones Trigger Drought Tolerance in Crop Plants: Outlook and Future Perspectives.	10.3389/fpls.2021.799318	35095971
+165	5.5	2024	71	True	A5	Nature Plants	A spatial transcriptome map of the developing maize ear	10.1038/s41477-024-01683-2	38745100
+166	5.5	2024	31	True	B4	Nature Plants	A self-regulatory cell-wall-sensing module at cell edges controls plant growth	10.1038/s41477-024-01629-8	38454063
+167	5.5	2025	1	None	B5	Current Biology	Plant morphogenesis: What drives growth?	10.1016/j.cub.2025.02.049	
+168	5.5	2024	10	None	B1	Journal of Plant Physiology	Impact of the TOR pathway on plant growth via cell wall remodeling	10.1016/j.jplph.2024.154202	
+169	5.5	2024	110	True	B1	None	Extracellular Matrix Cues Regulate Mechanosensing and Mechanotransduction of Cancer Cells.	10.3390/cells13010096	38201302
+170	5.5	2023	69	True	A3	Nature Communications	Petal size is controlled by the MYB73/TPL/HDA19-miR159-CKX6 module regulating cytokinin catabolism in Rosa hybrida	10.1038/s41467-023-42914-y	37925502
+171	5.5	2024	29	True	A4	Nature Communications	Two orthogonal differentiation gradients locally coordinate fruit morphogenesis	10.1038/s41467-024-47325-1	38575617
+172	5.5	2023	19	True	C2	Trends in Plant Science	Re-examining meristems through the lens of evo-devo	10.1016/j.tplants.2023.11.003	38040554
+173	5.4	2023	18	True	A1	Cells and Development	3D imaging reveals apical stem cell responses to ambient temperature	10.1016/j.cdev.2023.203850	37182581
+174	5.4	2024	28	True	A1	Nature Communications	Coordination of shoot apical meristem shape and identity by APETALA2 during floral transition in Arabidopsis	10.1038/s41467-024-51341-6	39138172
+175	5.4	2024	8	True	B2	PLANT PHYSIOLOGY	A cellulose synthesis inhibitor affects cellulose synthase complex secretion and cortical microtubule dynamics	10.1093/plphys/kiae232	38833284
+176	5.4	2024	58	True	C1	Trends in Plant Science	Unraveling plant–microbe symbioses using single-cell and spatial transcriptomics	10.1016/j.tplants.2024.06.008	38991926
+177	5.3	2023	107	False	B3	None	Antidepressants for pain management in adults with chronic pain: a network meta-analysis.	10.1002/14651858.cd014682.pub2	37160297
+178	5.3	2024	37	True	B4	Current Biology	Xyloglucan deficiency leads to a reduction in turgor pressure and changes in cell wall properties, affecting early seedling establishment	10.1016/j.cub.2024.04.016	38677280
+179	5.3	2022	66	False	B1	None	Hydrostatic pressure as a driver of cell and tissue morphogenesis.	10.1016/j.semcdb.2022.04.021	35534334
+180	5.3	2025	16	True	C1	Developmental Cell	snRNA-seq analysis of the moss Physcomitrium patens identifies a conserved cytokinin-ESR module promoting pluripotent stem cell identity	10.1016/j.devcel.2025.02.006	40049168
+181	5.3	2022	66	True	C2	None	PLETHORA-WOX5 interaction and subnuclear localization control Arabidopsis root stem cell maintenance.	10.15252/embr.202154105	35373503
+182	5.2	2022	15	None	A5	Frontiers in Plant Science	Histone Acetyltransferase SlGCN5 Regulates Shoot Meristem and Flower Development in Solanum lycopersicum	10.3389/fpls.2021.805879	
+183	5.2	2024	104	True	B5	None	Genomes of multicellular algal sisters to land plants illuminate signaling network evolution.	10.1038/s41588-024-01737-3	38693345
+184	5.2	2023	53	True	C1	Frontiers in Plant Science	Opportunities and challenges in the application of single-cell and spatial transcriptomics in plants	10.3389/fpls.2023.1185377	37636094
+185	5.1	2022	22	None	A3	Journal of Experimental Botany	ORESARA 15, a PLATZ transcription factor, controls root meristem size through auxin and cytokinin signalling-related pathways	10.1093/jxb/erac050	
+186	5.1	2022	62	True	A4	None	Cycling in a crowd: Coordination of plant cell division, growth, and cell fate.	10.1093/plcell/koab222	34498091
+187	5.1	2022	22	True	B5	Journal of The Royal Society Interface	Localized growth and remodelling drives spongy mesophyll morphogenesis	10.1098/rsif.2022.0602	36475391
+188	5.1	2022	2	None	B5	eLife	A dynamic and expandable digital 3D-atlas maker for monitoring the temporal changes in tissue growth during hindbrain morphogenesis	10.7554/elife.78300	
+189	5.1	2022	12	None	C2	Plant, Cell &amp; Environment	Homeobox transcription factors OsZHD1 and OsZHD2 induce inflorescence meristem activity at floral transition in rice	10.1111/pce.14438	
+190	5.0	2022	21	True	A4	The Plant Journal	Cell growth dynamics in two types of apical meristems in fern gametophytes	10.1111/tpj.15784	35451138
+191	5.0	2024	11	True	A5	Plant and Cell Physiology	JOINTLESS Maintains Inflorescence Meristem Identity in Tomato	10.1093/pcp/pcae046	38635460
+192	5.0	2025	1	None	B2	Plant Physiology	The N-terminal domain of COMPANION OF CELLULOSE SYNTHASE1 promotes microtubule array formation in Arabidopsis	10.1093/plphys/kiaf392	
+193	5.0	2022	21	True	B4	Quantitative Plant Biology	Turgor pressure change in stomatal guard cells arises from interactions between water influx and mechanical responses of their cell walls	10.1017/qpb.2022.8	37077969
+194	5.0	2026	1	None	B4	Plant Physiology	Mechanical constraint causes lower turgor, thicker walls, and faster growth in Arabidopsis root hairs	10.1093/plphys/kiag279	
+195	5.0	2024	100	True	A3	Plant Communications	Spatially distributed cytokinins: Metabolism, signaling, and transport	10.1016/j.xplc.2024.100936	38689499
+196	5.0	2024	20	True	B1	Plants	Heterogeneity in Mechanical Properties of Plant Cell Walls	10.3390/plants13243561	39771259
+197	5.0	2024	10	True	B2	Proceedings of the National Academy of Sciences	A transient radial cortical microtubule array primes cell division in Arabidopsis	10.1073/pnas.2320470121	38990951
+198	5.0	2023	100	True	C1	Genome biology	Single-cell transcriptomics unveils xylem cell development and evolution	10.1186/s13059-022-02845-1	36624504
+199	5.0	2023	100	True	C1	Genome biology	Asymmetric gene expression and cell-type-specific regulatory networks in the root of bread wheat revealed by single-cell multiomics analysis	10.1186/s13059-023-02908-x	37016448
+200	5.0	2022	70	True	C1	Development	Single-nuclei transcriptome analysis of the shoot apex vascular system differentiation in Populus	10.1242/dev.200632	36178121
+201	5.0	2023	99	True	C1	Plant Biotechnology Journal	Single‐cell RNA sequencing profiles reveal cell type‐specific transcriptional regulation networks conditioning fungal invasion in maize roots	10.1111/pbi.14097	37349934
+202	4.9	2023	38	True	A1	Molecular Plant	Cultivating potential: Harnessing plant stem cells for agricultural crop improvement	10.1016/j.molp.2023.12.014	38130059
+203	4.9	2022	8	None	A3	Plant and Cell Physiology	Integration of Auxin, Brassinosteroid and Cytokinin in the Regulation of Rice Yield	10.1093/pcp/pcac149	
+204	4.9	2022	58	True	B1	Quantitative Plant Biology	Expansin-mediated developmental and adaptive responses: A matter of cell wall biomechanics?	10.1017/qpb.2022.6	37077967
+205	4.9	2024	98	True	C1	None	A suberized exodermis is required for tomato drought tolerance.	10.1038/s41477-023-01567-x	38168610
+206	4.8	2024	7	True	A1	Cell Reports	Actin-mediated avoidance of tricellular junction influences global topology at the Arabidopsis shoot apical meristem	10.1016/j.celrep.2024.114844	39418163
+207	4.8	2024	7	None	C1	Plant, Cell &amp; Environment	Leaf and shoot apical meristem transcriptomes of quinoa (<i>Chenopodium quinoa</i> Willd.) in response to photoperiod and plant development	10.1111/pce.14864	
+208	4.8	2025	16	True	A1	None	How meristems shape plant architecture in cereals-Cereal Stem Cell Systems (CSCS) Consortium.	10.1093/plcell/koaf150	40578304
+209	4.8	2022	15	True	A1	Agronomy	Paradigm and Framework of WUS-CLV Feedback Loop in Stem Cell Niche for SAM Maintenance and Cell Identity Transition	10.3390/agronomy12123132	
+210	4.8	2024	15	True	A2	Nature Communications	Tradeoff between speed and robustness in primordium initiation mediated by auxin-CUC1 interaction	10.1038/s41467-024-50172-9	39003301
+211	4.8	2022	55	True	A3	None	Salicylic Acid in Root Growth and Development.	10.3390/ijms23042228	35216343
+212	4.8	2024	35	True	A5	Molecular Plant	Progressive meristem and single-cell transcriptomes reveal the regulatory mechanisms underlying maize inflorescence development and sex differentiation	10.1016/j.molp.2024.06.007	38877701
+213	4.8	2023	55	True	B1	None	Evidence that endosperm turgor pressure both promotes and restricts seed growth and size.	10.1038/s41467-022-35542-5	36604410
+214	4.7	2025	14	True	B1	Nature Communications	Fibrous network nature of plant cell walls enables tunable mechanics for development	10.1038/s41467-025-62844-1	40813759
+215	4.7	2024	14	None	B1	Journal of Plant Growth Regulation	Algal Growth and Morphogenesis-Promoting Factors Released by Cold-Adapted Bacteria Contribute to the Resilience and Morphogenesis of the Seaweed Ulva (Chlorophyta) in Antarctica (Potter Cove)	10.1007/s00344-024-11507-4	
+216	4.7	2024	14	True	C2	The Plant Journal	The WOX9 ‐ WUS modules are indispensable for the maintenance of stem cell homeostasis in Arabidopsis thaliana	10.1111/tpj.17024	39269929
+217	4.7	2024	13	True	A1	Journal of Experimental Botany	Stem cell quiescence and dormancy in plant meristems	10.1093/jxb/erae201	38721716
+218	4.7	2024	3	None	B5	Plant Cell, Tissue and Organ Culture (PCTOC)	In vitro morphogenesis, cryopreservation and induction of variability in bleeding heart (Lamprocapnos spectabilis (L.) Fukuhara): a review	10.1007/s11240-024-02854-x	
+219	4.6	2024	12	True	A1	PLoS Biology	DRN facilitates WUS transcriptional regulatory activity by chromatin remodeling to regulate shoot stem cell homeostasis in Arabidopsis	10.1371/journal.pbio.3002878	39514478
+220	4.6	2022	12	True	A1	None	OsbZIP47 Is an Integrator for Meristem Regulators During Rice Plant Growth and Development.	10.3389/fpls.2022.865928	35498659
+221	4.6	2026	2	None	A3	The Plant Cell	What if… cytokinin meets auxin in developing roots? The story behind root ring formation	10.1093/plcell/koag080	
+222	4.6	2022	2	None	B1	The Plant Cell	Correction to: Glycosylphosphatidylinositol anchor lipid remodeling directs proteins to the plasma membrane and governs cell wall mechanics	10.1093/plcell/koac339	
+223	4.6	2025	92	True	B3	None	Mechanisms and implications of the gut microbial modulation of intestinal metabolic processes.	10.1038/s44324-025-00066-1	40604123
+224	4.5	2022	91	True	A1	None	New Insights Into Tissue Culture Plant-Regeneration Mechanisms.	10.3389/fpls.2022.926752	35845646
+225	4.5	2022	1	None	A2	Trends in Plant Science	Spatiotemporal imaging clarifies leaf primordium patterning	10.1016/j.tplants.2022.08.011	
+226	4.5	2024	1	None	A4	International Journal of Molecular Sciences	CLAVATA3 Signaling Buffers Arabidopsis Shoot Apical Meristem Activity in Response to Photoperiod	10.3390/ijms25179357	
+227	4.5	2022	91	True	A4	None	Single-cell technologies: From research to application.	10.1016/j.xinn.2022.100342	36353677
+228	4.5	2026	1	None	A5	Science Advances	Single-nucleus transcriptomics resolves multiple fate dynamics between inflorescence meristem and primary stem	10.1126/sciadv.aee2988	
+229	4.5	2023	31	True	A5	Plant Physiology	<i>FLOWERING LOCUS T</i>
+                    mediates photo-thermal timing of inflorescence meristem arrest in
+                    <i>Arabidopsis thaliana</i>	10.1093/plphys/kiad163	36943252
+230	4.5	2025	1	None	B2	Proceedings of the National Academy of Sciences	Conflicting roles of cell geometry, microtubule deflection, and orientation-dependent dynamic instability in cortical array organization	10.1073/pnas.2426171122	
+231	4.5	2023	1	None	B2	Cellulose	Metal porphyrin array modified cellulose terephthalate for sustainable bacterial absorption and sterilization	10.1007/s10570-023-05256-y	
+232	4.5	2022	41	None	B3	Plant Cell, Tissue and Organ Culture (PCTOC)	Tissue culture mediated biotechnological interventions in medicinal trees: recent progress	10.1007/s11240-022-02298-1	
+233	4.5	2023	11	None	B5	Journal of Plant Growth Regulation	Carboxylic Acid-Functionalized Multi-Walled Carbon Nanotubes (COOH-MWCNTs) Elicit Concordant Variations in DNA Cytosine Methylation, Gene Expression, Growth, Morphogenesis, Metabolism, and Callogenesis in Salvia nemorosa; An In Vitro Biological Assessment	10.1007/s00344-023-10924-1	
+234	4.5	2025	0	None	A1	PLANT CELL BIOTECHNOLOGY AND MOLECULAR BIOLOGY	Efﬁcient Shoot Induction from Apical Meristem Culture in Olive  (Olea europaea L.)	10.56557/pcbmb/2025/v26i7-89416	
+235	4.5	2026	0	None	A1	Developmental Cell	A high-humidity niche at the shoot meristem shapes plant adaption to terrestrial environments	10.1016/j.devcel.2025.12.004	
+236	4.5	2026	0	None	A1	Plant Cell, Tissue and Organ Culture (PCTOC)	Morphogenic potential of the shoot apical meristem of Cyathea delgadii (Sternb.) under long-term thidiazuron treatment	10.1007/s11240-026-03393-3	
+237	4.5	2023	20	True	A2	Current Biology	Genome and transcriptome of Selaginella kraussiana reveal evolution of root apical meristems in vascular plants	10.1016/j.cub.2023.08.061	37716350
+238	4.5	2022	0	None	B1	The Plant Cell	Assembling chimeras: BC16 helps to reshape protein GPI lipid anchors, thereby tuning cell wall mechanics in rice	10.1093/plcell/koac280	
+239	4.5	2022	90	True	B3	Plants	Abiotic Stresses in Plants and Their Markers: A Practice View of Plant Stress Responses and Programmed Cell Death Mechanisms	10.3390/plants11091100	35567101
+240	4.5	2026	0	None	C2	Plant Science Today	Induction of early floral meristem transition in saffron (Crocus sativus L.) through hormonal and sugar-mediated regulation under in vitro conditions	10.14719/pst.13516	
+241	4.5	2023	29	True	A1	PLANT PHYSIOLOGY	Cell signaling in the shoot apical meristem	10.1093/plphys/kiad309	37224874
+242	4.5	2023	89	True	A3	None	The role of selenium and nano selenium on physiological responses in plant: a review.	10.1007/s10725-023-00988-0	37197287
+243	4.5	2023	49	True	B3	Biology	The Course of Mechanical Stress: Types, Perception, and Plant Response	10.3390/biology12020217	36829495
+244	4.5	2023	89	True	B3	None	Revolutionizing biomedicine: advancements, applications, and prospects of nanocomposite macromolecular carbohydrate-based hydrogel biomaterials: a review.	10.1039/d3ra07391b	38053691
+245	4.5	2023	9	None	B5	Frontiers in Bioengineering and Biotechnology	Osteochondrogenesis by TGF-β3, BMP-2 and noggin growth factor combinations in an ex vivo muscle tissue model: Temporal function changes affecting tissue morphogenesis	10.3389/fbioe.2023.1140118	
+246	4.4	2023	8	True	A1	Symmetry	Organ Patterning at the Shoot Apical Meristem (SAM): The Potential Role of the Vascular System	10.3390/sym15020364	
+247	4.4	2023	38	True	A5	The Plant Cell	Multilayered regulation of developmentally programmed pre-anthesis tip degeneration of the barley inflorescence	10.1093/plcell/koad164	37282730
+248	4.4	2024	48	True	B1	None	Bioprinting of Cells, Organoids and Organs-on-a-Chip Together with Hydrogels Improves Structural and Mechanical Cues.	10.3390/cells13191638	39404401
+249	4.4	2025	48	True	C1	None	Decoding small peptides: Regulators of plant growth and stress resilience.	10.1111/jipb.13873	40059863
+250	4.3	2025	7	None	A3	Plants	Non-CG DNA Methylation Regulates Root Stem Cell Niche Maintenance, Auxin Signaling, and ROS Homeostasis in Arabidopsis Under Cadmium Stress	10.3390/plants14182838	
+251	4.3	2023	37	None	A3	Cell Stem Cell	Maintenance of high-turnover tissues during and beyond homeostasis	10.1016/j.stem.2023.03.008	
+252	4.3	2022	87	True	A4	RWTH Publications (RWTH Aachen)	Using Positional Information to Provide Context for Biological Image Analysis with MorphoGraphX 2.0		
+253	4.3	2022	7	None	B1	BMC Plant Biology	Morphogenesis and cell wall composition of trichomes and their function in response to salt in halophyte Salsola ferganica	10.1186/s12870-022-03933-x	
+254	4.3	2024	17	True	B2	Current Biology	Growth and tension in explosive fruit	10.1016/j.cub.2024.01.059	38359820
+255	4.3	2022	7	None	B2	Physiologia Plantarum	Cellulose accumulation mediated by <scp>PbrCSLD5</scp>, a cellulose synthase‐like protein, results in cessation of pollen tube growth in <i>Pyrus bretschneideri</i>	10.1111/ppl.13700	
+256	4.3	2023	87	True	B5	None	Annelid functional genomics reveal the origins of bilaterian life cycles.	10.1038/s41586-022-05636-7	36697830
+257	4.3	2023	87	True	C1	The Plant Journal	Spatial transcriptomics drives a new era in plant research	10.1111/tpj.16437	37651723
+258	4.3	2022	46	True	A1	None	Induction of Somatic Embryogenesis in Plants: Different Players and Focus on WUSCHEL and WUS-RELATED HOMEOBOX (WOX) Transcription Factors.	10.3390/ijms232415950	36555594
+259	4.3	2022	66	True	A4	New Phytologist	Gravity sensing and responses in the coordination of the shoot gravitropic setpoint angle	10.1111/nph.18474	36089891
+260	4.3	2022	6	None	B2	Plant Molecular Biology	Tip growth defective1 interacts with cellulose synthase A3 to regulate cellulose biosynthesis in Arabidopsis	10.1007/s11103-022-01283-8	
+261	4.3	2023	6	None	B5	Physical Biology	Quantitative insights in tissue growth and morphogenesis with optogenetics	10.1088/1478-3975/acf7a1	
+262	4.3	2025	86	False	B5	None	A spatially resolved multi-omic single-cell atlas of soybean development.	10.1016/j.cell.2024.10.050	39742806
+263	4.2	2024	5	None	A3	Molecular Biology Reports	Transcriptome analysis of apical meristem enriched bud samples for size dependent flowering commitment in Crocus sativus reveal role of sugar and auxin signalling	10.1007/s11033-024-09574-7	
+264	4.2	2025	5	None	B1	Current Opinion in Plant Biology	Branching under pressure: Influences of cell wall architecture and biomechanics on lateral root morphogenesis	10.1016/j.pbi.2025.102735	
+265	4.2	2023	5	None	B1	Plant Molecular Biology	Dynamics and mechanics of plant cell walls: insights into plant growth, defence, and stress response	10.1007/s11103-023-01395-9	
+266	4.2	2023	4	None	A2	Planta	BRIP1 and BRIP2 maintain root meristem by affecting auxin-mediated regulation	10.1007/s00425-023-04283-0	
+267	4.2	2023	44	True	B1	Journal of Experimental Botany	Cell wall dynamics: novel tools and research questions	10.1093/jxb/erad310	37539735
+268	4.2	2023	34	True	C2	Proceedings of the National Academy of Sciences	LEAFY and APETALA1 down-regulate ZINC FINGER PROTEIN 1 and 8 to release their repression on class B and C floral homeotic genes	10.1073/pnas.2221181120	37216511
+269	4.2	2022	43	True	A5	None	Genetic control of branching patterns in grass inflorescences.	10.1093/plcell/koac080	35258600
+270	4.2	2022	3	None	B1	Mathematics and Mechanics of Solids	Growth spin in plant cell wall growth and remodelling	10.1177/10812865221111088	
+271	4.2	2024	3	None	B2	Trees	Cortical microtubule dynamics during reaction wood formation ensures context-appropriate cellulose microfibril angle in woody trees	10.1007/s00468-024-02497-7	
+272	4.1	2025	2	None	A3	Journal of Plant Growth Regulation	Cytokinin-Induced Jasmonic Acid Signaling Inhibits Root Meristem Activity and Stem Cell Niche Gene Expression in a COI1-Independent Fashion	10.1007/s00344-025-11709-4	
+273	4.1	2025	42	True	A4	None	TIR1-produced cAMP as a second messenger in transcriptional auxin signalling.	10.1038/s41586-025-08669-w	40044868
+274	4.1	2023	22	None	B1	Plant Physiology	Update: on selected ROP cell polarity mechanisms in plant cell morphogenesis	10.1093/plphys/kiad229	
+275	4.1	2023	2	True	B2	BMC Biology	High-throughput characterization of cortical microtubule arrays response to anisotropic tensile stress	10.1186/s12915-023-01654-7	37430369
+276	4.1	2024	2	None	B2	PLOS ONE	Tip Growth Defective1 interacts with the cellulose synthase complex to regulate cellulose synthesis in Arabidopsis thaliana	10.1371/journal.pone.0292149	
+277	4.1	2022	2	None	B2	Journal of Neurochemistry	Microcephaly gene <i>Cenpj</i> regulates axonal growth in cortical neurons through microtubule destabilization	10.1111/jnc.15568	
+278	4.1	2022	32	True	B4	The Plant Cell	Non-autonomous stomatal control by pavement cell turgor via the K+ channel subunit AtKC1	10.1093/plcell/koac038	35157082
+279	4.1	2024	82	True	C1	None	Flowering time: From physiology, through genetics to mechanism.	10.1093/plphys/kiae109	38417841
+280	4.0	2022	81	True	A3	None	Plant Development and Crop Yield: The Role of Gibberellins.	10.3390/plants11192650	36235516
+281	4.0	2022	81	True	A3	None	Engineering drought and salinity tolerance traits in crops through CRISPR-mediated genome editing: Targets, tools, challenges, and perspectives.	10.1016/j.xplc.2022.100417	35927945
+282	4.0	2023	11	True	A4	Development	The class VIII myosin ATM1 is required for root apical meristem function	10.1242/dev.201762	37306290
+283	4.0	2022	1	True	A4	Comptes Rendus Biologies	Morphogenesis at the shoot meristem	10.5802/crbiol.98	36847122
+284	4.0	2022	1	None	B5	Biosystems	2-adic morphogenesis as a metaphorical model of biological growth	10.1016/j.biosystems.2021.104594	
+285	4.0	2025	0	None	A2	Annals of Botany	Constant distance between leaf initiation sites permits non-destructive analysis of apical meristem activity during cactus shoot growth	10.1093/aob/mcaf085	
+286	4.0	2026	0	None	B1	Mechanobiology	Plant mechanosensing integrates cell wall mechanics with growth and stress responses	10.1177/29780241261477317	
+287	4.0	2025	0	None	C2	Current Opinion in Plant Biology	Position and identity, two separable but inseparable processes in floral meristem patterning	10.1016/j.pbi.2025.102785	
+288	4.0	2023	39	True	A2	Journal of Experimental Botany	Game of thrones among AUXIN RESPONSE FACTORs—over 30 years of MONOPTEROS research	10.1093/jxb/erad272	37450945
+289	4.0	2023	29	True	B4	Molecular Biology of the Cell	Quantifying turgor pressure in budding and fission yeasts based upon osmotic properties	10.1091/mbc.e23-06-0215	37903220
+290	4.0	2023	79	True	C1	None	Paradigms of receptor kinase signaling in plants.	10.1042/bcj20220372	37326386
+291	3.9	2025	28	None	B3	Plant Cell, Tissue and Organ Culture (PCTOC)	Harnessing metabolites from plant cell tissue and organ culture for sustainable biotechnology	10.1007/s11240-025-03180-6	
+292	3.9	2023	28	None	B3	Plant Cell, Tissue and Organ Culture (PCTOC)	Harnessing nanoparticle-mediated elicitation in plant tissue culture: a promising approach for secondary metabolite production	10.1007/s11240-023-02612-5	
+293	3.9	2022	37	True	A2	Communications Biology	Positional cues and cell division dynamics drive meristem development and archegonium formation in Ceratopteris gametophytes	10.1038/s42003-022-03627-y	35778477
+294	3.9	2022	37	None	A4	Current Opinion in Plant Biology	Epigenetic regulation in the shoot apical meristem	10.1016/j.pbi.2022.102267	
+295	3.9	2023	37	True	A5	PLoS Genetics	The bZIP transcription factor AREB3 mediates FT signalling and floral transition at the Arabidopsis shoot apical meristem	10.1371/journal.pgen.1010766	37186640
+296	3.9	2022	7	None	C2	Development	Quantitative live imaging of floral organ initiation and floral meristem termination in <i>Aquilegia</i>	10.1242/dev.200256	
+297	3.8	2023	36	True	A2	3 Biotech	Recent advances in auxin biosynthesis and homeostasis	10.1007/s13205-023-03709-6	37547917
+298	3.8	2022	16	True	A2	PLANT PHYSIOLOGY	Initiation of aboveground organ primordia depends on combined action of auxin, ERECTA family genes, and PINOID	10.1093/plphys/kiac288	35703946
+299	3.8	2024	26	True	A5	The Plant Cell	SEPALLATA-driven MADS transcription factor tetramerization is required for inner whorl floral organ development	10.1093/plcell/koae151	38771250
+300	3.8	2022	36	True	A5	None	Boundary domain genes were recruited to suppress bract growth and promote branching in maize.	10.1126/sciadv.abm6835	35704576
+301	3.8	2025	76	False	B3	None	NADPH oxidases: redox regulation of cell homeostasis and disease.	10.1152/physrev.00034.2023	39814410
+302	3.8	2023	36	True	B4	None	The calcium-mediated homogalacturonan pectin complexation in cell walls contributes the firmness increase in loquat fruit during postharvest storage.	10.1016/j.jare.2022.09.009	36198382
+303	3.8	2023	76	True	C2	None	Dynamic chromatin regulatory programs during embryogenesis of hexaploid wheat.	10.1186/s13059-022-02844-2	36639687
+304	3.8	2022	35	True	A2	PLoS Biology	Leaf vein patterning is regulated by the aperture of plasmodesmata intercellular channels	10.1371/journal.pbio.3001781	36166438
+305	3.8	2022	35	True	B1	Scientific Reports	Elastic shell theory for plant cell wall stiffness reveals contributions of cell wall elasticity and turgor pressure in AFM measurement	10.1038/s41598-022-16880-2	35915101
+306	3.7	2022	24	True	A1	Frontiers in Plant Science	The plant stem-cell niche and pluripotency: 15 years of an epigenetic perspective	10.3389/fpls.2022.1018559	36388540
+307	3.7	2023	34	True	C2	None	Comprehensive Analysis of WUSCEL-Related Homeobox Gene Family in Ramie (<i>Boehmeria nivea</i>) Indicates Its Potential Role in Adventitious Root Development.	10.3390/biology12121475	38132301
+308	3.6	2023	23	True	A5	The Plant Cell	Antagonistic regulation of target genes by the SISTER OF TM3–JOINTLESS2 complex in tomato inflorescence branching	10.1093/plcell/koad065	36881857
+309	3.6	2023	33	True	B2	Biomolecules	Microtubule Regulation in Plants: From Morphological Development to Stress Adaptation	10.3390/biom13040627	37189374
+310	3.6	2022	73	True	C1	The Plant Journal	Advances and applications of single‐cell omics technologies in plant research	10.1111/tpj.15772	35426954
+311	3.6	2022	2	None	C1	Development	Topological properties accurately predict cell division events and organization of shoot apical meristem in <i>Arabidopsis thaliana</i>	10.1242/dev.201024	
+312	3.5	2025	31	False	B4	None	FERONIA signaling maintains cell wall integrity during brassinosteroid-induced cell expansion in Arabidopsis.	10.1016/j.molp.2025.02.001	39916326
+313	3.5	2025	1	None	B5	Development, Growth &amp; Differentiation	Integrating Tissue and Cytoplasmic Rigidity Transitions During Morphogenesis	10.1111/dgd.70024	
+314	3.5	2022	30	True	B4	None	Broad Specific Xyloglucan:Xyloglucosyl Transferases Are Formidable Players in the Re-Modelling of Plant Cell Wall Structures.	10.3390/ijms23031656	35163576
+315	3.5	2022	69	True	A2	None	Transcriptional landscapes of de novo root regeneration from detached Arabidopsis leaves revealed by time-lapse and single-cell RNA sequencing analyses.	10.1016/j.xplc.2022.100306	35605192
+316	3.5	2022	69	True	A5	None	Natural variation of Dt2 determines branching in soybean.	10.1038/s41467-022-34153-4	36307423
+317	3.5	2022	29	False	A5	None	The auxin-responsive transcription factor SlDOF9 regulates inflorescence and flower development in tomato.	10.1038/s41477-022-01121-1	35422080
+318	3.5	2022	69	True	C1	None	Transcriptional control of Arabidopsis seed development.	10.1007/s00425-022-03870-x	35318532
+319	3.4	2026	8	None	A1	Molecular Plant	The hypoxic niche enclosing the shoot apical meristem is shaped by a combination of morphological features and metabolic activity	10.1016/j.molp.2026.02.011	
+320	3.4	2024	18	True	A2	Proceedings of the National Academy of Sciences	Multiplexed in situ hybridization reveals distinct lineage identities for major and minor vein initiation during maize leaf development	10.1073/pnas.2402514121	38959034
+321	3.4	2023	28	True	A3	Journal of Experimental Botany	Cytokinin-inducible response regulator SlRR6 controls plant height through gibberellin and auxin pathways in tomato	10.1093/jxb/erad159	37115725
+322	3.4	2024	17	None	B3	Plant Cell, Tissue and Organ Culture (PCTOC)	Hormesis in plant tissue culture	10.1007/s11240-024-02875-6	
+323	3.3	2022	66	True	A3	None	Putrescine: A Key Metabolite Involved in Plant Development, Tolerance and Resistance Responses to Stress.	10.3390/ijms23062971	35328394
+324	3.3	2023	66	True	A5	None	Environmental control of rice flowering time.	10.1016/j.xplc.2023.100610	37147799
+325	3.3	2024	16	None	B3	Plant Cell, Tissue and Organ Culture (PCTOC)	In vitro elicitation of anthraquinones—a review	10.1007/s11240-024-02691-y	
+326	3.2	2024	25	True	A1	Biomolecules	Dissecting the Roles of the Cytokinin Signaling Network: The Case of De Novo Shoot Apical Meristem Formation	10.3390/biom14030381	38540799
+327	3.2	2022	64	True	A3	Horticulture Research	Cytokinins are involved in regulation of tomato pericarp thickness and fruit size	10.1093/hr/uhab041	35043193
+328	3.2	2022	14	None	B3	Plant Cell, Tissue and Organ Culture (PCTOC)	Medium composition affects the tissue culture-induced variation in triticale regenerants	10.1007/s11240-022-02327-z	
+329	3.1	2022	23	True	A2	Journal of Experimental Botany	PUCHI represses early meristem formation in developing lateral roots of Arabidopsis thaliana	10.1093/jxb/erac079	35224628
+330	3.1	2023	23	True	A2	None	The dynamics and biophysics of shape formation: Common themes in plant and animal morphogenesis.	10.1016/j.devcel.2023.11.003	38113851
+331	3.1	2023	33	True	A5	Development	Two modes of gene regulation by TFL1 mediate its dual function in flowering time and shoot determinacy of Arabidopsis	10.1242/dev.202089	37971083
+332	3.1	2023	23	True	B1	Biological reviews/Biological reviews of the Cambridge Philosophical Society	In silico studies of plant primary cell walls – structure and mechanics	10.1111/brv.12935	36692136
+333	3.1	2022	63	True	B4	None	Salt stress proteins in plants: An overview.	10.3389/fpls.2022.999058	36589054
+334	3.1	2022	2	None	A4	Plant Physiology	Putting genes on the map: Spatial transcriptomics of the maize shoot apical meristem	10.1093/plphys/kiab601	
+335	3.1	2022	62	True	A5	None	WAPO-A1 is the causal gene of the 7AL QTL for spikelet number per spike in wheat.	10.1371/journal.pgen.1009747	35025863
+336	3.1	2022	62	True	B1	None	The 3D Bioprinted Scaffolds for Wound Healing.	10.3390/pharmaceutics14020464	35214197
+337	3.1	2024	12	None	B3	Plant Cell, Tissue and Organ Culture (PCTOC)	Production of betalains in plant cell and organ cultures: a review	10.1007/s11240-024-02832-3	
+338	3.0	2023	21	True	A1	EMBO Reports	TPLATE complex‐dependent endocytosis attenuates CLAVATA1 signaling for shoot apical meristem maintenance	10.15252/embr.202254709	37458257
+339	3.0	2022	21	True	A2	None	Polar auxin transport modulates early leaf flattening.	10.1073/pnas.2215569119	36469773
+340	3.0	2024	61	True	A3	None	Phytohormones in a universe of regulatory metabolites: lessons from jasmonate.	10.1093/plphys/kiae045	38290050
+341	3.0	2023	61	True	A3	None	A 'wiring diagram' for sink strength traits impacting wheat yield potential.	10.1093/jxb/erac410	36334052
+342	3.0	2022	61	True	A5	None	Molecular Events of Rice AP2/ERF Transcription Factors.	10.3390/ijms231912013	36233316
+343	3.0	2025	61	True	B1	None	Technology Roadmap of Micro/Nanorobots.	10.1021/acsnano.5c03911	40577644
+344	3.0	2025	1	None	B4	Plant Physiology	The relationship between wall extensibility, hydraulic conductance, and turgor pressure during expansive growth	10.1093/plphys/kiaf135	
+345	3.0	2023	1	None	B5	Russian Journal of Plant Physiology	Application of In Silico Analysis to Determine Morphogenesis in Plant Tissue Culture	10.1134/s1021443723700231	
+346	3.0	2026	0	None	A1	New Phytologist	Navigating shoot apical meristem plasticity for plant adaptation	10.1111/nph.71534	
+347	3.0	2026	0	None	A1	Plant Physiology	At the tip: novel regulators of shoot apical meristem development in canola	10.1093/plphys/kiag126	
+348	3.0	2023	60	False	A1	None	Epigenetic Regulation During Plant Development and the Capacity for Epigenetic Memory.	10.1146/annurev-arplant-070122-025047	36854474
+349	3.0	2026	0	None	A3	Journal of Plant Physiology	The TCP transcription factor RmTCP5 shapes leaf development by modulating auxin and cytokinin homeostasis in Rosa multiflora	10.1016/j.jplph.2026.154755	
+350	3.0	2024	60	True	A3	None	Transcription factor PagMYB31 positively regulates cambium activity and negatively regulates xylem development in poplar.	10.1093/plcell/koae040	38339982
+351	3.0	2025	0	None	A4	Plant Physiology	An unknown apocarotenoid signal alters plant development by modulating shoot and root apical meristem activities	10.1093/plphys/kiaf448	
+352	3.0	2023	0	None	B1	Plant Physiology	Slits in the wall! Pulvinar slits confer unique cell wall mechanics for leaf movement	10.1093/plphys/kiad166	
+353	3.0	2023	20	False	B2	None	Brassinosteroid signals cooperate with katanin-mediated microtubule severing to control stamen filament elongation.	10.15252/embj.2022111883	36546550
+354	3.0	2022	10	None	B4	Plant, Cell &amp; Environment	Phloem turgor is maintained during severe drought in
+                    <i>Ricinus communis</i>	10.1111/pce.14401	
+355	3.0	2023	60	True	C1	None	Spatially resolved transcriptomic analysis of the germinating barley grain.	10.1093/nar/gkad521	37351575
+356	3.0	2024	19	None	A2	Plant Communications	ESR2–HDA6 complex negatively regulates auxin biosynthesis to delay callus initiation in Arabidopsis leaf explants during tissue culture	10.1016/j.xplc.2024.100892	
+357	3.0	2024	59	True	A3	None	What, where, and how: Regulation of translation and the translational landscape in plants.	10.1093/plcell/koad197	37437121
+358	3.0	2022	59	True	A4	None	A spatiotemporal atlas of organogenesis in the development of orchid flowers.	10.1093/nar/gkac773	36095130
+359	2.9	2022	18	True	A5	BMC Plant Biology	GIF1 controls ear inflorescence architecture and floral development by regulating key genes in hormone biosynthesis and meristem determinacy in maize	10.1186/s12870-022-03517-9	35303806
+360	2.9	2023	18	True	B2	The Plant Journal	Root growth of monocotyledons and dicotyledons is limited by different tissues	10.1111/tpj.16440	37646760
+361	2.9	2023	17	True	A1	None	Maintenance of stem cell activity in plant development and stress responses.	10.3389/fpls.2023.1302046	38155857
+362	2.9	2024	17	True	A2	None	PLETHORA transcription factors promote early embryo development through induction of meristematic potential.	10.1242/dev.202527	38884589
+363	2.9	2025	17	True	A2	None	CLAVATA signalling shapes barley inflorescence by controlling activity and determinacy of shoot meristem and rachilla.	10.1038/s41467-025-59330-z	40287461
+364	2.9	2024	7	None	B3	Plant Cell, Tissue and Organ Culture (PCTOC)	Plant cryopreservation: a molecular perspective	10.1007/s11240-024-02803-8	
+365	2.9	2023	7	None	B3	Plant Cell, Tissue and Organ Culture (PCTOC)	Enigma of recalcitrance to tissue culture in the oilseed crop Sesamum indicum L.—a review	10.1007/s11240-023-02503-9	
+366	2.8	2023	6	None	C2	International Journal of Molecular Sciences	Expression of the Populus Orthologues of AtYY1, YIN and YANG Activates the Floral Identity Genes AGAMOUS and SEPALLATA3 Accelerating Floral Transition in Arabidopsis thaliana	10.3390/ijms24087639	
+367	2.8	2024	15	True	A1	None	Plant Growth Regulators: An Overview of WOX Gene Family.	10.3390/plants13213108	39520025
+368	2.8	2023	55	True	A4	None	The human placenta: new perspectives on its formation and function during early pregnancy.	10.1098/rspb.2023.0191	37072047
+369	2.8	2023	55	True	A4	None	Crop root system plasticity for improved yields in saline soils.	10.3389/fpls.2023.1120583	36909408
+370	2.8	2024	15	False	A5	Current Opinion in Plant Biology	The diversification of the shoot branching system: A quantitative and comparative perspective in meristem determinacy	10.1016/j.pbi.2024.102574	38917775
+371	2.8	2022	15	True	A5	EvoDevo	Flower-like meristem conditions and spatial constraints shape architecture of floral pseudanthia in Apioideae	10.1186/s13227-022-00204-6	36536450
+372	2.8	2026	5	False	A5	Science	A negative feedback loop between TERMINAL FLOWER1 and LEAFY protects inflorescence indeterminacy	10.1126/science.adv5429	41570111
+373	2.7	2023	54	True	A1	None	Genetic basis controlling rice plant architecture and its modification for breeding.	10.1270/jsbbs.22088	37168811
+374	2.7	2024	14	True	A2	Biophysical Journal	Auxin-mediated stress relaxation in pericycle and endoderm remodeling drives lateral root initiation	10.1016/j.bpj.2024.06.017	38902924
+375	2.7	2025	4	None	B4	Plant, Cell &amp; Environment	Leaf Turgor Loss Does Not Coincide With Cell Plasmolysis in Drought‐Tolerant Chaparral Species	10.1111/pce.15505	
+376	2.7	2024	14	True	C2	Journal of Experimental Botany	Redox regulation of meristem quiescence: outside/in	10.1093/jxb/erae161	38676562
+377	2.6	2024	13	True	A2	Planta	Unraveling the molecular mechanisms governing axillary meristem initiation in plants	10.1007/s00425-024-04370-w	38536474
+378	2.6	2023	53	True	A3	None	Temperature changes in the root ecosystem affect plant functionality.	10.1016/j.xplc.2022.100514	36585788
+379	2.6	2024	3	None	B3	Plant Cell, Tissue and Organ Culture (PCTOC)	Feedback regulation of salicylic acid signaling by isochorismate synthase1 modulates camptothecin biosynthesis in Camptotheca acuminata	10.1007/s11240-024-02711-x	
+380	2.6	2025	3	None	B3	Plant Cell, Tissue and Organ Culture (PCTOC)	Tissue culture and genetic transformation in quinoa (Chenopodium quinoa)–a mini-review	10.1007/s11240-025-03271-4	
+381	2.6	2022	3	None	B3	Plant Cell, Tissue and Organ Culture (PCTOC)	Lactobacillus plantarum ABRIINW.N8 eliminates fungal and bacterial contamination and promotes shoot proliferation and root induction in plant tissue culture	10.1007/s11240-022-02406-1	
+382	2.6	2024	3	None	B4	Frontiers in Plant Science	The daily minimum leaf turgor pressure can represent the water status of apple trees under drip irrigation	10.3389/fpls.2024.1516824	
+383	2.6	2026	12	True	A2	None	Imputation integrates single-cell and spatial gene expression data to resolve transcriptional networks in barley shoot meristem development.	10.1038/s41477-025-02176-6	41501532
+384	2.6	2023	2	None	A3	Cell Stem Cell	Pancreatic acinar heterogeneity hijacks carcinogenesis and homeostasis	10.1016/j.stem.2023.07.008	
+385	2.6	2022	52	True	A4	None	PIF4 enhances DNA binding of CDF2 to co-regulate target gene expression and promote Arabidopsis hypocotyl cell elongation.	10.1038/s41477-022-01213-y	35970973
+386	2.6	2022	12	True	A5	The Crop Journal	Barley FASCIATED EAR genes determine inflorescence meristem size and yield traits	10.1016/j.cj.2022.10.001	
+387	2.6	2023	12	True	B2	BMC Plant Biology	Probing stress-regulated ordering of the plant cortical microtubule array via a computational approach	10.1186/s12870-023-04252-5	37291489
+388	2.6	2024	12	True	B2	None	Spatiotemporally distinct responses to mechanical forces shape the developing seed of Arabidopsis.	10.1038/s44318-024-00138-w	38831122
+389	2.6	2024	2	None	B3	Plant Cell, Tissue and Organ Culture (PCTOC)	Unfolding phenolics biosynthetic plasticity of Artemisia alba Turra through plant tissue culture techniques	10.1007/s11240-024-02756-y	
+390	2.6	2025	2	None	B3	Plant Cell, Tissue and Organ Culture (PCTOC)	Novel application of CKX inhibitors and chlorpromazine overcomes recalcitrance in spinach tissue culture	10.1007/s11240-025-03098-z	
+391	2.5	2022	51	True	A4	None	Fifteen compelling open questions in plant cell biology.	10.1093/plcell/koab225	34529074
+392	2.5	2026	1	None	B3	Plant Cell, Tissue and Organ Culture (PCTOC)	Species-specific responses to LED lighting in plant tissue culture	10.1007/s11240-025-03331-9	
+393	2.5	2025	1	None	B3	Plant Cell, Tissue and Organ Culture (PCTOC)	Biotechnological approaches to improve indigo production	10.1007/s11240-025-03142-y	
+394	2.5	2022	51	True	B4	None	Yeast osmoregulation - glycerol still in pole position.	10.1093/femsyr/foac035	35927716
+395	2.5	2023	11	None	B5	Journal of Plant Growth Regulation	Polyamines Mediated In Vitro Morphogenesis in Cotyledonary Node Explants of Mucuna pruriens (L.) DC.: A Natural Source of L-Dopa	10.1007/s00344-023-10917-0	
+396	2.5	2022	51	True	C1	None	Developmental genetics with model organisms.	10.1073/pnas.2122148119	35858396
+397	2.5	2023	10	True	A1	None	Identification of WUSCHEL-related homeobox gene and truncated small peptides in transformation efficiency improvement in Eucalyptus.	10.1186/s12870-023-04617-w	38030990
+398	2.5	2023	10	True	A2	Plants	The Secrets of Meristems Initiation: Axillary Meristem Initiation and Floral Meristem Initiation	10.3390/plants12091879	37176937
+399	2.5	2024	0	None	A3	Cell Stem Cell	Unveiling the mystery of nuclear RNA homeostasis	10.1016/j.stem.2024.03.014	
+400	2.5	2024	0	None	A5	HortScience	The Short Inflorescence Mutation in Diploid Strawberry Fragaria vesca Affects Inflorescence Architecture and Runner Elongation	10.21273/hortsci17652-23	
+401	2.5	2024	50	False	B1	None	3D Bioprinting for Engineered Tissue Constructs and Patient-Specific Models: Current Progress and Prospects in Clinical Applications.	10.1002/adma.202408032	39420757
+402	2.5	2024	10	None	B2	PeerJ	Genome-wide analysis of cellulose synthase (CesA) and cellulose synthase-like (Csl) proteins in
+                    <i>Cannabis sativa</i>
+                    L	10.7717/peerj.17821	
+403	2.5	2023	10	None	B2	Bulletin of Mathematical Biology	A Stochastic Model of Cortical Microtubule Anchoring and Mechanics Provides Regulatory Control of Microtubule Shape	10.1007/s11538-023-01211-x	
+404	2.5	2026	0	None	B3	Plant Cell, Tissue and Organ Culture (PCTOC)	Key factors for optimization of secondary metabolites production in conventional plant cell tissue and organ culture	10.1007/s11240-026-03577-x	
+405	2.5	2025	0	None	B3	Plant Cell, Tissue and Organ Culture (PCTOC)	Single difference principle in plant biotechnology experiments	10.1007/s11240-025-03067-6	
+406	2.5	2026	0	None	B3	Plant Cell, Tissue and Organ Culture (PCTOC)	Micropropagation and tissue culture of Ranunculus species: a comprehensive review	10.1007/s11240-026-03431-0	
+407	2.5	2026	0	None	B3	Plant Cell, Tissue and Organ Culture (PCTOC)	Metal-organic frameworks (MOFs): future applications in plant tissue culture	10.1007/s11240-026-03470-7	
+408	2.5	2022	50	True	B4	None	Plant biomechanics and resilience to environmental changes are controlled by specific lignin chemistries in each vascular cell type and morphotype.	10.1093/plcell/koac284	36215679
+409	2.5	2026	0	None	C1	Frontiers in Cellular Neuroscience	Identity crisis: exploring the boundaries of cell type identification in the age of single-cell transcriptomics	10.3389/fncel.2026.1819116	
+410	2.5	2023	49	True	B4	None	Seven plant capacities to adapt to abiotic stress.	10.1093/jxb/erad179	37220077
+411	2.5	2023	49	True	C1	None	Lessons from a century of apical dominance research.	10.1093/jxb/erad137	37076257
+412	2.5	2023	9	True	C2	The Plant Journal	Deregulation of ζ‐carotene desaturase in Arabidopsis and tomato exposes a unique carotenoid‐derived redundant regulation of floral meristem identity and function	10.1111/tpj.16168	36861314
+413	2.4	2025	48	True	A4	None	A single-cell, spatial transcriptomic atlas of the Arabidopsis life cycle.	10.1038/s41477-025-02072-z	40830271
+414	2.4	2022	48	False	A4	None	Mechanisms of chromatin-based epigenetic inheritance.	10.1007/s11427-022-2120-1	35792957
+415	2.4	2022	7	True	A4	Plant Biotechnology	Illuminating the molecular mechanisms underlying shoot apical meristem homeostasis in plants	10.5511/plantbiotechnology.22.0213a	35800970
+416	2.4	2022	47	True	A4	None	Imaging the living plant cell: From probes to quantification.	10.1093/plcell/koab237	34586412
+417	2.4	2024	7	None	B1	The European Physical Journal E	A continuum mechanics model of the plant cell wall reveals interplay between enzyme action and cell wall structure	10.1140/epje/s10189-023-00396-2	
+418	2.4	2022	7	True	B2	bioRxiv (Cold Spring Harbor Laboratory)	Root twisting drives halotropism via stress-induced microtubule reorientation	10.1101/2022.06.05.494861	
+419	2.4	2024	7	None	B4	Plant Biology	Turgor loss point explains climate‐driven growth reductions in trees in Central Europe	10.1111/plb.13687	
+420	2.3	2025	6	None	A4	Journal of Experimental Botany	DNA methylation dynamics in the shoot apical meristem	10.1093/jxb/eraf024	
+421	2.3	2023	6	None	A5	PLOS Genetics	OsbHLH067, OsbHLH068, and OsbHLH069 redundantly regulate inflorescence axillary meristem formation in rice	10.1371/journal.pgen.1010698	
+422	2.3	2025	46	True	B1	None	Biomimetic structural design in 3D-printed scaffolds for bone tissue engineering.	10.1016/j.mtbio.2025.101664	40206144
+423	2.3	2024	6	True	C2	Horticulture Research	SlKNUCKLES regulates floral meristem activity and controls fruit size in Solanum lycopersicum	10.1093/hr/uhae331	40046322
+424	2.2	2023	5	True	A4	Scientific Reports	Global gene regulatory network underlying miR165a in Arabidopsis shoot apical meristem	10.1038/s41598-023-49093-2	38097643
+425	2.2	2023	45	True	A4	None	Plants use molecular mechanisms mediated by biomolecular condensates to integrate environmental cues with development.	10.1093/plcell/koad062	36879427
+426	2.2	2022	45	True	A4	None	Activation of the plant mevalonate pathway by extracellular ATP.	10.1038/s41467-022-28150-w	35064110
+427	2.2	2025	5	True	A5	Current Plant Biology	Comprehensive allelic series analysis uncovers the novel function of the tomato FALSIFLORA gene in the cessation of floral meristem activity	10.1016/j.cpb.2025.100461	
+428	2.2	2024	5	None	A5	Plants	Overexpression of Larch SCL6 Inhibits Transitions from Vegetative Meristem to Inflorescence and Flower Meristem in Arabidopsis thaliana (L.) Heynh.	10.3390/plants13091232	
+429	2.2	2024	5	None	B1	Journal of Plant Growth Regulation	Melatonin Priming Regulates Mineral Uptake, Osmolite Accumulation, and Cell Wall Structure in Buckwheat Under Cadmium Stress	10.1007/s00344-024-11550-1	
+430	2.2	2024	5	None	C2	Scientia Horticulturae	Isoforms diversity and transcriptional regulation of floral meristem identity and pathway integrators, driving floral transition in mango under subtropics	10.1016/j.scienta.2024.113301	
+431	2.2	2022	5	None	C2	BioTechnologia	Physicochemical properties and homology studies
+of the floral meristem identity gene LFY
+in nonflowering and flowering plants	10.5114/bta.2022.116205	
+432	2.2	2023	44	True	B1	None	Embryo-uterine interaction coordinates mouse embryogenesis during implantation.	10.15252/embj.2022113280	37522872
+433	2.2	2022	4	True	B2	None	Cytoplasmic Linker Protein-Associating Protein at the Nexus of Hormone Signaling, Microtubule Organization, and the Transition From Division to Differentiation in Primary Roots.	10.3389/fpls.2022.883363	35574108
+434	2.2	2022	4	None	B5	PLOS Computational Biology	Avalanches during epithelial tissue growth; Uniform Growth and a drosophila eye disc model	10.1371/journal.pcbi.1009952	
+435	2.2	2024	44	True	C1	BioDesign Research	Advances in the Application of Single-Cell Transcriptomics in Plant Systems and Synthetic Biology	10.34133/bdr.0029	38435807
+436	2.2	2024	4	True	C2	The Plant Journal	STAMENLESS1 activates SUPERWOMAN 1 and FLORAL ORGAN NUMBER 1 to control floral organ identities and meristem fate in rice	10.1111/tpj.16637	38305492
+437	2.1	2022	3	None	A5	The International Compositae Alliance	Understanding capitulum development: Gerbera hybrida inflorescence meristem as an experimental system	10.53875/capitulum.01.2.04	
+438	2.1	2026	3	True	B2	None	Memory in the wall: expanding our understanding of the roles of plant cell walls.	10.1111/nph.70677	41163369
+439	2.1	2025	3	True	B2	None	Technological advances in visualizing and rewiring microtubules during plant development.	10.1093/jxb/eraf284	40567129
+440	2.1	2025	3	True	B2	None	Geometric and mechanical guidance: Role of stigmatic epidermis in early pollen tube pathfinding in arabidopsis.	10.1371/journal.pcbi.1013077	40424465
+441	2.1	2023	43	True	C1	The Plant Journal	Single‐cell transcriptomic analysis of pea shoot development and cell‐type‐specific responses to boron deficiency	10.1111/tpj.16487	37794835
+442	2.1	2026	3	None	C1	Genome Biology	Dynamic and cell-type specific transcriptional reprogramming underlies the floral transition in the maize shoot apical meristem	10.1186/s13059-026-04033-x	
+443	2.1	2025	3	None	C2	Agronomy	Genomic Architecture of AP2/ERF Superfamily Genes in Marigold (Tagetes erecta) and Insights into the Differential Expression Patterns of AP2 Family Genes During Floral Organ Specification	10.3390/agronomy15051231	
+444	2.1	2022	43	True	C2	None	Genotype-independent plant transformation.	10.1093/hr/uhac047	35531314
+445	2.1	2024	2	None	A5	Horticulture Research	cla-miR164-<i>NO APICAL MERISTEM</i> (<i>ClNAM</i>) regulates the inflorescence architecture development of <i>Chrysanthemum lavandulifolium</i>	10.1093/hr/uhae039	
+446	2.1	2025	2	None	A5	Annals of Botany	Are capitula inflorescences? A reassessment based on flower-like meristem identity and ray flower development	10.1093/aob/mcaf144	
+447	2.1	2022	42	True	B1	None	Decellularization Strategies for Regenerating Cardiac and Skeletal Muscle Tissues.	10.3389/fbioe.2022.831300	35295645
+448	2.1	2024	2	None	B2	Plant Molecular Biology	Five amino acid mismatches in the zinc-finger domains of Cellulose Synthase 5 and Cellulose Synthase 6 cooperatively modulate their functional properties by controlling homodimerization in Arabidopsis	10.1007/s11103-024-01471-8	
+449	2.1	2024	2	None	B2	Glycobiology	Glucosylceramides impact cellulose deposition and cellulose synthase complex motility in Arabidopsis	10.1093/glycob/cwae035	
+450	2.1	2026	2	None	B2	Plant Communications	Arabidopsis microtubule-BRI1-associated proteins negatively regulate hypocotyl elongation by controlling brassinosteroid-dependent cortical microtubule reorientation	10.1016/j.xplc.2025.101637	
+451	2.1	2025	2	None	B4	Planta	Simultaneous quantification of cell wall elasticity and turgor pressure in live plant cells by elastic shell theory analysis and AFM	10.1007/s00425-025-04683-4	
+452	2.1	2023	2	None	B5	Plant Growth Regulation	Variation of fatty acid composition in different tissues during Astragalus membranaceus seedling morphogenesis	10.1007/s10725-023-01044-7	
+453	2.0	2025	1	None	A3	Journal of Experimental Botany	The chloroplast-localized ABC transporter OsABCB24 regulates aleurone cell size and grain nutritional quality in rice by modulating auxin homeostasis	10.1093/jxb/eraf445	
+454	2.0	2024	1	None	A4	BIO-PROTOCOL	Live Imaging of the Shoot Apical Meristem of Intact, Soil-Grown, Flowering &lt;em&gt;Arabidopsis&lt;/em&gt; Plants	10.21769/bioprotoc.5015	
+455	2.0	2026	1	None	A4	Annals of Botany	Shoot apical meristem and initial vascular development of a late Palaeozoic spermatophyte (order Medullosales)	10.1093/aob/mcaf336	
+456	2.0	2022	41	True	A4	None	Heterotypic transcriptional condensates formed by prion-like paralogous proteins canalize flowering transition in tomato.	10.1186/s13059-022-02646-6	35287709
+457	2.0	2022	1	True	B2	bioRxiv (Cold Spring Harbor Laboratory)	Probing stress-regulated ordering of the plant cortical microtubule array via a computational approach	10.1101/2022.02.17.480928	
+458	2.0	2025	1	None	B2	PLOS Computational Biology	Microtubule-based nucleation results in a large sensitivity to cell geometry of the plant cortical array	10.1371/journal.pcbi.1013282	
+459	2.0	2025	1	None	B4	Plants	Theoretical Analyses of Turgor Pressure and Expansive Growth Rate of Plant Cells During Water Deficit	10.3390/plants14223538	
+460	2.0	2026	1	None	B5	Plant Growth Regulation	Systems perspectives on plant growth regulation: integrating omics, signaling networks, and computational models	10.1007/s10725-026-01462-3	
+461	2.0	2024	41	True	C1	Journal of Experimental Botany	Single-cell transcriptomics reveals heterogeneity in plant responses to the environment: a focus on biotic and abiotic interactions	10.1093/jxb/erae107	38466621
+462	2.0	2023	1	None	C2	PLOS Genetics	Correction: The bZIP transcription factor AREB3 mediates FT signalling and floral transition at the Arabidopsis shoot apical meristem	10.1371/journal.pgen.1010920	
+463	2.0	2022	41	True	C2	None	The Importance of Networking: Plant Polycomb Repressive Complex 2 and Its Interactors.	10.3390/epigenomes6010008	35323212
+464	2.0	2024	0	None	A1	JOJ Horticulture &amp; Arboriculture	Potential of Shoots from “Katak” For Shoot Apical Meristem Culture on Amorphophallus Konjac	10.19080/jojha.2024.04.555643	
+465	2.0	2026	0	None	A1	Plants	Protein Phosphorylation: An Essential Role in Shoot Apical Meristem Homeostasis	10.3390/plants15132033	
+466	2.0	2026	0	None	A2	Turkish Journal of Botany	Red light accelerates adventitious root primordium initiation and differentiation in Phoebe bournei cuttings by modulating auxin signaling and hormonal balance	10.55730/1300-008x.3010	
+467	2.0	2024	0	None	A2	Vestnik MGTU	Phyllotaxis: Leaf arrangement on a horizontal branch and crystallographic borders	10.21443/1560-9278-2024-27-2-119-125	
+468	2.0	2025	0	None	A3	Tree Genetics and Molecular Breeding	Genetic Basis of Tree Size and Fruit Yield in Durian Roles of Auxin and Cytokinin Signaling Pathways	10.5376/tgmb.2025.15.0001	
+469	2.0	2026	0	None	A3	Journal of Plant Growth Regulation	OsMADS29, a Monocot-Specific Transcription Factor Modulates Cytokinin-Auxin Homeostasis Across the Land Plants	10.1007/s00344-026-12412-8	
+470	2.0	2025	0	None	A4	STAR Protocols	Protocol for immunofluorescence imaging of epitope-tagged protein in Arabidopsis shoot apical meristem	10.1016/j.xpro.2025.104112	
+471	2.0	2026	0	None	A4	Vegetos	In vitro propagation of two sugarcane genotypes via shoot apical meristem culture	10.1007/s42535-026-01686-8	
+472	2.0	2023	0	None	A4	BIO-PROTOCOL	Modified Pseudo-Schiff Propidium Iodide for Staining the Shoot Apical Meristem in Arabidopsis	10.21769/bioprotoc.4672	
+473	2.0	2023	0	None	A4	Frontiers for Young Minds	The Shoot Apical Meristem: A Tree’s Best Bud	10.3389/frym.2023.965617	
+474	2.0	2023	0	None	A5	Nature Plants	A missing piece in the control of rice flowering and inflorescence determinacy	10.1038/s41477-023-01382-4	
+475	2.0	2026	0	None	A5	Nature Plants	Grass inflorescence architecture model identifies wheat yield-boosting gene	10.1038/s41477-026-02274-z	
+476	2.0	2025	0	None	A5	Annals of Botany	Meristems clarify fuzzy floral boundaries: a commentary on ‘Are capitula inflorescences? A reassessment based on flower-like meristem identity and ray flower development’	10.1093/aob/mcaf256	
+477	2.0	2024	20	True	B4	New Phytologist	Plant infection by the necrotrophic fungus Botrytis requires actin‐dependent generation of high invasive turgor pressure	10.1111/nph.20025	39107894
+478	2.0	2025	0	None	B4	Planta	Correction: Simultaneous quantification of cell wall elasticity and turgor pressure in live plant cells by elastic shell theory analysis and AFM	10.1007/s00425-025-04738-6	
+479	2.0	2023	0	None	B4	Biophysical Journal	Thicket and mesh: Understanding turgor pressure resistance of outer membrane-cell wall system	10.1016/j.bpj.2022.11.2000	
+480	2.0	2023	0	None	B5	Circulation	Abstract 13831: Engineered Development: Directed Morphogenesis of an Embryonic Heart Tissue Model	10.1161/circ.148.suppl_1.13831	
+481	2.0	2026	0	None	B5	PLOS Computational Biology	Adhesion and polarity-driven morphogenesis: Mechanisms and constraints in tissue formation	10.1371/journal.pcbi.1013939	
+482	2.0	2026	0	None	C2	Current Opinion in Plant Biology	Plasticity of the Arabidopsis shoot apical meristem during floral transition	10.1016/j.pbi.2026.102878	
+483	2.0	2026	0	None	C2	Plants	OsMADS1 Interacts with OsMADS22 and OsYABBY5 to Regulate Floral Organ and Meristem Identity in Rice	10.3390/plants15081271	
+484	2.0	2023	0	None	C2	Phyton	B Class Floral Homeotic Genes are Involved in the Petal Identity and Flower Meristem Determinations in Chrysanthemum morifolium	10.32604/phyton.2022.023896	
+485	1.9	2023	39	True	A5	None	Transcriptome-wide association analyses reveal the impact of regulatory variants on rice panicle architecture and causal gene regulatory networks.	10.1038/s41467-023-43077-6	37980346
+486	1.9	2024	39	True	B1	None	Highly oriented hydrogels for tissue regeneration: design strategies, cellular mechanisms, and biomedical applications.	10.7150/thno.89493	38505623
+487	1.9	2025	38	True	C2	None	Plant genetic transformation: achievements, current status and future prospects.	10.1111/pbi.70028	40052992
+488	1.9	2023	37	True	A1	None	Optimization of rice panicle architecture by specifically suppressing ligand-receptor pairs.	10.1038/s41467-023-37326-x	36964129
+489	1.9	2022	37	True	A1	None	The Characters of Non-Coding RNAs and Their Biological Roles in Plant Development and Abiotic Stress Response.	10.3390/ijms23084124	35456943
+490	1.8	2025	36	True	A1	None	Peptide hormones in plants.	10.1186/s43897-024-00134-y	39849641
+491	1.8	2022	36	True	A5	None	Advances and prospects of orchid research and industrialization.	10.1093/hr/uhac220	36479582
+492	1.7	2022	34	True	A5	Scientific Reports	Transcriptional signatures of wheat inflorescence development	10.1038/s41598-022-21571-z	36241895
+493	1.7	2023	34	True	A5	None	TCP Transcription Factors in Plant Reproductive Development: Juggling Multiple Roles.	10.3390/biom13050750	37238620
+494	1.6	2022	31	True	A5	None	Genetic and molecular factors in determining grain number per panicle of rice.	10.3389/fpls.2022.964246	35991390
+495	1.5	2023	0	None	B4	Current Biology	Plant physiology: Untangling the roles of glutamate and turgor pressure	10.1016/j.cub.2023.02.026	
+496	1.4	2022	29	True	A4	Journal of Integrative Plant Biology	To curve for survival: Apical hook development	10.1111/jipb.13441	36562414
+497	1.4	2022	29	True	B4	None	Fungi-on-a-Chip: microfluidic platforms for single-cell studies on fungi.	10.1093/femsre/fuac039	36001464
+498	1.4	2023	28	False	A1	None	Asymmetric cell division in plant development.	10.1111/jipb.13446	36610013
+499	1.4	2022	28	True	A2	None	Advances in Citrus Flowering: A Review.	10.3389/fpls.2022.868831	35463419
+500	1.4	2022	28	True	A5	None	MicroRNA-resistant alleles of <i>HOMEOBOX DOMAIN-2</i> modify inflorescence branching and increase grain protein content of wheat.	10.1126/sciadv.abn5907	35544571
+501	1.4	2022	28	True	C2	None	Transduction of Signals during Somatic Embryogenesis.	10.3390/plants11020178	35050066
+502	1.4	2022	27	True	B4	Quantitative Plant Biology	Characterising the mechanics of cell–cell adhesion in plants	10.1017/qpb.2021.16	37077973
+503	1.3	2023	26	True	C2	None	Multifaceted roles of transcription factors during plant embryogenesis.	10.3389/fpls.2023.1322728	38235196
+504	1.2	2022	25	True	B2	Horticulture Research	Protein subcellular localization and functional studies in horticultural research: problems, solutions, and new approaches	10.1093/hr/uhac271	36789255
+505	1.2	2023	25	True	C2	None	Recent advances in understanding of the epigenetic regulation of plant regeneration.	10.1007/s42994-022-00093-2	37220541
+506	1.1	2022	22	False	A5	Plant Molecular Biology	Transcriptome landscape of early inflorescence developmental stages identifies key flowering time regulators in chickpea	10.1007/s11103-022-01247-y	35106703
+507	1.1	2023	21	True	A2	None	Spatial regulation of plant hormone action.	10.1093/jxb/erad244	37401809
+508	0.9	2023	19	True	A1	None	Global transcriptome profiling reveals differential regulatory, metabolic and hormonal networks during somatic embryogenesis in Coffea arabica.	10.1186/s12864-022-09098-z	36694132
+509	0.8	2024	17	True	A2	None	Developmental timing in plants.	10.1038/s41467-024-46941-1	38531864
+510	0.8	2022	17	True	A2	None	The Roles of microRNA-Long Non-coding RNA-mRNA Networks in the Regulation of Leaf and Flower Development in <i>Liriodendron chinense</i>.	10.3389/fpls.2022.816875	35154228
+511	0.8	2025	17	True	B2	None	Open Challenges and Opportunities in Piezoelectricity for Tissue Regeneration.	10.1002/advs.202510349	40823709
+512	0.8	2025	17	True	C2	Genes	Research Progress on Gene Regulation of Plant Floral Organogenesis	10.3390/genes16010079	39858626
+513	0.8	2023	15	True	B4	Scientific Reports	Rigidity control mechanism by turgor pressure in plants	10.1038/s41598-023-29294-5	36739460
+514	0.7	2022	14	True	A5	Journal of Plant Biology	The Impact of Fasciation on Maize Inflorescence Architecture	10.1007/s12374-021-09342-1	
+515	0.7	2024	13	True	A1	None	Regulation of developmental gatekeeping and cell fate transition by the calpain protease DEK1 in Physcomitrium patens.	10.1038/s42003-024-05933-z	38438476
+516	0.7	2022	13	True	A5	PeerJ	SEPALLATA -like genes of Isatis indigotica can affect the architecture of the inflorescences and the development of the floral organs	10.7717/peerj.13034	35251790
+517	0.7	2024	13	None	B5	Plant Growth Regulation	The role of tissue succulence in plant salt tolerance: an overview	10.1007/s10725-024-01122-4	
+518	0.5	2023	10	True	C2	Plant Direct	Differential gene expression during floral transition in pineapple	10.1002/pld3.541	38028646
+519	0.5	2024	9	None	B4	Current Opinion in Plant Biology	At knifepoint: Appressoria-dependent turgor pressure of filamentous plant pathogens	10.1016/j.pbi.2024.102628	
+520	0.3	2022	6	False	B2	None	Cell twisting during desiccation reveals axial asymmetry in wall organization.	10.1016/j.bpj.2022.02.013	35151632
+521	0.1	2022	3	None	A5	Journal of Plant Growth Regulation	Fine Mapping Identifies ClTFL1 Encodes a TERMINAL FLOWER 1 Protein as Putative Candidate Gene for Inflorescence Architecture and Tendril Development and in Watermelon	10.1007/s00344-022-10878-w	
+522	0.1	2022	2	None	A2	Scientia Horticulturae	Melatonin promotes scale primordium initiation and basal root regeneration and slows starch degradation in Lilium ‘Siberia’	10.1016/j.scienta.2021.110798	
+523	0.1	2026	2	True	B2	None	Roadmap for light interaction with biophotonic surfaces and their diverse applications.	10.1117/1.jbo.31.6.064302	41710866
+524	0.0	2022	0	None	A2	REVISTA PRIMORDIUM	Amor, loucura e filosofia	10.14393/reprim-v6n12a2021-62637	
+525	0.0	2022	0	None	A2	REVISTA PRIMORDIUM	O Que Parece Melhor	10.14393/reprim-v6n12a2021-60920	
+526	0.0	2024	0	None	A2	REVISTA PRIMORDIUM	Leo Strauss e a Educação Liberal	10.14393/reprim-v8n15a2023-68504	
+527	0.0	2022	0	None	A2	REVISTA PRIMORDIUM	Noção de causalidade no pensamento de Aristóteles	10.14393/reprim-v7n13a2022-62885	
+528	0.0	2025	0	None	A5	Agronomy	Flower Thinning Strategy of Flat Peach Inflorescence Based on RBCN-YOLO	10.3390/agronomy15122715	

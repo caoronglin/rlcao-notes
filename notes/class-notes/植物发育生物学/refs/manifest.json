@@ -1,0 +1,155 @@
+[
+ {
+  "file": "01_01_dev200787_CLV3_CLE16_CLE17.pdf",
+  "status": "fail",
+  "tried": [
+   "https://journals.biologists.com/dev/article-pdf/149/19/dev200787/2172474/dev200787.pdf"
+  ]
+ },
+ {
+  "file": "02_02_s41477-023-01485-y_CLAVATA_receptors.pdf",
+  "status": "ok",
+  "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11070199/pdf/nihms-1987721.pdf",
+  "bytes": 4876123,
+  "sha256": "fc23065f96e46980",
+  "pages": 33,
+  "first_page": "HHS Public Access Author manuscript Author Manuscript"
+ },
+ {
+  "file": "03_03_dev202014_local_auxin_shoot_patterning.pdf",
+  "status": "fail",
+  "tried": [
+   "https://journals.biologists.com/dev/article-pdf/150/23/dev202014/3267209/dev202014.pdf"
+  ]
+ },
+ {
+  "file": "04_04_s41467-024-48361-7_DA1_WUS_SAM_size.pdf",
+  "status": "ok",
+  "source": "https://www.nature.com/articles/s41467-024-48361-7.pdf",
+  "bytes": 2953869,
+  "sha256": "b6ebcd77aac9af9c",
+  "pages": 11,
+  "first_page": "Article https://doi.org/10.1038/s41467-024-48361-7 The peptidase DA1 cleaves and destabilizes"
+ },
+ {
+  "file": "05_05_koae312_KNUCKLES_floral_meristem.pdf",
+  "status": "ok",
+  "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11663560/pdf/koae312.pdf",
+  "bytes": 1550714,
+  "sha256": "b2fb98a21dcf6f99",
+  "pages": 15,
+  "first_page": "The Plant Cell, 2025, 37, koae312 https://doi.org/10.1093/plcell/koae312 Advance access publication 22 November 2024"
+ },
+ {
+  "file": "06_06_s41477-022-01111-3_leaf_dorsiventrality.pdf",
+  "status": "fail",
+  "tried": [
+   "https://www.nature.com/articles/s41477-022-01111-3.pdf"
+  ]
+ },
+ {
+  "file": "07_07_pnas2321877121_CUC1_auxin_module.pdf",
+  "status": "ok",
+  "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11214078/pdf/pnas.202321877.pdf",
+  "bytes": 8152162,
+  "sha256": "895da1a02964c24e",
+  "pages": 10,
+  "first_page": "RESEARCH ARTICLE | PLANT BIOLOGY OPEN ACCESS"
+ },
+ {
+  "file": "08_08_s41467-024-51099-x_water_fluxes_meristem.pdf",
+  "status": "ok",
+  "source": "https://www.nature.com/articles/s41467-024-51099-x.pdf",
+  "bytes": 9857361,
+  "sha256": "0953c06df7d363a5",
+  "pages": 14,
+  "first_page": "Article https://doi.org/10.1038/s41467-024-51099-x Water ﬂuxes pattern growth and identity in"
+ },
+ {
+  "file": "09_09_s41580-023-00691-y_cell_wall_structure_growth.pdf",
+  "status": "fail",
+  "tried": [
+   "https://www.osti.gov/servlets/purl/2352283",
+   "https://www.nature.com/articles/s41580-023-00691-y.pdf"
+  ]
+ },
+ {
+  "file": "10_10_science_ade8055_mechanics_of_plant_morphogenesis.pdf",
+  "status": "fail",
+  "tried": [
+   "https://www.osti.gov/servlets/purl/2212482",
+   "https://scholarsphere.psu.edu/resources/e976fcf1-d507-43a0-9af5-4f74a8081fc1/downloads/31484",
+   "https://www.science.org/doi/pdf/10.1126/science.ade8055"
+  ]
+ },
+ {
+  "file": "11_11_sciadv_abm4974_microtubule_mechanical_conflicts.pdf",
+  "status": "ok",
+  "source": "https://iris.unil.ch/bitstreams/b00275e5-c514-4d56-adfd-bb56eb4c4523/download",
+  "bytes": 6288556,
+  "sha256": "67f2369ac7359fb6",
+  "pages": 11,
+  "first_page": "SCIENCE ADVANCES | RESEARCH ARTICLE PLANT SCIENCES Microtubule-based perception of mechanical conflicts"
+ },
+ {
+  "file": "12_12_s41467-023-36739-y_ECM_growth_anisotropy.pdf",
+  "status": "ok",
+  "source": "https://www.nature.com/articles/s41467-023-36739-y.pdf",
+  "bytes": 9420810,
+  "sha256": "ba4e256f064d0e8e",
+  "pages": 16,
+  "first_page": "Article https://doi.org/10.1038/s41467-023-36739-y Growth anisotropy of the extracellular"
+ },
+ {
+  "file": "13_13_devcel_2024_mechanical_forces_division.pdf",
+  "status": "ok",
+  "source": "https://serval.unil.ch/resource/serval:BIB_0F9F11EAAA0C.P001/REF.pdf",
+  "bytes": 5195262,
+  "sha256": "0494e1dc77e5e629",
+  "pages": 17,
+  "first_page": "Article Mechanical forces in plant tissue matrix orient cell divisions via microtubule stabilization"
+ },
+ {
+  "file": "14_14_s41477-022-01218-7_cellulose_synthase_microtubule.pdf",
+  "status": "ok",
+  "source": "https://www.nature.com/articles/s41477-022-01218-7.pdf",
+  "bytes": 6763667,
+  "sha256": "9752c65849d99964",
+  "pages": 12,
+  "first_page": "Articles https://doi.org/10.1038/s41477-022-01218-7 Tethering of cellulose synthase to microtubules"
+ },
+ {
+  "file": "15_15_annurev_cellbio_120420_095337_mechanochemical.pdf",
+  "status": "fail",
+  "tried": [
+   "https://www.annualreviews.org/doi/pdf/10.1146/annurev-cellbio-120420-095337"
+  ]
+ },
+ {
+  "file": "16_16_annurev_cellbio_020823_011522_morphogens.pdf",
+  "status": "ok",
+  "source": "https://research-explorer.ista.ac.at/download/14484/14491/2023_AnnualReviews_Kicheva.pdf",
+  "bytes": 434819,
+  "sha256": "945624c562d092b7",
+  "pages": 40,
+  "first_page": "Annu. Rev. Cell Dev. Biol. 2023.39:91-121. Downloaded from www.annualreviews.org Access provided by Institute of Science and Technology Aust"
+ },
+ {
+  "file": "17_17_s41467-022-30177-y_floral_meristem_3D_atlas.pdf",
+  "status": "ok",
+  "source": "https://www.nature.com/articles/s41467-022-30177-y.pdf",
+  "bytes": 2585364,
+  "sha256": "d3cbb14438fe38e9",
+  "pages": 11,
+  "first_page": "ARTICLE https://doi.org/10.1038/s41467-022-30177-y OPEN"
+ },
+ {
+  "file": "18_18_kiac370_ARF3_meristem_proliferation.pdf",
+  "status": "ok",
+  "source": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9480985/pdf/kiac370.pdf",
+  "bytes": 501292,
+  "sha256": "32fe66bb5a8176df",
+  "pages": 14,
+  "first_page": "PLOS ONE RESEARCH ARTICLE Association between timing and type of"
+ }
+]

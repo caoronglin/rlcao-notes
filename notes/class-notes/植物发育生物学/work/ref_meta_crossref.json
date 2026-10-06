@@ -1,0 +1,323 @@
+{
+ "10.1038/s41467-024-48361-7": {
+  "title": "The peptidase DA1 cleaves and destabilizes WUSCHEL to control shoot apical meristem size",
+  "journal": "Nature Communications",
+  "year": 2024,
+  "volume": "15",
+  "issue": "1",
+  "page": null,
+  "article_number": "4627",
+  "authors": [
+   "Cui G",
+   "Li Y",
+   "Zheng L",
+   "Smith C",
+   "Bevan MW",
+   "Li Y"
+  ]
+ },
+ "10.1126/science.ade8055": {
+  "title": "The mechanics of plant morphogenesis",
+  "journal": "Science",
+  "year": 2023,
+  "volume": "379",
+  "issue": "6631",
+  "page": null,
+  "article_number": "eade8055",
+  "authors": [
+   "Coen E",
+   "Cosgrove DJ"
+  ]
+ },
+ "10.1038/s41580-023-00691-y": {
+  "title": "Structure and growth of plant cell walls",
+  "journal": "Nature Reviews Molecular Cell Biology",
+  "year": 2023,
+  "volume": "25",
+  "issue": "5",
+  "page": "340-358",
+  "article_number": null,
+  "authors": [
+   "Cosgrove DJ"
+  ]
+ },
+ "10.1242/dev.200787": {
+  "title": "Interactive CLV3, CLE16, and CLE17 signaling mediates stem cell homeostasis in the Arabidopsis shoot apical meristem",
+  "journal": "Development",
+  "year": 2022,
+  "volume": null,
+  "issue": null,
+  "page": null,
+  "article_number": "dev.200787",
+  "authors": [
+   "Dao TQ",
+   "Weksler N",
+   "Liu HMH",
+   "Leiboff S",
+   "Fletcher JC"
+  ]
+ },
+ "10.1038/s41477-023-01485-y": {
+  "title": "A network of CLAVATA receptors buffers auxin-dependent meristem maintenance",
+  "journal": "Nature Plants",
+  "year": 2023,
+  "volume": "9",
+  "issue": "8",
+  "page": "1306-1317",
+  "article_number": null,
+  "authors": [
+   "John A",
+   "Smith ES",
+   "Jones DS",
+   "Soyars CL",
+   "Nimchuk ZL"
+  ]
+ },
+ "10.1093/plcell/koae312": {
+  "title": "KNUCKLES regulates floral meristem termination by controlling auxin distribution and cytokinin activity",
+  "journal": "The Plant Cell",
+  "year": 2024,
+  "volume": "37",
+  "issue": "1",
+  "page": null,
+  "article_number": "koae312",
+  "authors": [
+   "Wang G",
+   "Wu Z",
+   "Sun B"
+  ]
+ },
+ "10.1146/annurev-cellbio-020823-011522": {
+  "title": "Control of Tissue Development by Morphogens",
+  "journal": "Annual Review of Cell and Developmental Biology",
+  "year": 2023,
+  "volume": "39",
+  "issue": "1",
+  "page": "91-121",
+  "article_number": null,
+  "authors": [
+   "Kicheva A",
+   "Briscoe J"
+  ]
+ },
+ "10.1242/dev.202014": {
+  "title": "Local auxin biosynthesis promotes shoot patterning and stem cell differentiation in\n                    <i>Arabidopsis</i>\n                    shoot apex",
+  "journal": "Development",
+  "year": 2023,
+  "volume": "150",
+  "issue": "23",
+  "page": null,
+  "article_number": "dev202014",
+  "authors": [
+   "Yadav S",
+   "Kumar H",
+   "Mahajan M",
+   "Sahu SK",
+   "Singh SK",
+   "Yadav RK"
+  ]
+ },
+ "10.1038/s41477-022-01111-3": {
+  "title": "Specification of leaf dorsiventrality via a prepatterned binary readout of a uniform auxin input",
+  "journal": "Nature Plants",
+  "year": 2022,
+  "volume": "8",
+  "issue": "3",
+  "page": "269-280",
+  "article_number": null,
+  "authors": [
+   "Burian A",
+   "Paszkiewicz G",
+   "Nguyen KT",
+   "Meda S",
+   "Raczyńska-Szajgin M",
+   "Timmermans MCP"
+  ]
+ },
+ "10.1038/s41467-024-51099-x": {
+  "title": "Water fluxes pattern growth and identity in shoot meristems",
+  "journal": "Nature Communications",
+  "year": 2024,
+  "volume": "15",
+  "issue": "1",
+  "page": null,
+  "article_number": "6944",
+  "authors": [
+   "Alonso-Serra J",
+   "Cheddadi I",
+   "Kiss A",
+   "Cerutti G",
+   "Lang M",
+   "Dieudonné S",
+   "Lionnet C",
+   "Godin C",
+   "Hamant O"
+  ]
+ },
+ "10.1093/plphys/kiac370": {
+  "title": "Cell- and noncell-autonomous AUXIN RESPONSE FACTOR3 controls meristem proliferation and phyllotactic patterns",
+  "journal": "Plant Physiology",
+  "year": 2022,
+  "volume": "190",
+  "issue": "4",
+  "page": "2335-2349",
+  "article_number": null,
+  "authors": [
+   "Zhang K",
+   "Zhang H",
+   "Pan Y",
+   "Niu Y",
+   "Guo L",
+   "Ma Y",
+   "Tian S",
+   "Wei J",
+   "Wang C",
+   "Yang X",
+   "Fu Y",
+   "Qu P",
+   "Liu L",
+   "Zhang Y",
+   "Sun H",
+   "Bai Z",
+   "Dong J",
+   "Li C",
+   "Liu X"
+  ]
+ },
+ "10.1073/pnas.2321877121": {
+  "title": "A CUC1/auxin genetic module links cell polarity to patterned tissue growth and leaf shape diversity in crucifer plants",
+  "journal": "Proceedings of the National Academy of Sciences",
+  "year": 2024,
+  "volume": "121",
+  "issue": "26",
+  "page": null,
+  "article_number": "e2321877121",
+  "authors": [
+   "Hu ZL",
+   "Wilson-Sánchez D",
+   "Bhatia N",
+   "Rast-Somssich MI",
+   "Wu A",
+   "Vlad D",
+   "McGuire L",
+   "Nikolov LA",
+   "Laufs P",
+   "Gan X",
+   "Laurent S",
+   "Runions A",
+   "Tsiantis M"
+  ]
+ },
+ "10.1038/s41477-022-01218-7": {
+  "title": "Tethering of cellulose synthase to microtubules dampens mechano-induced cytoskeletal organization in Arabidopsis pavement cells",
+  "journal": "Nature Plants",
+  "year": 2022,
+  "volume": "8",
+  "issue": "9",
+  "page": "1064-1073",
+  "article_number": null,
+  "authors": [
+   "Schneider R",
+   "Ehrhardt DW",
+   "Meyerowitz EM",
+   "Sampathkumar A"
+  ]
+ },
+ "10.1126/sciadv.abm4974": {
+  "title": "Microtubule-based perception of mechanical conflicts controls plant organ morphogenesis",
+  "journal": "Science Advances",
+  "year": 2022,
+  "volume": "8",
+  "issue": "6",
+  "page": null,
+  "article_number": "eabm4974",
+  "authors": [
+   "Stöckle D",
+   "Reyes-Hernández BJ",
+   "Barro AV",
+   "Nenadić M",
+   "Winter Z",
+   "Marc-Martin S",
+   "Bald L",
+   "Ursache R",
+   "Fujita S",
+   "Maizel A",
+   "Vermeer JE"
+  ]
+ },
+ "10.1016/j.devcel.2024.03.009": {
+  "title": "Mechanical forces in plant tissue matrix orient cell divisions via microtubule stabilization",
+  "journal": "Developmental Cell",
+  "year": 2024,
+  "volume": "59",
+  "issue": "10",
+  "page": "1333-1344.e4",
+  "article_number": null,
+  "authors": [
+   "Hoermayer L",
+   "Montesinos JC",
+   "Trozzi N",
+   "Spona L",
+   "Yoshida S",
+   "Marhava P",
+   "Caballero-Mancebo S",
+   "Benková E",
+   "Heisenberg CP",
+   "Dagdas Y",
+   "Majda M",
+   "Friml J"
+  ]
+ },
+ "10.1038/s41467-023-36739-y": {
+  "title": "Growth anisotropy of the extracellular matrix shapes a developing organ",
+  "journal": "Nature Communications",
+  "year": 2023,
+  "volume": "14",
+  "issue": "1",
+  "page": null,
+  "article_number": "1220",
+  "authors": [
+   "Harmansa S",
+   "Erlich A",
+   "Eloy C",
+   "Zurlo G",
+   "Lecuit T"
+  ]
+ },
+ "10.1146/annurev-cellbio-120420-095337": {
+  "title": "Mechanochemical Principles of Spatial and Temporal Patterns in Cells and Tissues",
+  "journal": "Annual Review of Cell and Developmental Biology",
+  "year": 2022,
+  "volume": "38",
+  "issue": "1",
+  "page": "321-347",
+  "article_number": null,
+  "authors": [
+   "Bailles A",
+   "Gehrels EW",
+   "Lecuit T"
+  ]
+ },
+ "10.1038/s41467-022-30177-y": {
+  "title": "A 3D gene expression atlas of the floral meristem based on spatial reconstruction of single nucleus RNA sequencing data",
+  "journal": "Nature Communications",
+  "year": 2022,
+  "volume": "13",
+  "issue": "1",
+  "page": null,
+  "article_number": "2838",
+  "authors": [
+   "Neumann M",
+   "Xu X",
+   "Smaczniak C",
+   "Schumacher J",
+   "Yan W",
+   "Blüthgen N",
+   "Greb T",
+   "Jönsson H",
+   "Traas J",
+   "Kaufmann K",
+   "Muino JM"
+  ]
+ }
+}

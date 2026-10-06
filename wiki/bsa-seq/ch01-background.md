@@ -1,7 +1,9 @@
 ---
-wiki: bsa-seq
-menu_id: bsa-seq
 title: 第一章、BSA-Seq 与三种分析方法的原理
+collection:
+  profile: wiki
+  id: bsa-seq
+active_menu: bsa-seq
 tags: [BSA-Seq, QTL-seq, SNP index, G-statistic, 原理]
 ---
 

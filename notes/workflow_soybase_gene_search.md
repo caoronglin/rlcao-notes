@@ -1,3 +1,11 @@
+---
+title: "SoyBase 大豆基因搜索流程"
+date: 2026-09-18
+updated: 2026-09-18
+collection:
+  profile: notebook
+  id: bio
+---
 # SoyBase 大豆基因搜索流程
 
 >以 `Glyma.08G293900` 为例，含生物胁迫表达分析

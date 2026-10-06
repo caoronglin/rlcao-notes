@@ -193,7 +193,7 @@ zotero:: {{localLibrary}}
 **语法说明：**
 
 - `::` 是 DataView 的键值对语法，双冒号后自动识别为字段
-- `{{}}` 是 Mdnotes 占位符，由插件自动填充
+- `{% raw %}{% raw %}{{}}{% endraw %}{% endraw %}` 是 Mdnotes 占位符，由插件自动填充
 - `#status/to_read` 是嵌套标签（Obsidian 支持），用于过滤查询
 
 **自动填充效果：**

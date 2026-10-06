@@ -181,15 +181,15 @@ $$
 (b)
 
 $$
-\begin{array}{c c c} 3 & 2 & 1 \\ \underline {{G}} - \underline {{C}} - \underline {{I}} \\ \underline {{=}} & \underline {{=}} & \underline {{=}} \\ C - G - A \\ 1 & 2 & 3 \end{array}
+\begin{array}{c c c} 3 & 2 & 1 \\ \underline {% raw %}{{G}}{% endraw %} - \underline {% raw %}{{C}}{% endraw %} - \underline {% raw %}{{I}}{% endraw %} \\ \underline {% raw %}{{=}}{% endraw %} & \underline {% raw %}{{=}}{% endraw %} & \underline {% raw %}{{=}}{% endraw %} \\ C - G - A \\ 1 & 2 & 3 \end{array}
 $$
 
 $$
-\begin{array}{c c c} 3 & 2 & 1 \\ \underline {{G}} - \underline {{C}} - \underline {{I}} \\ \overline {{=}} & \overline {{=}} & \overline {{=}} \\ C - G - U \\ 1 & 2 & 3 \end{array}
+\begin{array}{c c c} 3 & 2 & 1 \\ \underline {% raw %}{{G}}{% endraw %} - \underline {% raw %}{{C}}{% endraw %} - \underline {% raw %}{{I}}{% endraw %} \\ \overline {% raw %}{{=}}{% endraw %} & \overline {% raw %}{{=}}{% endraw %} & \overline {% raw %}{{=}}{% endraw %} \\ C - G - U \\ 1 & 2 & 3 \end{array}
 $$
 
 $$
-\begin{array}{c c c} 3 & 2 & 1 \\ \underline {{G}} - \underline {{C}} - \underline {{I}} & (5 ^ {\prime}) \\ \equiv & \equiv & \equiv \\ C - G - C & (3 ^ {\prime}) \\ 1 & 2 & 3 \end{array}
+\begin{array}{c c c} 3 & 2 & 1 \\ \underline {% raw %}{{G}}{% endraw %} - \underline {% raw %}{{C}}{% endraw %} - \underline {% raw %}{{I}}{% endraw %} & (5 ^ {\prime}) \\ \equiv & \equiv & \equiv \\ C - G - C & (3 ^ {\prime}) \\ 1 & 2 & 3 \end{array}
 $$
 
 (a) 密码子与 tRNA 反密码子臂上相应序列配对；(b) 当反密码子第一位是 I 时，密码子第三位可以是 A、U 或 C。

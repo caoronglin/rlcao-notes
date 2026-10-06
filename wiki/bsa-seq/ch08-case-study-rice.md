@@ -1,7 +1,9 @@
 ---
-wiki: bsa-seq
-menu_id: bsa-seq
 title: 第八章、论文案例：水稻冷害 QTL 与降采样验证
+collection:
+  profile: wiki
+  id: bsa-seq
+active_menu: bsa-seq
 tags: [论文, 水稻, 冷害, QTL, 降采样, 灵敏度]
 ---
 

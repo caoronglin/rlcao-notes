@@ -1,7 +1,9 @@
 ---
-wiki: bsa-seq
-menu_id: bsa-seq
 title: PyBSASeq 项目解读目录
+collection:
+  profile: wiki
+  id: bsa-seq
+active_menu: bsa-seq
 tags: [BSA-Seq, QTL, 生信, Python, PyBSASeq]
 ---
 

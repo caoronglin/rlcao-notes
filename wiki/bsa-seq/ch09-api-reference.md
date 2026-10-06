@@ -1,7 +1,9 @@
 ---
-wiki: bsa-seq
-menu_id: bsa-seq
 title: 第九章、函数速查表
+collection:
+  profile: wiki
+  id: bsa-seq
+active_menu: bsa-seq
 tags: [API, 函数, 参考, 源码]
 ---
 

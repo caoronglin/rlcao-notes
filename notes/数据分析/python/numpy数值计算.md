@@ -1,3 +1,11 @@
+---
+title: "数组对象"
+date: 2026-09-18
+updated: 2026-09-18
+collection:
+  profile: notebook
+  id: 数据分析
+---
 # 数组对象
 
 Numpy提供了高性能数组与矩阵运算处理能力

@@ -1,7 +1,9 @@
 ---
-wiki: bsa-seq
-menu_id: bsa-seq
 title: 第七章、输出文件与结果解读
+collection:
+  profile: wiki
+  id: bsa-seq
+active_menu: bsa-seq
 tags: [输出, BSASeq.csv, 结果解读, sliding_windows]
 ---
 

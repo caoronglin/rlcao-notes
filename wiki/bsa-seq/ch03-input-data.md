@@ -1,7 +1,9 @@
 ---
-wiki: bsa-seq
-menu_id: bsa-seq
 title: 第三章、输入数据与上游 GATK4 流程
+collection:
+  profile: wiki
+  id: bsa-seq
+active_menu: bsa-seq
 tags: [GATK4, BWA, 数据格式, AD, 上游流程]
 ---
 

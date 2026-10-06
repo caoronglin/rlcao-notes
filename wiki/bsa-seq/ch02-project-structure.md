@@ -1,7 +1,9 @@
 ---
-wiki: bsa-seq
-menu_id: bsa-seq
 title: 第二章、项目结构与运行环境
+collection:
+  profile: wiki
+  id: bsa-seq
+active_menu: bsa-seq
 tags: [PyBSASeq, 环境配置, conda, 依赖]
 ---
 

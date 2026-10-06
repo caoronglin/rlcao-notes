@@ -1,7 +1,9 @@
 ---
-wiki: bsa-seq
-menu_id: bsa-seq
 title: 第六章、命令行参数全解
+collection:
+  profile: wiki
+  id: bsa-seq
+active_menu: bsa-seq
 tags: [命令行, argparse, 参数, 用法]
 ---
 

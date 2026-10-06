@@ -1,3 +1,11 @@
+---
+title: "🐍 Python 程序设计串讲教学课件"
+date: 2026-09-18
+updated: 2026-09-18
+collection:
+  profile: notebook
+  id: class-notes
+---
 # 🐍 Python 程序设计串讲教学课件
 
 >**适用场景**：Python 期末/期中串讲复习课  

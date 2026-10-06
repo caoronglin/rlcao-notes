@@ -1,3 +1,11 @@
+---
+title: "酶工程 · 复习知识文档"
+date: 2026-09-18
+updated: 2026-09-18
+collection:
+  profile: notebook
+  id: class-notes
+---
 # 酶工程 · 复习知识文档
 
 >教材：陈守文《酶工程》第三版

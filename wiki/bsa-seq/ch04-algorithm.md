@@ -1,7 +1,9 @@
 ---
-wiki: bsa-seq
-menu_id: bsa-seq
 title: 第四章、核心算法：显著 SV 方法与阈值模拟
+collection:
+  profile: wiki
+  id: bsa-seq
+active_menu: bsa-seq
 tags: [算法, Fisher精确检验, 模拟, 阈值, 滑窗, G统计量]
 ---
 

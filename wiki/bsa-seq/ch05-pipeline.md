@@ -1,7 +1,9 @@
 ---
-wiki: bsa-seq
-menu_id: bsa-seq
 title: 第五章、主流程源码走读
+collection:
+  profile: wiki
+  id: bsa-seq
+active_menu: bsa-seq
 tags: [源码, 流程, 代码走读, PyBSASeq.py]
 ---
 

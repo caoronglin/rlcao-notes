@@ -1,7 +1,9 @@
 ---
-wiki: bsa-seq
-menu_id: bsa-seq
 title: 第十一章、相关方法：无参考基因组的 k-mer BSA
+collection:
+  profile: wiki
+  id: bsa-seq
+active_menu: bsa-seq
 tags: [BSA-k-mer, k-mer, 马铃薯, 免参考基因组, 相关方法]
 ---
 

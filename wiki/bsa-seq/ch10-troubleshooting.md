@@ -1,7 +1,9 @@
 ---
-wiki: bsa-seq
-menu_id: bsa-seq
 title: 第十章、排错、性能与已知问题
+collection:
+  profile: wiki
+  id: bsa-seq
+active_menu: bsa-seq
 tags: [排错, 性能, 已知问题, bug, FAQ]
 ---
 

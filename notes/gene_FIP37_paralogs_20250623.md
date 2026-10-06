@@ -1,3 +1,11 @@
+---
+title: "大豆 FIP37/WTAP 同源基因家族分析（V4 版本）"
+date: 2026-09-18
+updated: 2026-09-18
+collection:
+  profile: notebook
+  id: bio
+---
 # 大豆 FIP37/WTAP 同源基因家族分析（V4 版本）
 
 >四个 paralog：Glyma.04G186400 / Glyma.05G040200 / Glyma.06G179400 / Glyma.17G086600

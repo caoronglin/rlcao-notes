@@ -58,7 +58,8 @@ ESMFold 证明不必检索同源序列也能出结构，ESM3 进一步让模型�
 - 课程索引：[[notes/class-notes/结构生物学/_index|结构生物学]]
 - 综述正文：`[[notes/class-notes/结构生物学/AI结构预测/00-综述正文|综述正文]]`
 - 离线可视化：`index.html` + `dataset.json`（本机生成于 agent 项目目录）
-- PDF：`notes/class-notes/结构生物学/AI结构预测/文献PDF/`（开放获取全文下载结果，`.gitignore` 已排除 `*.pdf`）
+- PDF 获取情况：[[notes/class-notes/结构生物学/AI结构预测/文献获取说明|已下载 6 / 32，余需订阅获取]]
+- PDF 目录：`notes/class-notes/结构生物学/AI结构预测/文献PDF/`（`.gitignore` 已排除 `*.pdf`，仅本机保留）
 
 ## 复现
 

@@ -1,7 +1,7 @@
 {
  "total": 32,
- "ok": 6,
- "failed": 26,
+ "ok": 12,
+ "failed": 20,
  "items": [
   {
    "key": "31942072",
@@ -64,18 +64,6 @@
    "url": "https://www.frontiersin.org/articles/10.3389/fbinf.2023.1120370/pdf"
   },
   {
-   "key": "34282049",
-   "title": "Accurate prediction of protein structures and interactions using a three-track neural network.",
-   "doi": "10.1126/science.abj8754",
-   "first_author": "Minkyung Baek",
-   "year": "2021",
-   "journal": "Science",
-   "module": "M1",
-   "kind": "journal",
-   "status": "failed",
-   "tried": "unpaywall-url,epmc-render"
-  },
-  {
    "key": "37156916",
    "title": "Fast and accurate protein structure search with Foldseek.",
    "doi": "10.1038/s41587-023-01773-0",
@@ -89,6 +77,63 @@
    "bytes": 7106522,
    "source": "unpaywall-pdf",
    "url": "https://www.nature.com/articles/s41587-023-01773-0.pdf"
+  },
+  {
+   "key": "40131945",
+   "title": "Navigating the unstructured by evaluating alphafold's efficacy in predicting missing residues and structural disorder in proteins.",
+   "doi": "10.1371/journal.pone.0313812",
+   "first_author": "Sen Zheng",
+   "year": "2025",
+   "journal": "PLoS One",
+   "module": "M6",
+   "kind": "journal",
+   "status": "ok",
+   "file": "Zheng_2025_10_1371_journal_pone_0313812.pdf",
+   "bytes": 983304,
+   "source": "plos",
+   "url": "https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0313812&type=printable"
+  },
+  {
+   "key": "pre:10.1101/2025.06.14.659707",
+   "title": "Boltz-2: Towards Accurate and Efficient Binding Affinity Prediction",
+   "doi": "10.1101/2025.06.14.659707",
+   "first_author": "Passaro S.",
+   "year": "2025",
+   "journal": "bioRxiv（预印本，未经同行评审）",
+   "module": "M3",
+   "kind": "preprint",
+   "status": "ok",
+   "file": "S._2025_10_1101_2025_06_14_659707.pdf",
+   "bytes": 7310567,
+   "source": "biorxiv",
+   "url": "https://www.biorxiv.org/content/10.1101/2025.06.14.659707v1.full.pdf"
+  },
+  {
+   "key": "pre:10.1101/2024.10.10.615955",
+   "title": "Chai-1: Decoding the molecular interactions of life",
+   "doi": "10.1101/2024.10.10.615955",
+   "first_author": "Boitreaud J.",
+   "year": "2024",
+   "journal": "bioRxiv（预印本，未经同行评审）",
+   "module": "M3",
+   "kind": "preprint",
+   "status": "ok",
+   "file": "J._2024_10_1101_2024_10_10_615955.pdf",
+   "bytes": 9349869,
+   "source": "biorxiv",
+   "url": "https://www.biorxiv.org/content/10.1101/2024.10.10.615955v1.full.pdf"
+  },
+  {
+   "key": "34282049",
+   "title": "Accurate prediction of protein structures and interactions using a three-track neural network.",
+   "doi": "10.1126/science.abj8754",
+   "first_author": "Minkyung Baek",
+   "year": "2021",
+   "journal": "Science",
+   "module": "M1",
+   "kind": "journal",
+   "status": "failed",
+   "tried": "unpaywall-url,epmc-render"
   },
   {
    "key": "34791371",
@@ -147,8 +192,12 @@
    "journal": "Nature",
    "module": "M3",
    "kind": "journal",
-   "status": "failed",
-   "tried": "unpaywall-url,epmc-render"
+   "status": "ok",
+   "tried": "unpaywall-url,epmc-render",
+   "file": "Abramson_2024_10_1038_s41586_024_07487_w.pdf",
+   "bytes": 8602339,
+   "source": "nature",
+   "url": "https://www.nature.com/articles/s41586-024-07487-w.pdf"
   },
   {
    "key": "40851426",
@@ -187,30 +236,6 @@
    "tried": "unpaywall-url,epmc-render"
   },
   {
-   "key": "pre:10.1101/2025.06.14.659707",
-   "title": "Boltz-2: Towards Accurate and Efficient Binding Affinity Prediction",
-   "doi": "10.1101/2025.06.14.659707",
-   "first_author": "Passaro S.",
-   "year": "2025",
-   "journal": "bioRxiv（预印本，未经同行评审）",
-   "module": "M3",
-   "kind": "preprint",
-   "status": "failed",
-   "tried": "biorxiv,unpaywall-url"
-  },
-  {
-   "key": "pre:10.1101/2024.10.10.615955",
-   "title": "Chai-1: Decoding the molecular interactions of life",
-   "doi": "10.1101/2024.10.10.615955",
-   "first_author": "Boitreaud J.",
-   "year": "2024",
-   "journal": "bioRxiv（预印本，未经同行评审）",
-   "module": "M3",
-   "kind": "preprint",
-   "status": "failed",
-   "tried": "biorxiv,unpaywall-url"
-  },
-  {
    "key": "36108050",
    "title": "Robust deep learning-based protein sequence design using ProteinMPNN.",
    "doi": "10.1126/science.add2187",
@@ -231,8 +256,12 @@
    "journal": "Nature",
    "module": "M4",
    "kind": "journal",
-   "status": "failed",
-   "tried": "unpaywall-url,epmc-render"
+   "status": "ok",
+   "tried": "unpaywall-url,epmc-render",
+   "file": "Watson_2023_10_1038_s41586_023_06415_8.pdf",
+   "bytes": 36408927,
+   "source": "nature",
+   "url": "https://www.nature.com/articles/s41586-023-06415-8.pdf"
   },
   {
    "key": "41193805",
@@ -243,8 +272,12 @@
    "journal": "Nature",
    "module": "M4",
    "kind": "journal",
-   "status": "failed",
-   "tried": "unpaywall-url,epmc-render"
+   "status": "ok",
+   "tried": "unpaywall-url,epmc-render",
+   "file": "Bennett_2026_10_1038_s41586_025_09721_5.pdf",
+   "bytes": 45066221,
+   "source": "nature",
+   "url": "https://www.nature.com/articles/s41586-025-09721-5.pdf"
   },
   {
    "key": "41781614",
@@ -255,8 +288,12 @@
    "journal": "Nature",
    "module": "M4",
    "kind": "journal",
-   "status": "failed",
-   "tried": "unpaywall-url,epmc-render"
+   "status": "ok",
+   "tried": "unpaywall-url,epmc-render",
+   "file": "Brixi_2026_10_1038_s41586_026_10176_5.pdf",
+   "bytes": 70339648,
+   "source": "nature",
+   "url": "https://www.nature.com/articles/s41586-026-10176-5.pdf"
   },
   {
    "key": "42056544",
@@ -305,22 +342,6 @@
    "kind": "journal",
    "status": "failed",
    "tried": "no-source"
-  },
-  {
-   "key": "40131945",
-   "title": "Navigating the unstructured by evaluating alphafold's efficacy in predicting missing residues and structural disorder in proteins.",
-   "doi": "10.1371/journal.pone.0313812",
-   "first_author": "Sen Zheng",
-   "year": "2025",
-   "journal": "PLoS One",
-   "module": "M6",
-   "kind": "journal",
-   "status": "ok",
-   "tried": "unpaywall-url,epmc-render,plos",
-   "file": "Zheng_2025_10_1371_journal_pone_0313812.pdf",
-   "bytes": 983304,
-   "source": "plos",
-   "url": "https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0313812&type=printable"
   },
   {
    "key": "37905971",

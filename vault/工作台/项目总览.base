@@ -1,0 +1,26 @@
+filters:
+  and:
+    - "file.ext == \"md\""
+    - "file.inFolder(\"vault/项目\")"
+    - "type == \"project\" || file.folder == \"vault/项目\""
+properties:
+  file.name:
+    displayName: 笔记
+  note.status:
+    displayName: 状态
+  note.priority:
+    displayName: 优先级
+  note.due:
+    displayName: 截止日期
+  file.mtime:
+    displayName: 最近修改
+views:
+  - type: table
+    name: 总览
+    order:
+      - file.name
+      - note.status
+      - note.priority
+      - note.due
+      - file.mtime
+    limit: 100

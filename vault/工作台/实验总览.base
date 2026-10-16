@@ -1,0 +1,28 @@
+filters:
+  and:
+    - "file.ext == \"md\""
+    - "type == \"experiment\""
+properties:
+  file.name:
+    displayName: 笔记
+  note.date:
+    displayName: 日期
+  note.status:
+    displayName: 状态
+  note.project:
+    displayName: 关联项目
+  note.sample_ids:
+    displayName: 样品编号
+  file.mtime:
+    displayName: 最近修改
+views:
+  - type: table
+    name: 总览
+    order:
+      - file.name
+      - note.date
+      - note.status
+      - note.project
+      - note.sample_ids
+      - file.mtime
+    limit: 100

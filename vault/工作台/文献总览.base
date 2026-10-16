@@ -1,0 +1,19 @@
+filters:
+  and:
+    - "file.ext == \"md\""
+    - "file.inFolder(\"vault/文献笔记\")"
+properties:
+  file.name:
+    displayName: 笔记
+  note.status:
+    displayName: 状态
+  file.mtime:
+    displayName: 最近修改
+views:
+  - type: table
+    name: 总览
+    order:
+      - file.name
+      - note.status
+      - file.mtime
+    limit: 100

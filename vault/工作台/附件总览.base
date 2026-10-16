@@ -1,0 +1,23 @@
+filters:
+  and:
+    - "file.ext != \"md\""
+    - "!file.inFolder(\".obsidian\")"
+    - "file.ext != \"base\" && file.ext != \"duowei\""
+properties:
+  file.name:
+    displayName: 笔记
+  file.ext:
+    displayName: 格式
+  file.folder:
+    displayName: 位置
+  file.mtime:
+    displayName: 最近修改
+views:
+  - type: table
+    name: 总览
+    order:
+      - file.name
+      - file.ext
+      - file.folder
+      - file.mtime
+    limit: 100

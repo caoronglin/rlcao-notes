@@ -1,19 +1,15 @@
 ---
 cssclasses: knowledge-home
 ---
-
-# Home
+# 个人工作台
 
 ![[panel/hero]]
 
-## 操作台
-
+## 今天要推进
 ![[panel/操作台]]
 
-## 洞察镜
-
+## 项目与实验
 ![[panel/洞察镜]]
 
-## 快捷入口
-
+## 工作入口
 ![[panel/快捷入口]]

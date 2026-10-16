@@ -480,10 +480,9 @@ sort 创建日期 desc
 
 汇总到项目看板的 Tasks 查询：
 
-```tasks
-not done
-path includes 项目/周志
-sort by priority
+```dataview
+TASK FROM "vault/项目"
+WHERE !completed
 ```
 
 ### 8.8 完整工作流

@@ -227,7 +227,7 @@ find . -type f -not -path './.git/*' > /tmp/files-before.txt
 |---|---|---|
 | 1 | `muban/` 内 4 条模板占位链接**故意保留** | `[[status/to_read]]` ×3、`[[paper]]` ×1。链接语法本身是模板的目的，不是缺陷。除这 4 条外，全库悬空链接为 0（2026-10-05 清理后） |
 | 2 | lamindb 实例已失效 | `notes/bio/生信学习/单细胞/笔记/my_data/.lamindb/` 记录的是 **Windows 路径** `D:/data/rlcao/...`，当前平台为 Linux |
-| 3 | Zotero 工作流未接通 | `muban/zotero-annotation-template.md` 存在，但 `assets/zotero-annotations/` 与 `assets/zotlit-img/` 已归档为空 |
+| 3 | Zotero 工作流已接通（2026-10-16） | 使用 Zotero Integration + Better BibTeX，模板 `muban/zotero-literature-template.md`；笔记位于 `vault/文献笔记` |
 | 4 | `notes/class-notes/遗传学/` 命名不当 | 530 个文件中 526 个是 jpg、仅 2 个 md，实为扫描档案；第 2、4 章尚未转录 |
 | 5 | `wiki/c/chapter6.md` 有 20 处 C 宏被误转成 wikilink | 均在代码块内，Obsidian 渲染无害，保留原样；标题行 2 处已修为行内代码 |
 | 6 | `_posts` 4 篇的 date 取自 git 首次提交日 | 未经作者确认真实发表日期，核实后可改 |
@@ -254,3 +254,12 @@ find . -type f -not -path './.git/*' > /tmp/files-before.txt
 1. 重命名 `inbox.md` 中的新条目（给它一个能检索的名字）
 2. 把新内容归入正确的项目 / 领域 / 资源
 3. 更新活跃项目；把完成或搁置的项目移入 `4-存档/`
+## 10. 2026-10-16 工作流配置
+
+- `vault/项目`统一存放项目资料；原 BSA-seq、mazie-ltr-ide 已移动为项目下的 BSA-seq、maize-ltr-ide。
+- `vault/方法`存放实验方法、生信分析、甲基化；`vault/系统与工具`存放电脑与服务器资料。
+- 新实验记录位于 `vault/实验记录`，大纲位于 `vault/大纲笔记`，总览和使用说明位于 `vault/工作台`。
+- 每日笔记和 Zotero 笔记的路径契约不变。
+- `Home.md`仍嵌入 panel 的四个组件，使用 Dataview；QuickAdd 的原生模板创建流程负责新建记录。
+- 新项目和实验通过 `type`、`status`、`date`、`project` 等属性进入 Bases 总览；模板目录须从实验数据视图中排除。
+- Mindmap NextGen 替换无法在当前 Obsidian 正常渲染的旧 Mind Map；大纲仍以 Markdown 为唯一内容源。

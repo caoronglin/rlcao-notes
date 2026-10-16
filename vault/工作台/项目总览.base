@@ -1,8 +1,8 @@
 filters:
   and:
-    - "file.ext == \"md\""
-    - "file.inFolder(\"vault/项目\")"
-    - "type == \"project\" || file.folder == \"vault/项目\""
+    - file.ext == "md"
+    - file.inFolder("vault/项目")
+    - type == "project" || file.folder == "vault/项目"
 properties:
   file.name:
     displayName: 笔记
@@ -19,8 +19,11 @@ views:
     name: 总览
     order:
       - file.name
-      - note.status
-      - note.priority
-      - note.due
+      - status
+      - priority
+      - due
       - file.mtime
     limit: 100
+    sort:
+      - property: file.mtime
+        direction: DESC

@@ -21,3 +21,6 @@ views:
       - file.folder
       - file.mtime
     limit: 100
+    sort:
+      - property: file.mtime
+        direction: DESC

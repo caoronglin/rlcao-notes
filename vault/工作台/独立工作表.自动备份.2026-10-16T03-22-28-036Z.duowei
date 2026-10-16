@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "id": "tbl_mvaefg6q_25c76up",
+  "name": "独立工作表",
+  "fields": [
+    {
+      "id": "fld_mvaefg6q_5trd9p8",
+      "name": "标题",
+      "type": "text",
+      "width": 240
+    },
+    {
+      "id": "fld_mvaefg6q_0pl2gpy",
+      "name": "状态",
+      "type": "singleSelect",
+      "width": 140,
+      "options": [
+        {
+          "id": "opt_mvaefg6q_kxdsvzd",
+          "name": "待处理",
+          "color": "var(--color-orange)"
+        },
+        {
+          "id": "opt_mvaefg6q_e27tlrg",
+          "name": "进行中",
+          "color": "var(--color-blue)"
+        },
+        {
+          "id": "opt_mvaefg6q_3vzi0ix",
+          "name": "已完成",
+          "color": "var(--color-green)"
+        }
+      ]
+    },
+    {
+      "id": "fld_mvaefg6q_ht5erq8",
+      "name": "完成",
+      "type": "checkbox",
+      "width": 96
+    },
+    {
+      "id": "fld_date",
+      "name": "日期",
+      "type": "date",
+      "width": 150
+    },
+    {
+      "id": "fld_note",
+      "name": "关联笔记",
+      "type": "noteLink",
+      "width": 220
+    },
+    {
+      "id": "fld_attachment",
+      "name": "附件",
+      "type": "attachment",
+      "width": 180
+    },
+    {
+      "id": "fld_number",
+      "name": "数值",
+      "type": "number",
+      "width": 130
+    },
+    {
+      "id": "fld_memo",
+      "name": "备注",
+      "type": "text",
+      "width": 240
+    }
+  ],
+  "records": [],
+  "views": [
+    {
+      "id": "view_mvaefg6q_xqlbw5r",
+      "name": "表格",
+      "type": "grid",
+      "fieldOrder": [
+        "fld_mvaefg6q_5trd9p8",
+        "fld_mvaefg6q_0pl2gpy",
+        "fld_mvaefg6q_ht5erq8",
+        "fld_date",
+        "fld_note",
+        "fld_attachment",
+        "fld_number",
+        "fld_memo"
+      ],
+      "hiddenFields": [],
+      "sorts": [],
+      "filters": [],
+      "rowHeight": "default",
+      "frozenFieldCount": 1
+    },
+    {
+      "id": "view_mvaefg6q_jio75ue",
+      "name": "看板",
+      "type": "kanban",
+      "fieldOrder": [
+        "fld_mvaefg6q_5trd9p8",
+        "fld_mvaefg6q_0pl2gpy",
+        "fld_mvaefg6q_ht5erq8",
+        "fld_date",
+        "fld_note",
+        "fld_attachment",
+        "fld_number",
+        "fld_memo"
+      ],
+      "hiddenFields": [],
+      "sorts": [],
+      "filters": [],
+      "groupFieldId": "fld_mvaefg6q_0pl2gpy",
+      "titleFieldId": "fld_mvaefg6q_5trd9p8",
+      "cardFieldIds": [
+        "fld_date",
+        "fld_note"
+      ]
+    },
+    {
+      "id": "view_mvaefg6q_akzc7j1",
+      "name": "画廊",
+      "type": "gallery",
+      "fieldOrder": [
+        "fld_mvaefg6q_5trd9p8",
+        "fld_mvaefg6q_0pl2gpy",
+        "fld_mvaefg6q_ht5erq8",
+        "fld_date",
+        "fld_note",
+        "fld_attachment",
+        "fld_number",
+        "fld_memo"
+      ],
+      "hiddenFields": [],
+      "sorts": [],
+      "filters": [],
+      "coverFieldId": "fld_attachment",
+      "titleFieldId": "fld_mvaefg6q_5trd9p8",
+      "cardFieldIds": [
+        "fld_mvaefg6q_0pl2gpy",
+        "fld_mvaefg6q_ht5erq8"
+      ]
+    }
+  ],
+  "meta": {
+    "createdAt": "2026-10-16T03:19:19.730Z",
+    "updatedAt": "2026-10-16T03:19:19.730Z"
+  }
+}

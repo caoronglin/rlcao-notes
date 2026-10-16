@@ -5,7 +5,7 @@ cssclasses: knowledge-home
 
 ![[panel/hero]]
 
-## 今天要推进
+## 今日计划与项目待办
 ![[panel/操作台]]
 
 ## 项目与实验

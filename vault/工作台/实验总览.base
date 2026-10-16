@@ -1,7 +1,8 @@
 filters:
   and:
-    - "file.ext == \"md\""
-    - "type == \"experiment\""
+    - file.ext == "md"
+    - type == "experiment"
+    - file.inFolder("vault/实验记录")
 properties:
   file.name:
     displayName: 笔记
@@ -20,9 +21,12 @@ views:
     name: 总览
     order:
       - file.name
-      - note.date
-      - note.status
-      - note.project
-      - note.sample_ids
+      - date
+      - status
+      - project
+      - sample_ids
       - file.mtime
     limit: 100
+    sort:
+      - property: file.mtime
+        direction: DESC

@@ -17,3 +17,6 @@ views:
       - note.status
       - file.mtime
     limit: 100
+    sort:
+      - property: file.mtime
+        direction: DESC

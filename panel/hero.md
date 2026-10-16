@@ -1,6 +1,7 @@
 ```dataviewjs
 // 工作台入口只调用已配置的本地命令，不创建虚构的项目或实验。
 const root = dv.el("div", "", {cls:"wf-header"});
+root.empty();
 const title = root.createDiv({cls:"wf-welcome"});
 title.createEl("p", {text: new Intl.DateTimeFormat("zh-CN", {dateStyle:"full"}).format(new Date()), cls:"wf-date"});
 title.createEl("h2", {text:"记录、推进、回顾"});
@@ -21,5 +22,6 @@ button("添加云文档",()=>quick("添加云文档"));
 const pages=dv.pages('"vault"');
 const counts=[["大纲笔记",pages.where(p=>p.type==="outline").length],["实验记录",pages.where(p=>p.type==="experiment").length],["项目",pages.where(p=>p.type==="project").length]];
 const stats=dv.el("div","",{cls:"wf-stats"});
+stats.empty();
 for(const [label,value] of counts){const card=stats.createDiv({cls:"wf-stat"});card.createEl("strong",{text:String(value)});card.createEl("span",{text:label});}
 ```

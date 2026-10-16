@@ -12,7 +12,12 @@ doi: "{{DOI}}"
 {% if DOI %}> DOI: https://doi.org/{{DOI}}{% endif %}
 
 ## 文献信息
-{{bibliography}}
+- 作者：{% for creator in creators %}{{creator.firstName}} {{creator.lastName}}{% if not loop.last %}; {% endif %}{% endfor %}
+- 年份：{{date | format("YYYY")}}
+{% if publicationTitle %}- 期刊：{{publicationTitle}}{% endif %}
+{% if url %}- 原文：[出版页面]({{url}}){% endif %}
+{% if bibliography %}
+{{bibliography}}{% endif %}
 
 ## 摘要
 {{abstractNote}}

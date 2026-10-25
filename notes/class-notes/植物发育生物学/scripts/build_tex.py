@@ -290,7 +290,11 @@ def main():
         # 注意：re.sub 的替换串会把 \t 当制表符，故用 \\\\textit
         e = re.sub(r"\*([^*]+)\*", r"\\textit{\1}", e)
         e = re.sub(r"DOI:\s*(\S+)", r"DOI: \1", e)
-        e = e.replace("\\textit{", "[J]. \\textit{").replace(". [J]. ", "[J]. ")
+        # 在期刊名（\textit{...}）前确保有且仅有一个 [J] 标识。
+        # renumber_refs.py 产出的条目已自带 [J]，此处只在缺失时补，
+        # 不再做"插入后折叠"——那样会把 `size[J]. [J]. ` 错并成 `size[J][J]. `。
+        if "[J]" not in e.split("\\textit{")[0]:
+            e = e.replace("\\textit{", "[J]. \\textit{", 1)
         e = e.replace("\\textbackslash\\textbackslash", "\\\\")
         bib.append(f"\\bibitem{{ref{n}}} {e}")
     bibtex = "\\begin{thebibliography}{99}\n\\small\n" + "\n".join(bib) + "\n\\end{thebibliography}"

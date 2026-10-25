@@ -1,0 +1,11 @@
+[
+  {
+    "type": "bar",
+    "title": "关键词命中 62 条 RefSeq，真正编码 EGF 配体的只有 5 条",
+    "subtitle": "Entrez Nucleotide 检索 \"human epidermal growth factor\"[All Fields] AND refseq[filter]（2026-10-24）",
+    "x_axis": "基因或条目",
+    "y_axis": ["记录数"],
+    "sort": "value",
+    "annotation": "62 条 RefSeq 记录按基因归类后，ERBB2（HER2）以 31 条居首、EGFR 10 条次之，两者合计占 66%，且大部分是转录本变体；真正编码 EGF 配体本身的只有 5 条（4 个 mRNA 变体 + 1 条 RefSeqGene）。这说明 Entrez 的全字段自由词匹配会把 EGF 通路上的受体与下游基因一并召回，关键词检索的结果数远大于「一个基因」的记录数。口径说明：条数取自 ESummary 对 62 条 UIDs 的逐条归类，非抽样。"
+  }
+]

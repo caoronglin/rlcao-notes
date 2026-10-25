@@ -1,16 +1,16 @@
 # 课程论文 SPEC —— 植物发育生物学（魏永胜）
 
-状态：**v2 修订完成**（2026-10-06）。v1 于 2026-09-21 交付。
-本轮：**核查加固 + 补强核心论证 + 扩充图表**。正文源文件与 LaTeX 已更新，**PDF 待重排**（见 §7 工具链）。
+状态：**v2 修订完成**（2026-10-06），**表述打磨完成**（2026-10-23）。v1 于 2026-09-21 交付。
+主线：**核查加固 + 补强核心论证 + 扩充图表 + 表述精确化**。正文源文件与 LaTeX 已更新，**PDF 待重排**（见 §7 工具链）。
 
-| 项 | v1（2026-09-21） | v2（2026-10-06） |
-|---|---|---|
-| 正文字数 | 4623 | **4995**（要求 3000–5000） |
-| 参考文献 | 18 篇 | **23 篇**（新增 5 篇，均经 Crossref 实证） |
-| 图 | 图 1 | **图 1 + 图 2**（`figures/fig2.svg/png/pdf`） |
-| 表 | 表 1 | **表 1 + 表 2**（`tables/T2_力学证据外推限度.md/.xlsx`） |
-| 事实核查 | 未做 | **84 条表述逐条比对原文**，修正 4 处硬错误 + 9 处强度问题 |
-| PDF | 已交付 | 未重出（用户指定"只改 Markdown"） |
+| 项 | v1（2026-09-21） | v2（2026-10-06） | v2 + 打磨（2026-10-23） |
+|---|---|---|---|
+| 正文字数 | 4623 | 4995 | **4938**（要求 3000–5000） |
+| 参考文献 | 18 篇 | 23 篇（新增 5 篇，均经 Crossref 实证） | 23 篇（编号无变化） |
+| 图 | 图 1 | 图 1 + 图 2 | 图 1 + 图 2 |
+| 表 | 表 1 | 表 1 + 表 2 | 表 1 + 表 2（措辞对齐正文） |
+| 事实核查 | 未做 | 84 条表述逐条比对原文，修正 4 处硬错误 + 9 处强度问题 | **23 篇全量回溯一手 PDF**，修正 1 处引错文献 + 1 处无据推断（见 §1.5） |
+| PDF | 已交付 | 未重出（用户指定"只改 Markdown"） | 仍未重出 |
 
 ## 1. 本轮修订内容
 
@@ -44,9 +44,61 @@
 - **图 2**（`figures/fig2.svg` / `.png` / `.pdf`）：多层级力学链条中"应力方向感知"的断点定位。四级（纤维→壁→细胞→组织）各列分子实体与可测力学量，虚线带标出未解接口，底部诚实标注各力学证据的来源系统（**仅第一条在 SAM 本体上**）。
 - **表 2**（`tables/T2_力学证据外推限度.md` / `.xlsx`）：5 个力学证据系统 × 7 维对照（来源系统 / 物种组织 / 关键结论 / 力学手段 / 因果链闭合度 / 外推限制）。直接支撑 §4.3。
 
+### 1.4 表述精确化与去 AI 痕迹（2026-10-23）
+
+原则：**不新增论点、不改结论强度，只把表述收到与证据同级**；同时按 humanizer 清单清掉机器写作痕迹。全部改动已回溯到原始 PDF 或笔记卡，未引入无出处的新表述。
+
+**不精确表述 3 处**（均已改）：
+
+1. **§5.1 Long 等的数据归属说错**。原写"顶端分生组织区标记在发育中穗轴的阳性细胞占 32.2%"。实际是 **VRT2**（MADS-box 转录因子）在**发育中的穗轴**（ED3）阳性细胞占 32.2%，在颖/外稃（ED2）仅 3.3%，并非"分生组织区标记"（笔记卡 [新-35]，PDF p7–p8）。已改为点名 VRT2。
+2. **§5.1 Demesa-Arevalo 等的"转录静默"原为定性描述**。原写"该窗口内基因表达几乎没有变化"。原文给了硬数字：**P11–P15 检出 0 个 DEG，而 P5 转换点有 303 个**（Fig. 6a, PDF p7）。已改为定量表述，论证力反而更强。
+3. **§5.2 细胞分裂素的作用机制写浅了**。原写"细胞分裂素可通过稳定 WUS 扩大分生组织"。Cui 2024 的机制是**细胞分裂素抑制肽酶 DA1 的蛋白水平，从而解除对 WUS 的切割与去稳定化**（笔记卡 [04]，p.2–3）。已改为"经抑制肽酶 DA1 稳定 WUS 蛋白"。
+
+**错误归属 1 处**：§5.2 原写"冗余配体—受体网络**已被提出**可作为增产靶点[Dao]"——无主语的被动归属。Dao 2022 摘要原句为 "expands the potential targets for enhancing yield traits in crop species"，改为** Dao 等主动提出**。
+
+**强度/措辞修正 4 处**：
+
+- §2.2 原写"Kicheva 与 Briscoe **明确把这一图景称为早期观点**"。原文并无 "early view" 一词，其表述是"最初的鉴定导致了……观点，而后续进展提示图景更为多样"。已改为"形态发生素**最初被理解为**……后续研究给出的图景更为多样"，去掉对原文的转述升级。
+- §3.1 原写"**一篇近期综述**列出拟南芥 13 个候选壁传感器基因[Cosgrove]"。同一句里出现两个文献指向，读者无法判断 13 这个数出自谁。Cosgrove 综述 p.352 确实记载该数，改为"Cosgrove 的综述提到拟南芥已有 13 个候选壁传感器基因"。
+- §4.3 原写"Lan 等的工作是直接取自茎端分生组织的**少数条目之一**"。与表 2 的"唯一"自相矛盾，且"少数条目之一"本身含糊。本文所引文献范围内 Lan 等确为唯一，改为"**唯一在分生组织本体上取得力学数据的条目**"，与表 2 对齐。
+- §3.2 原写"下调基因有**相当比例**属于触觉核心响应基因"。改为"下调基因中有 117 个（18.8%）与触觉核心转录组重叠，其中 22 个属最受触觉诱导的 51 个基因"（笔记卡 [新-31]，Fig. 3, p.5）。表 2 与 xlsx 同步改。
+
+**去 AI 痕迹**（按 humanizer 2.1.1 清单逐条扫）：
+
+| 模式 | 处置 |
+|---|---|
+| 行内加粗小标题（§2.2 的 `**其一/其二/其三**`） | 去掉加粗，保留分段。全文正文加粗从 3 处降为 0 |
+| 范式转折浮夸语（"近年的工作把力学**重新放回中心位置**） | 删。该段改用 Coen & Cosgrove 摘要原句承载论点 |
+| 无主语被动归属（"已被提出"） | 补主语，见上 |
+| 自我提示式插入语（"一个对照**值得记录**"、"更**需留意**"） | 改为直接陈述或删除 |
+| 结论虚高（"却回答不了一个**更基本的**问题"） | 删"更基本的" |
+| 未翻译英文链（fiber→wall→cell→tissue） | 改为"纤维、壁、细胞、组织四级构成" |
+| 错译术语（"**合成生长**" ← resultant growth） | 改为"实际生长" |
+| 概念落点虚化（"位置信息由此从概念落到了具体转录因子及其陡峭边界上"） | 改为点名 RIL1、LEC1、SPL17（Long 等自己的结论句所列） |
+
+扫描结果：正文 0 处 `——`、0 处三连排比、0 处"此外/值得注意的是"、0 处通篇粗体。保留的少数破折号均为中文学术写作的合法连接用法（如"分生组织—器官边界基因"），非英文 em dash 的滥用。
+
+**顺带修掉的构建缺陷**：`build_tex.py` 生成 `\bibitem` 时，先给期刊名插入 `[J]. `，再用 `.replace(". [J]. ", "[J]. ")` 去重，结果把 `size[J]. [J]. ` 错并成 **`size[J][J]. `**——PDF 里会显示成 `size[J][J]`。该缺陷自 v2 tex 生成（10-06）起就存在，只因未编译而未暴露。已改为"缺失才补"的条件插入，重建后全文 0 处重复。
+
+### 1.5 23 篇文献全量回溯一手 PDF（2026-10-23）
+
+触发：用户要求用 firecrawl-research-papers / paper-context-resolver 重新爬取论文。**firecrawl 工具面本机不可用**（CLI 未安装、MCP 无对应工具），`paper-context-resolver` 按其自身 "When not to apply" 判定不适用（它是给 README/仓库复现缺口用的，本文无仓库）。降级路径：23 篇的一手 PDF 全部在本地（`refs/` 18 篇 + `pdfs/29,31,34,35,42`），**直接对原文逐条核**——这比任何网络检索都强。
+
+**核了哪些**：论文中每一个具体数字、机制与归属。结论：21 篇的承重表述与原文逐字吻合（含 KNU 的 PIN1/IPT7/H3K27me3、John 的 fasciation+热诱导掩蔽、Dao 的 BAM 上游、Yadav 的 CZ/PZ/RM、Burian 的"早数个叶间隔期+均匀输入"、Alonso 的染料排除与条件稳健性、Neumann 的 3D 重建、Zhang 的细胞自主/非细胞自主、Hua 的 WAG 激酶直接激活、Hoermayer 的 "destabilized under low tension"、Uzair 的 22×/4.8×/1.1×、Lan 的 117/18.8%）。**另发现 2 处问题**：
+
+1. **§4.2 引错文献（已改）**。原句"跨膜受体的双域结构……已有分析对其提出了反驳**[Cosgrove]**"。逐字检索 Cosgrove 2024 综述全文，**没有**任何对受体假说的反驳；全文唯一的 "two domains" 在 p.349，指的是 **expansin 的两个结构域**，与跨膜受体无关。该假说及其反证的真正出处是 **Coen & Cosgrove 2023, *Science*，物理页 5**：假说为"胞外域优先结合高应力微纤维、胞内域结合微管"；反证为 "enzymatic treatments or mutants that modify mechanical properties of walls by interfering with cellulose content have no discernible effect on microtubule patterning… which argues against this mechanism"。已改为挂 `[Coen]`，并把原文的具体反证写进去（原来只写"已有分析提出反驳"，读者无从判断依据）。同页还列了第二类假说（胞内极性蛋白的不对称定位），一并补入，使"现有假说"的复数名副其实。
+2. **§5.2 把"没测"写成"不走这条路"（已改）**。原句"下游经 T6P 积累、蔗糖重分配与早花，**而非经由 WUS**[Vardanega]"。T6P（HvSRA↓/HvTPS1↑）、蔗糖运输（HvSWEET11b）、早花（HvFT2 过表达 "consistently resulted in early flowering"）均有原文支持；但**该文全文未检测大麦 WUS/HvWUS 的表达或功能**——这一点我自己的笔记卡 `notes_new_29` 第 74 行早就记着，正文却写成了否定结论。已改为"大麦中的 WUS 未被检测，该通路是否也作用于 WUS 尚无数据"，把结论强度降回证据强度。
+
+**方法学备注**：本轮验证全部基于本地 PDF 的 `pdftotext -layout` 全文检索 + 人工读上下文，非仅摘要。凡笔记卡与 PDF 冲突，以 PDF 为准（本轮两处都是笔记卡更谨慎、正文更冒险）。
+
+**字数**：修正后 4938（要求 3000–5000），比修正前 4967 低——在不动内容处压缩了 4 处（图表枚举句、指定/实际生长的括注、"这一回路并未止于一条线"、一处"之后"）。
+
 ## 2. 已知问题与待办
 
-- **PDF 未重出**：本机 LaTeX 工具链已丢失（`/media/rlcao/Data/latex/` 整个目录不存在，`xelatex/pdflatex/latexmk` 全无）。`paper.tex` 已生成且自检通过（23 bibitem、figure/table/tabularx 环境配平、表格 `\cite` 全部正确解析），待恢复 TeX Live 后用 `python3 scripts/build_tex.py && xelatex paper.tex` 出稿。备选：`pandoc` + `google-chrome --headless --print-to-pdf`。
+- **PDF 未重出**。本机 `/media/rlcao/Data/latex/` 整个目录已不存在，TeX Live 只剩系统包 `texlive-base` + `texlive-latex-base` + `texlive-binaries`。2026-10-23 复查：`xelatex` 无，`lualatex`/`pdflatex`/`latexmk` 在 `/usr/bin`；`paper.tex` 依赖的 11 个宏包**缺 7 个**——`fontspec`、`booktabs`、`setspace`、`caption`、`tcolorbox`、`ctex`/`xeCJK` 全无（`geometry`/`tabularx`/`amsmath`/`indentfirst`/`natbib`/`hyperref` 在位）。即使补回 `xelatex`，缺包照样编不过。
+  - 路线 A（完整 TeX）：`sudo apt install texlive-xetex texlive-latex-recommended texlive-latex-extra texlive-lang-chinese`，再 `python3 scripts/build_tex.py && xelatex paper.tex`（跑两遍出目录）。注意 `paper.tex` 的 `\setmainfont` 里 `Path=` 指向已消失的 `/media/rlcao/Data/latex/2026/texmf-dist/...`，恢复后需改指向系统 `texgyretermes-*.otf`，或删掉整段让 fontspec 自动找字体。
+  - 路线 B（已验证可用）：`pandoc 3.11` 与 `/usr/bin/google-chrome` 均在本机。`pandoc paper/paper.md -o paper.html --standalone --metadata title=...` 再 `google-chrome --headless --print-to-pdf=out.pdf paper.html`。排版精细度低于 LaTeX，但可满足"PDF + 结构完整"的提交要求。
+  - `paper.tex` 自检已通过：23 条 `\bibitem`、`figure`/`table`/`tabularx`/`thebibliography` 环境全部配平、花括号 309/309、表格 `\cite` 经姓氏反查全部解析、`[J]` 无重复。
 - **`plot-figure-skill` 降级**：该 skill 目录仅含说明文档，`scripts/` 与 `gen_figure.py` 渲染器在本机不存在。图 2 改用 matplotlib 直出（`figures/make_fig2.py`），遵循其配色与质检规范（低饱和莫兰迪、色盲安全、透明底、PNG 由同一 SVG 经 cairosvg 栅格化至 3000px、无日文字形）。
 - **未访问选题表**：不撞题依据仍为 2026-09-20 的 117 条本地快照（`data/class_topics_raw.txt`）。腾讯文档 `docs.qq.com/sheet/DWkpGWkJhSkVzcXh6` 现需登录且链接缺 `scode`，无法核实此后是否有新增选题。
 - **§5.3 未扩写**：按用户要求不新增实验设计内容，维持原有的简短研究切入点（课程要求中"展望须提出研究切入点"仍满足）。

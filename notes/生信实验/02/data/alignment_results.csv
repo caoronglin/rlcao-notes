@@ -1,0 +1,9 @@
+序号,序列对,比对类型,评分矩阵,比对长度,一致性,相似性,空位率,得分
+1,人EGF mRNA vs 小鼠Egf mRNA,Needle 全局,EDNAFULL,6663,54.2,54.2,32.5,12816.0
+2,人EGF mRNA vs 小鼠Egf mRNA,Needle 全局,EDNAMAT,6663,54.2,54.2,32.5,12816.0
+3,人EGF mRNA vs 小鼠Egf mRNA,Water 局部,EDNAFULL,5154,70.1,70.1,12.7,12819.0
+4,人EGF mRNA vs 小鼠Egf mRNA,Water 局部,EDNAMAT,5154,70.1,70.1,12.7,12819.0
+5,人EGF蛋白 vs 小鼠Egf蛋白,Needle 全局,EBLOSUM62,1231,65.4,77.7,3.1,4355.5
+6,人EGF蛋白 vs 小鼠Egf蛋白,Water 局部,EBLOSUM62,1217,66.1,78.5,2.0,4358.0
+7,人EGF蛋白 vs 人TGFA蛋白,Needle 全局,EBLOSUM62,1224,3.9,6.4,88.3,128.0
+8,人EGF蛋白 vs 人TGFA蛋白,Water 局部,EBLOSUM62,99,33.3,50.5,13.1,138.5

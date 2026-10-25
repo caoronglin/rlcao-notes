@@ -1,7 +1,7 @@
 ---
 title: 植物发育生物学 · 课程论文
 date: 2026-10-06
-updated: 2026-10-06
+updated: 2026-10-23
 tags: [课程论文, 植物发育, 茎端分生组织, 形态发生, 植物力学]
 status: 正文已定稿，PDF 待重排
 ---
@@ -17,15 +17,15 @@ status: 正文已定稿，PDF 待重排
 
 目录里的 `【植物发育生物学课程论文】-生技2402-曹荣麟-v1旧版待重排.pdf` 是 **2026-09-21 的 v1**，**不要提交它**。
 
-| | v1（PDF 里是这版） | v2（`.md` 里是这版） |
+| | v1（PDF 里是这版） | v2（`.md` 里是这版，2026-10-23 末次打磨） |
 |---|---|---|
-| 正文字数 | 4623 | **4884** |
+| 正文字数 | 4623 | **4938** |
 | 参考文献 | 18 篇 | **23 篇** |
 | 图表 | 图 1、表 1 | **图 1、图 2、表 1、表 2** |
-| 事实错误 | 有 4 处硬错误 | 已全部修正 |
+| 事实错误 | 有 4 处硬错误 | 已全部修正；2026-10-23 又修正 3 处不精确表述 + 1 处错误归属 + 1 处引错文献 + 1 处无据推断 |
 | 新增文献 | 无 | CSLD5 / ERECTA–CLV3 / 大麦 CLAVATA / 小麦空间转录组 / 大麦插补 |
 
-**v2 的 PDF 还没生成**——本机 LaTeX 工具链已丢失（`xelatex`、`pdflatex`、`latexmk` 均不可用，`/media/rlcao/Data/latex/` 目录不存在）。`paper/paper.tex` 已生成并自检通过，恢复 TeX Live 后重编译即可；备选 `pandoc` + `google-chrome --headless --print-to-pdf`。
+**v2 的 PDF 还没生成。** 本机 `/media/rlcao/Data/latex/` 已整个消失，只剩系统 `texlive-base` + `texlive-latex-base`。2026-10-23 复查：`xelatex` 无（`lualatex`/`pdflatex`/`latexmk` 在 `/usr/bin`），`paper.tex` 依赖的 11 个宏包**缺 7 个**（`fontspec`、`booktabs`、`setspace`、`caption`、`tcolorbox`、`ctex`/`xeCJK`）。两条路线与完整命令见 `SPEC.md` §2；备选 `pandoc 3.11` + `google-chrome --headless --print-to-pdf` 已确认本机可用。
 
 ---
 
@@ -48,7 +48,7 @@ status: 正文已定稿，PDF 待重排
 ├── 【植物发育生物学课程论文】-生技2402-曹荣麟.md   ← 正文（交付内容，以此为准）
 ├── 【...】-v1旧版待重排.pdf                    ← 旧版，仅存档，勿提交
 │
-├── paper/          LaTeX 中间产物：paper.md(构建源) / paper.tex / .aux / .log
+├── paper/          LaTeX 中间产物：paper.md(构建源) / paper.tex
 ├── figures/        图 1（TikZ 源 fig1.tex）、图 2（fig2.svg/png/pdf + 生成脚本）
 ├── tables/         表 2 的 Markdown 与 xlsx 两版
 ├── work/           精读笔记卡、事实核查报告、正文草稿、检索中间产物
@@ -71,6 +71,10 @@ status: 正文已定稿，PDF 待重排
 4. **空间组学**两篇经全文检索确认**均无力学数据**，故论证改为用数据立论：快速生长窗口 P11–P15 恰是**转录静默**窗口。
 
 **四处已修正的硬错误**：`[13]` 作者姓氏 `Hu` → **Hua**（PDF 首页为准，Crossref 字段有误）；壁截面积归属说反；微管"受压时不稳定" → **低张力下不稳定**且是**聚合**；CZ/PZ/RM 三分区补引。
+
+**表述精确化**（2026-10-23，`SPEC.md` §1.4–§1.5）：Long 等的 32.2%/3.3% 原被误归属为"分生组织区标记"，实为 **VRT2** 在发育中穗轴 vs 颖/外稃；大麦"转录静默"由定性改为定量（P11–P15 **0 个 DEG**，P5 转换点 303 个）；细胞分裂素机制补为"经抑制肽酶 DA1 稳定 WUS 蛋白"；Dao 的增产靶点主张补回主语。同时按 humanizer 清单清掉行内加粗小标题、范式转折浮夸语、无主语被动归属等机器写作痕迹。顺带修掉 `build_tex.py` 会把参考文献生成 `size[J][J]` 的缺陷。
+
+**23 篇全量回溯一手 PDF**（§1.5）：firecrawl 工具面本机不可用，改用本地 23 篇 PDF 逐条核。21 篇逐字吻合；另发现 §4.2 把双域受体假说的反证引到了 `[Cosgrove]`，实际出自 Coen & Cosgrove 2023 *Science* 物理页 5（Cosgrove 2024 综述全文无此反驳，其唯一的 "two domains" 指 expansin）；§5.2 原写大麦 CLV 通路"而非经由 WUS"，而该文从未检测大麦 WUS——已改为"WUS 未被检测，是否作用于 WUS 尚无数据"。
 
 ---
 

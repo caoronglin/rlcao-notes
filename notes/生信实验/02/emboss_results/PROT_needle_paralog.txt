@@ -1,0 +1,115 @@
+### EBI EMBOSS 在线作业结果（Job Dispatcher, EMBOSS 6.6.0）
+### 分子：人 EGF / 小鼠 Egf（直系同源）；人 EGF / 人 TGFA（并系同源对照）
+### 评分矩阵 EDNAFULL/EDNAMAT/EBLOSUM62；gapopen=10.0，gapextend=0.5
+
+########################################
+# Program: needle
+# Rundate: Sat 24 Oct 2026 10:01:40
+# Commandline: needle
+#    -auto
+#    -stdout
+#    -asequence emboss_needle-R20261024-100136-0879-23976969-np2.asequence
+#    -bsequence emboss_needle-R20261024-100136-0879-23976969-np2.bsequence
+#    -datafile EBLOSUM62
+#    -gapopen 10.0
+#    -aformat3 markx10
+#    -sprotein1
+#    -sprotein2
+# Align_format: markx10
+# Report_file: stdout
+########################################
+
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: EMBOSS_001
+# 2: EMBOSS_001
+# Matrix: EBLOSUM62
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 1224
+# Identity:      48/1224 ( 3.9%)
+# Similarity:    78/1224 ( 6.4%)
+# Gaps:        1081/1224 (88.3%)
+# Score: 128.0
+# 
+#
+#=======================================
+
+>>>EMBOSS_001, 1207 aa vs EMBOSS_001, 160 aa
+; mp_name: EMBOSS
+; mp_ver: 6.6.0.0
+; pg_name: needle
+; pg_ver: 6.6.0.0
+; pg_matrix: EBLOSUM62
+; pg_gap-pen: -10.0 -0.5
+>>#1
+; sw_score: 128.0
+; sw_ident: 0.039
+; sw_overlap: 1224
+>EMBOSS_001 ..
+; sq_len: 1207
+; sq_type: p
+; al_start: 1
+; al_stop: 1207
+; al_display_start: 1
+MLLTLIILLPVVSKFSFVSLSAPQHWSCPEGTLAGNGNSTCVGPAPFLIF
+SHGNSIFRIDTEGTNYEQLVVDAGVSVIMDFHYNEKRIYWVDLERQLLQR
+VFLNGSRQERVCNIEKNVSGMAINWINEEVIWSNQQEGIITVTDMKGNNS
+HILLSALKYPANVAVDPVERFIFWSSEVAGSLYRADLDGVGVKALLETSE
+KITAVSLDVLDKRLFWIQYNREGSNSLICSCDYDGGSVHISKHPTQHNLF
+AMSLFGDRIFYSTWKMKTIWIANKHTGKDMVRINLHSSFVPLGELKVVHP
+LAQPKAEDDTWEPEQKLCKLRKGNCSSTVCGQDLQSHLCMCAEGYALSRD
+RKYCEDVNECAFWNHGCTLGCKNTPGSYYCTCPVGFVLLPDGKRCHQLVS
+CPRNVSECSHDCVLTSEGPLCFCPEGSVLERDGKTCSGCSSPDNGGCSQL
+CVPLSPVSWECDCFPGYDLQLDEKSCAASGPQPFLLFANSQDIRHMHFDG
+TDYGTLLSQQMGMVYALDHDPVENKIYFAHTALKWIERANMDGSQRERLI
+EEGVDVPEGLAVDWIGRRFYWTDRGKSLIGRSDLNGKRSKIITKENISQP
+RGIAVHPMAKRLFWTDTGINPRIESSSLQGLGRLVIASSDLIWPSGITID
+FLTDKLYWCDAKQSVIEMANLDGSKRRRLTQNDVGHPFAVAVFEDYVWFS
+DWAMPSVMRVNKRTGKDRVRLQGSMLKPSSLVVVHPLAKPGADPCLYQNG
+GCEHICKKRLGTAWCSCREGFMKASDGKTCLALDGHQLLAGGEVDLKNQV
+TPLDILSKTRVSEDNITESQHMLVAEIMVSDQDDCAPVGCSMYARCISEG
+EDATCQCLKGFAGDGKLCSDIDECEMGVPVCPPASSKCINTEGGYVCRCS
+EGYQGDGIHCLDIDECQLGEHSCGENASCTNTEGGYTCMCAGRLS--EPG
+LI---C--------PDSTPPPHLREDDHHYSVRNSDSECPLSHDGYCLHD
+GVCMYIEALDKYACNCVVGYIGERCQYRDLKWWELRHAGHGQQQKVI--V
+VAVCVVVLVMLLLLSLWGAHYYRTQKLLSKNPKNPYEESSRDV--RSRRP
+ADTEDGMSSCPQPWFVVIKEHQDLKNGGQPVAGEDGQAADGSMQPTSWRQ
+EPQLCGMGTEQGCWIPVSSDKGSCPQVMERSFHMPSYGTQTLEGGVEKPH
+SLLSANPLWQQRALDPPHQMELTQ
+>EMBOSS_001 ..
+; sq_len: 160
+; sq_type: p
+; al_start: 1
+; al_stop: 160
+; al_display_start: 1
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+--------------------------------------------------
+------------------------------------MVPSAGQLALFALG
+IVLAACQALENSTSPLSADPPVAAAVVSHF------NDCPDSHTQFCFH-
+GTCRFLVQEDKPACVCHSGYVGARCEHADL----LAVVAASQKKQAITAL
+VVVSIVALAVLIITCVL-IHCCQVRK---------HCEWCRALICRHEKP
+SALLKGRTACCHSETVV---------------------------------
+--------------------------------------------------
+------------------------
+
+#---------------------------------------
+#---------------------------------------

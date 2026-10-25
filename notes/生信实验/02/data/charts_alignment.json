@@ -1,0 +1,20 @@
+[
+  {
+    "type": "bar",
+    "title": "局部比对把核酸一致性从 54.2% 提到 70.1%，并系同源从 3.9% 提到 33.3%",
+    "subtitle": "8 组 EBI EMBOSS 双序列比对（gapopen=10.0, gapextend=0.5）",
+    "x_axis": "作业",
+    "y_axis": ["一致性", "相似性", "空位率"],
+    "transform_code": "result = df.copy()\nresult['作业'] = result['序号'].astype(int).astype(str) + ' ' + result['比对类型'] + ' ' + result['评分矩阵']\nresult = result[['作业', '一致性', '相似性', '空位率']]",
+    "annotation": "横轴为 8 次 EBI EMBOSS 作业（1–4 核酸人 EGF mRNA vs 小鼠 Egf mRNA，5–6 蛋白人 EGF vs 小鼠 Egf，7–8 蛋白人 EGF vs 人 TGFA 并系同源对照）。最显著的两点：其一，核酸序列的 Needle 全局比对（作业 1、2）一致性仅 54.2%，而 Water 局部比对（作业 3、4）升到 70.1%，因为局部比对裁掉了人 mRNA 3' 端约 1.5 kb 的非保守区；其二，并系同源对照（作业 7、8）全局一致性只有 3.9%、空位率高达 88.3%，局部比对则从 99 列中找回 33.3% 的一致性，说明两条序列真正同源的部分只有成熟 EGF 样结构域。口径说明：各项百分比均取自 EMBOSS 输出汇总行，DNAfull 与 DNAmat 两组结果完全一致，说明所选 RefSeq 序列不含简并碱基。"
+  },
+  {
+    "type": "bar",
+    "title": "同一对序列，全局比对的得分可能远低于局部比对",
+    "subtitle": "EMBOSS Score（矩阵内加和对数，gapopen=10.0, gapextend=0.5）",
+    "x_axis": "作业",
+    "y_axis": ["得分"],
+    "transform_code": "result = df.copy()\nresult['作业'] = result['序号'].astype(int).astype(str) + ' ' + result['比对类型'] + ' ' + result['评分矩阵']\nresult = result[['作业', '得分']]",
+    "annotation": "得分衡量的是矩阵加和对数，与百分比口径不同：核酸两序列全局与局部得分几乎相同（12816.0 vs 12819.0），因为被裁掉的那段非保守序列本就没贡献分数；而并系同源对照的全局得分只有 128.0，局部比对则为 138.5，与前面 3.9% 对 33.3% 的反差一致。口径说明：分值单位为 EMBOSS 原始 Score，不同矩阵之间不可直接比较，只有同一矩阵内纵向比较才有效。"
+  }
+]

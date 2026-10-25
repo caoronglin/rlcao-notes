@@ -1,0 +1,11 @@
+序列,同源关系,物种,mrna长度,蛋白长度
+人 EGF,直系同源,Homo sapiens,6388,1207
+小鼠 Egf,直系同源,Mus musculus,4773,1217
+大鼠 Egf,直系同源,Rattus norvegicus,4799,1132
+犬 EGF,直系同源,Canis lupus familiaris,4963,1211
+鸡 EGF,直系同源,Gallus gallus,6716,1245
+人 EGF（并系同源组）,并系同源,Homo sapiens,6388,1207
+人 TGFA,并系同源,Homo sapiens,4117,160
+人 AREG,并系同源,Homo sapiens,1234,252
+人 EREG,并系同源,Homo sapiens,4615,169
+人 HBEGF,并系同源,Homo sapiens,2358,208

@@ -91,12 +91,13 @@ notes/class-notes/分子生物学/笔记和课后习题详解/第0N章 *.md  ←
 
 ### 3.3 改名前必须审计链接
 
-审计脚本必须同时处理**四种情况**，否则会大量误报（2026-10-05 实测：朴素写法误报率超过 60%）：
+审计脚本必须同时处理**五种情况**，否则会大量误报（2026-10-05 实测：朴素写法误报率超过 60%）：
 
 1. 围栏代码块 —— 用逐行开关，不能用 `re.sub(r'```.*?```')`（围栏不配对时会整体错位）
 2. 行内代码 `` `...` `` —— Obsidian 不解析其中的链接
 3. `[[目标|别名]]` 的别名式写法 —— 只匹配裸形式会漏
 4. 路径后缀解析 —— `[[答题/01_宏观认知.html]]` 由 Obsidian 按路径尾部匹配到 `notes/考证/.../答题/01_宏观认知.html`
+5. **标题锚点必须先剥掉再判存在性，且剥空要跳过** —— `[[notes/.../01-范式.md#精读 1 · X 2020]]` 的目标是文件，`#` 之后只是滚动位置；不剥锚点会把整条当悬空（2026-10-23 实测：`结构生物学/AI结构预测/` 的 32 条锚点链接全部被误报）。但 `[[#本章小节]]` 指向**当前文件内的标题**，Obsidian 合法，剥锚点后 base 为空串必须 `continue`，否则反被误报（同日实测踩到）。剥完锚点确认文件存在后，可再比对目标文件的 `^#+ ` 标题行验证锚点本身是否有效
 
 ```bash
 python3 - <<'PY'
@@ -129,9 +130,10 @@ bad=[]
 for p in mds:
     s=strip_code(io.open(p,encoding='utf-8',errors='ignore').read()); d=os.path.dirname(p)
     for raw in re.findall(r'\[\[([^\]]+)\]\]',s):
-        b=raw.split('|')[0].strip()
-        if b.startswith('<%') or b.startswith('#') or b.startswith('http'): continue
-        if not ok(b,d): bad.append((p,b))
+        base = raw.split('|')[0].partition('#')[0].strip()  # 第 5 种情况：剥标题锚点
+        if not base: continue                 # [[#标题]] 是本文件锚点，Obsidian 合法，跳过
+        if base.startswith('<%') or base.startswith('http'): continue
+        if not ok(base,d): bad.append((p,base))
 print('md %d ｜ 悬空 %d'%(len(mds),len(bad)))
 for (p,b),n in Counter(bad).items(): print('  [[%s]] ×%d  <- %s'%(b,n,p))
 PY
@@ -225,7 +227,7 @@ find . -type f -not -path './.git/*' > /tmp/files-before.txt
 
 | # | 事项 | 说明 |
 |---|---|---|
-| 1 | `muban/` 内 4 条模板占位链接**故意保留** | `[[status/to_read]]` ×3、`[[paper]]` ×1。链接语法本身是模板的目的，不是缺陷。除这 4 条外，全库悬空链接为 0（2026-10-05 清理后） |
+| 1 | `muban/` 内 4 条模板占位链接**故意保留** | `[[status/to_read]]` ×3、`[[{{annotation.imageRelativePath}}]]` ×1（后者是 Zotero 模板的 Templater 变量，不是真链接）。链接语法本身是模板的目的，不是缺陷。除这 4 条外，全库悬空链接为 0（2026-10-23 复核：466 个 md） |
 | 2 | lamindb 实例已失效 | `notes/bio/生信学习/单细胞/笔记/my_data/.lamindb/` 记录的是 **Windows 路径** `D:/data/rlcao/...`，当前平台为 Linux |
 | 3 | Zotero 工作流已接通（2026-10-16） | 使用 Zotero Integration + Better BibTeX，模板 `muban/zotero-literature-template.md`；笔记位于 `vault/文献笔记` |
 | 4 | `notes/class-notes/遗传学/` 命名不当 | 530 个文件中 526 个是 jpg、仅 2 个 md，实为扫描档案；第 2、4 章尚未转录 |

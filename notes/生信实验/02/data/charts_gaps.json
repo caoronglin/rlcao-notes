@@ -1,0 +1,24 @@
+[
+  {
+    "type": "stacked_bar",
+    "title": "核酸比对 148 个空位游程里 130 个不超过 9 bp，唯一的大空洞有 1498 bp",
+    "subtitle": "空位游程按长度分箱（Needle 全局比对，EMBOSS CLUSTAL 输出重新统计）",
+    "x_axis": "比对",
+    "y_axis": ["1 bp", "2-5 bp", "6-9 bp", "10-50 bp", "大于 50 bp"],
+    "transform_code": "result = df.pivot_table(index='比对', columns='空位游程长度', values='游程个数', aggfunc='sum').fillna(0).reset_index()\nresult = result[['比对', '1 bp', '2-5 bp', '6-9 bp', '10-50 bp', '大于 50 bp']]",
+    "annotation": "把空位按连续游程分箱后，结构差异一目了然：核酸 Needle 比对的 148 个游程中有 130 个长度不超过 9 bp（1 bp 38 个、2–5 bp 73 个、6–9 bp 19 个），是散布在 CDS 内的小插入缺失；10–50 bp 17 个；超过 50 bp 的只有 1 个。蛋白直系同源比对的 12 个游程全部不超过 10 bp；蛋白并系同源比对则相反，12 个游程里有 2 个超过 50 bp（936 bp 与 107 bp），正是「长度悬殊被迫拉齐」的代价。口径说明：游程指比对矩阵中一段连续的空位列，统计自 EMBOSS 生成的 CLUSTAL 比对文件。",
+    "width": 1000,
+    "height": 560
+  },
+  {
+    "type": "stacked_bar",
+    "title": "换算成碱基数后，并系同源比对 96% 的空位来自两个大缺口",
+    "subtitle": "各长度箱包含的空位碱基数（Needle 全局比对）",
+    "x_axis": "比对",
+    "y_axis": ["1 bp", "2-5 bp", "6-9 bp", "10-50 bp", "大于 50 bp"],
+    "transform_code": "result = df.pivot_table(index='比对', columns='空位游程长度', values='空位碱基数', aggfunc='sum').fillna(0).reset_index()\nresult = result[['比对', '1 bp', '2-5 bp', '6-9 bp', '10-50 bp', '大于 50 bp']]",
+    "annotation": "同一组数据改用空位碱基数统计，结论更鲜明：核酸比对的 2165 个空位里有 1498 个（69%）来自 3' UTR 那一个 1498 bp 的大缺口，其余 667 个分散在 147 个短游程中；蛋白并系同源比对的 1081 个空位里有 1043 个（96%）来自两个大缺口；蛋白直系同源比对 38 个空位全部在 10 bp 以内。口径说明：碱基数为该长度箱内所有游程长度之和，与 EMBOSS 汇总行的 Gaps 数值一致。",
+    "width": 1000,
+    "height": 560
+  }
+]

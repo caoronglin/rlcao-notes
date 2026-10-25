@@ -1,0 +1,16 @@
+比对,空位游程长度,游程个数,空位碱基数
+核酸 Needle（EDNAFULL）,1 bp,38,38
+核酸 Needle（EDNAFULL）,2-5 bp,73,214
+核酸 Needle（EDNAFULL）,6-9 bp,19,134
+核酸 Needle（EDNAFULL）,10-50 bp,17,281
+核酸 Needle（EDNAFULL）,大于 50 bp,1,1498
+蛋白 Needle（直系同源）,1 bp,6,6
+蛋白 Needle（直系同源）,2-5 bp,4,13
+蛋白 Needle（直系同源）,6-9 bp,1,9
+蛋白 Needle（直系同源）,10-50 bp,1,10
+蛋白 Needle（直系同源）,大于 50 bp,0,0
+蛋白 Needle（并系同源）,1 bp,2,2
+蛋白 Needle（并系同源）,2-5 bp,5,13
+蛋白 Needle（并系同源）,6-9 bp,3,23
+蛋白 Needle（并系同源）,10-50 bp,0,0
+蛋白 Needle（并系同源）,大于 50 bp,2,1043

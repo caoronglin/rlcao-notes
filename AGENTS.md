@@ -279,9 +279,11 @@ find . -type f -not -path './.git/*' > /tmp/files-before.txt
 | 项目概览 | `vault/项目/<项目名>/<项目名>-项目概览.md` | `project-dashboard-template.md`；`type: project` |
 | 方法沉淀 | `vault/方法/生信分析/NN_<主题>.md` | `bio-note-template.md`；`tags: [生信, bio/pipeline]` |
 | 大纲（可出导图） | `vault/大纲笔记/<主题>.md` | `outline-note-template.md`；标题 + 缩进列表，Ctrl+Alt+M 出导图 |
-| 文献 | `vault/文献笔记/<作者 年份 主题>.md` | `zotero-literature-template.md`；手写条目须声明非导入产物 |
+| 文献 | `vault/文献笔记/<作者 年份 主题>.md` | `zotero-literature-template.md`；手写条目须声明非导入产物（`zotero:` 留空） |
 | 独立数据表 | `vault/工作台/*.duowei` | Duowei 插件的 JSON 结构（`records[].values` 按 `field.id` 赋值，`singleSelect` 存 `option.id`） |
 
-**已落地的实例**：`vault/项目/生信实验课程/`、`vault/实验记录/2026-10-25-195500-生信实验二 Entrez搜索与双序列比对.md`、`vault/方法/生信分析/04_序列检索与双序列比对.md`、`vault/大纲笔记/生信实验课程知识结构.md`。
+**已落地的实例**：`vault/项目/生信实验课程/`、`vault/实验记录/2026-10-25-194000-生信实验一 NCBI浏览与序列文件解读.md`、`vault/实验记录/2026-10-25-195500-生信实验二 Entrez搜索与双序列比对.md`、`vault/方法/生信分析/04_序列检索与双序列比对.md`、`vault/方法/生信分析/05_基因记录与序列文件解读.md`、`vault/大纲笔记/生信实验课程知识结构.md`、`vault/文献笔记/`（5 条：Hermon 2007 / Ni 2019 / Wang 2025 / Shi 2025 / Bubb 2024）。
+
+**2026-10-27 补充**：实验一复核时发现三处必须记录的事实——① NCBI `esummary.genomicinfo` 给的是 **0-based** 坐标，Gene Viewer / `efetch rettype=gene_table` / Datasets API 给 **1-based**，直接抄 `esummary` 会整体差 1 bp；② `NM_001111711.1` 的 1787 nt = 14 个外显子剪接 **1766 nt** + 3′ 端 **21 nt poly(A) 尾**，不是"外显子对不上账"；③ 序列登录号会被回收复用（`NP_005623` → calpain-15、`NM_003001` → SDHC），必须记 version + title。
 
 **核对方式**：Bases 与面板过滤条件可在库外复算——`type == "experiment" AND file.inFolder("vault/实验记录")`、`type == "project"`、`file.inFolder("vault/文献笔记")`；全库悬空链接用 §3.3 脚本复核（2026-10-27：473 个 md，悬空 0，仅模板占位 1 条豁免）。

@@ -1,0 +1,18 @@
+[
+  {
+    "type": "heatmap",
+    "title": "4 篇文献把「ZmFIE1 印记 → 功能 → 应用」的证据链补齐",
+    "subtitle": "行=证据类型，列=文献（深色=该文献提供这一层证据）",
+    "x_axis": "证据类型",
+    "y_axis": [
+      "Hermon 2007",
+      "Ni 2019",
+      "Wang 2025",
+      "Shi 2025"
+    ],
+    "transform_code": "result = df.pivot_table(index='证据类型', columns='文献', values='证据', aggfunc='max').fillna(0).reset_index()\nresult = result[['证据类型','Hermon 2007','Ni 2019','Wang 2025','Shi 2025']]",
+    "annotation": "把 4 篇文献提供的证据按层级摊开：表达模式由 Hermon 2007 与 Ni 2019 共同确立，甲基化证据来自 Hermon 2007 与 Wang 2025，PRC2 组分互作与定位由 Ni 2019 与 Wang 2025 提供，表型证据只出现在 2025 年的两篇里，应用前景目前只有 Shi 2025 一篇支撑。可以看出最早的原始文献管的是表达与甲基化，2019 年的组学工作补上互作定位，2025 年的两篇才把功能表型和应用接上——单靠一篇文献无法覆盖完整链条。口径说明：格值 1 表示该文献摘要中直接给出了这一层证据，0 表示摘要未涉及。",
+    "width": 900,
+    "height": 520
+  }
+]

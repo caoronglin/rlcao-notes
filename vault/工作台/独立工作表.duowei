@@ -85,12 +85,12 @@
         "fld_mvaefg6q_0pl2gpy": "opt_mvaefg6q_3vzi0ix",
         "fld_mvaefg6q_ht5erq8": true,
         "fld_date": "2026-10-18",
-        "fld_note": "notes/生信实验/01/生物信息学实验报告_1_曹荣麟-2024014209_1.md",
+        "fld_note": "vault/实验记录/2026-10-25-194000-生信实验一 NCBI浏览与序列文件解读.md",
         "fld_attachment": "notes/生信实验/01/生物信息学实验报告_1_曹荣麟-2024014209_1.md",
         "fld_number": 461,
-        "fld_memo": "选定玉米 ZmFIE1（Gene ID 542075，RefSeq NM_001111711.1 / NP_001105181.1，461 aa）；纠正了原稿把 Zm00001eb318740 当成 FIE1 的错误。"
+        "fld_memo": "选定玉米 ZmFIE1（Gene ID 542075，RefSeq NM_001111711.1 / NP_001105181.1，461 aa）；纠正了原稿把 Zm00001eb318740 当成 FIE1 的错误；2026-10-27 复核修正染色体坐标 1 bp 误差并补齐 3 篇文献。"
       },
-      "notePath": "notes/生信实验/01/生物信息学实验报告_1_曹荣麟-2024014209_1.md",
+      "notePath": "vault/实验记录/2026-10-25-194000-生信实验一 NCBI浏览与序列文件解读.md",
       "createdAt": "2026-10-27T21:27:10.000Z",
       "updatedAt": "2026-10-27T21:27:10.000Z"
     },
@@ -102,7 +102,7 @@
         "fld_mvaefg6q_ht5erq8": true,
         "fld_date": "2026-10-25",
         "fld_note": "vault/实验记录/2026-10-25-195500-生信实验二 Entrez搜索与双序列比对.md",
-        "fld_attachment": "notes/生信实验/02/生物信息学实验报告_2_曹荣麟-2024014209.pdf",
+        "fld_attachment": "notes/生信实验/02/生物信息学实验报告_2_曹荣麟-2024014209.md",
         "fld_number": 70.1,
         "fld_memo": "人 EGF 家族：5 正（人/鼠/大鼠/犬/鸡）+ 5 旁（EGF/TGFA/AREG/EREG/HBEGF）。8 组 EMBOSS 比对；核酸局部一致性 70.1%，并系同源蛋白局部 33.3%。5 页 PDF + 7 张交互图。"
       },

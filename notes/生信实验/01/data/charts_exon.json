@@ -1,0 +1,12 @@
+[
+  {
+    "type": "bar",
+    "title": "14 个外显子剪接后共 1766 nt，最长的第 2 外显子独占 20.6%",
+    "subtitle": "NM_001111711.1（ZmFIE1）外显子长度，nt",
+    "x_axis": "外显子",
+    "y_axis": ["长度"],
+    "transform_code": "result = df.copy()\nresult['外显子'] = result['外显子序号'].astype(str) + ' 号 (' + result['区段'] + ')'\nresult = result[['外显子', '长度']]",
+    "annotation": "外显子长度极不均匀：第 2 外显子 364 nt（占 20.6%）与第 14 外显子 360 nt（占 20.4%）两段就占了剪接后序列的 41%，而第 10、12、13 外显子各只有 60 nt 左右。长度分布不均意味着并非所有外显子都同样古老——短外显子更可能是后期插入的。这与 FIE1 在禾谷类中是新复制出来、仍在分化的基因这一背景吻合。口径说明：长度取自 GenBank 记录 14 条 exon 特征之和（1766 nt），与 gene_table 的 total annotated spliced exon length 一致；记录全长 1787 nt，多出的 21 nt 是 3' 端 poly(A) 尾，不属于任何外显子。",
+    "sort": "none"
+  }
+]

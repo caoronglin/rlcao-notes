@@ -227,12 +227,14 @@ find . -type f -not -path './.git/*' > /tmp/files-before.txt
 
 | # | 事项 | 说明 |
 |---|---|---|
-| 1 | `muban/` 内 4 条模板占位链接**故意保留** | `[[status/to_read]]` ×3、`[[{{annotation.imageRelativePath}}]]` ×1（后者是 Zotero 模板的 Templater 变量，不是真链接）。链接语法本身是模板的目的，不是缺陷。除这 4 条外，全库悬空链接为 0（2026-10-23 复核：466 个 md） |
+| 1 | `muban/` 内 4 条模板占位链接**故意保留** | `[[status/to_read]]` ×3、`[[{{annotation.imageRelativePath}}]]` ×1（后者是 Zotero 模板的 Templater 变量，不是真链接）。链接语法本身是模板的目的，不是缺陷。除这 4 条外，全库悬空链接为 0（2026-10-27 复核：473 个 md） |
 | 2 | lamindb 实例已失效 | `notes/bio/生信学习/单细胞/笔记/my_data/.lamindb/` 记录的是 **Windows 路径** `D:/data/rlcao/...`，当前平台为 Linux |
 | 3 | Zotero 工作流已接通（2026-10-16） | 使用 Zotero Integration + Better BibTeX，模板 `muban/zotero-literature-template.md`；笔记位于 `vault/文献笔记` |
 | 4 | `notes/class-notes/遗传学/` 命名不当 | 530 个文件中 526 个是 jpg、仅 2 个 md，实为扫描档案；第 2、4 章尚未转录 |
 | 5 | `wiki/c/chapter6.md` 有 20 处 C 宏被误转成 wikilink | 均在代码块内，Obsidian 渲染无害，保留原样；标题行 2 处已修为行内代码 |
 | 6 | `_posts` 4 篇的 date 取自 git 首次提交日 | 未经作者确认真实发表日期，核实后可改 |
+| 7 | `vault/文献笔记/Hermon 2007 maize Fie1 基因印记.md` 的 `zotero:` 为空 | 该条为**手工整理**（内容取自 PubMed，PMID 17437065 / DOI 10.1007/s11103-007-9160-0），不是 Zotero Integration 导入产物，故无 item key。需要 Zotero 链接与批注时用 Ctrl+Alt+Z 导入同一条目后回填字段，**不要手编 `zotero://select/library/items/...` 假 key** |
+| 8 | 课程实验报告的 PDF 不入库 | `.gitignore` 排除 `*.pdf`（见 §4.3），换机重克隆后需从 `notes/生信实验/*/` 重新导出；md 源文件已入库 |
 
 ### 8.1 2026-10-05 链接清理记录
 
@@ -265,3 +267,21 @@ find . -type f -not -path './.git/*' > /tmp/files-before.txt
 - `Home.md`仍嵌入 panel 的四个组件，使用 Dataview；QuickAdd 的原生模板创建流程负责新建记录。
 - 新项目和实验通过 `type`、`status`、`date`、`project` 等属性进入 Bases 总览；模板目录须从实验数据视图中排除。
 - Mindmap NextGen 替换无法在当前 Obsidian 正常渲染的旧 Mind Map；大纲仍以 Markdown 为唯一内容源。
+
+## 11. 2026-10-27 生物信息学课程实验的入库方式
+
+课程实验在 `notes/生信实验/` 保留**原始输出**（序列 FASTA、EMBOSS 比对结果、数据表），`vault/` 只放**知识沉淀**，两边不互相搬动文件。
+
+| 产物 | 位置 | 契约 |
+|---|---|---|
+| 实验报告（md + PDF） | `notes/生信实验/<课次>/` | PDF 不入库（见 §8 第 8 条） |
+| 实验记录 | `vault/实验记录/<日期-时间>-<标题>.md` | QuickAdd `experiment-record-template.md`；`type: experiment`、`status`、`project` 填完整笔记链接 |
+| 项目概览 | `vault/项目/<项目名>/<项目名>-项目概览.md` | `project-dashboard-template.md`；`type: project` |
+| 方法沉淀 | `vault/方法/生信分析/NN_<主题>.md` | `bio-note-template.md`；`tags: [生信, bio/pipeline]` |
+| 大纲（可出导图） | `vault/大纲笔记/<主题>.md` | `outline-note-template.md`；标题 + 缩进列表，Ctrl+Alt+M 出导图 |
+| 文献 | `vault/文献笔记/<作者 年份 主题>.md` | `zotero-literature-template.md`；手写条目须声明非导入产物 |
+| 独立数据表 | `vault/工作台/*.duowei` | Duowei 插件的 JSON 结构（`records[].values` 按 `field.id` 赋值，`singleSelect` 存 `option.id`） |
+
+**已落地的实例**：`vault/项目/生信实验课程/`、`vault/实验记录/2026-10-25-195500-生信实验二 Entrez搜索与双序列比对.md`、`vault/方法/生信分析/04_序列检索与双序列比对.md`、`vault/大纲笔记/生信实验课程知识结构.md`。
+
+**核对方式**：Bases 与面板过滤条件可在库外复算——`type == "experiment" AND file.inFolder("vault/实验记录")`、`type == "project"`、`file.inFolder("vault/文献笔记")`；全库悬空链接用 §3.3 脚本复核（2026-10-27：473 个 md，悬空 0，仅模板占位 1 条豁免）。

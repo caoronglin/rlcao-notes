@@ -10,7 +10,9 @@ tags: [存档, PARA]
 
 归档 = 移动，不是删除；所有被归档文件用 `git mv`（保留历史），未纳入 git 的文件（PDF 被 `.gitignore` 排除）用普通 `mv`。
 
-回滚点：`git tag pre-archive-2026-10-27` → 见本次提交前的 `HEAD`
+回滚点：`git tag pre-archive-2026-10-27` → `e848dc0`（归档动作前的 HEAD）
+
+回滚方式：`git checkout pre-archive-2026-10-27 -- <路径>` 可取回任意被移走的文件；PDF 因未纳入 git，需从 `4-存档/2026-10-27/生信实验一-被取代版本/` 直接取回。
 
 ---
 

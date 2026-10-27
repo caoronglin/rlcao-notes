@@ -65,7 +65,7 @@ notes/class-notes/分子生物学/笔记和课后习题详解/第0N章 *.md  ←
 - 归档 = **移动**，不是删除。被取代的版本一律 `git mv` 进 `4-存档/<日期>/`。
 - 每次归档必须写 `README.md`，逐条记录：原位置、被谁取代、取代理由。
 - **有实内容的目录不因体量小而归档**。判据是"是否沉淀物"，不是"是否够大"。
-- 现有归档索引：`4-存档/2026-10-05/README.md`
+- 现有归档索引：`4-存档/2026-10-05/README.md`、`4-存档/2026-10-27/README.md`
 
 ---
 
@@ -274,13 +274,15 @@ find . -type f -not -path './.git/*' > /tmp/files-before.txt
 
 | 产物 | 位置 | 契约 |
 |---|---|---|
-| 实验报告（md + PDF） | `notes/生信实验/<课次>/` | PDF 不入库（见 §8 第 8 条） |
+| 实验报告（md + PDF） | `notes/生信实验/<课次>/` | PDF 不入库（见 §8 第 8 条）；实验目录设 `_index.md` 作导航 |
 | 实验记录 | `vault/实验记录/<日期-时间>-<标题>.md` | QuickAdd `experiment-record-template.md`；`type: experiment`、`status`、`project` 填完整笔记链接 |
 | 项目概览 | `vault/项目/<项目名>/<项目名>-项目概览.md` | `project-dashboard-template.md`；`type: project` |
 | 方法沉淀 | `vault/方法/生信分析/NN_<主题>.md` | `bio-note-template.md`；`tags: [生信, bio/pipeline]` |
 | 大纲（可出导图） | `vault/大纲笔记/<主题>.md` | `outline-note-template.md`；标题 + 缩进列表，Ctrl+Alt+M 出导图 |
 | 文献 | `vault/文献笔记/<作者 年份 主题>.md` | `zotero-literature-template.md`；手写条目须声明非导入产物（`zotero:` 留空） |
 | 独立数据表 | `vault/工作台/*.duowei` | Duowei 插件的 JSON 结构（`records[].values` 按 `field.id` 赋值，`singleSelect` 存 `option.id`） |
+
+**归档约定**：被取代的初稿与残留素材用 `git mv` 移入 `4-存档/<日期>/`，并在该日期的 `README.md` 里逐条记录「原位置 / 被谁取代 / 理由」（PDF 被 gitignore 时用普通 `mv`）。2026-10-27 首次执行：`练习NCBI.md`、`练习NCBI.pdf` 与 10 张未被引用的残留截图移入 `4-存档/2026-10-27/生信实验一-被取代版本/`。
 
 **已落地的实例**：`vault/项目/生信实验课程/`、`vault/实验记录/2026-10-25-194000-生信实验一 NCBI浏览与序列文件解读.md`、`vault/实验记录/2026-10-25-195500-生信实验二 Entrez搜索与双序列比对.md`、`vault/方法/生信分析/04_序列检索与双序列比对.md`、`vault/方法/生信分析/05_基因记录与序列文件解读.md`、`vault/大纲笔记/生信实验课程知识结构.md`、`vault/文献笔记/`（5 条：Hermon 2007 / Ni 2019 / Wang 2025 / Shi 2025 / Bubb 2024）。
 

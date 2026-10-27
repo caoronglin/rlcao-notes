@@ -1,0 +1,140 @@
+ID   FIE1_MAIZE              Reviewed;         461 AA.
+AC   Q8VZY7; Q84YB5;
+DT   19-JUL-2003, integrated into UniProtKB/Swiss-Prot.
+DT   01-MAR-2002, sequence version 1.
+DT   02-SEP-2026, entry version 135.
+DE   RecName: Full=Polycomb group protein FIE1;
+DE   AltName: Full=Protein FERTILIZATION-INDEPENDENT ENDOSPERM 1;
+GN   Name=FIE1;
+OS   Zea mays (Maize).
+OC   Eukaryota; Viridiplantae; Streptophyta; Embryophyta; Tracheophyta;
+OC   Spermatophyta; Magnoliopsida; Liliopsida; Poales; Poaceae; PACMAD clade;
+OC   Panicoideae; Andropogonodae; Andropogoneae; Tripsacinae; Zea.
+OX   NCBI_TaxID=4577;
+RN   [1]
+RP   NUCLEOTIDE SEQUENCE [MRNA], TISSUE SPECIFICITY, AND DEVELOPMENTAL STAGE.
+RC   TISSUE=Seed;
+RX   PubMed=11950982; DOI=10.1104/pp.010742;
+RA   Springer N.M., Danilevskaya O.N., Hermon P., Helentjaris T.G.,
+RA   Phillips R.L., Kaeppler H.F., Kaeppler S.M.;
+RT   "Sequence relationships, conserved domains, and expression patterns for
+RT   maize homologs of the Polycomb group genes E(z), esc, and E(Pc).";
+RL   Plant Physiol. 128:1332-1345(2002).
+RN   [2]
+RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA], AND TISSUE SPECIFICITY.
+RX   PubMed=12566582; DOI=10.1105/tpc.006759;
+RA   Danilevskaya O.N., Hermon P., Hantke S., Muszynski M.G., Kollipara K.,
+RA   Ananiev E.V.;
+RT   "Duplicated fie genes in maize: expression pattern and imprinting suggest
+RT   distinct functions.";
+RL   Plant Cell 15:425-438(2003).
+CC   -!- FUNCTION: Polycomb group (PcG) protein. PcG proteins act by forming
+CC       multiprotein complexes, which are required to maintain the
+CC       transcriptionally repressive state of homeotic genes throughout
+CC       development. PcG proteins are not required to initiate repression, but
+CC       to maintain it during later stages of development. They probably act
+CC       via the methylation of histones, rendering chromatin heritably changed
+CC       in its expressibility (By similarity). {ECO:0000250}.
+CC   -!- SUBCELLULAR LOCATION: Nucleus {ECO:0000305}.
+CC   -!- TISSUE SPECIFICITY: Specifically expressed in kernel starting from 6
+CC       days after pollination. {ECO:0000269|PubMed:11950982,
+CC       ECO:0000269|PubMed:12566582}.
+CC   -!- DEVELOPMENTAL STAGE: Expressed in embryo and endosperm.
+CC       {ECO:0000269|PubMed:11950982}.
+CC   -!- SIMILARITY: Belongs to the WD repeat ESC family. {ECO:0000305}.
+CC   ---------------------------------------------------------------------------
+CC   Copyrighted by the UniProt Consortium, see https://www.uniprot.org/terms
+CC   Distributed under the Creative Commons Attribution (CC BY 4.0) License
+CC   ---------------------------------------------------------------------------
+DR   EMBL; AY061964; AAL35973.1; -; mRNA.
+DR   EMBL; AY150645; AAO26659.1; -; Genomic_DNA.
+DR   RefSeq; NP_001105181.1; NM_001111711.1.
+DR   AlphaFoldDB; Q8VZY7; -.
+DR   SMR; Q8VZY7; -.
+DR   STRING; 4577.Q8VZY7; -.
+DR   PaxDb; 4577-Q8VZY7; -.
+DR   EnsemblPlants; Zm00001eb173090_T001; Zm00001eb173090_P001; Zm00001eb173090.
+DR   GeneID; 542075; -.
+DR   Gramene; Zm00001eb173090_T001; Zm00001eb173090_P001; Zm00001eb173090.
+DR   KEGG; zma:542075; -.
+DR   MaizeGDB; 754919; -.
+DR   eggNOG; KOG1034; Eukaryota.
+DR   HOGENOM; CLU_032683_2_0_1; -.
+DR   InParanoid; Q8VZY7; -.
+DR   OMA; HPLHAIG; -.
+DR   OrthoDB; 7318948at2759; -.
+DR   Proteomes; UP000007305; Chromosome 4.
+DR   ExpressionAtlas; Q8VZY7; baseline and differential.
+DR   GO; GO:0035098; C:ESC/E(Z) complex; IBA:GO_Central.
+DR   GO; GO:0009960; P:endosperm development; IEA:UniProtKB-ARBA.
+DR   GO; GO:0031507; P:heterochromatin formation; IBA:GO_Central.
+DR   GO; GO:0000122; P:negative regulation of transcription by RNA polymerase II; IBA:GO_Central.
+DR   FunFam; 2.130.10.10:FF:000268; polycomb group protein FIE1; 1.
+DR   Gene3D; 2.130.10.10; YVTN repeat-like/Quinoprotein amine dehydrogenase; 1.
+DR   InterPro; IPR051243; PcG_WD-repeat.
+DR   InterPro; IPR015943; WD40/YVTN_repeat-like_dom_sf.
+DR   InterPro; IPR019775; WD40_repeat_CS.
+DR   InterPro; IPR036322; WD40_repeat_dom_sf.
+DR   InterPro; IPR001680; WD40_rpt.
+DR   PANTHER; PTHR10253; POLYCOMB PROTEIN; 1.
+DR   Pfam; PF00400; WD40; 2.
+DR   SMART; SM00320; WD40; 6.
+DR   SUPFAM; SSF50978; WD40 repeat-like; 1.
+DR   PROSITE; PS00678; WD_REPEATS_1; 1.
+DR   PROSITE; PS50082; WD_REPEATS_2; 2.
+DR   PROSITE; PS50294; WD_REPEATS_REGION; 1.
+PE   2: Evidence at transcript level;
+KW   Chromatin regulator; Developmental protein; Nucleus; Reference proteome;
+KW   Repeat; Repressor; Transcription; Transcription regulation; WD repeat.
+FT   CHAIN           1..461
+FT                   /note="Polycomb group protein FIE1"
+FT                   /id="PRO_0000050978"
+FT   REPEAT          143..186
+FT                   /note="WD 1"
+FT   REPEAT          189..229
+FT                   /note="WD 2"
+FT   REPEAT          235..275
+FT                   /note="WD 3"
+FT   REPEAT          301..338
+FT                   /note="WD 4"
+FT   REPEAT          351..391
+FT                   /note="WD 5"
+FT   REPEAT          398..437
+FT                   /note="WD 6"
+FT   REGION          1..56
+FT                   /note="Disordered"
+FT                   /evidence="ECO:0000256|SAM:MobiDB-lite"
+FT   REGION          429..461
+FT                   /note="Disordered"
+FT                   /evidence="ECO:0000256|SAM:MobiDB-lite"
+FT   COMPBIAS        1..11
+FT                   /note="Basic residues"
+FT                   /evidence="ECO:0000256|SAM:MobiDB-lite"
+FT   COMPBIAS        18..37
+FT                   /note="Polar residues"
+FT                   /evidence="ECO:0000256|SAM:MobiDB-lite"
+FT   COMPBIAS        38..47
+FT                   /note="Basic and acidic residues"
+FT                   /evidence="ECO:0000256|SAM:MobiDB-lite"
+FT   COMPBIAS        432..448
+FT                   /note="Low complexity"
+FT                   /evidence="ECO:0000256|SAM:MobiDB-lite"
+FT   CONFLICT        23
+FT                   /note="T -> P (in Ref. 2; AAO26659)"
+FT                   /evidence="ECO:0000305"
+FT   CONFLICT        40
+FT                   /note="Q -> H (in Ref. 2; AAO26659)"
+FT                   /evidence="ECO:0000305"
+FT   CONFLICT        447..450
+FT                   /note="Missing (in Ref. 2; AAO26659)"
+FT                   /evidence="ECO:0000305"
+SQ   SEQUENCE   461 AA;  50573 MW;  6FE70DB4D32AE755 CRC64;
+     MPPSKARRKR SLRDITATVA TGTVANSKPG SSSTNEGKQQ DKKKEGPQEP DIPPLPPVVV
+     NIVPRQGLGC EVVEGLLVPS RKREYKPNSK YTVGNHPIYA IGFNFIDMRY YDVFAIASCN
+     SVIIYRCLEN GGFGLLQNYV DEDKDESFYT LSWTIDQVDS SPLLVAAGSN RIIRVINCAT
+     EKLDKSLVGH GGSIHEIRTH ASKPSLIISA SKDESIRLWN VHTGICILVF AGAGGHRHDV
+     LSVDFHPTEV GIFASCGMDN TVKIWSMKEF WIYVEKSYSW TGHPSKFPTR NIQFPVLTAA
+     VHSDYVDCTR WLGDFILSKS VKNAVLLWEP KPDKRRPGEG SVDVLQKYPV PKCSLWFMKF
+     SCDFYSNQMA IGNNKGEIYV WEVQSSPPVL IDRLCNQECK SPIRQTAVSF DGSTILGAAD
+     DGAIWRWDEV DPAASSSKPD QAAAPAAGVG AGAGADADAD A
+//

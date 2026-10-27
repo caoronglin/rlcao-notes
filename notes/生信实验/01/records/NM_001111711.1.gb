@@ -1,0 +1,251 @@
+LOCUS       NM_001111711            1787 bp    mRNA    linear   PLN 28-APR-2025
+DEFINITION  Zea mays fertilization independent endosperm 1 (LOC542075), mRNA.
+ACCESSION   NM_001111711
+VERSION     NM_001111711.1
+KEYWORDS    RefSeq.
+SOURCE      Zea mays
+  ORGANISM  Zea mays
+            Eukaryota; Viridiplantae; Streptophyta; Embryophyta; Tracheophyta;
+            Spermatophyta; Magnoliopsida; Liliopsida; Poales; Poaceae; PACMAD
+            clade; Panicoideae; Andropogonodae; Andropogoneae; Tripsacinae;
+            Zea.
+REFERENCE   1  (bases 1 to 1787)
+  AUTHORS   Schnable,P.S., Ware,D., Fulton,R.S., Stein,J.C., Wei,F.,
+            Pasternak,S., Liang,C., Zhang,J., Fulton,L., Graves,T.A., Minx,P.,
+            Reily,A.D., Courtney,L., Kruchowski,S.S., Tomlinson,C., Strong,C.,
+            Delehaunty,K., Fronick,C., Courtney,B., Rock,S.M., Belter,E.,
+            Du,F., Kim,K., Abbott,R.M., Cotton,M., Levy,A., Marchetto,P.,
+            Ochoa,K., Jackson,S.M., Gillam,B., Chen,W., Yan,L.,
+            Higginbotham,J., Cardenas,M., Waligorski,J., Applebaum,E.,
+            Phelps,L., Falcone,J., Kanchi,K., Thane,T., Scimone,A., Thane,N.,
+            Henke,J., Wang,T., Ruppert,J., Shah,N., Rotter,K., Hodges,J.,
+            Ingenthron,E., Cordes,M., Kohlberg,S., Sgro,J., Delgado,B.,
+            Mead,K., Chinwalla,A., Leonard,S., Crouse,K., Collura,K.,
+            Kudrna,D., Currie,J., He,R., Angelova,A., Rajasekar,S., Mueller,T.,
+            Lomeli,R., Scara,G., Ko,A., Delaney,K., Wissotski,M., Lopez,G.,
+            Campos,D., Braidotti,M., Ashley,E., Golser,W., Kim,H., Lee,S.,
+            Lin,J., Dujmic,Z., Kim,W., Talag,J., Zuccolo,A., Fan,C.,
+            Sebastian,A., Kramer,M., Spiegel,L., Nascimento,L., Zutavern,T.,
+            Miller,B., Ambroise,C., Muller,S., Spooner,W., Narechania,A.,
+            Ren,L., Wei,S., Kumari,S., Faga,B., Levy,M.J., McMahan,L., Van
+            Buren,P., Vaughn,M.W., Ying,K., Yeh,C.T., Emrich,S.J., Jia,Y.,
+            Kalyanaraman,A., Hsia,A.P., Barbazuk,W.B., Baucom,R.S.,
+            Brutnell,T.P., Carpita,N.C., Chaparro,C., Chia,J.M., Deragon,J.M.,
+            Estill,J.C., Fu,Y., Jeddeloh,J.A., Han,Y., Lee,H., Li,P.,
+            Lisch,D.R., Liu,S., Liu,Z., Nagel,D.H., McCann,M.C., SanMiguel,P.,
+            Myers,A.M., Nettleton,D., Nguyen,J., Penning,B.W., Ponnala,L.,
+            Schneider,K.L., Schwartz,D.C., Sharma,A., Soderlund,C.,
+            Springer,N.M., Sun,Q., Wang,H., Waterman,M., Westerman,R.,
+            Wolfgruber,T.K., Yang,L., Yu,Y., Zhang,L., Zhou,S., Zhu,Q.,
+            Bennetzen,J.L., Dawe,R.K., Jiang,J., Jiang,N., Presting,G.G.,
+            Wessler,S.R., Aluru,S., Martienssen,R.A., Clifton,S.W.,
+            McCombie,W.R., Wing,R.A. and Wilson,R.K.
+  TITLE     The B73 maize genome: complexity, diversity, and dynamics
+  JOURNAL   Science 326 (5956), 1112-1115 (2009)
+   PUBMED   19965430
+  REMARK    Erratum:[Science. 2012 Aug 31;337(6098):1040]
+REFERENCE   2  (bases 1 to 1787)
+  AUTHORS   Hermon,P., Srilunchang,K.O., Zou,J., Dresselhaus,T. and
+            Danilevskaya,O.N.
+  TITLE     Activation of the imprinted Polycomb Group Fie1 gene in maize
+            endosperm requires demethylation of the maternal allele
+  JOURNAL   Plant Mol Biol 64 (4), 387-395 (2007)
+   PUBMED   17437065
+  REMARK    GeneRIF: The regulation of Fie1 imprinting in maize is different
+            from Arabidopsis and is likely to have acquired important novel
+            functions for endosperm development.
+REFERENCE   3  (bases 1 to 1787)
+  AUTHORS   Lai,J., Dey,N., Kim,C.S., Bharti,A.K., Rudd,S., Mayer,K.F.,
+            Larkins,B.A., Becraft,P. and Messing,J.
+  TITLE     Characterization of the maize endosperm transcriptome and its
+            comparison to the rice genome
+  JOURNAL   Genome Res 14 (10A), 1932-1937 (2004)
+   PUBMED   15466291
+REFERENCE   4  (bases 1 to 1787)
+  AUTHORS   Danilevskaya,O.N., Hermon,P., Hantke,S., Muszynski,M.G.,
+            Kollipara,K. and Ananiev,E.V.
+  TITLE     Duplicated fie genes in maize: expression pattern and imprinting
+            suggest distinct functions
+  JOURNAL   Plant Cell 15 (2), 425-438 (2003)
+   PUBMED   12566582
+REFERENCE   5  (bases 1 to 1787)
+  AUTHORS   Springer,N.M., Danilevskaya,O.N., Hermon,P., Helentjaris,T.G.,
+            Phillips,R.L., Kaeppler,H.F. and Kaeppler,S.M.
+  TITLE     Sequence relationships, conserved domains, and expression patterns
+            for maize homologs of the polycomb group genes E(z), esc, and E(Pc)
+  JOURNAL   Plant Physiol 128 (4), 1332-1345 (2002)
+   PUBMED   11950982
+COMMENT     PROVISIONAL REFSEQ: This record has not yet been subject to final
+            NCBI review. The reference sequence was derived from AY061964.1.
+            
+            ##Evidence-Data-START##
+            Transcript exon combination :: AY061964.1, SRR3147034.357.1
+                                           [ECO:0000332]
+            RNAseq introns              :: single sample supports all introns
+                                           SAMN01096209 [ECO:0000348]
+            ##Evidence-Data-END##
+FEATURES             Location/Qualifiers
+     source          1..1787
+                     /organism="Zea mays"
+                     /mol_type="mRNA"
+                     /db_xref="taxon:4577"
+                     /chromosome="4"
+                     /map="4"
+     gene            1..1787
+                     /gene="LOC542075"
+                     /gene_synonym="fie1; GRMZM2G118205"
+                     /note="fertilization independent endosperm 1"
+                     /db_xref="GeneID:542075"
+     exon            1..167
+                     /gene="LOC542075"
+                     /gene_synonym="fie1; GRMZM2G118205"
+                     /inference="alignment:Splign:2.1.0"
+     misc_feature    118..120
+                     /gene="LOC542075"
+                     /gene_synonym="fie1; GRMZM2G118205"
+                     /note="upstream in-frame stop codon"
+     exon            168..531
+                     /gene="LOC542075"
+                     /gene_synonym="fie1; GRMZM2G118205"
+                     /inference="alignment:Splign:2.1.0"
+     CDS             169..1554
+                     /gene="LOC542075"
+                     /gene_synonym="fie1; GRMZM2G118205"
+                     /note="ZMfie1; CL600_7; fie_PCR; CL600_7b; PZA00541;
+                     nPZA00541-1; WD polycomb group protein; protein
+                     FERTILIZATION-INDEPENDENT ENDOSPERM 1;
+                     fertilization-independent endosperm protein 1"
+                     /codon_start=1
+                     /product="polycomb group protein FIE1"
+                     /protein_id="NP_001105181.1"
+                     /db_xref="GeneID:542075"
+                     /translation="MPPSKARRKRSLRDITATVATGTVANSKPGSSSTNEGKQQDKKK
+                     EGPQEPDIPPLPPVVVNIVPRQGLGCEVVEGLLVPSRKREYKPNSKYTVGNHPIYAIG
+                     FNFIDMRYYDVFAIASCNSVIIYRCLENGGFGLLQNYVDEDKDESFYTLSWTIDQVDS
+                     SPLLVAAGSNRIIRVINCATEKLDKSLVGHGGSIHEIRTHASKPSLIISASKDESIRL
+                     WNVHTGICILVFAGAGGHRHDVLSVDFHPTEVGIFASCGMDNTVKIWSMKEFWIYVEK
+                     SYSWTGHPSKFPTRNIQFPVLTAAVHSDYVDCTRWLGDFILSKSVKNAVLLWEPKPDK
+                     RRPGEGSVDVLQKYPVPKCSLWFMKFSCDFYSNQMAIGNNKGEIYVWEVQSSPPVLID
+                     RLCNQECKSPIRQTAVSFDGSTILGAADDGAIWRWDEVDPAASSSKPDQAAAPAAGVG
+                     AGAGADADADA"
+     misc_feature    169..336
+                     /gene="LOC542075"
+                     /gene_synonym="fie1; GRMZM2G118205"
+                     /note="propagated from UniProtKB/Swiss-Prot (Q8VZY7.1);
+                     Region: Disordered. /evidence=ECO:0000256|SAM:MobiDB-lite"
+     misc_feature    595..726
+                     /gene="LOC542075"
+                     /gene_synonym="fie1; GRMZM2G118205"
+                     /note="propagated from UniProtKB/Swiss-Prot (Q8VZY7.1);
+                     Region: WD 1"
+     misc_feature    733..855
+                     /gene="LOC542075"
+                     /gene_synonym="fie1; GRMZM2G118205"
+                     /note="propagated from UniProtKB/Swiss-Prot (Q8VZY7.1);
+                     Region: WD 2"
+     misc_feature    871..993
+                     /gene="LOC542075"
+                     /gene_synonym="fie1; GRMZM2G118205"
+                     /note="propagated from UniProtKB/Swiss-Prot (Q8VZY7.1);
+                     Region: WD 3"
+     misc_feature    1069..1182
+                     /gene="LOC542075"
+                     /gene_synonym="fie1; GRMZM2G118205"
+                     /note="propagated from UniProtKB/Swiss-Prot (Q8VZY7.1);
+                     Region: WD 4"
+     misc_feature    1219..1341
+                     /gene="LOC542075"
+                     /gene_synonym="fie1; GRMZM2G118205"
+                     /note="propagated from UniProtKB/Swiss-Prot (Q8VZY7.1);
+                     Region: WD 5"
+     misc_feature    1360..1479
+                     /gene="LOC542075"
+                     /gene_synonym="fie1; GRMZM2G118205"
+                     /note="propagated from UniProtKB/Swiss-Prot (Q8VZY7.1);
+                     Region: WD 6"
+     misc_feature    1453..1551
+                     /gene="LOC542075"
+                     /gene_synonym="fie1; GRMZM2G118205"
+                     /note="propagated from UniProtKB/Swiss-Prot (Q8VZY7.1);
+                     Region: Disordered. /evidence=ECO:0000256|SAM:MobiDB-lite"
+     exon            532..597
+                     /gene="LOC542075"
+                     /gene_synonym="fie1; GRMZM2G118205"
+                     /inference="alignment:Splign:2.1.0"
+     exon            598..723
+                     /gene="LOC542075"
+                     /gene_synonym="fie1; GRMZM2G118205"
+                     /inference="alignment:Splign:2.1.0"
+     exon            724..804
+                     /gene="LOC542075"
+                     /gene_synonym="fie1; GRMZM2G118205"
+                     /inference="alignment:Splign:2.1.0"
+     exon            805..897
+                     /gene="LOC542075"
+                     /gene_synonym="fie1; GRMZM2G118205"
+                     /inference="alignment:Splign:2.1.0"
+     exon            898..973
+                     /gene="LOC542075"
+                     /gene_synonym="fie1; GRMZM2G118205"
+                     /inference="alignment:Splign:2.1.0"
+     exon            974..1053
+                     /gene="LOC542075"
+                     /gene_synonym="fie1; GRMZM2G118205"
+                     /inference="alignment:Splign:2.1.0"
+     exon            1054..1125
+                     /gene="LOC542075"
+                     /gene_synonym="fie1; GRMZM2G118205"
+                     /inference="alignment:Splign:2.1.0"
+     exon            1126..1185
+                     /gene="LOC542075"
+                     /gene_synonym="fie1; GRMZM2G118205"
+                     /inference="alignment:Splign:2.1.0"
+     exon            1186..1282
+                     /gene="LOC542075"
+                     /gene_synonym="fie1; GRMZM2G118205"
+                     /inference="alignment:Splign:2.1.0"
+     exon            1283..1346
+                     /gene="LOC542075"
+                     /gene_synonym="fie1; GRMZM2G118205"
+                     /inference="alignment:Splign:2.1.0"
+     exon            1347..1406
+                     /gene="LOC542075"
+                     /gene_synonym="fie1; GRMZM2G118205"
+                     /inference="alignment:Splign:2.1.0"
+     exon            1407..1766
+                     /gene="LOC542075"
+                     /gene_synonym="fie1; GRMZM2G118205"
+                     /inference="alignment:Splign:2.1.0"
+ORIGIN      
+        1 acaaaatgtg catcgccgcc gccaccatat agaaccactt atcatgaacc gccgccatca
+       61 catccactgc ctcaactagt gttaccacct atggttcatt gttgtgtctg cttcttgtag
+      121 cactgttggt ctacaaacat tcatatttct ctcaacatct ggcacagcat gccgccttcc
+      181 aaagcacgcc gaaagaggtc acttcgtgat atcactgcca ccgttgccac tgggactgtt
+      241 gccaactcga aacctggctc atcatcgacg aacgagggga agcaacagga caagaaaaag
+      301 gagggtccac aggaaccgga catcccacca ttaccgccgg tggtggtgaa tatagtccca
+      361 cgacaaggat taggatgtga agtagtggaa gggctactcg tgcctagtcg gaagcgagag
+      421 tacaagccca atagcaagta tactgtggga aatcacccga tctatgccat cgggttcaat
+      481 ttcattgaca tgcgctacta tgatgtcttt gccatcgcca gttgcaatag tgtgataatt
+      541 taccgatgcc ttgagaatgg tggttttggt cttctacaaa attatgttga tgaggataag
+      601 gatgagtcat tctacactct aagctggacc atcgatcaag ttgatagctc accgctgttg
+      661 gtggccgcag gaagcaatcg gatcattcgg gtcatcaatt gtgctaccga aaagttagat
+      721 aagagcttag ttggccatgg tggttcaata catgagataa ggactcatgc ctcgaagcca
+      781 tcactcatca tttctgccag caaggatgaa tctattaggc tatggaatgt ccatactggg
+      841 atttgcatct tagtctttgc aggggctgga ggccatcgac atgatgtgtt gagtgttgac
+      901 ttccacccta ccgaggttgg gatttttgca agttgtggca tggacaatac tgtgaaaatt
+      961 tggtcaatga aagaattttg gatatatgtt gaaaaatcat attcatggac tggccatcca
+     1021 tcaaagtttc caacgaggaa tatccagttt ccggtcttga ctgctgcagt acactctgac
+     1081 tatgttgatt gtacaagatg gcttggtgac ttcatcctat caaagagtgt aaagaatgca
+     1141 gttttgcttt gggaaccaaa accagacaag cgtaggcctg gggaggggag tgttgatgtt
+     1201 cttcagaagt acccggtgcc aaagtgttca ttatggttta tgaaattttc atgtgatttt
+     1261 tactccaacc agatggcaat aggcaacaat aaaggcgaga tctatgtctg ggaagtgcag
+     1321 tccagcccgc ccgtcttaat tgaccggctg tgcaaccagg aatgcaagtc gccgataagg
+     1381 cagaccgcag tgtcattcga cggaagcacg atccttggag ccgccgacga cggcgcgatc
+     1441 tggcggtggg acgaagtgga ccctgctgct tccagctcca aacctgatca agctgctgcg
+     1501 cccgccgccg gtgtcggtgc cggtgccggt gccgacgccg acgccgacgc ctgagcgaga
+     1561 ggaccgtcgc cgcccgccgg ttcacatcga tcgtactccg tgctggttga ttagctttac
+     1621 ccattggtat gttttggttc agagtcgcca gatctagtgt gtggctgaac gttgaatgtt
+     1681 aggatgctgc tgtttgttat gctctgagtc ttgagttcac tttgttaatt tgcaccgtgg
+     1741 atgagatgaa taacttgacg ttgcaaaaaa aaaaaaaaaa aaaaaaa
+//
+

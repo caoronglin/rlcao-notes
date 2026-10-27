@@ -1,0 +1,99 @@
+LOCUS       XM_023302232            1738 bp    mRNA    linear   PLN 20-FEB-2025
+DEFINITION  PREDICTED: Zea mays fertilization independent endosperm 1
+            (LOC542075), transcript variant X1, mRNA.
+ACCESSION   XM_023302232
+VERSION     XM_023302232.2
+DBLINK      BioProject: PRJNA655717
+KEYWORDS    RefSeq.
+SOURCE      Zea mays
+  ORGANISM  Zea mays
+            Eukaryota; Viridiplantae; Streptophyta; Embryophyta; Tracheophyta;
+            Spermatophyta; Magnoliopsida; Liliopsida; Poales; Poaceae; PACMAD
+            clade; Panicoideae; Andropogonodae; Andropogoneae; Tripsacinae;
+            Zea.
+COMMENT     MODEL REFSEQ:  This record is predicted by automated computational
+            analysis. This record is derived from a genomic sequence
+            (NC_050099.1) annotated using gene prediction method: Gnomon,
+            supported by EST evidence.
+            Also see:
+                Documentation of NCBI's Annotation Process
+            
+            On Aug 31, 2020 this sequence version replaced XM_023302232.1.
+            
+            ##Genome-Annotation-Data-START##
+            Annotation Provider         :: NCBI RefSeq
+            Annotation Status           :: Updated annotation
+            Annotation Name             :: GCF_902167145.1-RS_2025_02
+            Annotation Pipeline         :: NCBI eukaryotic genome annotation
+                                           pipeline
+            Annotation Software Version :: 10.3
+            Annotation Method           :: Best-placed RefSeq; Gnomon;
+                                           cmsearch; tRNAscan-SE
+            Features Annotated          :: Gene; mRNA; CDS; ncRNA
+            Annotation Date             :: 02/14/2025
+            ##Genome-Annotation-Data-END##
+FEATURES             Location/Qualifiers
+     source          1..1738
+                     /organism="Zea mays"
+                     /mol_type="mRNA"
+                     /cultivar="B73"
+                     /db_xref="taxon:4577"
+                     /chromosome="4"
+     gene            1..1738
+                     /gene="LOC542075"
+                     /gene_synonym="fie1; GRMZM2G118205"
+                     /note="fertilization independent endosperm 1; Derived by
+                     automated computational analysis using gene prediction
+                     method: Gnomon. Supporting evidence includes similarity
+                     to: 2 ESTs, 281 long SRA reads, 2 Proteins, and 99%
+                     coverage of the annotated genomic feature by RNAseq
+                     alignments, including 51 samples with support for all
+                     annotated introns"
+                     /db_xref="GeneID:542075"
+     CDS             188..1480
+                     /gene="LOC542075"
+                     /gene_synonym="fie1; GRMZM2G118205"
+                     /codon_start=1
+                     /product="polycomb group protein FIE1 isoform X1"
+                     /protein_id="XP_023158000.1"
+                     /db_xref="GeneID:542075"
+                     /translation="MPPSKARRKRSLRDITATVATGTVANSKPGSSSTNEGKQQDKKK
+                     EGPQEPDIPPLPPVVVNIVPRQGLGCEVVEGLLVPSRKREYKPNSKYTVGNHPIYAIG
+                     FNFIDMRYYDVFAIASCNSVIIYRCLENGGFGLLQNYVDEDKDESFYTLSWTIDQVDS
+                     SPLLVAAGSNRIIRVINCATEKLDKSLVGHGGSIHEIRTHASKPSLIISASKDFHPTE
+                     VGIFASCGMDNTVKIWSMKEFWIYVEKSYSWTGHPSKFPTRNIQFPVLTAAVHSDYVD
+                     CTRWLGDFILSKSVKNAVLLWEPKPDKRRPGEGSVDVLQKYPVPKCSLWFMKFSCDFY
+                     SNQMAIGNNKGEIYVWEVQSSPPVLIDRLCNQECKSPIRQTAVSFDGSTILGAADDGA
+                     IWRWDEVDPAASSSKPDQAAAPAAGVGAGAGADADADA"
+ORIGIN      
+        1 ctcccttatt aggttaaaca caaaatgtgc atcgccgccg ccaccatata gaaccactta
+       61 tcatgaaccg ccgccatcac atccactgcc tcaactagtg ttaccaccta tggttcattg
+      121 ttgtgtctgc ttcttgtagc actgttggtc tacaaacatt catatttctc tcaacatctg
+      181 gcacagcatg ccgccttcca aagcacgccg aaagaggtca cttcgtgata tcactgccac
+      241 cgttgccact gggactgttg ccaactcgaa acctggctca tcatcgacga acgaggggaa
+      301 gcaacaggac aagaaaaagg agggtccaca ggaaccggac atcccaccat taccgccggt
+      361 ggtggtgaat atagtcccac gacaaggatt aggatgtgaa gtagtggaag ggctactcgt
+      421 gcctagtcgg aagcgagagt acaagcccaa tagcaagtat actgtgggaa atcacccgat
+      481 ctatgccatc gggttcaatt tcattgacat gcgctactat gatgtctttg ccatcgccag
+      541 ttgcaatagt gtgataattt accgatgcct tgagaatggt ggttttggtc ttctacaaaa
+      601 ttatgttgat gaggataagg atgagtcatt ctacactcta agctggacca tcgatcaagt
+      661 tgatagctca ccgctgttgg tggccgcagg aagcaatcgg atcattcggg tcatcaattg
+      721 tgctaccgaa aagttagata agagcttagt tggccatggt ggttcaatac atgagataag
+      781 gactcatgcc tcgaagccat cactcatcat ttctgccagc aaggacttcc accctaccga
+      841 ggttgggatt tttgcaagtt gtggcatgga caatactgtg aaaatttggt caatgaaaga
+      901 attttggata tatgttgaaa aatcatattc atggactggc catccatcaa agtttccaac
+      961 gaggaatatc cagtttccgg tcttgactgc tgcagtacac tctgactatg ttgattgtac
+     1021 aagatggctt ggtgacttca tcctatcaaa gagtgtaaag aatgcagttt tgctttggga
+     1081 accaaaacca gacaagcgta ggcctgggga ggggagtgtt gatgttcttc agaagtaccc
+     1141 ggtgccaaag tgttcattat ggtttatgaa attttcatgt gatttttact ccaaccagat
+     1201 ggcaataggc aacaataaag gcgagatcta tgtctgggaa gtgcagtcca gcccgcccgt
+     1261 cttaattgac cggctgtgca accaggaatg caagtcgccg ataaggcaga ccgcagtgtc
+     1321 attcgacgga agcacgatcc ttggagccgc cgacgacggc gcgatctggc ggtgggacga
+     1381 agtggaccct gctgcttcca gctccaaacc tgatcaagct gctgcgcccg ccgccggtgt
+     1441 cggtgccggt gccggtgccg acgccgacgc cgacgcctga gcgagaggac cgtcgccgcc
+     1501 cgccggttca catcgatcgt actccgtgct ggttgattag ctttacccat tggtatgttt
+     1561 tggttcagag tcgccagatc tagtgtgtgg ctgaacgttg aatgttagga tgctgctgtt
+     1621 tgttatgctc tgagtcttga gttcactttg ttaatttgca ccgtggatga gatgaataac
+     1681 ttgacgttgc aactttgcat cccatatatg ccgtaaatct gccgtctgtt gtttgttc
+//
+

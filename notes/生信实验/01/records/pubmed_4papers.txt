@@ -1,0 +1,197 @@
+1. Plant Mol Biol. 2007 Jul;64(4):387-95. doi: 10.1007/s11103-007-9160-0. Epub
+2007  Apr 17.
+
+Activation of the imprinted Polycomb Group Fie1 gene in maize endosperm requires 
+demethylation of the maternal allele.
+
+Hermon P(1), Srilunchang KO, Zou J, Dresselhaus T, Danilevskaya ON.
+
+Author information:
+(1)Pioneer Hi-Bred International Inc, 7250 NW 62nd Ave, Johnston, IA, USA.
+
+Imprinting refers to the epigenetic regulation of gene expression that is 
+dependent upon gene inheritance from the maternal or paternal parent. 
+Previously, we have identified two maize homologs of the single Arabidopsis 
+Polycomb Group gene FIE. Here, we report on the expression pattern of these 
+genes in individual gametes before and after fertilization, and on the role of 
+DNA methylation in determining the maternal expression of the Fie1 gene. We 
+found that Fie1 is neither expressed in the sperm, egg cell nor central cell 
+before fertilization. Activation of the Fie1 maternal allele occurs around two 
+days after pollination (DAP) in the primary endosperm and peaks at 10-11 DAP 
+coinciding with endosperm transition from mitotic division to endoreduplication. 
+In contrast, Fie2 is expressed in the egg cell and more intensively in the 
+central cell similar to Arabidopsis FIE, which strongly supports the hypothesis 
+that it functions as a repressor of endosperm development before fertilization. 
+Using MSRE-PCR and bisulfite sequencing, we could show that the methylated 
+inactive state is the default status of Fie1 in most tissues. In the endosperm 
+the paternal Fie1 allele remains methylated and silent, but the maternal allele 
+appears hypomethylated and active, explaining mono-allelic expression of Fie1 in 
+the endosperm. Taking together, these data demonstrate that the regulation of 
+Fie1 imprinting in maize is different from Arabidopsis and that Fie1 is likely 
+to have acquired important novel functions for endosperm development.
+
+DOI: 10.1007/s11103-007-9160-0
+PMID: 17437065 [Indexed for MEDLINE]
+
+
+2. Planta. 2019 Aug;250(2):573-588. doi: 10.1007/s00425-019-03193-4. Epub 2019
+May  24.
+
+Updating and interaction of polycomb repressive complex 2 components in maize 
+(Zea mays).
+
+Ni J(1), Ma X(1), Feng Y(1), Tian Q(2), Wang Y(2), Xu N(2), Tang J(2), Wang 
+G(3)(4).
+
+Author information:
+(1)Shanghai Key Laboratory of Bio-Energy Crops, School of Life Sciences, 
+Shanghai University, Shanghai, 200444, China.
+(2)Key Laboratory of Wheat and Maize Crops Science, Collaborative Innovation 
+Center of Henan Grain Crops, College of Agronomy, Henan Agricultural University, 
+Zhengzhou, 450002, China.
+(3)Shanghai Key Laboratory of Bio-Energy Crops, School of Life Sciences, 
+Shanghai University, Shanghai, 200444, China. guifeng.wang@henau.edu.cn.
+(4)Key Laboratory of Wheat and Maize Crops Science, Collaborative Innovation 
+Center of Henan Grain Crops, College of Agronomy, Henan Agricultural University, 
+Zhengzhou, 450002, China. guifeng.wang@henau.edu.cn.
+
+The information on core components in maize polycomb repressive complex 2 (PRC2) 
+are updated at a genome-wide scale, and the protein-protein interaction networks 
+of PRC2 components are further provided in maize. The evolutionarily conserved 
+polycomb group (PcG) proteins form multi-subunits polycomb repressive complexes 
+(PRCs) that repress gene expression via chromatin condensation. In Arabidopsis, 
+three distinct PRC2s have been identified, each determining a specific 
+developmental program with partly functional redundancy. However, the core 
+components and biological functions of PRC2 in cereals remain obscure. Here, we 
+updated the information on maize PRC2 components at a genome-wide scale. Maize 
+PRC2 subunits are highly duplicated, with five MSI1, three E(z), two ESC and two 
+Su(z)12 homologs. ZmFIE1 is preferentially expressed in the endosperm, whereas 
+the remaining are broadly expressed in many tissues. ZmCLF/MEZ1 and ZmFIE1 are 
+maternally expressed imprinted genes, in contrast to the paternal-dominantly 
+expression of ZmFIE2 in the endosperm. In maize, E(z) members likely provide a 
+scaffold for assembling PRC2 complexes, whereas Su(z)12 and p55/MSI1-like 
+proteins together reinforce the complex; ESC members probably determine its 
+specificity: FIE1-PRC2 regulates endosperm cell development, whereas FIE2-PRC2 
+controls other cell types. The duplicated Brassicaceae-specific MEA and FIS2 
+also directly interact with maize PRC2 members. Together, this study establishes 
+a roadmap for protein-protein interactions of maize PRC2 components, providing 
+new insights into their functions in the growth and development of cereals.
+
+DOI: 10.1007/s00425-019-03193-4
+PMID: 31127375 [Indexed for MEDLINE]
+
+
+3. Plant Commun. 2025 Jun 9;6(6):101343. doi: 10.1016/j.xplc.2025.101343. Epub
+2025  Apr 22.
+
+The Fie1-PRC2 complex regulates H3K27me3 deposition to balance endosperm filling 
+and development in cereals.
+
+Wang J(1), Li S(2), Wu L(3), Shi D(4), Xu L(1), Zhang Z(1), Wang Y(4), Ji C(5), 
+Chen Y(5), Zhou X(3), Zhang F(3), Li M(6), Li X(6), Du C(7), Wang Q(1), Lu X(8), 
+Wang W(3), Wang G(4), Wu Y(9).
+
+Author information:
+(1)State Key Laboratory of Plant Trait Design, CAS Center for Excellence in 
+Molecular Plant Sciences, Shanghai Institute of Plant Physiology & Ecology, 
+Shanghai 200032, China.
+(2)Shanghai Oebiotech Co., Ltd., Shanghai 200032, China.
+(3)College of Life Science, Shanghai Normal University, 100 Guilin Road, 
+Shanghai 200233, China.
+(4)National Key Laboratory of Wheat and Maize Crops Science, College of 
+Agronomy, Henan Agricultural University, Zhengzhou 450002, China.
+(5)State Key Laboratory of Plant Trait Design, CAS Center for Excellence in 
+Molecular Plant Sciences, Shanghai Institute of Plant Physiology & Ecology, 
+Shanghai 200032, China; University of the Chinese Academy of Sciences, Beijing 
+100049, China.
+(6)State Key Laboratory of Wheat Improvement, College of Life Sciences, Shandong 
+Agricultural University, Tai'an 271018, China.
+(7)The Genetic Engineering International Cooperation Base of Chinese Ministry of 
+Science and Technology, The Key Laboratory of Molecular Biophysics of Chinese 
+Ministry of Education, College of Life Science and Technology, Huazhong 
+University of Science & Technology, Wuhan 430074, China.
+(8)Institute of Molecular Breeding for Maize, Qilu Normal University, Jinan, 
+China.
+(9)State Key Laboratory of Plant Trait Design, CAS Center for Excellence in 
+Molecular Plant Sciences, Shanghai Institute of Plant Physiology & Ecology, 
+Shanghai 200032, China; Shanghai Academy of Natural Sciences, Shanghai 200031, 
+China. Electronic address: yrwu@cemps.ac.cn.
+
+Polycomb repressive complex 2 (PRC2)-mediated H3K27me3 deposition is vital for 
+cell fate determination during Arabidopsis thaliana endosperm development. 
+Unlike the transient endosperm in Arabidopsis, cereals follow a different 
+developmental program after the cellularization phase, producing a persistent 
+endosperm. In contrast to the single, constitutively expressed Fertilization 
+Independent Endosperm (FIE) gene in Arabidopsis, cereals have evolved a 
+duplicated, grain-specific counterpart, such as maize ZmFie1 and rice OsFie1. 
+However, their functions remain unclear. We applied Cleavage Under Targets and 
+Tagmentation (CUT&Tag) to profile the dynamics of the H3K27me3 mark during maize 
+endosperm development. We observed a genome-wide elevation of H3K27me3 levels at 
+early stages, followed by a rapid reduction after seed filling. We identified 
+common regions and designated them as Filling Specific Peaks (FSPs), which are 
+largely regulated by ZmFie1. Indeed, knockout of ZmFie1 results in earlier 
+cellularization and slightly enhanced mitosis during endosperm filling, leading 
+to smaller kernels that accumulate more zeins. Consistently, H3K27me3 levels on 
+α-zein genes, located as tandem repeats on chromosome 4, are dramatically 
+decreased in zmfie1. Moreover, it indirectly inhibits cell proliferation by 
+mediating H3K27me3 deposition at ZmMADS loci, thereby balancing endosperm 
+development and filling. Intriguingly, OsFie1 imposes H3K27me3 modification at 
+the loci of 13-kDa prolamin genes and OsMADSs, leading to their repressed 
+expression. Collectively, our findings reveal the conserved function of H3K27me3 
+deposition mediated by ZmFie1/OsFie1 in cereal endosperm development. The newly 
+evolved, cereal grain-specific FIE1-PRC2 complex plays a key role in balancing 
+storage substance synthesis and cell proliferation during persistent endosperm 
+development.
+
+Copyright © 2025 The Author(s). Published by Elsevier Inc. All rights reserved.
+
+DOI: 10.1016/j.xplc.2025.101343
+PMCID: PMC12177492
+PMID: 40269501 [Indexed for MEDLINE]
+
+
+4. Theor Appl Genet. 2025 Aug 3;138(8):195. doi: 10.1007/s00122-025-04985-x.
+
+Inspiration from apomictic species of Rutaceae: AGL11-FIE module induces 
+autonomous development of maize embryo and endosperm without fertilization.
+
+Shi Q(1), Chen X(1)(2), Ma L(1)(2), Wei A(1)(2), Fei X(3)(4).
+
+Author information:
+(1)College of Forestry, Northwest Agriculture and Forestry University, Xianyang, 
+712100, China.
+(2)Research Centre for Engineering and Technology of Zanthoxylum State Forestry 
+Administration, Yangling, Xianyang, 712100, China.
+(3)College of Forestry, Northwest Agriculture and Forestry University, Xianyang, 
+712100, China. feixitong@nwafu.edu.cn.
+(4)Research Centre for Engineering and Technology of Zanthoxylum State Forestry 
+Administration, Yangling, Xianyang, 712100, China. feixitong@nwafu.edu.cn.
+
+Apomixis is a form of asexual reproduction that produces offspring with the same 
+genetic material as the female parent. Introducing apomixis into major food 
+crops would revolutionize agricultural breeding by allowing the self-propagation 
+of superior hybrids. We found that the MADS-box transcription factor D-class 
+member AGAMOUS-like 11 (AGL11) plays a key role in the apomictic species 
+Zanthoxylum bungeanum during somatic embryogenesis. Specific overexpression of 
+the AGL11 gene in the nucellus induces somatic cells (nucellus cells) to 
+differentiate into asexual embryos (adventitious embryos) and appear to be 
+polyembryonic. FERTILIZATION-INDEPENDENT ENDOSPERM (FIE) acts as a switch to 
+repress the development of the endosperm until fertilization, and knockdown of 
+the FIE gene activates early cellularization of the central polar nucleus and 
+produces a diploid endosperm independent of fertilization. AGL11-OE/fie-mutant 
+maize was constructed by overexpressing AGL11 and knocking out the FIE gene in 
+food crop maize, which produces asexual seeds by inducing somatic embryogenesis 
+and autonomous endosperm. The AGL11-FIE module bypasses sexual reproduction and 
+meiosis and induces asexual embryos and endosperm without fertilization, 
+realizing the transformation of sexual reproduction into asexual reproduction. 
+The results provided a reference for the self-production of hybrid seeds 
+represented by maize.
+
+© 2025. The Author(s), under exclusive licence to Springer-Verlag GmbH Germany, 
+part of Springer Nature.
+
+DOI: 10.1007/s00122-025-04985-x
+PMID: 40754619 [Indexed for MEDLINE]
+
+Conflict of interest statement: Declarations. Conflict of interest: The authors 
+declare no competing interests.

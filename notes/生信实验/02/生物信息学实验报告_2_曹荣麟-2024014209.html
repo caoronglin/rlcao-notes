@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<title>生物信息学实验报告_2_曹荣麟-2024014209</title>
+<style>
+@page {
+  size: A4;
+  margin: 15mm 15mm 15mm 15mm;
+  @bottom-center { content: counter(page) " / " counter(pages); font-size: 8.5pt; color: #000; }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: "Times New Roman", "Noto Serif CJK SC", "Songti SC", serif;
+  font-size: 10pt; line-height: 1.6; color: #000;
+}
+h1 {
+  font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+  font-size: 17pt; font-weight: 700; margin: 0 0 2.5mm 0;
+}
+h2 {
+  font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+  font-size: 11pt; font-weight: 700; margin: 2.4mm 0 1.0mm 0;
+  break-after: avoid;
+}
+h3 {
+  font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+  font-size: 10.4pt; font-weight: 700; margin: 2.6mm 0 1mm 0;
+  break-after: avoid;
+}
+p { margin: 0 0 0.85mm 0; text-align: justify; text-indent: 2em; }
+p.info { text-indent: 0; font-size: 10pt; line-height: 1.5; margin-bottom: 1.2mm; }
+p.info span { margin-right: 8mm; }
+code {
+  font-family: "Times New Roman", "Noto Sans Mono CJK SC", monospace;
+  font-size: 8.8pt;
+}
+a { color: #000; text-decoration: none; }
+ul, ol { margin: 0 0 1.1mm 0; padding-left: 5.2mm; }
+li { margin-bottom: 0.35mm; text-align: justify; text-indent: 0; }
+table {
+  width: 100%; border-collapse: collapse; table-layout: fixed;
+  font-size: 8.0pt; line-height: 1.30; margin: 0.6mm 0 1.5mm 0;
+}
+thead th {
+  border-top: 1.2pt solid #000; border-bottom: 0.6pt solid #000;
+  padding: 0.8mm 1.1mm; font-family: "Noto Sans CJK SC", sans-serif;
+  font-size: 8pt; font-weight: 700; text-align: left; vertical-align: bottom;
+}
+tbody tr { break-inside: avoid; }
+tbody td { padding: 0.55mm 1.1mm; vertical-align: top; }
+tbody tr:last-child td { border-bottom: 1.2pt solid #000; }
+.tcap {
+  font-family: "Noto Sans CJK SC", sans-serif; font-size: 9pt; font-weight: 700;
+  margin: 1.3mm 0 0.5mm 0; text-indent: 0; break-after: avoid;
+}
+figure { margin: 1.0mm 0 1.3mm 0; break-inside: avoid; text-align: center; }
+figure img { width: 80%; height: auto; }
+figure img[src="fig4_homologs.png"] { width: 70%; }
+figure img[src="shot-ncbi-blast-results.png"] { width: 78%; }
+figcaption { font-size: 8.5pt; text-align: center; margin-top: 0.6mm; text-indent: 0; line-height: 1.4; }
+</style></head><body>
+<h2 id="实验二entrez-搜索ebi-浏览双序列比对">实验二：Entrez 搜索，EBI 浏览，双序列比对</h2>
+<p class="info">姓名：曹荣麟　　班级：生技2402　　学号：2024014209</p>
+<p class="info">实验掌握情况：基本掌握</p>
+<p>你的疑问（最多 3 条）：见讨论区</p>
+<h2 id="前情提要">前情提要</h2>
+<p>研究分子仍是玉米 <strong>ZmFIE1</strong>（Gene ID 542075；RefSeq <code>NM_001111711.1</code> / <code>NP_001105181.1</code>，461 aa）。实验一已确认：基因位于 4 号染色体负链，14 个外显子，CDS 169–1554，编码 PRC2 的 WD40 亚基；玉米基因组复制产生 <em>FIE1</em>/<em>FIE2</em> 一对旁系同源基因，<em>FIE1</em> 的母源等位基因在胚乳中去甲基化后激活。</p>
+<p>任务 1.1 按题目要求检索<strong>人 EGF</strong>；任务 1.3 使用研究分子 ZmFIE1 检索同源序列。两项任务的检索对象和结果分别标注。</p>
+<h2 id="实验目的">实验目的</h2>
+<ol type="1">
+<li>掌握 Entrez 搜索序列；2. 理解直系同源与并系同源；3. 了解 EBI 的数据库与工具；4. 学会用 NEEDLE 和 WATER 做双序列比对。</li>
+</ol>
+<hr />
+<h2 id="实验任务一entrez-搜索">实验任务一：ENTREZ 搜索</h2>
+<h3 id="检索人-egf-的核苷酸序列限-refseq">1.1 检索人 EGF 的核苷酸序列（限 RefSeq）</h3>
+<p><strong>方法</strong>：Nucleotide 库输入 <code>"human epidermal growth factor"[All Fields] AND refseq[filter]</code>，ESummary 逐条取回登录号与标题。</p>
+<p><strong>结果</strong>：62 条。按基因归类，ERBB2 31 条、EGFR 10 条、EGF 本身 5 条（<code>NM_001963.6</code> 为 variant 1），其余为 ADGRF1/ADGRE3、DLK1、GPN3、CDK12 以及 3 条非人记录。把 <code>"human"</code> 从关键词移到物种过滤（<code>"Homo sapiens"[Organism]</code>）后反而有 1,475 条：鼠、大鼠、牛、犬、鸡的 EGF 家族都进来了。关键词命中的是“题目或注释里出现过 EGF”，不等于“编码 EGF 配体”；<code>refseq[filter]</code> 也只保证 RefSeq，不保证物种。</p>
+<h3 id="检索人线粒体编码的蛋白质">1.2 检索人线粒体编码的蛋白质</h3>
+<p><strong>方法</strong>：Protein 库 <code>"Homo sapiens"[Organism] AND mitochondrion[filter]</code>，再加 <code>refseq[filter]</code>。</p>
+<p><strong>结果</strong>：886,234 条降到 39 条。39 条 = 13 个蛋白 × 3 个人类基因组（现代人、尼安德特人、丹尼索瓦人）。现代人的 13 条全部是氧化磷酸化链的膜蛋白：7 个复合体 I 亚基（ND1–ND6、ND4L）、3 个复合体 IV 亚基（COX1–3）、2 个 ATP 合酶 F0 亚基（ATP6、ATP8）、1 个细胞色素 b。线粒体自身基因组只编码这 13 个蛋白，其余约 1,500 种蛋白由核基因编码后输入；检索结果中的 13 个蛋白参与氧化磷酸化过程。</p>
+<h3 id="检索-5-条直系同源-5-条并系同源序列">1.3 检索 5 条直系同源 + 5 条并系同源序列</h3>
+<p><strong>选定分子</strong>：玉米 ZmFIE1。检索从 Gene 542075 出发，用 ELink 取 <code>gene_nuccore_refseqrna</code> 与 <code>gene_protein_refseq</code>；没有 RefSeq 直系记录的物种，用 Gene 记录对应的 <code>XM_</code>/<code>XP_</code> 预测序列，并保留版本号与标题。</p>
+<p><strong>直系同源候选序列</strong>选自拟南芥、水稻、高粱、小麦和大麦；<strong>并系同源候选序列</strong>选自玉米、水稻、高粱、小麦和短柄草。表中“Paralog”表示相对于 ZmFIE1 的关系，并非同一基因组内的 5 个拷贝；跨物种序列的具体同源关系仍需基因树验证。</p>
+<div class="tcap">表 1　ZmFIE1 的 5 条直系同源候选与 5 条并系同源候选</div>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr>
+<th>organism</th>
+<th>Ortholog / Paralog</th>
+<th>mRNA accession</th>
+<th>mRNA length</th>
+<th>protein accession</th>
+<th>protein length</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>Arabidopsis thaliana</em></td>
+<td>Ortholog</td>
+<td><code>NM_112965.1</code></td>
+<td>1,563 nt</td>
+<td><code>NP_188710.1</code></td>
+<td>369 aa</td>
+</tr>
+<tr>
+<td><em>Oryza sativa</em></td>
+<td>Ortholog</td>
+<td><code>NM_001422905.1</code></td>
+<td>1,993 nt</td>
+<td><code>NP_001409834.1</code></td>
+<td>376 aa</td>
+</tr>
+<tr>
+<td><em>Sorghum bicolor</em></td>
+<td>Ortholog</td>
+<td><code>XM_002443778.2</code></td>
+<td>1,775 nt</td>
+<td><code>XP_002443823.1</code></td>
+<td>449 aa</td>
+</tr>
+<tr>
+<td><em>Triticum aestivum</em></td>
+<td>Ortholog</td>
+<td><code>XM_044566685.1</code></td>
+<td>1,603 nt</td>
+<td><code>XP_044422620.1</code></td>
+<td>378 aa</td>
+</tr>
+<tr>
+<td><em>Hordeum vulgare</em></td>
+<td>Ortholog</td>
+<td><code>XM_045102776.1</code></td>
+<td>1,955 nt</td>
+<td><code>XP_044958711.1</code></td>
+<td>476 aa</td>
+</tr>
+<tr>
+<td><em>Zea mays</em></td>
+<td>Paralog</td>
+<td><code>NM_001111712.1</code></td>
+<td>1,711 nt</td>
+<td><code>NP_001105182.1</code></td>
+<td>379 aa</td>
+</tr>
+<tr>
+<td><em>Oryza sativa</em></td>
+<td>Paralog</td>
+<td><code>XM_015793634.2</code></td>
+<td>1,725 nt</td>
+<td><code>XP_015649120.1</code></td>
+<td>466 aa</td>
+</tr>
+<tr>
+<td><em>Sorghum bicolor</em></td>
+<td>Paralog</td>
+<td><code>XM_002443777.2</code></td>
+<td>1,749 nt</td>
+<td><code>XP_002443822.1</code></td>
+<td>379 aa</td>
+</tr>
+<tr>
+<td><em>Triticum aestivum</em></td>
+<td>Paralog</td>
+<td><code>XM_044588536.1</code></td>
+<td>1,386 nt</td>
+<td><code>XP_044444471.1</code></td>
+<td>461 aa</td>
+</tr>
+<tr>
+<td><em>Brachypodium distachyon</em></td>
+<td>Paralog</td>
+<td><code>XM_003571455.4</code></td>
+<td>1,861 nt</td>
+<td><code>XP_003571503.1</code></td>
+<td>380 aa</td>
+</tr>
+</tbody>
+</table>
+<p>核酸与蛋白 FASTA 各保存研究对象及表中 10 条候选，逐条完整标题见对应 FASTA 的 defline。水稻 466 aa、小麦 461 aa 的条目标题为“FIE1-like”。</p>
+<p><strong>序列命名与分类。</strong> 水稻 466 aa 与小麦 461 aa 的 RefSeq 标题均为“FIE1-like”，但根据序列长度和相似性，本次暂将其归入 FIE2 支；水稻 376 aa、小麦 378 aa 条目暂归入 FIE1 支。上述分类仍需全长基因树进一步确认，不能仅依据 <code>FIE1</code>/<code>FIE2</code> 名称判定同源关系。</p>
+<p><strong>同源关系。</strong> 直系同源基因由物种分化产生，并系同源基因由基因复制产生，两者功能均可能分化。关系取决于比较对象：若水稻 FIE2 与玉米 FIE2 属于同一复制支系，则前者相对 ZmFIE1 为并系候选、相对 ZmFIE2 为直系候选；这一判断还需基因树支持。</p>
+<h3 id="检索技巧">1.4 检索技巧</h3>
+<p><code>[Organism]</code>、<code>[Gene Name]</code>、<code>[Title]</code>、<code>[Accession]</code>、<code>[SLEN]</code>、<code>[prop]</code> 和 <code>refseq[filter]</code> 可用于限定检索条件；<code>querytranslation</code> 可查看 Entrez 对检索式的解析；ELink 的 <code>nuccore → protein → gene → pubmed</code> 可用于追踪不同数据库中的关联记录。</p>
+<p>登录号会回收。旧文献里的 <code>NP_005623</code> 现在对应 calpain-15，<code>NM_003001</code> 现在对应 SDHC；只记 accession 不记 version 和 title 会直接查错分子。本次 FIE1 的 <code>NM_001111711.1</code> 与 <code>NP_001105181.1</code> 都逐条核对了版本和标题。</p>
+<p>使用物种、标题和 <code>refseq[filter]</code> 限定条件检索 NCBI Nucleotide，获得 3 条玉米 FIE mRNA 记录（图 1），其中 <code>NM_001111711.1</code> 和 <code>XM_023302232.2</code> 对应 Gene 542075，<code>NM_001111712.1</code> 对应 Gene 542076。两条 FIE1 转录本长度相差 49 nt。</p>
+<figure><img src="shot-ncbi-fie-search.png" alt="NCBI Nucleotide 玉米 FIE 检索结果" /><figcaption>图 1　NCBI Nucleotide 中玉米 FIE RefSeq mRNA 检索结果（2026-11-06）</figcaption></figure>
+<hr />
+<h2 id="实验任务二ebi-浏览">实验任务二：EBI 浏览</h2>
+<div class="tcap">表 2　EBI 的五个数据库与本次用到的记录</div>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>数据库</th>
+<th>收录内容</th>
+<th>与本次的关系</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>ENA</strong></td>
+<td>EMBL/GenBank/DDBJ 的欧洲核酸分部，含原始提交、EST、基因组与转录组</td>
+<td>ZmFIE1 的原始 mRNA 提交 <code>AY061964</code></td>
+</tr>
+<tr>
+<td><strong>UniProtKB</strong></td>
+<td>Swiss-Prot（人工校核）与 TrEMBL（自动注释）</td>
+<td><code>Q8VZY7</code>（FIE1_MAIZE，Reviewed，461 aa）</td>
+</tr>
+<tr>
+<td><strong>Ensembl</strong></td>
+<td>多物种基因组注释、转录本、变异、同源基因</td>
+<td>玉米基因 <code>Zm00001eb173090</code></td>
+</tr>
+<tr>
+<td><strong>ArrayExpress</strong></td>
+<td>功能基因组学实验与表达数据（现并入 BioStudies）</td>
+<td>本次未展开</td>
+</tr>
+<tr>
+<td><strong>PDBe</strong></td>
+<td>大分子三维结构</td>
+<td>玉米 FIE1 没有实验结构</td>
+</tr>
+</tbody>
+</table>
+<figure><img src="shot-uniprot-fie1.png" alt="UniProt 玉米 FIE1 蛋白记录" /><figcaption>图 2　UniProtKB 的玉米 FIE1 条目 Q8VZY7，显示物种、人工校核状态及蛋白长度（2026-11-06）</figcaption></figure>
+<p><strong>Ensembl。</strong> 基因 <code>Zm00001eb173090</code>（<code>fie1</code>）位于 <code>Zm-B73-REFERENCE-NAM-5.0</code> 4 号染色体 37,782,884–37,788,757，负链；规范转录本 <code>Zm00001eb173090_T001</code>，cDNA 1,815 nt。NCBI Gene 记录的基因区间到 37,788,773，比 Ensembl 多 16 bp；RefSeq <code>NM_001111711.1</code> 是 1,787 nt、461 aa。同一基因在三套注释里的边界和转录本长度并不完全一致，引用坐标时必须写明来源。</p>
+<p><strong>ENA。</strong> <code>AY061964</code> 版本 3（2004-12-14），1,787 bp，CDS 169..1554，蛋白 <code>AAL35973.1</code>。它与 NCBI <code>NM_001111711.1</code> 的序列长度和 CDS 边界一致；这两项信息本身不足以证明序列逐位一致或确定记录的校核来源。</p>
+<div class="tcap">表 3　ENA 与 GenBank 记录格式对照</div>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>ENA <code>AY061964</code>（EMBL）</th>
+<th>NCBI <code>NM_001111711.1</code>（GenBank）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>头部</td>
+<td><code>ID AY061964; SV 3; linear; mRNA; STD; PLN; 1787 BP.</code></td>
+<td><code>LOCUS NM_001111711 1787 bp mRNA linear PLN 28-APR-2025</code></td>
+</tr>
+<tr>
+<td>版本</td>
+<td><code>SV 3</code>，2004-12-14</td>
+<td><code>NM_001111711.1</code>，2025-04-28</td>
+</tr>
+<tr>
+<td>特征</td>
+<td><code>FT CDS 169..1554</code>，<code>/protein_id="AAL35973.1"</code></td>
+<td>同样 <code>CDS 169..1554</code>，<code>/protein_id="NP_001105181.1"</code></td>
+</tr>
+<tr>
+<td>交叉引用</td>
+<td><code>DR GOA; Q8VZY7</code>、<code>DR InterPro; IPR001680</code> 等</td>
+<td><code>db_xref="UniProtKB/Swiss-Prot:Q8VZY7"</code>、GeneID、InterPro 写在特征行内</td>
+</tr>
+</tbody>
+</table>
+<p><strong>PDBe。</strong> UniProt <code>Q8VZY7</code> 没有 PDB 交叉引用，PDBe 里查不到玉米 FIE1 的实验结构。WD40 重复的三维构架只能靠同源建模或其它物种的同源蛋白外推；这也是本次没有把结构比较写进结果的原因。</p>
+<hr />
+<h2 id="实验任务三两条序列比对">实验任务三：两条序列比对</h2>
+<p><strong>对象</strong>：① 核酸：ZmFIE1 mRNA <code>NM_001111711.1</code>（1,787 nt）vs 水稻 FIE1 候选 <code>NM_001422905.1</code>（1,993 nt）；② 蛋白：<code>NP_001105181.1</code>（461 aa）vs 水稻 FIE1 候选 <code>NP_001409834.1</code>（376 aa）；③ 蛋白并系对照：<code>NP_001105181.1</code> vs 玉米 FIE2 <code>NP_001105182.1</code>（379 aa）。</p>
+<p><strong>工具</strong>：EBI Job Dispatcher 的 EMBOSS 6.6.0；Needle 为 Needleman–Wunsch 全局比对，Water 为 Smith–Waterman 局部比对；gap open 10.0、gap extend 0.5。核酸用 EDNAFULL 与 EDNAMAT，蛋白用 EBLOSUM62；另用 EBLOSUM45、EBLOSUM80 检查矩阵对蛋白比对的影响。</p>
+<div class="tcap">表 4　10 组比对结果</div>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+<col style="width: 11%" />
+</colgroup>
+<thead>
+<tr>
+<th>#</th>
+<th>序列对</th>
+<th>程序</th>
+<th>矩阵</th>
+<th>长度</th>
+<th>Identity</th>
+<th>Similarity</th>
+<th>Gaps</th>
+<th>Score</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>ZmFIE1 vs OsFIE1 mRNA</td>
+<td>Needle</td>
+<td>EDNAFULL</td>
+<td>2,204</td>
+<td>1,240 (56.3%)</td>
+<td>56.3%</td>
+<td>628 (28.5%)</td>
+<td>3,737.0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>同上</td>
+<td>Needle</td>
+<td>EDNAMAT</td>
+<td>2,204</td>
+<td>1,240 (56.3%)</td>
+<td>56.3%</td>
+<td>628 (28.5%)</td>
+<td>3,737.0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>同上</td>
+<td>Water</td>
+<td>EDNAFULL</td>
+<td>2,106</td>
+<td>1,233 (58.5%)</td>
+<td>58.5%</td>
+<td>540 (25.6%)</td>
+<td>3,755.5</td>
+</tr>
+<tr>
+<td>4</td>
+<td>同上</td>
+<td>Water</td>
+<td>EDNAMAT</td>
+<td>2,106</td>
+<td>1,233 (58.5%)</td>
+<td>58.5%</td>
+<td>540 (25.6%)</td>
+<td>3,755.5</td>
+</tr>
+<tr>
+<td>5</td>
+<td>ZmFIE1 vs OsFIE1 蛋白</td>
+<td>Needle</td>
+<td>EBLOSUM62</td>
+<td>462</td>
+<td>268 (58.0%)</td>
+<td>314 (68.0%)</td>
+<td>87 (18.8%)</td>
+<td>1,475.0</td>
+</tr>
+<tr>
+<td>6</td>
+<td>同上</td>
+<td>Water</td>
+<td>EBLOSUM62</td>
+<td>368</td>
+<td>266 (72.3%)</td>
+<td>310 (84.2%)</td>
+<td>1 (0.3%)</td>
+<td>1,475.0</td>
+</tr>
+<tr>
+<td>7</td>
+<td>同上</td>
+<td>Needle</td>
+<td>EBLOSUM45</td>
+<td>462</td>
+<td>268 (58.0%)</td>
+<td>316 (68.4%)</td>
+<td>87 (18.8%)</td>
+<td>1,791.0</td>
+</tr>
+<tr>
+<td>8</td>
+<td>同上</td>
+<td>Needle</td>
+<td>EBLOSUM80</td>
+<td>462</td>
+<td>268 (58.0%)</td>
+<td>315 (68.2%)</td>
+<td>87 (18.8%)</td>
+<td>2,343.0</td>
+</tr>
+<tr>
+<td>9</td>
+<td>ZmFIE1 vs ZmFIE2 蛋白</td>
+<td>Needle</td>
+<td>EBLOSUM62</td>
+<td>461</td>
+<td>289 (62.7%)</td>
+<td>324 (70.3%)</td>
+<td>82 (17.8%)</td>
+<td>1,585.0</td>
+</tr>
+<tr>
+<td>10</td>
+<td>同上</td>
+<td>Water</td>
+<td>EBLOSUM62</td>
+<td>372</td>
+<td>289 (77.7%)</td>
+<td>321 (86.3%)</td>
+<td>0 (0.0%)</td>
+<td>1,585.0</td>
+</tr>
+</tbody>
+</table>
+<h3 id="空位的分布">空位的分布</h3>
+<p>核酸全局比对共 628 个空位列，拆成 <strong>88 段游程</strong>：query 53 段、subject 35 段，最长一段 46 bp。按 query 坐标分区：5′UTR（1–168）353 列，identity 29.7%，空位列 61.5%；CDS（169–1554）1,505 列，identity 66.5%，空位列 15.7%；3′UTR（1555–1787）346 列，identity 38.7%，空位列 50.6%。<strong>CDS 内的空位少而散，UTR 的空位多而集中</strong>。局部比对把空位列降到 540、最长游程降到 33 bp，但 5′/3′UTR 的空位率仍有 55.6% 和 47.9%，表明本次比对中 UTR 区域的空位率仍较高。</p>
+<p>蛋白全局比对有 87 个空位列、4 段游程，最长 58 aa；其中两端缺口对应 query 的 1–58 和 435–461 位，另有两个单字符内部缺口。比对空位以末端集中缺口为主。Water 保留 query 64–431 对 subject 6–372，空位降到 1 个，identity 从 58.0% 升到 72.3%。</p>
+<h3 id="评分矩阵对比对结果的影响">评分矩阵对比对结果的影响</h3>
+<p><strong>核酸比对。</strong> 四组核酸比对的 Length / Identity / Gaps / Score 在 EDNAFULL 与 EDNAMAT 下逐项相同。脚本逐位统计显示，两条序列均不含 A/C/G/T 以外的碱基；这两种矩阵在本次所涉及的碱基打分上相同。</p>
+<p><strong>蛋白比对。</strong> EBLOSUM62 / 45 / 80 三组 Needle 的 identity（58.0%）、gaps（18.8%）和比对路径相同，similarity 分别为 68.0–68.4%，score 分别为 1,475、1,791 和 2,343。本次更换矩阵后，比对路径未变，但 similarity 与 score 发生了变化；不同矩阵的原始分数不宜直接比较。</p>
+<h3 id="局部比对与全局比对的差异">局部比对与全局比对的差异</h3>
+<p>核酸比对的 identity 相差 2.2 个百分点（56.3% → 58.5%）。Water 覆盖 query 9–1770、subject 77–1986，即分别裁去两端 8 / 17 nt 和 76 / 7 nt。</p>
+<p>蛋白比对的 identity 相差 14.3 个百分点（58.0% → 72.3%）。全局比对中，ZmFIE1 的 N 端 1–58 和 C 端 435–461 对应空位；局部比对则主要保留中间区域。并系对照的 Needle 结果为 62.7% identity / 17.8% gaps，Water 结果为 77.7% identity / 0 gaps。</p>
+<figure><img src="fig1_fie_align.png" alt="核酸与蛋白比对的 identity / similarity / gaps" /><figcaption>图 3　跨物种 FIE1 候选核酸（a）与蛋白、玉米 FIE2 对照（b）的比对指标</figcaption></figure>
+<figure><img src="fig2_fie_gaps.png" alt="核酸与蛋白全局比对的空位游程" /><figcaption>图 4　空位游程：核酸 88 段、最长 46 bp；蛋白 2–4 段、最长 58 aa</figcaption></figure>
+<hr />
+<h2 id="现有知识总结">现有知识总结</h2>
+<p>Entrez 字段和过滤条件决定检索范围，命中记录需结合物种、版本与注释逐条核对。全局比对用于比较序列整体，局部比对突出相似片段；identity 与空位比例应结合覆盖范围解读，不能单凭相似性确定同源关系。</p>
+<h2 id="讨论">讨论</h2>
+<p>任务 1.1 按要求检索人 EGF；任务 1.3 使用实验一选定的研究分子 ZmFIE1，两组结果应分别解读。</p>
+<p>本次跨物种选取 FIE2 序列作为 ZmFIE1 的并系同源序列。水稻和小麦的 466/461 aa 条目虽然标注为“FIE1-like”，但根据序列长度和相似性暂归入 FIE2 支，仍需全长基因树进一步确认。同源关系不能仅凭基因名称判定。</p>
+<p>ENA 与 RefSeq 记录的序列长度均为 1,787 nt，CDS 边界均为 169–1554，记录格式和交叉引用有所不同。Ensembl 的基因边界为 37,782,884–37,788,757，规范转录本为 1,815 nt，与 NCBI 记录的 37,788,773 终点及 1,787 nt 转录本不完全一致；使用时应注明注释来源。</p>
+<p>全局比对适于考察序列的整体对应关系，局部比对则有助于分析相似区域。本次蛋白全局比对在 ZmFIE1 两端出现合计 85 aa 的空位，局部比对主要保留中间区域，identity 为 72.3%。核酸全局比对共有 628 个空位列、88 段空位游程；按 query 区域统计，CDS 的空位率为 15.7%，两端 UTR 的空位率较高。</p>
+<h2 id="你的疑问最多-3-条">你的疑问（最多 3 条）</h2>
+<ol type="1">
+<li>水稻 466 aa、小麦 461 aa 的“FIE1-like”属于 FIE2 还是第三个拷贝？需要全长基因树。</li>
+<li>ZmFIE1 的 N 端 1–58 aa 在其它禾本科 FIE1 中也存在吗？如果只存在于玉米，它的功能是什么？</li>
+<li>Ensembl 1,815 nt 与 RefSeq 1,787 nt 的差异来自 5′UTR 还是可变剪接？</li>
+</ol>
+
+</body></html>

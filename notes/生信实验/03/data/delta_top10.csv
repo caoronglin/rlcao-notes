@@ -1,0 +1,11 @@
+group,run,label,rank,species,sseqid,pident,length,evalue,bitscore,title
+任务三·DELTA-BLAST,t3b_deltablast,DELTA-BLAST,1,Homo sapiens,gi|166362728|ref|NP_001954.2|,100.0,1207,0.0,1870.0,pro-epidermal growth factor isoform 1 preproprotein [Homo sapiens]
+任务三·DELTA-BLAST,t3b_deltablast,DELTA-BLAST,2,unknown,sp|P01133|EGF_HUMAN,100.0,1207,0.0,1870.0,Pro-epidermal growth factor OS=Homo sapiens OX=9606 GN=EGF PE=1 SV=2
+任务三·DELTA-BLAST,t3b_deltablast,DELTA-BLAST,3,Pan paniscus,gi|397519856|ref|XP_003830069.1|,98.674,1207,0.0,1864.0,pro-epidermal growth factor [Pan paniscus]
+任务三·DELTA-BLAST,t3b_deltablast,DELTA-BLAST,4,Pan troglodytes,gi|2468663339|ref|XP_517395.5|,98.509,1207,0.0,1859.0,pro-epidermal growth factor isoform X7 [Pan troglodytes]
+任务三·DELTA-BLAST,t3b_deltablast,DELTA-BLAST,5,Pan troglodytes,gi|2468663335|ref|XP_009446410.4|,97.86,1215,0.0,1853.0,pro-epidermal growth factor isoform X5 [Pan troglodytes]
+任务三·DELTA-BLAST,t3b_deltablast,DELTA-BLAST,6,Pan troglodytes,gi|2468663333|ref|XP_054539260.1|,97.22,1223,0.0,1847.0,pro-epidermal growth factor isoform X2 [Pan troglodytes]
+任务三·DELTA-BLAST,t3b_deltablast,DELTA-BLAST,7,Pan troglodytes,gi|2468663331|ref|XP_016807514.3|,97.138,1223,0.0,1844.0,pro-epidermal growth factor isoform X3 [Pan troglodytes]
+任务三·DELTA-BLAST,t3b_deltablast,DELTA-BLAST,8,Pan troglodytes,gi|2468663329|ref|XP_024211956.2|,97.138,1223,0.0,1842.0,pro-epidermal growth factor isoform X4 [Pan troglodytes]
+任务三·DELTA-BLAST,t3b_deltablast,DELTA-BLAST,9,Pan troglodytes,gi|2468663327|ref|XP_054539259.1|,96.507,1231,0.0,1837.0,pro-epidermal growth factor isoform X1 [Pan troglodytes]
+任务三·DELTA-BLAST,t3b_deltablast,DELTA-BLAST,10,Pongo abelii,gi|2464180314|ref|XP_002815105.3|,96.523,1208,0.0,1823.0,pro-epidermal growth factor isoform X10 [Pongo abelii]

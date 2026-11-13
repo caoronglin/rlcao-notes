@@ -1,0 +1,251 @@
+group,run,label,rank,species,sseqid,pident,length,evalue,bitscore,title
+BLASTN·算法,fie_t1a_blastn_default,blastn（默认）,1,Zea mays,ref|NM_001111711.1|,100.0,1787,0.0,3223.0,"Zea mays fertilization independent endosperm 1 (LOC542075), mRNA"
+BLASTN·算法,fie_t1a_blastn_default,blastn（默认）,2,Zea mays,zea_mays|Zm00001eb173090_T001,100.0,1766,0.0,3186.0,cdna chromosome:Zm-B73-REFERENCE-NAM-5.0:4:37782884:37788757:-1 gene:Zm00001eb173090 gene_biotype:protein_coding transcript_biotyp
+BLASTN·算法,fie_t1a_blastn_default,blastn（默认）,3,Sorghum bicolor,ref|XM_002443778.2|,84.844,1511,0.0,1686.0,"PREDICTED: Sorghum bicolor polycomb group protein FIE1 (LOC8067800), mRNA"
+BLASTN·算法,fie_t1a_blastn_default,blastn（默认）,4,Sorghum bicolor,sorghum_bicolor|EES13318,86.078,1336,0.0,1571.0,cdna chromosome:Sorghum_bicolor_NCBIv3:7:2880004:2885277:1 gene:SORBI_3007G032500 gene_biotype:protein_coding transcript_biotype:p
+BLASTN·算法,fie_t1a_blastn_default,blastn（默认）,5,Zea mays,ref|XM_023302232.2|,100.0,869,0.0,1568.0,"PREDICTED: Zea mays fertilization independent endosperm 1 (LOC542075), transcript variant X1, mRNA"
+BLASTN·算法,fie_t1a_blastn_default,blastn（默认）,6,Zea mays,zea_mays|Zm00001eb173090_T002,100.0,869,0.0,1568.0,cdna chromosome:Zm-B73-REFERENCE-NAM-5.0:4:37782884:37788755:-1 gene:Zm00001eb173090 gene_biotype:protein_coding transcript_biotyp
+BLASTN·算法,fie_t1a_blastn_default,blastn（默认）,7,Setaria viridis,ref|XM_072294584.1|,82.419,1149,0.0,1162.0,"PREDICTED: Setaria viridis polycomb group protein FIE2 (LOC117859645), mRNA"
+BLASTN·算法,fie_t1a_blastn_default,blastn（默认）,8,Setaria italica,ref|XM_004972850.4|,82.435,1150,0.0,1157.0,"PREDICTED: Setaria italica polycomb group protein FIE2 (LOC101777620), mRNA"
+BLASTN·算法,fie_t1a_blastn_default,blastn（默认）,9,Panicum hallii,ref|XM_025965192.1|,82.047,1153,0.0,1147.0,"PREDICTED: Panicum hallii polycomb group protein FIE2 (LOC112897028), transcript variant X1, mRNA"
+BLASTN·算法,fie_t1a_blastn_default,blastn（默认）,10,Panicum hallii,ref|XM_025965193.1|,82.047,1153,0.0,1147.0,"PREDICTED: Panicum hallii polycomb group protein FIE2 (LOC112897028), transcript variant X2, mRNA"
+BLASTN·算法,fie_t1b_megablast,megablast,1,Zea mays,ref|NM_001111711.1|,100.0,1787,0.0,3301.0,"Zea mays fertilization independent endosperm 1 (LOC542075), mRNA"
+BLASTN·算法,fie_t1b_megablast,megablast,2,Zea mays,zea_mays|Zm00001eb173090_T001,100.0,1766,0.0,3262.0,cdna chromosome:Zm-B73-REFERENCE-NAM-5.0:4:37782884:37788757:-1 gene:Zm00001eb173090 gene_biotype:protein_coding transcript_biotyp
+BLASTN·算法,fie_t1b_megablast,megablast,3,Zea mays,ref|XM_023302232.2|,100.0,869,0.0,1605.0,"PREDICTED: Zea mays fertilization independent endosperm 1 (LOC542075), transcript variant X1, mRNA"
+BLASTN·算法,fie_t1b_megablast,megablast,4,Zea mays,zea_mays|Zm00001eb173090_T002,100.0,869,0.0,1605.0,cdna chromosome:Zm-B73-REFERENCE-NAM-5.0:4:37782884:37788755:-1 gene:Zm00001eb173090 gene_biotype:protein_coding transcript_biotyp
+BLASTN·算法,fie_t1b_megablast,megablast,5,Sorghum bicolor,ref|XM_002443778.2|,85.578,1470,0.0,1519.0,"PREDICTED: Sorghum bicolor polycomb group protein FIE1 (LOC8067800), mRNA"
+BLASTN·算法,fie_t1b_megablast,megablast,6,Sorghum bicolor,sorghum_bicolor|EES13318,86.806,1296,0.0,1437.0,cdna chromosome:Sorghum_bicolor_NCBIv3:7:2880004:2885277:1 gene:SORBI_3007G032500 gene_biotype:protein_coding transcript_biotype:p
+BLASTN·算法,fie_t1b_megablast,megablast,7,Setaria viridis,ref|XM_072294584.1|,84.27,1068,0.0,1035.0,"PREDICTED: Setaria viridis polycomb group protein FIE2 (LOC117859645), mRNA"
+BLASTN·算法,fie_t1b_megablast,megablast,8,Setaria italica,ref|XM_004972850.4|,84.176,1068,0.0,1029.0,"PREDICTED: Setaria italica polycomb group protein FIE2 (LOC101777620), mRNA"
+BLASTN·算法,fie_t1b_megablast,megablast,9,Miscanthus floridulus,ref|XM_066470013.1|,83.925,1070,0.0,1013.0,"PREDICTED: Miscanthus floridulus polycomb group protein FIE2 (LOC136472289), mRNA"
+BLASTN·算法,fie_t1b_megablast,megablast,10,Panicum hallii,ref|XM_025965192.1|,83.704,1080,0.0,1009.0,"PREDICTED: Panicum hallii polycomb group protein FIE2 (LOC112897028), transcript variant X1, mRNA"
+BLASTN·算法,fie_t1c_dcmegablast,discontiguous megablast,1,Zea mays,ref|NM_001111711.1|,100.0,1787,0.0,3223.0,"Zea mays fertilization independent endosperm 1 (LOC542075), mRNA"
+BLASTN·算法,fie_t1c_dcmegablast,discontiguous megablast,2,Zea mays,zea_mays|Zm00001eb173090_T001,100.0,1766,0.0,3186.0,cdna chromosome:Zm-B73-REFERENCE-NAM-5.0:4:37782884:37788757:-1 gene:Zm00001eb173090 gene_biotype:protein_coding transcript_biotyp
+BLASTN·算法,fie_t1c_dcmegablast,discontiguous megablast,3,Sorghum bicolor,ref|XM_002443778.2|,84.844,1511,0.0,1686.0,"PREDICTED: Sorghum bicolor polycomb group protein FIE1 (LOC8067800), mRNA"
+BLASTN·算法,fie_t1c_dcmegablast,discontiguous megablast,4,Sorghum bicolor,sorghum_bicolor|EES13318,86.078,1336,0.0,1571.0,cdna chromosome:Sorghum_bicolor_NCBIv3:7:2880004:2885277:1 gene:SORBI_3007G032500 gene_biotype:protein_coding transcript_biotype:p
+BLASTN·算法,fie_t1c_dcmegablast,discontiguous megablast,5,Zea mays,ref|XM_023302232.2|,100.0,869,0.0,1568.0,"PREDICTED: Zea mays fertilization independent endosperm 1 (LOC542075), transcript variant X1, mRNA"
+BLASTN·算法,fie_t1c_dcmegablast,discontiguous megablast,6,Zea mays,zea_mays|Zm00001eb173090_T002,100.0,869,0.0,1568.0,cdna chromosome:Zm-B73-REFERENCE-NAM-5.0:4:37782884:37788755:-1 gene:Zm00001eb173090 gene_biotype:protein_coding transcript_biotyp
+BLASTN·算法,fie_t1c_dcmegablast,discontiguous megablast,7,Setaria viridis,ref|XM_072294584.1|,82.419,1149,0.0,1162.0,"PREDICTED: Setaria viridis polycomb group protein FIE2 (LOC117859645), mRNA"
+BLASTN·算法,fie_t1c_dcmegablast,discontiguous megablast,8,Setaria italica,ref|XM_004972850.4|,82.435,1150,0.0,1157.0,"PREDICTED: Setaria italica polycomb group protein FIE2 (LOC101777620), mRNA"
+BLASTN·算法,fie_t1c_dcmegablast,discontiguous megablast,9,Panicum hallii,ref|XM_025965192.1|,82.047,1153,0.0,1147.0,"PREDICTED: Panicum hallii polycomb group protein FIE2 (LOC112897028), transcript variant X1, mRNA"
+BLASTN·算法,fie_t1c_dcmegablast,discontiguous megablast,10,Panicum hallii,ref|XM_025965193.1|,82.047,1153,0.0,1147.0,"PREDICTED: Panicum hallii polycomb group protein FIE2 (LOC112897028), transcript variant X2, mRNA"
+BLASTN·word size,fie_t1d_blastn_w7,blastn word_size 7,1,Zea mays,ref|NM_001111711.1|,100.0,1787,0.0,3223.0,"Zea mays fertilization independent endosperm 1 (LOC542075), mRNA"
+BLASTN·word size,fie_t1d_blastn_w7,blastn word_size 7,2,Zea mays,zea_mays|Zm00001eb173090_T001,100.0,1766,0.0,3186.0,cdna chromosome:Zm-B73-REFERENCE-NAM-5.0:4:37782884:37788757:-1 gene:Zm00001eb173090 gene_biotype:protein_coding transcript_biotyp
+BLASTN·word size,fie_t1d_blastn_w7,blastn word_size 7,3,Sorghum bicolor,ref|XM_002443778.2|,84.844,1511,0.0,1686.0,"PREDICTED: Sorghum bicolor polycomb group protein FIE1 (LOC8067800), mRNA"
+BLASTN·word size,fie_t1d_blastn_w7,blastn word_size 7,4,Sorghum bicolor,sorghum_bicolor|EES13318,86.078,1336,0.0,1571.0,cdna chromosome:Sorghum_bicolor_NCBIv3:7:2880004:2885277:1 gene:SORBI_3007G032500 gene_biotype:protein_coding transcript_biotype:p
+BLASTN·word size,fie_t1d_blastn_w7,blastn word_size 7,5,Zea mays,ref|XM_023302232.2|,100.0,869,0.0,1568.0,"PREDICTED: Zea mays fertilization independent endosperm 1 (LOC542075), transcript variant X1, mRNA"
+BLASTN·word size,fie_t1d_blastn_w7,blastn word_size 7,6,Zea mays,zea_mays|Zm00001eb173090_T002,100.0,869,0.0,1568.0,cdna chromosome:Zm-B73-REFERENCE-NAM-5.0:4:37782884:37788755:-1 gene:Zm00001eb173090 gene_biotype:protein_coding transcript_biotyp
+BLASTN·word size,fie_t1d_blastn_w7,blastn word_size 7,7,Setaria viridis,ref|XM_072294584.1|,82.419,1149,0.0,1162.0,"PREDICTED: Setaria viridis polycomb group protein FIE2 (LOC117859645), mRNA"
+BLASTN·word size,fie_t1d_blastn_w7,blastn word_size 7,8,Setaria italica,ref|XM_004972850.4|,82.435,1150,0.0,1157.0,"PREDICTED: Setaria italica polycomb group protein FIE2 (LOC101777620), mRNA"
+BLASTN·word size,fie_t1d_blastn_w7,blastn word_size 7,9,Panicum hallii,ref|XM_025965192.1|,82.047,1153,0.0,1147.0,"PREDICTED: Panicum hallii polycomb group protein FIE2 (LOC112897028), transcript variant X1, mRNA"
+BLASTN·word size,fie_t1d_blastn_w7,blastn word_size 7,10,Panicum hallii,ref|XM_025965193.1|,82.047,1153,0.0,1147.0,"PREDICTED: Panicum hallii polycomb group protein FIE2 (LOC112897028), transcript variant X2, mRNA"
+BLASTN·word size,fie_t1e_blastn_w11,blastn word_size 11,1,Zea mays,ref|NM_001111711.1|,100.0,1787,0.0,3223.0,"Zea mays fertilization independent endosperm 1 (LOC542075), mRNA"
+BLASTN·word size,fie_t1e_blastn_w11,blastn word_size 11,2,Zea mays,zea_mays|Zm00001eb173090_T001,100.0,1766,0.0,3186.0,cdna chromosome:Zm-B73-REFERENCE-NAM-5.0:4:37782884:37788757:-1 gene:Zm00001eb173090 gene_biotype:protein_coding transcript_biotyp
+BLASTN·word size,fie_t1e_blastn_w11,blastn word_size 11,3,Sorghum bicolor,ref|XM_002443778.2|,84.844,1511,0.0,1686.0,"PREDICTED: Sorghum bicolor polycomb group protein FIE1 (LOC8067800), mRNA"
+BLASTN·word size,fie_t1e_blastn_w11,blastn word_size 11,4,Sorghum bicolor,sorghum_bicolor|EES13318,86.078,1336,0.0,1571.0,cdna chromosome:Sorghum_bicolor_NCBIv3:7:2880004:2885277:1 gene:SORBI_3007G032500 gene_biotype:protein_coding transcript_biotype:p
+BLASTN·word size,fie_t1e_blastn_w11,blastn word_size 11,5,Zea mays,ref|XM_023302232.2|,100.0,869,0.0,1568.0,"PREDICTED: Zea mays fertilization independent endosperm 1 (LOC542075), transcript variant X1, mRNA"
+BLASTN·word size,fie_t1e_blastn_w11,blastn word_size 11,6,Zea mays,zea_mays|Zm00001eb173090_T002,100.0,869,0.0,1568.0,cdna chromosome:Zm-B73-REFERENCE-NAM-5.0:4:37782884:37788755:-1 gene:Zm00001eb173090 gene_biotype:protein_coding transcript_biotyp
+BLASTN·word size,fie_t1e_blastn_w11,blastn word_size 11,7,Setaria viridis,ref|XM_072294584.1|,82.419,1149,0.0,1162.0,"PREDICTED: Setaria viridis polycomb group protein FIE2 (LOC117859645), mRNA"
+BLASTN·word size,fie_t1e_blastn_w11,blastn word_size 11,8,Setaria italica,ref|XM_004972850.4|,82.435,1150,0.0,1157.0,"PREDICTED: Setaria italica polycomb group protein FIE2 (LOC101777620), mRNA"
+BLASTN·word size,fie_t1e_blastn_w11,blastn word_size 11,9,Panicum hallii,ref|XM_025965192.1|,82.047,1153,0.0,1147.0,"PREDICTED: Panicum hallii polycomb group protein FIE2 (LOC112897028), transcript variant X1, mRNA"
+BLASTN·word size,fie_t1e_blastn_w11,blastn word_size 11,10,Panicum hallii,ref|XM_025965193.1|,82.047,1153,0.0,1147.0,"PREDICTED: Panicum hallii polycomb group protein FIE2 (LOC112897028), transcript variant X2, mRNA"
+BLASTN·word size,fie_t1f_blastn_w15,blastn word_size 15,1,Zea mays,ref|NM_001111711.1|,100.0,1787,0.0,3223.0,"Zea mays fertilization independent endosperm 1 (LOC542075), mRNA"
+BLASTN·word size,fie_t1f_blastn_w15,blastn word_size 15,2,Zea mays,zea_mays|Zm00001eb173090_T001,100.0,1766,0.0,3186.0,cdna chromosome:Zm-B73-REFERENCE-NAM-5.0:4:37782884:37788757:-1 gene:Zm00001eb173090 gene_biotype:protein_coding transcript_biotyp
+BLASTN·word size,fie_t1f_blastn_w15,blastn word_size 15,3,Sorghum bicolor,ref|XM_002443778.2|,84.844,1511,0.0,1686.0,"PREDICTED: Sorghum bicolor polycomb group protein FIE1 (LOC8067800), mRNA"
+BLASTN·word size,fie_t1f_blastn_w15,blastn word_size 15,4,Sorghum bicolor,sorghum_bicolor|EES13318,86.078,1336,0.0,1571.0,cdna chromosome:Sorghum_bicolor_NCBIv3:7:2880004:2885277:1 gene:SORBI_3007G032500 gene_biotype:protein_coding transcript_biotype:p
+BLASTN·word size,fie_t1f_blastn_w15,blastn word_size 15,5,Zea mays,ref|XM_023302232.2|,100.0,869,0.0,1568.0,"PREDICTED: Zea mays fertilization independent endosperm 1 (LOC542075), transcript variant X1, mRNA"
+BLASTN·word size,fie_t1f_blastn_w15,blastn word_size 15,6,Zea mays,zea_mays|Zm00001eb173090_T002,100.0,869,0.0,1568.0,cdna chromosome:Zm-B73-REFERENCE-NAM-5.0:4:37782884:37788755:-1 gene:Zm00001eb173090 gene_biotype:protein_coding transcript_biotyp
+BLASTN·word size,fie_t1f_blastn_w15,blastn word_size 15,7,Setaria viridis,ref|XM_072294584.1|,82.419,1149,0.0,1162.0,"PREDICTED: Setaria viridis polycomb group protein FIE2 (LOC117859645), mRNA"
+BLASTN·word size,fie_t1f_blastn_w15,blastn word_size 15,8,Setaria italica,ref|XM_004972850.4|,82.435,1150,0.0,1157.0,"PREDICTED: Setaria italica polycomb group protein FIE2 (LOC101777620), mRNA"
+BLASTN·word size,fie_t1f_blastn_w15,blastn word_size 15,9,Panicum hallii,ref|XM_025965192.1|,82.047,1153,0.0,1147.0,"PREDICTED: Panicum hallii polycomb group protein FIE2 (LOC112897028), transcript variant X1, mRNA"
+BLASTN·word size,fie_t1f_blastn_w15,blastn word_size 15,10,Panicum hallii,ref|XM_025965193.1|,82.047,1153,0.0,1147.0,"PREDICTED: Panicum hallii polycomb group protein FIE2 (LOC112897028), transcript variant X2, mRNA"
+BLASTN·E 值,fie_t1g_blastn_e1e50,blastn E=1e-50,1,Zea mays,ref|NM_001111711.1|,100.0,1787,0.0,3223.0,"Zea mays fertilization independent endosperm 1 (LOC542075), mRNA"
+BLASTN·E 值,fie_t1g_blastn_e1e50,blastn E=1e-50,2,Zea mays,zea_mays|Zm00001eb173090_T001,100.0,1766,0.0,3186.0,cdna chromosome:Zm-B73-REFERENCE-NAM-5.0:4:37782884:37788757:-1 gene:Zm00001eb173090 gene_biotype:protein_coding transcript_biotyp
+BLASTN·E 值,fie_t1g_blastn_e1e50,blastn E=1e-50,3,Sorghum bicolor,ref|XM_002443778.2|,84.844,1511,0.0,1686.0,"PREDICTED: Sorghum bicolor polycomb group protein FIE1 (LOC8067800), mRNA"
+BLASTN·E 值,fie_t1g_blastn_e1e50,blastn E=1e-50,4,Sorghum bicolor,sorghum_bicolor|EES13318,86.078,1336,0.0,1571.0,cdna chromosome:Sorghum_bicolor_NCBIv3:7:2880004:2885277:1 gene:SORBI_3007G032500 gene_biotype:protein_coding transcript_biotype:p
+BLASTN·E 值,fie_t1g_blastn_e1e50,blastn E=1e-50,5,Zea mays,ref|XM_023302232.2|,100.0,869,0.0,1568.0,"PREDICTED: Zea mays fertilization independent endosperm 1 (LOC542075), transcript variant X1, mRNA"
+BLASTN·E 值,fie_t1g_blastn_e1e50,blastn E=1e-50,6,Zea mays,zea_mays|Zm00001eb173090_T002,100.0,869,0.0,1568.0,cdna chromosome:Zm-B73-REFERENCE-NAM-5.0:4:37782884:37788755:-1 gene:Zm00001eb173090 gene_biotype:protein_coding transcript_biotyp
+BLASTN·E 值,fie_t1g_blastn_e1e50,blastn E=1e-50,7,Setaria viridis,ref|XM_072294584.1|,82.419,1149,0.0,1162.0,"PREDICTED: Setaria viridis polycomb group protein FIE2 (LOC117859645), mRNA"
+BLASTN·E 值,fie_t1g_blastn_e1e50,blastn E=1e-50,8,Setaria italica,ref|XM_004972850.4|,82.435,1150,0.0,1157.0,"PREDICTED: Setaria italica polycomb group protein FIE2 (LOC101777620), mRNA"
+BLASTN·E 值,fie_t1g_blastn_e1e50,blastn E=1e-50,9,Panicum hallii,ref|XM_025965192.1|,82.047,1153,0.0,1147.0,"PREDICTED: Panicum hallii polycomb group protein FIE2 (LOC112897028), transcript variant X1, mRNA"
+BLASTN·E 值,fie_t1g_blastn_e1e50,blastn E=1e-50,10,Panicum hallii,ref|XM_025965193.1|,82.047,1153,0.0,1147.0,"PREDICTED: Panicum hallii polycomb group protein FIE2 (LOC112897028), transcript variant X2, mRNA"
+BLASTN·E 值,fie_t1h_blastn_e1e5,blastn E=1e-5,1,Zea mays,ref|NM_001111711.1|,100.0,1787,0.0,3223.0,"Zea mays fertilization independent endosperm 1 (LOC542075), mRNA"
+BLASTN·E 值,fie_t1h_blastn_e1e5,blastn E=1e-5,2,Zea mays,zea_mays|Zm00001eb173090_T001,100.0,1766,0.0,3186.0,cdna chromosome:Zm-B73-REFERENCE-NAM-5.0:4:37782884:37788757:-1 gene:Zm00001eb173090 gene_biotype:protein_coding transcript_biotyp
+BLASTN·E 值,fie_t1h_blastn_e1e5,blastn E=1e-5,3,Sorghum bicolor,ref|XM_002443778.2|,84.844,1511,0.0,1686.0,"PREDICTED: Sorghum bicolor polycomb group protein FIE1 (LOC8067800), mRNA"
+BLASTN·E 值,fie_t1h_blastn_e1e5,blastn E=1e-5,4,Sorghum bicolor,sorghum_bicolor|EES13318,86.078,1336,0.0,1571.0,cdna chromosome:Sorghum_bicolor_NCBIv3:7:2880004:2885277:1 gene:SORBI_3007G032500 gene_biotype:protein_coding transcript_biotype:p
+BLASTN·E 值,fie_t1h_blastn_e1e5,blastn E=1e-5,5,Zea mays,ref|XM_023302232.2|,100.0,869,0.0,1568.0,"PREDICTED: Zea mays fertilization independent endosperm 1 (LOC542075), transcript variant X1, mRNA"
+BLASTN·E 值,fie_t1h_blastn_e1e5,blastn E=1e-5,6,Zea mays,zea_mays|Zm00001eb173090_T002,100.0,869,0.0,1568.0,cdna chromosome:Zm-B73-REFERENCE-NAM-5.0:4:37782884:37788755:-1 gene:Zm00001eb173090 gene_biotype:protein_coding transcript_biotyp
+BLASTN·E 值,fie_t1h_blastn_e1e5,blastn E=1e-5,7,Setaria viridis,ref|XM_072294584.1|,82.419,1149,0.0,1162.0,"PREDICTED: Setaria viridis polycomb group protein FIE2 (LOC117859645), mRNA"
+BLASTN·E 值,fie_t1h_blastn_e1e5,blastn E=1e-5,8,Setaria italica,ref|XM_004972850.4|,82.435,1150,0.0,1157.0,"PREDICTED: Setaria italica polycomb group protein FIE2 (LOC101777620), mRNA"
+BLASTN·E 值,fie_t1h_blastn_e1e5,blastn E=1e-5,9,Panicum hallii,ref|XM_025965192.1|,82.047,1153,0.0,1147.0,"PREDICTED: Panicum hallii polycomb group protein FIE2 (LOC112897028), transcript variant X1, mRNA"
+BLASTN·E 值,fie_t1h_blastn_e1e5,blastn E=1e-5,10,Panicum hallii,ref|XM_025965193.1|,82.047,1153,0.0,1147.0,"PREDICTED: Panicum hallii polycomb group protein FIE2 (LOC112897028), transcript variant X2, mRNA"
+BLASTN·E 值,fie_t1i_blastn_e1000,blastn E=1000,1,Zea mays,ref|NM_001111711.1|,100.0,1787,0.0,3223.0,"Zea mays fertilization independent endosperm 1 (LOC542075), mRNA"
+BLASTN·E 值,fie_t1i_blastn_e1000,blastn E=1000,2,Zea mays,zea_mays|Zm00001eb173090_T001,100.0,1766,0.0,3186.0,cdna chromosome:Zm-B73-REFERENCE-NAM-5.0:4:37782884:37788757:-1 gene:Zm00001eb173090 gene_biotype:protein_coding transcript_biotyp
+BLASTN·E 值,fie_t1i_blastn_e1000,blastn E=1000,3,Sorghum bicolor,ref|XM_002443778.2|,84.844,1511,0.0,1686.0,"PREDICTED: Sorghum bicolor polycomb group protein FIE1 (LOC8067800), mRNA"
+BLASTN·E 值,fie_t1i_blastn_e1000,blastn E=1000,4,Sorghum bicolor,sorghum_bicolor|EES13318,86.078,1336,0.0,1571.0,cdna chromosome:Sorghum_bicolor_NCBIv3:7:2880004:2885277:1 gene:SORBI_3007G032500 gene_biotype:protein_coding transcript_biotype:p
+BLASTN·E 值,fie_t1i_blastn_e1000,blastn E=1000,5,Zea mays,ref|XM_023302232.2|,100.0,869,0.0,1568.0,"PREDICTED: Zea mays fertilization independent endosperm 1 (LOC542075), transcript variant X1, mRNA"
+BLASTN·E 值,fie_t1i_blastn_e1000,blastn E=1000,6,Zea mays,zea_mays|Zm00001eb173090_T002,100.0,869,0.0,1568.0,cdna chromosome:Zm-B73-REFERENCE-NAM-5.0:4:37782884:37788755:-1 gene:Zm00001eb173090 gene_biotype:protein_coding transcript_biotyp
+BLASTN·E 值,fie_t1i_blastn_e1000,blastn E=1000,7,Setaria viridis,ref|XM_072294584.1|,82.419,1149,0.0,1162.0,"PREDICTED: Setaria viridis polycomb group protein FIE2 (LOC117859645), mRNA"
+BLASTN·E 值,fie_t1i_blastn_e1000,blastn E=1000,8,Setaria italica,ref|XM_004972850.4|,82.435,1150,0.0,1157.0,"PREDICTED: Setaria italica polycomb group protein FIE2 (LOC101777620), mRNA"
+BLASTN·E 值,fie_t1i_blastn_e1000,blastn E=1000,9,Panicum hallii,ref|XM_025965192.1|,82.047,1153,0.0,1147.0,"PREDICTED: Panicum hallii polycomb group protein FIE2 (LOC112897028), transcript variant X1, mRNA"
+BLASTN·E 值,fie_t1i_blastn_e1000,blastn E=1000,10,Panicum hallii,ref|XM_025965193.1|,82.047,1153,0.0,1147.0,"PREDICTED: Panicum hallii polycomb group protein FIE2 (LOC112897028), transcript variant X2, mRNA"
+BLASTP·全长,fie_t2a_blastp_default,blastp（默认）,1,Zea mays,ref|NP_001105181.1|,100.0,461,0.0,955.0,polycomb group protein FIE1 [Zea mays]
+BLASTP·全长,fie_t2a_blastp_default,blastp（默认）,2,Zea mays,sp|Q8VZY7|FIE1_MAIZE,100.0,461,0.0,955.0,Polycomb group protein FIE1 OS=Zea mays OX=4577 GN=FIE1 PE=2 SV=1
+BLASTP·全长,fie_t2a_blastp_default,blastp（默认）,3,Zea mays,ref|XP_023158000.1|,92.971,441,0.0,834.0,polycomb group protein FIE1 isoform X1 [Zea mays]
+BLASTP·全长,fie_t2a_blastp_default,blastp（默认）,4,Sorghum bicolor,ref|XP_002443823.1|,79.73,444,0.0,753.0,polycomb group protein FIE1 [Sorghum bicolor]
+BLASTP·全长,fie_t2a_blastp_default,blastp（默认）,5,Setaria viridis,ref|XP_072150685.1|,71.795,429,0.0,650.0,polycomb group protein FIE2 [Setaria viridis]
+BLASTP·全长,fie_t2a_blastp_default,blastp（默认）,6,Setaria italica,ref|XP_004972907.1|,77.273,374,0.0,617.0,polycomb group protein FIE2 [Setaria italica]
+BLASTP·全长,fie_t2a_blastp_default,blastp（默认）,7,Panicum virgatum,ref|XP_039852764.1|,77.273,374,0.0,617.0,polycomb group protein FIE2 [Panicum virgatum]
+BLASTP·全长,fie_t2a_blastp_default,blastp（默认）,8,Panicum virgatum,ref|XP_039814760.1|,77.273,374,0.0,617.0,polycomb group protein FIE2 [Panicum virgatum]
+BLASTP·全长,fie_t2a_blastp_default,blastp（默认）,9,Panicum virgatum,ref|XP_039814761.1|,77.273,374,0.0,617.0,polycomb group protein FIE2 [Panicum virgatum]
+BLASTP·全长,fie_t2a_blastp_default,blastp（默认）,10,Panicum hallii,ref|XP_025820977.1|,77.005,374,0.0,616.0,polycomb group protein FIE2 [Panicum hallii]
+BLASTP·word size,fie_t2b_blastp_w2,blastp word_size 2,1,Zea mays,ref|NP_001105181.1|,100.0,461,0.0,955.0,polycomb group protein FIE1 [Zea mays]
+BLASTP·word size,fie_t2b_blastp_w2,blastp word_size 2,2,Zea mays,sp|Q8VZY7|FIE1_MAIZE,100.0,461,0.0,955.0,Polycomb group protein FIE1 OS=Zea mays OX=4577 GN=FIE1 PE=2 SV=1
+BLASTP·word size,fie_t2b_blastp_w2,blastp word_size 2,3,Zea mays,ref|XP_023158000.1|,92.971,441,0.0,834.0,polycomb group protein FIE1 isoform X1 [Zea mays]
+BLASTP·word size,fie_t2b_blastp_w2,blastp word_size 2,4,Sorghum bicolor,ref|XP_002443823.1|,79.73,444,0.0,753.0,polycomb group protein FIE1 [Sorghum bicolor]
+BLASTP·word size,fie_t2b_blastp_w2,blastp word_size 2,5,Setaria viridis,ref|XP_072150685.1|,71.795,429,0.0,650.0,polycomb group protein FIE2 [Setaria viridis]
+BLASTP·word size,fie_t2b_blastp_w2,blastp word_size 2,6,Setaria italica,ref|XP_004972907.1|,77.273,374,0.0,617.0,polycomb group protein FIE2 [Setaria italica]
+BLASTP·word size,fie_t2b_blastp_w2,blastp word_size 2,7,Panicum virgatum,ref|XP_039852764.1|,77.273,374,0.0,617.0,polycomb group protein FIE2 [Panicum virgatum]
+BLASTP·word size,fie_t2b_blastp_w2,blastp word_size 2,8,Panicum virgatum,ref|XP_039814760.1|,77.273,374,0.0,617.0,polycomb group protein FIE2 [Panicum virgatum]
+BLASTP·word size,fie_t2b_blastp_w2,blastp word_size 2,9,Panicum virgatum,ref|XP_039814761.1|,77.273,374,0.0,617.0,polycomb group protein FIE2 [Panicum virgatum]
+BLASTP·word size,fie_t2b_blastp_w2,blastp word_size 2,10,Panicum hallii,ref|XP_025820977.1|,77.005,374,0.0,616.0,polycomb group protein FIE2 [Panicum hallii]
+BLASTP·word size,fie_t2c_blastp_w6,blastp word_size 6,1,Zea mays,ref|NP_001105181.1|,100.0,461,0.0,955.0,polycomb group protein FIE1 [Zea mays]
+BLASTP·word size,fie_t2c_blastp_w6,blastp word_size 6,2,Zea mays,sp|Q8VZY7|FIE1_MAIZE,100.0,461,0.0,955.0,Polycomb group protein FIE1 OS=Zea mays OX=4577 GN=FIE1 PE=2 SV=1
+BLASTP·word size,fie_t2c_blastp_w6,blastp word_size 6,3,Zea mays,ref|XP_023158000.1|,92.971,441,0.0,834.0,polycomb group protein FIE1 isoform X1 [Zea mays]
+BLASTP·word size,fie_t2c_blastp_w6,blastp word_size 6,4,Sorghum bicolor,ref|XP_002443823.1|,79.73,444,0.0,753.0,polycomb group protein FIE1 [Sorghum bicolor]
+BLASTP·word size,fie_t2c_blastp_w6,blastp word_size 6,5,Setaria viridis,ref|XP_072150685.1|,71.795,429,0.0,650.0,polycomb group protein FIE2 [Setaria viridis]
+BLASTP·word size,fie_t2c_blastp_w6,blastp word_size 6,6,Setaria italica,ref|XP_004972907.1|,77.273,374,0.0,617.0,polycomb group protein FIE2 [Setaria italica]
+BLASTP·word size,fie_t2c_blastp_w6,blastp word_size 6,7,Panicum virgatum,ref|XP_039852764.1|,77.273,374,0.0,617.0,polycomb group protein FIE2 [Panicum virgatum]
+BLASTP·word size,fie_t2c_blastp_w6,blastp word_size 6,8,Panicum virgatum,ref|XP_039814760.1|,77.273,374,0.0,617.0,polycomb group protein FIE2 [Panicum virgatum]
+BLASTP·word size,fie_t2c_blastp_w6,blastp word_size 6,9,Panicum virgatum,ref|XP_039814761.1|,77.273,374,0.0,617.0,polycomb group protein FIE2 [Panicum virgatum]
+BLASTP·word size,fie_t2c_blastp_w6,blastp word_size 6,10,Panicum hallii,ref|XP_025820977.1|,77.005,374,0.0,616.0,polycomb group protein FIE2 [Panicum hallii]
+BLASTP·矩阵,fie_t2d_blastp_blosum45,blastp BLOSUM45,1,Zea mays,ref|NP_001105181.1|,100.0,461,0.0,956.0,polycomb group protein FIE1 [Zea mays]
+BLASTP·矩阵,fie_t2d_blastp_blosum45,blastp BLOSUM45,2,Zea mays,sp|Q8VZY7|FIE1_MAIZE,100.0,461,0.0,956.0,Polycomb group protein FIE1 OS=Zea mays OX=4577 GN=FIE1 PE=2 SV=1
+BLASTP·矩阵,fie_t2d_blastp_blosum45,blastp BLOSUM45,3,Zea mays,ref|XP_023158000.1|,92.971,441,0.0,831.0,polycomb group protein FIE1 isoform X1 [Zea mays]
+BLASTP·矩阵,fie_t2d_blastp_blosum45,blastp BLOSUM45,4,Sorghum bicolor,ref|XP_002443823.1|,79.551,445,0.0,753.0,polycomb group protein FIE1 [Sorghum bicolor]
+BLASTP·矩阵,fie_t2d_blastp_blosum45,blastp BLOSUM45,5,Setaria viridis,ref|XP_072150685.1|,71.795,429,0.0,652.0,polycomb group protein FIE2 [Setaria viridis]
+BLASTP·矩阵,fie_t2d_blastp_blosum45,blastp BLOSUM45,6,Setaria italica,ref|XP_004972907.1|,76.658,377,0.0,618.0,polycomb group protein FIE2 [Setaria italica]
+BLASTP·矩阵,fie_t2d_blastp_blosum45,blastp BLOSUM45,7,Panicum virgatum,ref|XP_039852764.1|,76.658,377,0.0,618.0,polycomb group protein FIE2 [Panicum virgatum]
+BLASTP·矩阵,fie_t2d_blastp_blosum45,blastp BLOSUM45,8,Panicum virgatum,ref|XP_039814760.1|,76.658,377,0.0,618.0,polycomb group protein FIE2 [Panicum virgatum]
+BLASTP·矩阵,fie_t2d_blastp_blosum45,blastp BLOSUM45,9,Panicum virgatum,ref|XP_039814761.1|,76.658,377,0.0,618.0,polycomb group protein FIE2 [Panicum virgatum]
+BLASTP·矩阵,fie_t2d_blastp_blosum45,blastp BLOSUM45,10,Panicum hallii,ref|XP_025820977.1|,76.393,377,0.0,617.0,polycomb group protein FIE2 [Panicum hallii]
+BLASTP·矩阵,fie_t2e_blastp_blosum90,blastp BLOSUM90,1,Zea mays,ref|NP_001105181.1|,100.0,461,0.0,1004.0,polycomb group protein FIE1 [Zea mays]
+BLASTP·矩阵,fie_t2e_blastp_blosum90,blastp BLOSUM90,2,Zea mays,sp|Q8VZY7|FIE1_MAIZE,100.0,461,0.0,1004.0,Polycomb group protein FIE1 OS=Zea mays OX=4577 GN=FIE1 PE=2 SV=1
+BLASTP·矩阵,fie_t2e_blastp_blosum90,blastp BLOSUM90,3,Zea mays,ref|XP_023158000.1|,92.971,441,0.0,880.0,polycomb group protein FIE1 isoform X1 [Zea mays]
+BLASTP·矩阵,fie_t2e_blastp_blosum90,blastp BLOSUM90,4,Sorghum bicolor,ref|XP_002443823.1|,79.73,444,0.0,789.0,polycomb group protein FIE1 [Sorghum bicolor]
+BLASTP·矩阵,fie_t2e_blastp_blosum90,blastp BLOSUM90,5,Setaria viridis,ref|XP_072150685.1|,71.795,429,0.0,681.0,polycomb group protein FIE2 [Setaria viridis]
+BLASTP·矩阵,fie_t2e_blastp_blosum90,blastp BLOSUM90,6,Panicum virgatum,ref|XP_039852764.1|,77.688,372,0.0,646.0,polycomb group protein FIE2 [Panicum virgatum]
+BLASTP·矩阵,fie_t2e_blastp_blosum90,blastp BLOSUM90,7,Panicum virgatum,ref|XP_039814760.1|,77.688,372,0.0,646.0,polycomb group protein FIE2 [Panicum virgatum]
+BLASTP·矩阵,fie_t2e_blastp_blosum90,blastp BLOSUM90,8,Panicum virgatum,ref|XP_039814761.1|,77.688,372,0.0,646.0,polycomb group protein FIE2 [Panicum virgatum]
+BLASTP·矩阵,fie_t2e_blastp_blosum90,blastp BLOSUM90,9,Setaria italica,ref|XP_004972907.1|,77.688,372,0.0,645.0,polycomb group protein FIE2 [Setaria italica]
+BLASTP·矩阵,fie_t2e_blastp_blosum90,blastp BLOSUM90,10,Panicum hallii,ref|XP_025820977.1|,77.419,372,0.0,645.0,polycomb group protein FIE2 [Panicum hallii]
+BLASTP·E 值,fie_t2f_blastp_e1e3,blastp E=1e-3,1,Zea mays,ref|NP_001105181.1|,100.0,461,0.0,955.0,polycomb group protein FIE1 [Zea mays]
+BLASTP·E 值,fie_t2f_blastp_e1e3,blastp E=1e-3,2,Zea mays,sp|Q8VZY7|FIE1_MAIZE,100.0,461,0.0,955.0,Polycomb group protein FIE1 OS=Zea mays OX=4577 GN=FIE1 PE=2 SV=1
+BLASTP·E 值,fie_t2f_blastp_e1e3,blastp E=1e-3,3,Zea mays,ref|XP_023158000.1|,92.971,441,0.0,834.0,polycomb group protein FIE1 isoform X1 [Zea mays]
+BLASTP·E 值,fie_t2f_blastp_e1e3,blastp E=1e-3,4,Sorghum bicolor,ref|XP_002443823.1|,79.73,444,0.0,753.0,polycomb group protein FIE1 [Sorghum bicolor]
+BLASTP·E 值,fie_t2f_blastp_e1e3,blastp E=1e-3,5,Setaria viridis,ref|XP_072150685.1|,71.795,429,0.0,650.0,polycomb group protein FIE2 [Setaria viridis]
+BLASTP·E 值,fie_t2f_blastp_e1e3,blastp E=1e-3,6,Setaria italica,ref|XP_004972907.1|,77.273,374,0.0,617.0,polycomb group protein FIE2 [Setaria italica]
+BLASTP·E 值,fie_t2f_blastp_e1e3,blastp E=1e-3,7,Panicum virgatum,ref|XP_039852764.1|,77.273,374,0.0,617.0,polycomb group protein FIE2 [Panicum virgatum]
+BLASTP·E 值,fie_t2f_blastp_e1e3,blastp E=1e-3,8,Panicum virgatum,ref|XP_039814760.1|,77.273,374,0.0,617.0,polycomb group protein FIE2 [Panicum virgatum]
+BLASTP·E 值,fie_t2f_blastp_e1e3,blastp E=1e-3,9,Panicum virgatum,ref|XP_039814761.1|,77.273,374,0.0,617.0,polycomb group protein FIE2 [Panicum virgatum]
+BLASTP·E 值,fie_t2f_blastp_e1e3,blastp E=1e-3,10,Panicum hallii,ref|XP_025820977.1|,77.005,374,0.0,616.0,polycomb group protein FIE2 [Panicum hallii]
+BLASTP·E 值,fie_t2g_blastp_e1000,blastp E=1000,1,Zea mays,ref|NP_001105181.1|,100.0,461,0.0,955.0,polycomb group protein FIE1 [Zea mays]
+BLASTP·E 值,fie_t2g_blastp_e1000,blastp E=1000,2,Zea mays,sp|Q8VZY7|FIE1_MAIZE,100.0,461,0.0,955.0,Polycomb group protein FIE1 OS=Zea mays OX=4577 GN=FIE1 PE=2 SV=1
+BLASTP·E 值,fie_t2g_blastp_e1000,blastp E=1000,3,Zea mays,ref|XP_023158000.1|,92.971,441,0.0,834.0,polycomb group protein FIE1 isoform X1 [Zea mays]
+BLASTP·E 值,fie_t2g_blastp_e1000,blastp E=1000,4,Sorghum bicolor,ref|XP_002443823.1|,79.73,444,0.0,753.0,polycomb group protein FIE1 [Sorghum bicolor]
+BLASTP·E 值,fie_t2g_blastp_e1000,blastp E=1000,5,Setaria viridis,ref|XP_072150685.1|,71.795,429,0.0,650.0,polycomb group protein FIE2 [Setaria viridis]
+BLASTP·E 值,fie_t2g_blastp_e1000,blastp E=1000,6,Setaria italica,ref|XP_004972907.1|,77.273,374,0.0,617.0,polycomb group protein FIE2 [Setaria italica]
+BLASTP·E 值,fie_t2g_blastp_e1000,blastp E=1000,7,Panicum virgatum,ref|XP_039852764.1|,77.273,374,0.0,617.0,polycomb group protein FIE2 [Panicum virgatum]
+BLASTP·E 值,fie_t2g_blastp_e1000,blastp E=1000,8,Panicum virgatum,ref|XP_039814760.1|,77.273,374,0.0,617.0,polycomb group protein FIE2 [Panicum virgatum]
+BLASTP·E 值,fie_t2g_blastp_e1000,blastp E=1000,9,Panicum virgatum,ref|XP_039814761.1|,77.273,374,0.0,617.0,polycomb group protein FIE2 [Panicum virgatum]
+BLASTP·E 值,fie_t2g_blastp_e1000,blastp E=1000,10,Panicum hallii,ref|XP_025820977.1|,77.005,374,0.0,616.0,polycomb group protein FIE2 [Panicum hallii]
+BLASTP·短序列,fie_t2h_short_default,27 aa 片段（blastp-short，word 2）,1,Setaria viridis,ref|XP_072150685.1|,85.185,27,4.24e-15,71.0,polycomb group protein FIE2 [Setaria viridis]
+BLASTP·短序列,fie_t2h_short_default,27 aa 片段（blastp-short，word 2）,2,Zea mays,ref|NP_001105181.1|,100.0,27,2.06e-10,57.9,polycomb group protein FIE1 [Zea mays]
+BLASTP·短序列,fie_t2h_short_default,27 aa 片段（blastp-short，word 2）,3,Zea mays,sp|Q8VZY7|FIE1_MAIZE,100.0,27,2.06e-10,57.9,Polycomb group protein FIE1 OS=Zea mays OX=4577 GN=FIE1 PE=2 SV=1
+BLASTP·短序列,fie_t2h_short_default,27 aa 片段（blastp-short，word 2）,4,Zea mays,ref|XP_023158000.1|,100.0,27,2.15e-10,57.9,polycomb group protein FIE1 isoform X1 [Zea mays]
+BLASTP·短序列,fie_t2h_short_default,27 aa 片段（blastp-short，word 2）,5,Silene latifolia,ref|XP_074319483.1|,70.37,27,6.76e-09,53.7,polycomb group protein FIE1 isoform X2 [Silene latifolia]
+BLASTP·短序列,fie_t2h_short_default,27 aa 片段（blastp-short，word 2）,6,unknown,ref|XP_039132445.1|,70.37,27,9.82e-09,53.2,polycomb group protein FIE1 [Dioscorea cayenensis subsp. rotundata]
+BLASTP·短序列,fie_t2h_short_default,27 aa 片段（blastp-short，word 2）,7,Amaranthus tricolor,ref|XP_057540405.1|,70.37,27,1.37e-08,52.8,polycomb group protein FIE1 isoform X2 [Amaranthus tricolor]
+BLASTP·短序列,fie_t2h_short_default,27 aa 片段（blastp-short，word 2）,8,Brachypodium distachyon,ref|XP_003571503.1|,69.231,26,2.07e-08,52.0,polycomb group protein FIE2 [Brachypodium distachyon]
+BLASTP·短序列,fie_t2h_short_default,27 aa 片段（blastp-short，word 2）,9,Magnolia sinica,ref|XP_058072712.1|,69.231,26,2.82e-08,51.5,polycomb group protein FIE1 isoform X2 [Magnolia sinica]
+BLASTP·短序列,fie_t2h_short_default,27 aa 片段（blastp-short，word 2）,10,Magnolia sinica,ref|XP_058072713.1|,69.231,26,2.91e-08,51.5,polycomb group protein FIE1 isoform X3 [Magnolia sinica]
+BLASTP·短序列,fie_t2j_short_w3,27 aa 片段 word_size 3,1,Setaria viridis,ref|XP_072150685.1|,85.185,27,4.24e-15,71.0,polycomb group protein FIE2 [Setaria viridis]
+BLASTP·短序列,fie_t2j_short_w3,27 aa 片段 word_size 3,2,Zea mays,ref|NP_001105181.1|,100.0,27,2.06e-10,57.9,polycomb group protein FIE1 [Zea mays]
+BLASTP·短序列,fie_t2j_short_w3,27 aa 片段 word_size 3,3,Zea mays,sp|Q8VZY7|FIE1_MAIZE,100.0,27,2.06e-10,57.9,Polycomb group protein FIE1 OS=Zea mays OX=4577 GN=FIE1 PE=2 SV=1
+BLASTP·短序列,fie_t2j_short_w3,27 aa 片段 word_size 3,4,Zea mays,ref|XP_023158000.1|,100.0,27,2.15e-10,57.9,polycomb group protein FIE1 isoform X1 [Zea mays]
+BLASTP·短序列,fie_t2j_short_w3,27 aa 片段 word_size 3,5,Silene latifolia,ref|XP_074319483.1|,70.37,27,6.76e-09,53.7,polycomb group protein FIE1 isoform X2 [Silene latifolia]
+BLASTP·短序列,fie_t2j_short_w3,27 aa 片段 word_size 3,6,unknown,ref|XP_039132445.1|,70.37,27,9.82e-09,53.2,polycomb group protein FIE1 [Dioscorea cayenensis subsp. rotundata]
+BLASTP·短序列,fie_t2j_short_w3,27 aa 片段 word_size 3,7,Amaranthus tricolor,ref|XP_057540405.1|,70.37,27,1.37e-08,52.8,polycomb group protein FIE1 isoform X2 [Amaranthus tricolor]
+BLASTP·短序列,fie_t2j_short_w3,27 aa 片段 word_size 3,8,Brachypodium distachyon,ref|XP_003571503.1|,69.231,26,2.07e-08,52.0,polycomb group protein FIE2 [Brachypodium distachyon]
+BLASTP·短序列,fie_t2j_short_w3,27 aa 片段 word_size 3,9,Magnolia sinica,ref|XP_058072712.1|,69.231,26,2.82e-08,51.5,polycomb group protein FIE1 isoform X2 [Magnolia sinica]
+BLASTP·短序列,fie_t2j_short_w3,27 aa 片段 word_size 3,10,Magnolia sinica,ref|XP_058072713.1|,69.231,26,2.91e-08,51.5,polycomb group protein FIE1 isoform X3 [Magnolia sinica]
+翻译搜索·翻译搜索,fie_t4a_blastx_plant,BLASTX：mRNA → 蛋白库,1,Zea mays,ref|NP_001105181.1|,100.0,430,0.0,851.0,polycomb group protein FIE1 [Zea mays]
+翻译搜索·翻译搜索,fie_t4a_blastx_plant,BLASTX：mRNA → 蛋白库,2,Zea mays,sp|Q8VZY7|FIE1_MAIZE,100.0,430,0.0,851.0,Polycomb group protein FIE1 OS=Zea mays OX=4577 GN=FIE1 PE=2 SV=1
+翻译搜索·翻译搜索,fie_t4a_blastx_plant,BLASTX：mRNA → 蛋白库,3,Zea mays,ref|XP_023158000.1|,92.791,430,0.0,770.0,polycomb group protein FIE1 isoform X1 [Zea mays]
+翻译搜索·翻译搜索,fie_t4a_blastx_plant,BLASTX：mRNA → 蛋白库,4,Sorghum bicolor,ref|XP_002443823.1|,80.51,431,0.0,704.0,polycomb group protein FIE1 [Sorghum bicolor]
+翻译搜索·翻译搜索,fie_t4a_blastx_plant,BLASTX：mRNA → 蛋白库,5,Setaria viridis,ref|XP_072150685.1|,69.907,432,0.0,628.0,polycomb group protein FIE2 [Setaria viridis]
+翻译搜索·翻译搜索,fie_t4a_blastx_plant,BLASTX：mRNA → 蛋白库,6,Setaria italica,ref|XP_004972907.1|,78.356,365,0.0,610.0,polycomb group protein FIE2 [Setaria italica]
+翻译搜索·翻译搜索,fie_t4a_blastx_plant,BLASTX：mRNA → 蛋白库,7,Panicum virgatum,ref|XP_039852764.1|,78.356,365,0.0,609.0,polycomb group protein FIE2 [Panicum virgatum]
+翻译搜索·翻译搜索,fie_t4a_blastx_plant,BLASTX：mRNA → 蛋白库,8,Panicum virgatum,ref|XP_039814760.1|,78.356,365,0.0,609.0,polycomb group protein FIE2 [Panicum virgatum]
+翻译搜索·翻译搜索,fie_t4a_blastx_plant,BLASTX：mRNA → 蛋白库,9,Panicum virgatum,ref|XP_039814761.1|,78.356,365,0.0,609.0,polycomb group protein FIE2 [Panicum virgatum]
+翻译搜索·翻译搜索,fie_t4a_blastx_plant,BLASTX：mRNA → 蛋白库,10,Zea mays,ref|NP_001105182.1|,78.356,365,0.0,609.0,polycomb group protein FIE2 [Zea mays]
+翻译搜索·翻译搜索,fie_t4d_blastp_e1e5,BLASTP：蛋白 → 蛋白库（同库对照）,1,Zea mays,ref|NP_001105181.1|,100.0,461,0.0,955.0,polycomb group protein FIE1 [Zea mays]
+翻译搜索·翻译搜索,fie_t4d_blastp_e1e5,BLASTP：蛋白 → 蛋白库（同库对照）,2,Zea mays,sp|Q8VZY7|FIE1_MAIZE,100.0,461,0.0,955.0,Polycomb group protein FIE1 OS=Zea mays OX=4577 GN=FIE1 PE=2 SV=1
+翻译搜索·翻译搜索,fie_t4d_blastp_e1e5,BLASTP：蛋白 → 蛋白库（同库对照）,3,Zea mays,ref|XP_023158000.1|,92.971,441,0.0,834.0,polycomb group protein FIE1 isoform X1 [Zea mays]
+翻译搜索·翻译搜索,fie_t4d_blastp_e1e5,BLASTP：蛋白 → 蛋白库（同库对照）,4,Sorghum bicolor,ref|XP_002443823.1|,79.73,444,0.0,753.0,polycomb group protein FIE1 [Sorghum bicolor]
+翻译搜索·翻译搜索,fie_t4d_blastp_e1e5,BLASTP：蛋白 → 蛋白库（同库对照）,5,Setaria viridis,ref|XP_072150685.1|,71.795,429,0.0,650.0,polycomb group protein FIE2 [Setaria viridis]
+翻译搜索·翻译搜索,fie_t4d_blastp_e1e5,BLASTP：蛋白 → 蛋白库（同库对照）,6,Setaria italica,ref|XP_004972907.1|,77.273,374,0.0,617.0,polycomb group protein FIE2 [Setaria italica]
+翻译搜索·翻译搜索,fie_t4d_blastp_e1e5,BLASTP：蛋白 → 蛋白库（同库对照）,7,Panicum virgatum,ref|XP_039852764.1|,77.273,374,0.0,617.0,polycomb group protein FIE2 [Panicum virgatum]
+翻译搜索·翻译搜索,fie_t4d_blastp_e1e5,BLASTP：蛋白 → 蛋白库（同库对照）,8,Panicum virgatum,ref|XP_039814760.1|,77.273,374,0.0,617.0,polycomb group protein FIE2 [Panicum virgatum]
+翻译搜索·翻译搜索,fie_t4d_blastp_e1e5,BLASTP：蛋白 → 蛋白库（同库对照）,9,Panicum virgatum,ref|XP_039814761.1|,77.273,374,0.0,617.0,polycomb group protein FIE2 [Panicum virgatum]
+翻译搜索·翻译搜索,fie_t4d_blastp_e1e5,BLASTP：蛋白 → 蛋白库（同库对照）,10,Panicum hallii,ref|XP_025820977.1|,77.005,374,0.0,616.0,polycomb group protein FIE2 [Panicum hallii]
+翻译搜索·翻译搜索,fie_t4b_tblastx_plant,TBLASTX：mRNA → 核酸库,1,Zea mays,ref|NM_001111711.1|,100.0,366,0.0,908.0,"Zea mays fertilization independent endosperm 1 (LOC542075), mRNA"
+翻译搜索·翻译搜索,fie_t4b_tblastx_plant,TBLASTX：mRNA → 核酸库,2,Zea mays,zea_mays|Zm00001eb173090_T001,100.0,366,0.0,908.0,cdna chromosome:Zm-B73-REFERENCE-NAM-5.0:4:37782884:37788757:-1 gene:Zm00001eb173090 gene_biotype:protein_coding transcript_biotyp
+翻译搜索·翻译搜索,fie_t4b_tblastx_plant,TBLASTX：mRNA → 核酸库,3,Sorghum bicolor,ref|XM_002443778.2|,84.973,366,0.0,796.0,"PREDICTED: Sorghum bicolor polycomb group protein FIE1 (LOC8067800), mRNA"
+翻译搜索·翻译搜索,fie_t4b_tblastx_plant,TBLASTX：mRNA → 核酸库,4,Sorghum bicolor,sorghum_bicolor|EES13318,84.973,366,0.0,796.0,cdna chromosome:Sorghum_bicolor_NCBIv3:7:2880004:2885277:1 gene:SORBI_3007G032500 gene_biotype:protein_coding transcript_biotype:p
+翻译搜索·翻译搜索,fie_t4b_tblastx_plant,TBLASTX：mRNA → 核酸库,5,Setaria italica,ref|XM_004972850.4|,78.356,365,0.0,723.0,"PREDICTED: Setaria italica polycomb group protein FIE2 (LOC101777620), mRNA"
+翻译搜索·翻译搜索,fie_t4b_tblastx_plant,TBLASTX：mRNA → 核酸库,6,Setaria viridis,ref|XM_072294584.1|,78.356,365,0.0,723.0,"PREDICTED: Setaria viridis polycomb group protein FIE2 (LOC117859645), mRNA"
+翻译搜索·翻译搜索,fie_t4b_tblastx_plant,TBLASTX：mRNA → 核酸库,7,Zea mays,ref|NM_001111712.1|,78.356,365,0.0,723.0,"Zea mays fertilization independent endosperm 2 (LOC542076), mRNA"
+翻译搜索·翻译搜索,fie_t4b_tblastx_plant,TBLASTX：mRNA → 核酸库,8,Zea mays,zea_mays|Zm00001eb416950_T001,78.356,365,0.0,723.0,cdna chromosome:Zm-B73-REFERENCE-NAM-5.0:10:85755230:85759300:-1 gene:Zm00001eb416950 gene_biotype:protein_coding transcript_bioty
+翻译搜索·翻译搜索,fie_t4b_tblastx_plant,TBLASTX：mRNA → 核酸库,9,Panicum virgatum,ref|XM_039996830.1|,78.356,365,0.0,722.0,"PREDICTED: Panicum virgatum polycomb group protein FIE2 (LOC120711337), mRNA"
+翻译搜索·翻译搜索,fie_t4b_tblastx_plant,TBLASTX：mRNA → 核酸库,10,Panicum virgatum,ref|XM_039958826.1|,78.356,365,0.0,722.0,"PREDICTED: Panicum virgatum polycomb group protein FIE2 (LOC120677654), transcript variant X1, mRNA"
+翻译搜索·翻译搜索,fie_t4c_blastn_plant,BLASTN：mRNA → 核酸库（同库对照）,1,Zea mays,ref|NM_001111711.1|,100.0,1787,0.0,3223.0,"Zea mays fertilization independent endosperm 1 (LOC542075), mRNA"
+翻译搜索·翻译搜索,fie_t4c_blastn_plant,BLASTN：mRNA → 核酸库（同库对照）,2,Zea mays,zea_mays|Zm00001eb173090_T001,100.0,1766,0.0,3186.0,cdna chromosome:Zm-B73-REFERENCE-NAM-5.0:4:37782884:37788757:-1 gene:Zm00001eb173090 gene_biotype:protein_coding transcript_biotyp
+翻译搜索·翻译搜索,fie_t4c_blastn_plant,BLASTN：mRNA → 核酸库（同库对照）,3,Sorghum bicolor,ref|XM_002443778.2|,84.844,1511,0.0,1686.0,"PREDICTED: Sorghum bicolor polycomb group protein FIE1 (LOC8067800), mRNA"
+翻译搜索·翻译搜索,fie_t4c_blastn_plant,BLASTN：mRNA → 核酸库（同库对照）,4,Sorghum bicolor,sorghum_bicolor|EES13318,86.078,1336,0.0,1571.0,cdna chromosome:Sorghum_bicolor_NCBIv3:7:2880004:2885277:1 gene:SORBI_3007G032500 gene_biotype:protein_coding transcript_biotype:p
+翻译搜索·翻译搜索,fie_t4c_blastn_plant,BLASTN：mRNA → 核酸库（同库对照）,5,Zea mays,ref|XM_023302232.2|,100.0,869,0.0,1568.0,"PREDICTED: Zea mays fertilization independent endosperm 1 (LOC542075), transcript variant X1, mRNA"
+翻译搜索·翻译搜索,fie_t4c_blastn_plant,BLASTN：mRNA → 核酸库（同库对照）,6,Zea mays,zea_mays|Zm00001eb173090_T002,100.0,869,0.0,1568.0,cdna chromosome:Zm-B73-REFERENCE-NAM-5.0:4:37782884:37788755:-1 gene:Zm00001eb173090 gene_biotype:protein_coding transcript_biotyp
+翻译搜索·翻译搜索,fie_t4c_blastn_plant,BLASTN：mRNA → 核酸库（同库对照）,7,Setaria viridis,ref|XM_072294584.1|,82.419,1149,0.0,1162.0,"PREDICTED: Setaria viridis polycomb group protein FIE2 (LOC117859645), mRNA"
+翻译搜索·翻译搜索,fie_t4c_blastn_plant,BLASTN：mRNA → 核酸库（同库对照）,8,Setaria italica,ref|XM_004972850.4|,82.435,1150,0.0,1157.0,"PREDICTED: Setaria italica polycomb group protein FIE2 (LOC101777620), mRNA"
+翻译搜索·翻译搜索,fie_t4c_blastn_plant,BLASTN：mRNA → 核酸库（同库对照）,9,Panicum hallii,ref|XM_025965192.1|,82.047,1153,0.0,1147.0,"PREDICTED: Panicum hallii polycomb group protein FIE2 (LOC112897028), transcript variant X1, mRNA"
+翻译搜索·翻译搜索,fie_t4c_blastn_plant,BLASTN：mRNA → 核酸库（同库对照）,10,Panicum hallii,ref|XM_025965193.1|,82.047,1153,0.0,1147.0,"PREDICTED: Panicum hallii polycomb group protein FIE2 (LOC112897028), transcript variant X2, mRNA"
+翻译搜索·库规模对照,fie_t4b_tblastx_fam,TBLASTX：mRNA → 家族小库 280 条,1,Zea mays,NM_001111711.1,100.0,366,0.0,908.0,"NM_001111711.1 Zea mays fertilization independent endosperm 1 (LOC542075), mRNA"
+翻译搜索·库规模对照,fie_t4b_tblastx_fam,TBLASTX：mRNA → 家族小库 280 条,2,Sorghum bicolor,XM_002443778.2,84.973,366,0.0,796.0,"XM_002443778.2 PREDICTED: Sorghum bicolor polycomb group protein FIE1 (LOC8067800), mRNA"
+翻译搜索·库规模对照,fie_t4b_tblastx_fam,TBLASTX：mRNA → 家族小库 280 条,3,Setaria italica,XM_004972850.4,78.356,365,0.0,723.0,"XM_004972850.4 PREDICTED: Setaria italica polycomb group protein FIE2 (LOC101777620), mRNA"
+翻译搜索·库规模对照,fie_t4b_tblastx_fam,TBLASTX：mRNA → 家族小库 280 条,4,Setaria viridis,XM_072294584.1,78.356,365,0.0,723.0,"XM_072294584.1 PREDICTED: Setaria viridis polycomb group protein FIE2 (LOC117859645), mRNA"
+翻译搜索·库规模对照,fie_t4b_tblastx_fam,TBLASTX：mRNA → 家族小库 280 条,5,Zea mays,NM_001111712.1,78.356,365,0.0,723.0,"NM_001111712.1 Zea mays fertilization independent endosperm 2 (LOC542076), mRNA"
+翻译搜索·库规模对照,fie_t4b_tblastx_fam,TBLASTX：mRNA → 家族小库 280 条,6,Panicum virgatum,XM_039996830.1,78.356,365,0.0,722.0,"XM_039996830.1 PREDICTED: Panicum virgatum polycomb group protein FIE2 (LOC120711337), mRNA"
+翻译搜索·库规模对照,fie_t4b_tblastx_fam,TBLASTX：mRNA → 家族小库 280 条,7,Panicum virgatum,XM_039958826.1,78.356,365,0.0,722.0,"XM_039958826.1 PREDICTED: Panicum virgatum polycomb group protein FIE2 (LOC120677654), transcript variant X1, mRNA"
+翻译搜索·库规模对照,fie_t4b_tblastx_fam,TBLASTX：mRNA → 家族小库 280 条,8,Panicum virgatum,XM_039958827.1,78.356,365,0.0,722.0,"XM_039958827.1 PREDICTED: Panicum virgatum polycomb group protein FIE2 (LOC120677654), transcript variant X2, mRNA"
+翻译搜索·库规模对照,fie_t4b_tblastx_fam,TBLASTX：mRNA → 家族小库 280 条,9,Sorghum bicolor,XM_002443777.2,77.808,365,0.0,721.0,"XM_002443777.2 PREDICTED: Sorghum bicolor polycomb group protein FIE2 (LOC8067799), mRNA"
+翻译搜索·库规模对照,fie_t4b_tblastx_fam,TBLASTX：mRNA → 家族小库 280 条,10,Panicum hallii,XM_025965192.1,78.082,365,0.0,720.0,"XM_025965192.1 PREDICTED: Panicum hallii polycomb group protein FIE2 (LOC112897028), transcript variant X1, mRNA"
+翻译搜索·库规模对照,fie_t4c_blastn_fam,BLASTN：mRNA → 家族小库 280 条,1,Zea mays,NM_001111711.1,100.0,1787,0.0,3301.0,"NM_001111711.1 Zea mays fertilization independent endosperm 1 (LOC542075), mRNA"
+翻译搜索·库规模对照,fie_t4c_blastn_fam,BLASTN：mRNA → 家族小库 280 条,2,Zea mays,XM_023302232.2,100.0,869,0.0,1605.0,"XM_023302232.2 PREDICTED: Zea mays fertilization independent endosperm 1 (LOC542075), transcript variant X1, mRNA"
+翻译搜索·库规模对照,fie_t4c_blastn_fam,BLASTN：mRNA → 家族小库 280 条,3,Sorghum bicolor,XM_002443778.2,85.578,1470,0.0,1519.0,"XM_002443778.2 PREDICTED: Sorghum bicolor polycomb group protein FIE1 (LOC8067800), mRNA"
+翻译搜索·库规模对照,fie_t4c_blastn_fam,BLASTN：mRNA → 家族小库 280 条,4,Setaria viridis,XM_072294584.1,84.27,1068,0.0,1035.0,"XM_072294584.1 PREDICTED: Setaria viridis polycomb group protein FIE2 (LOC117859645), mRNA"
+翻译搜索·库规模对照,fie_t4c_blastn_fam,BLASTN：mRNA → 家族小库 280 条,5,Setaria italica,XM_004972850.4,84.176,1068,0.0,1029.0,"XM_004972850.4 PREDICTED: Setaria italica polycomb group protein FIE2 (LOC101777620), mRNA"
+翻译搜索·库规模对照,fie_t4c_blastn_fam,BLASTN：mRNA → 家族小库 280 条,6,Miscanthus floridulus,XM_066470013.1,83.925,1070,0.0,1013.0,"XM_066470013.1 PREDICTED: Miscanthus floridulus polycomb group protein FIE2 (LOC136472289), mRNA"
+翻译搜索·库规模对照,fie_t4c_blastn_fam,BLASTN：mRNA → 家族小库 280 条,7,Panicum hallii,XM_025965192.1,83.704,1080,0.0,1009.0,"XM_025965192.1 PREDICTED: Panicum hallii polycomb group protein FIE2 (LOC112897028), transcript variant X1, mRNA"
+翻译搜索·库规模对照,fie_t4c_blastn_fam,BLASTN：mRNA → 家族小库 280 条,8,Panicum hallii,XM_025965193.1,83.704,1080,0.0,1009.0,"XM_025965193.1 PREDICTED: Panicum hallii polycomb group protein FIE2 (LOC112897028), transcript variant X2, mRNA"
+翻译搜索·库规模对照,fie_t4c_blastn_fam,BLASTN：mRNA → 家族小库 280 条,9,Zea mays,NM_001111712.1,83.769,1072,0.0,1005.0,"NM_001111712.1 Zea mays fertilization independent endosperm 2 (LOC542076), mRNA"
+翻译搜索·库规模对照,fie_t4c_blastn_fam,BLASTN：mRNA → 家族小库 280 条,10,Sorghum bicolor,XM_002443777.2,83.614,1068,0.0,996.0,"XM_002443777.2 PREDICTED: Sorghum bicolor polycomb group protein FIE2 (LOC8067799), mRNA"
+DELTA-BLAST,fie_t3_deltablast,DELTA-BLAST,1,Zea mays,ref|NP_001105181.1|,100.0,441,7.84e-145,425.0,polycomb group protein FIE1 [Zea mays]
+DELTA-BLAST,fie_t3_deltablast,DELTA-BLAST,2,Zea mays,sp|Q8VZY7|FIE1_MAIZE,100.0,441,7.84e-145,425.0,Polycomb group protein FIE1 OS=Zea mays OX=4577 GN=FIE1 PE=2 SV=1
+DELTA-BLAST,fie_t3_deltablast,DELTA-BLAST,3,Zea mays,ref|XP_023158000.1|,92.971,441,1.93e-126,376.0,polycomb group protein FIE1 isoform X1 [Zea mays]
+DELTA-BLAST,fie_t3_deltablast,DELTA-BLAST,4,Sorghum bicolor,ref|XP_002443823.1|,79.73,444,6.71e-113,343.0,polycomb group protein FIE1 [Sorghum bicolor]
+DELTA-BLAST,fie_t3_deltablast,DELTA-BLAST,5,Setaria viridis,ref|XP_072150685.1|,70.805,435,6.6e-94,295.0,polycomb group protein FIE2 [Setaria viridis]
+DELTA-BLAST,fie_t3_deltablast,DELTA-BLAST,6,Nostoc sp. (strain PCC 7120 / SAG 25.82 / UTEX 2576),sp|Q8YRI1|YY46_NOSS1,18.208,346,1.63e-80,275.0,Uncharacterized WD repeat-containing protein alr3466 OS=Nostoc sp. (strain PCC 7120 / SAG 25.82 / UTEX 2576) OX=103690 GN=alr3466 
+DELTA-BLAST,fie_t3_deltablast,DELTA-BLAST,7,Podospora anserina,sp|Q00808|HETE1_PODAS,17.341,346,1.25e-77,266.0,Vegetative incompatibility protein HET-E-1 OS=Podospora anserina OX=2587412 GN=HET-E1 PE=4 SV=1
+DELTA-BLAST,fie_t3_deltablast,DELTA-BLAST,8,Oryza sativa subsp. japonica,sp|Q6ZJW8|FIE1_ORYSJ,60.938,448,2.4e-79,257.0,Polycomb group protein FIE1 OS=Oryza sativa subsp. japonica OX=39947 GN=FIE1 PE=1 SV=1
+DELTA-BLAST,fie_t3_deltablast,DELTA-BLAST,9,Miscanthus floridulus,ref|XP_066326110.1|,76.738,374,2.99e-80,256.0,polycomb group protein FIE2 [Miscanthus floridulus]
+DELTA-BLAST,fie_t3_deltablast,DELTA-BLAST,10,Zea mays,ref|NP_001105182.1|,77.688,372,5.39e-80,256.0,polycomb group protein FIE2 [Zea mays]

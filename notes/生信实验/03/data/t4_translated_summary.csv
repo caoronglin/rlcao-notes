@@ -1,0 +1,7 @@
+search,run,query_db,database,hsp,subjects,species,e005,best_bits,top_pident,seconds
+BLASTX,fie_t4a_blastx_plant,mRNA → 蛋白库,"plant_combined 蛋白库 576,022",401,396,155,396,851.0,100.0,0.91
+BLASTP,fie_t4d_blastp_e1e5,蛋白 → 蛋白库,"plant_combined 蛋白库 576,022",423,417,155,417,955.0,100.0,0.51
+TBLASTX,fie_t4b_tblastx_plant,mRNA → 核酸库,"plant_combined 核酸库 652,197",4599,340,17,340,908.0,100.0,6.43
+BLASTN,fie_t4c_blastn_plant,mRNA → 核酸库,"plant_combined 核酸库 652,197",325,313,12,313,3223.0,100.0,0.27
+TBLASTX*,fie_t4b_tblastx_fam,mRNA → 家族小库,FIE 家族 mRNA 280 条,4033,280,0,280,908.0,100.0,0.2
+BLASTN*,fie_t4c_blastn_fam,mRNA → 家族小库,FIE 家族 mRNA 280 条,23,22,0,22,3301.0,100.0,0.06

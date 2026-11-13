@@ -1,0 +1,24 @@
+group,run,label,note,hsp,subjects,species,e005,e1,best_evalue,best_bitscore,top_pident,seconds
+任务一 BLASTN·算法对比,t1a_blastn_default,blastn（默认）,,109802,60632,764,56329,59285,0.0,11521.0,100.0,31.15
+任务一 BLASTN·算法对比,t1b_megablast,megablast,,3270,2720,241,2720,2720,0.0,11797.0,100.0,1.57
+任务一 BLASTN·算法对比,t1c_dcmegablast,discontiguous megablast,,37867,29064,765,28733,28993,0.0,11521.0,100.0,18.57
+任务一 BLASTN·word size,t1d_blastn_w7,blastn word_size 7,,127275,64743,771,58829,62674,0.0,11521.0,100.0,201.56
+任务一 BLASTN·word size,t1e_blastn_w11,blastn word_size 11,,109802,60632,764,56329,59285,0.0,11521.0,100.0,31.19
+任务一 BLASTN·word size,t1f_blastn_w15,blastn word_size 15,,66545,45075,567,42508,44221,0.0,11521.0,100.0,19.5
+任务一 BLASTN·E 值,t1g_blastn_e1e50,blastn E=1e-50,,2117,1536,511,1536,1536,0.0,11521.0,100.0,9.8
+任务一 BLASTN·E 值,t1h_blastn_e1e5,blastn E=1e-5,,78010,52152,755,52152,52152,0.0,11521.0,100.0,26.07
+任务一 BLASTN·E 值,t1i_blastn_e1000,blastn E=1000,,131646,69169,765,56364,59330,0.0,11521.0,100.0,34.66
+任务二 BLASTP·全长蛋白,t2a_blastp_default,blastp（默认）,,9024,6171,857,4209,5661,0.0,2509.0,100.0,10.14
+任务二 BLASTP·word size,t2b_blastp_w2,blastp word_size 2,,8855,6163,857,4205,5658,0.0,2509.0,100.0,13.02
+任务二 BLASTP·word size,t2c_blastp_w6,blastp word_size 6,,7255,5152,848,3572,4745,0.0,2509.0,100.0,5.22
+任务二 BLASTP·替换矩阵,t2d_blastp_blosum45,blastp BLOSUM45,,11618,6302,857,4366,5976,0.0,2504.0,100.0,9.84
+任务二 BLASTP·替换矩阵,t2e_blastp_blosum90,blastp BLOSUM90,,9077,6046,857,3955,5412,0.0,2643.0,100.0,11.52
+任务二 BLASTP·E 值,t2f_blastp_e1e3,blastp E=1e-3,,5510,3893,852,3893,3893,0.0,2509.0,100.0,8.52
+任务二 BLASTP·E 值,t2g_blastp_e1000,blastp E=1000,,10677,6834,857,4209,5661,0.0,2509.0,100.0,10.87
+任务二 BLASTP·短序列,t2h_blastp_short_def,27 aa 短片段（默认）,,1797,1797,785,724,1627,1.07e-12,61.6,100.0,1.29
+任务二 BLASTP·短序列,t2i_blastp_short_w2,27 aa 短片段 word_size 2,,1797,1797,785,724,1627,1.07e-12,61.6,100.0,1.33
+任务二 BLASTP·短序列,t2j_blastp_short_w3,27 aa 短片段 word_size 3,,1797,1797,785,724,1627,1.07e-12,61.6,100.0,1.28
+任务四 翻译搜索·翻译搜索,t4a_blastx,BLASTX（mRNA 查蛋白库）,,8250,5373,857,2926,4334,0.0,2454.0,100.0,20.56
+任务四 翻译搜索·翻译搜索,t4b_tblastx_small,TBLASTX（mRNA 查家族 mRNA 库）,,170687,5667,789,2989,4864,0.0,2581.0,100.0,7.4
+任务四 翻译搜索·翻译搜索,t4c_blastn_small,BLASTN（mRNA 查家族 mRNA 库）,,1240,754,240,754,754,0.0,11797.0,100.0,0.45
+任务四 翻译搜索·翻译搜索,t4d_tblastx_human,TBLASTX（mRNA 查人 cDNA 库）,,519314,44068,1,33281,40640,0.0,2581.0,100.0,88.34

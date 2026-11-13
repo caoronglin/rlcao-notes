@@ -1,0 +1,7 @@
+molecule	method_a	method_b	aligned_residue_pairs_a	aligned_residue_pairs_b	shared_pairs	shared_fraction_a	shared_fraction_b	symmetric_f1
+mrna	clustalo_default	clustalo_iter3	84195	84731	74490	0.884732	0.879135	0.881925
+mrna	clustalo_default	muscle	84195	83017	66471	0.789489	0.800691	0.795051
+mrna	clustalo_iter3	muscle	84731	83017	66420	0.783893	0.800077	0.791902
+protein	clustalo_default	clustalo_iter3	21295	21346	21113	0.991453	0.989085	0.990268
+protein	clustalo_default	muscle	21295	21287	20786	0.976098	0.976465	0.976281
+protein	clustalo_iter3	muscle	21346	21287	20762	0.972641	0.975337	0.973987

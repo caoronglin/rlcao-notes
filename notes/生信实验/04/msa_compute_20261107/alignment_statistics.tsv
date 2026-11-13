@@ -1,0 +1,7 @@
+molecule	method	n	columns	identical_all_sequences	gap_free_columns	gap_characters	matrix_cells	gap_percent
+mrna	clustalo_default	11	2443	473	1183	7765	26873	28.895
+mrna	clustalo_iter3	11	2415	472	1200	7457	26565	28.071
+mrna	muscle	11	2730	476	1148	10922	30030	36.37
+protein	clustalo_default	11	515	145	369	1091	5665	19.259
+protein	clustalo_iter3	11	505	145	369	981	5555	17.66
+protein	muscle	11	523	145	369	1179	5753	20.494

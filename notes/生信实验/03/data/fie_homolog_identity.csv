@@ -1,0 +1,23 @@
+group,species,accession,pident
+ortholog,Zea mays,NP_001105181.1,100.0
+ortholog,Sorghum bicolor,XP_002443823.1,79.73
+ortholog,Oryza brachyantha,XP_006659098.1,72.826
+ortholog,Oryza sativa,XP_066168940.1,72.283
+ortholog,Lolium rigidum,XP_047073679.1,70.652
+ortholog,Triticum aestivum,XP_044431131.1,69.251
+ortholog,Elaeis guineensis,XP_010906361.1,69.146
+ortholog,Curcuma longa,XP_074570674.1,69.022
+ortholog,Typha angustifolia,XP_072967274.1,68.681
+ortholog,Hordeum vulgare,XP_044958711.1,67.792
+ortholog,Musa acuminata,XP_065007749.1,67.663
+ortholog,Arabidopsis thaliana,NP_188710.1,58.953
+paralog,Sorghum bicolor,XP_002443822.1,77.717
+paralog,Zea mays,NP_001105182.1,77.688
+paralog,Setaria italica,XP_004972907.1,77.273
+paralog,Panicum virgatum,XP_039852764.1,77.273
+paralog,Panicum hallii,XP_025820977.1,77.005
+paralog,Miscanthus floridulus,XP_066326110.1,76.738
+paralog,Phragmites australis,XP_062196520.1,76.359
+paralog,Brachypodium distachyon,XP_003573353.1,71.768
+paralog,Cucurbita moschata,XP_022935834.1,66.393
+paralog,Prunus persica,XP_007211457.1,63.784

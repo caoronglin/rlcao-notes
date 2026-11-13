@@ -66,3 +66,9 @@ __pycache__/
 *.fa
 *.fasta
 *.db
+
+# 生信实验三：本地 BLAST 库与原始结果体积过大，不入库
+notes/生信实验/03/db/
+notes/生信实验/03/tools/
+notes/生信实验/03/downloads/
+notes/生信实验/03/results/

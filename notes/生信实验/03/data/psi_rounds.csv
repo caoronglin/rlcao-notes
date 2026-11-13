@@ -1,0 +1,13 @@
+round,subjects,e005,new_vs_prev,species,new_species,top_bitscore,top_evalue,top_species,new_best_bitscore,new_best_evalue,new_best_species,new_best_title,seconds
+1,6171,4209,6171,857,857,2509.0,0.0,Homo sapiens,2509.0,0.0,Homo sapiens,pro-epidermal growth factor isoform 1 preproprotein [Homo sapiens],10.84
+2,7001,6575,830,858,78,2509.0,0.0,Homo sapiens,95.4,1.02e-18,unknown,Delta-like protein 3 OS=Mus musculus OX=10090 GN=Dll3 PE=2 SV=1,26.08
+3,7417,6702,416,858,1,2509.0,0.0,Homo sapiens,53.8,1.34e-05,unknown,NFX1-type zinc finger-containing protein 1 OS=Mus musculus OX=10090 GN=Znfx1 PE=1 SV=3,46.93
+4,7528,6751,111,858,1,2509.0,0.0,Homo sapiens,47.4,0.000577,unknown,Keratin-associated protein 10-4 OS=Homo sapiens OX=9606 GN=KRTAP10-4 PE=1 SV=2,68.07
+5,7659,6821,131,858,1,2509.0,0.0,Homo sapiens,50.9,6.12e-05,unknown,Zinc metalloproteinase-disintegrin-like 3a OS=Crotalus adamanteus OX=8729 PE=1 SV=1,95.04
+6,7756,6882,97,858,1,2509.0,0.0,Homo sapiens,57.5,5.88e-07,unknown,Zinc metalloproteinase-disintegrin-like BmMP OS=Bungarus multicinctus OX=8616 PE=1 SV=1,123.43
+7,7825,6908,69,858,1,2509.0,0.0,Homo sapiens,41.4,0.056,unknown,Zinc metalloproteinase/disintegrin OS=Protobothrops flavoviridis OX=88087 PE=1 SV=2,158.14
+8,7873,6941,48,858,1,2509.0,0.0,Homo sapiens,53.7,8.76e-06,unknown,Zinc metalloproteinase/disintegrin OS=Protobothrops jerdonii OX=242841 PE=1 SV=1,184.28
+9,7910,6965,37,858,1,2509.0,0.0,Homo sapiens,49.1,0.000238,unknown,Zinc metalloproteinase/disintegrin OS=Bothrops asper OX=8722 PE=1 SV=1,215.43
+10,7937,6984,27,858,1,2509.0,0.0,Homo sapiens,38.7,0.34,unknown,Snake venom metalloproteinase VMP1 OS=Agkistrodon piscivorus leucostoma OX=459671 PE=2 SV=1,243.22
+11,7972,7010,35,858,1,2509.0,0.0,Homo sapiens,52.2,2.14e-05,unknown,Snake venom metalloproteinase atroxlysin-I OS=Bothrops atrox OX=8725 PE=1 SV=3,270.53
+12,7999,7035,27,858,1,2509.0,0.0,Homo sapiens,50.2,9.09e-05,unknown,Snake venom metalloproteinase H1 (Fragment) OS=Deinagkistrodon acutus OX=36307 PE=2 SV=1,302.62

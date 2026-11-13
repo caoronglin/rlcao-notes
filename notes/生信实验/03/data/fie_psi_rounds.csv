@@ -1,0 +1,13 @@
+round,subjects,e005,new,species,top_bitscore,top_evalue,top_species,new_best_bitscore,new_best_evalue,new_best_species,new_best_title,seconds
+1,1355,689,1355,314,955.0,0.0,Zea mays,955.0,0.0,Zea mays,polycomb group protein FIE1 [Zea mays],3.4
+2,2723,2538,1368,359,955.0,0.0,Zea mays,164.0,2.48e-42,Synechocystis sp. (strain ATCC 27184 / PCC 6803 / Kazusa),Uncharacterized WD repeat-containing protein sll0163 OS=Synechocystis sp. (strain ATCC 27184 / PCC 6803 / Kazu,7.9
+3,3112,2771,389,475,955.0,0.0,Zea mays,77.4,1.29e-13,Rattus norvegicus,Intraflagellar transport protein 172 homolog OS=Rattus norvegicus OX=10116 GN=Ift172 PE=1 SV=1,13.97
+4,3359,2951,247,584,955.0,0.0,Zea mays,57.4,1.14e-07,Xanthomonas oryzae pv. oryzae (strain KACC10331 / KXO85),Tol-Pal system protein TolB OS=Xanthomonas oryzae pv. oryzae (strain KACC10331 / KXO85) OX=291331 GN=tolB PE=3,20.45
+5,3531,3073,172,640,955.0,0.0,Zea mays,56.6,2.21e-07,Vibrio parahaemolyticus serotype O3:K6 (strain RIMD 2210633),Tol-Pal system protein TolB OS=Vibrio parahaemolyticus serotype O3:K6 (strain RIMD 2210633) OX=223926 GN=tolB ,27.41
+6,3692,3242,161,697,955.0,0.0,Zea mays,62.4,3.56e-09,Salmonella typhimurium (strain LT2 / SGSC1412 / ATCC 700720),Tol-Pal system protein TolB OS=Salmonella typhimurium (strain LT2 / SGSC1412 / ATCC 700720) OX=99287 GN=tolB P,35.03
+7,3750,3314,58,732,955.0,0.0,Zea mays,54.7,9.88e-07,Chelativorans sp. (strain BNC1),Tol-Pal system protein TolB OS=Chelativorans sp. (strain BNC1) OX=266779 GN=tolB PE=3 SV=1,42.47
+8,3768,3340,18,733,955.0,0.0,Zea mays,43.7,0.003,Pongo abelii,Rho guanine nucleotide exchange factor 10-like protein OS=Pongo abelii OX=9601 GN=ARHGEF10L PE=2 SV=1,50.4
+9,3788,3354,20,735,955.0,0.0,Zea mays,47.6,0.000214,Saccharolobus solfataricus (strain ATCC 35092 / DSM 1617 / JCM 11322 / P2),Tricorn protease homolog OS=Saccharolobus solfataricus (strain ATCC 35092 / DSM 1617 / JCM 11322 / P2) OX=2730,57.26
+10,3803,3377,15,737,955.0,0.0,Zea mays,38.7,0.12,Anopheles gambiae,Kelch-like protein diablo OS=Anopheles gambiae OX=7165 GN=dbo PE=3 SV=4,64.77
+11,3808,3383,5,738,955.0,0.0,Zea mays,39.2,0.12,Mus musculus,Hemicentin-2 OS=Mus musculus OX=10090 GN=Hmcn2 PE=1 SV=1,70.53
+12,3810,3383,2,738,955.0,0.0,Zea mays,33.8,4.0,Dictyostelium discoideum,Rho GTPase-activating protein gacGG OS=Dictyostelium discoideum OX=44689 GN=gacGG PE=3 SV=1,73.69

@@ -1,0 +1,47 @@
+BLASTX vs BLASTP: 前 10 重合 9/10
+   1 ref|NP_001105181.1|      ref|NP_001105181.1|     
+   2 sp|Q8VZY7|FIE1_MAIZE     sp|Q8VZY7|FIE1_MAIZE    
+   3 ref|XP_023158000.1|      ref|XP_023158000.1|     
+   4 ref|XP_002443823.1|      ref|XP_002443823.1|     
+   5 ref|XP_072150685.1|      ref|XP_072150685.1|     
+   6 ref|XP_004972907.1|      ref|XP_004972907.1|     
+   7 ref|XP_039852764.1|      ref|XP_039852764.1|     
+   8 ref|XP_039814760.1|      ref|XP_039814760.1|     
+   9 ref|XP_039814761.1|      ref|XP_039814761.1|     
+  10 ref|NP_001105182.1|      ref|XP_025820977.1|       <-- 不同
+TBLASTX vs BLASTN: 前 10 重合 6/10
+   1 ref|NM_001111711.1|      ref|NM_001111711.1|     
+   2 zea_mays|Zm00001eb173090_T001 zea_mays|Zm00001eb173090_T001
+   3 ref|XM_002443778.2|      ref|XM_002443778.2|     
+   4 sorghum_bicolor|EES13318 sorghum_bicolor|EES13318
+   5 ref|XM_004972850.4|      ref|XM_023302232.2|       <-- 不同
+   6 ref|XM_072294584.1|      zea_mays|Zm00001eb173090_T002  <-- 不同
+   7 ref|NM_001111712.1|      ref|XM_072294584.1|       <-- 不同
+   8 zea_mays|Zm00001eb416950_T001 ref|XM_004972850.4|       <-- 不同
+   9 ref|XM_039996830.1|      ref|XM_025965192.1|       <-- 不同
+  10 ref|XM_039958826.1|      ref|XM_025965193.1|       <-- 不同
+
+BLASTX 独有的 subject（BLASTP 未检出）：5 条
+  sp|B6K1G6|CFD1_SCHJY        26.7%  len=251   E=1.53e-07 bits=58  unknown
+  sp|P49695|PKWA_THECU        26.5%  len=264   E=2.77e-07 bits=57  unknown
+  sp|Q6FJZ9|PRP46_CANGA       27.8%  len=169   E=8.01e-07 bits=56  unknown
+  sp|B4MFM2|WDR48_DROVI       25.7%  len=249   E=4.69e-06 bits=54  unknown
+  sp|O60137|SWD2_SCHPO        29.3%  len=133   E=4.62e-06 bits=53  unknown
+
+TBLASTX 独有的 subject（BLASTN 未检出）：27 条
+  ref|XM_011397309.1|         34.0%  len=150   E=6.46e-52 bits=138  unknown
+  brachypodium_distachyon|KQK13669  32.8%  len=58    E=1.40e-07 bits=50  brachypodium distachyon
+  brachypodium_distachyon|PNT74276  32.8%  len=58    E=1.45e-07 bits=50  brachypodium distachyon
+  triticum_aestivum|TraesCS4A02G276500.2  32.8%  len=58    E=1.92e-08 bits=50  triticum aestivum
+  triticum_aestivum|TraesCS4A02G276500.1  32.8%  len=58    E=1.92e-08 bits=50  triticum aestivum
+  triticum_aestivum|TraesCS4D02G034500.2  32.8%  len=58    E=2.01e-08 bits=50  triticum aestivum
+  triticum_aestivum|TraesCS4D02G034500.1  32.8%  len=58    E=2.02e-08 bits=50  triticum aestivum
+  hordeum_vulgare|HORVU.MOREX.r3.4HG0335740.1  32.8%  len=58    E=2.76e-08 bits=50  hordeum vulgare
+  zea_mays|Zm00001eb053910_T002  31.0%  len=58    E=1.35e-08 bits=49  zea mays
+  sorghum_bicolor|EER91037    31.0%  len=58    E=1.36e-08 bits=49  sorghum bicolor
+  zea_mays|Zm00001eb053910_T001  31.0%  len=58    E=1.38e-08 bits=49  zea mays
+  triticum_aestivum|TraesCS4B02G037200.1  31.0%  len=58    E=2.58e-08 bits=49  triticum aestivum
+
+库规模对照（同一 query、同一程序）：
+  TBLASTX: 340 条 subject  →  TBLASTX*（280 条小库）: 280 条 subject
+  BLASTN: 313 条 subject  →  BLASTN*（280 条小库）: 22 条 subject

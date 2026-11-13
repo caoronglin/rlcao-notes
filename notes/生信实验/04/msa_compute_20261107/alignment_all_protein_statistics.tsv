@@ -1,0 +1,5 @@
+method	n	columns	identical_all_sequences	gap_free_columns	gap_characters	matrix_cells	gap_percent
+clustalo_default	36	520	29	213	4713	18720	25.176
+clustalo_iter3	36	515	28	213	4533	18540	24.45
+muscle	36	609	30	214	7917	21924	36.111
+clustalo_pfam	36	520	29	213	4713	18720	25.176

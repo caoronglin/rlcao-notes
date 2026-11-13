@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>生物信息学实验报告 2 — 曹荣麟 2024014209</title>
+<style>
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Times New Roman", "Noto Serif CJK SC", "Songti SC", serif;
+    font-size: 10pt;
+    line-height: 1.6;
+    color: #000;
+  }
+
+  h1 {
+    font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+    font-size: 21pt; font-weight: 700;
+    margin: 0 0 3mm 0; letter-spacing: 0;
+  }
+  .info { margin: 0 0 1.2mm 0; font-size: 10pt; line-height: 1.5; text-indent: 0; }
+  .info > span:not(.pc) { margin-right: 8mm; }
+  .head-rule { border: 0; border-top: 0.8pt solid #000; margin: 2.6mm 0 3mm 0; }
+
+  h2 {
+    font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+    font-size: 11pt; font-weight: 700;
+    margin: 3.4mm 0 1.2mm 0;
+    page-break-after: avoid;
+  }
+  h3 {
+    font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+    font-size: 14pt; font-weight: 700;
+    margin: 4.4mm 0 1.6mm 0;
+    page-break-after: avoid;
+  }
+  h4.q {
+    font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+    font-size: 10.4pt; font-weight: 700;
+    margin: 2.6mm 0 1mm 0;
+  }
+  p { margin: 0 0 1.4mm 0; text-align: justify; text-indent: 2em; }
+  p.flush { text-indent: 0; }
+  .lab { font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; font-weight: 700; font-size: 9.6pt; }
+  .pc { margin-right: -0.35em; }
+  code { font-family: "Times New Roman", "Noto Sans Mono CJK SC", monospace; font-size: 9.2pt; }
+  a { color: #000; text-decoration: none; }
+
+  ol, ul { margin: 0 0 1.4mm 0; padding-left: 5.2mm; }
+  li { margin-bottom: 0.6mm; text-align: justify; }
+
+  table {
+    width: 100%; border-collapse: collapse;
+    font-size: 8.8pt; line-height: 1.45;
+    margin: 0.8mm 0 2mm 0;
+  }
+  .tcap {
+    font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+    font-size: 9pt; font-weight: 700; padding: 0 0 1mm 0;
+  }
+  thead th {
+    border-top: 1.2pt solid #000;
+    border-bottom: 0.6pt solid #000;
+    padding: 1.3mm 1.3mm;
+    font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+    font-size: 8.5pt; font-weight: 700;
+    text-align: left; vertical-align: bottom;
+  }
+  tbody td { padding: 1.1mm 1.3mm; vertical-align: top; }
+  tbody tr:last-child td { border-bottom: 1.2pt solid #000; }
+  td.c, th.c { text-align: center; }
+  table.compact { font-size: 8.4pt; line-height: 1.4; }
+  table.compact tbody td { padding: 0.7mm 1.2mm; }
+  table.t2, table.t3 { font-size: 8.0pt; line-height: 1.3; }
+  table.t2 tbody td, table.t3 tbody td { padding: 0.45mm 1.1mm; }
+  table.t2 thead th, table.t3 thead th { padding: 0.9mm 1.1mm; }
+  table.compact thead th { padding: 1mm 1.2mm; }
+  table.mono td { font-family: "Times New Roman", "Noto Sans Mono CJK SC", monospace; font-size: 8pt; }
+
+  figure { margin: 1mm 0 1.8mm 0; page-break-inside: avoid; }
+  figure img { display: block; margin: 0 auto; max-width: 100%; }
+  figcaption { font-size: 8.5pt; text-align: center; margin-top: 0.9mm; line-height: 1.4; }
+
+  .db-grid { display: grid; grid-template-columns: 1fr 1fr; column-gap: 6mm; row-gap: 2mm; margin: 1.2mm 0 1.6mm 0; }
+  .db img { width: 100%; height: 24mm; object-fit: cover; object-position: top left; display: block; }
+  .db .fig-id { font-size: 8pt; text-align: center; margin-top: 0.5mm; }
+
+  .note { border: 0.6pt solid #000; padding: 1.2mm 2.2mm; margin: 1mm 0 1.4mm 0; }
+  .note p { font-size: 8.5pt; margin: 0 0 0.6mm 0; text-indent: 0; line-height: 1.45; }
+  .note p:last-child { margin-bottom: 0; }
+
+  .page-no {
+    position: absolute; bottom: 8mm; left: 15mm; right: 15mm;
+    font-size: 8.5pt; text-align: center;
+  }
+
+  @page {
+    size: A4;
+    margin: 14mm 14mm 15mm 14mm;
+    @bottom-center { content: counter(page) " / " counter(pages); font-family: "Noto Serif CJK SC", serif; font-size: 8.5pt; color: #000; }
+  }
+  body { font-size: 10pt; line-height: 1.6; }
+  .page { width: auto; height: auto; padding: 0; overflow: visible; page-break-after: auto; }
+  .tcap { break-after: avoid; }
+  h2, h3, h4 { break-after: avoid; }
+  table { break-inside: auto; }
+  thead { display: table-header-group; }
+  tr { break-inside: avoid; }
+  figure, .db-grid { break-inside: avoid; }
+</style>
+</head>
+
+<body>
+<main class="doc">
+
+  <h1>实验二<span class="pc">：</span>Entrez 搜索、EBI 浏览与双序列比对</h1>
+  <p class="info flush"><span>姓名<span class="pc">：</span>曹荣麟</span><span>班级<span class="pc">：</span>生技2402</span><span>学号<span class="pc">：</span>2024014209</span></p>
+  <p class="info flush"><span>实验掌握情况<span class="pc">：</span>基本没有太大问题</span><span>你的疑问（最多 3 条）<span class="pc">：</span>见讨论区</span></p>
+  <hr class="head-rule">
+
+  <h2>前情提要</h2>
+  <p>上一节课确定的研究分子是玉米 <i>ZmFIE1</i>（Gene ID 542075；RefSeq <code>NM_001111711.1</code> / <code>NP_001105181.1</code>，461 aa），PRC2 的 WD40 亚基。文献报道其母源等位基因在受精后约 2 天于初生胚乳中因去甲基化被激活，父源等位基因保持甲基化沉默，受基因组印记调控。</p>
+  <p>本节课的检索对象换成人 EGF 家族<span class="pc">：</span>任务 1.1 要求的正是人 EGF，而且这个家族既有清晰的 1:1 直系同源（人、小鼠、大鼠、犬、鸡），人基因组内又有一组由基因复制产生的并系同源（EGF、TGFA、AREG、EREG、HBEGF 五个 EGFR 配体），正好填满 1.3 的两组序列。上一节本想沿用 <i>ZmFIE1</i>，但玉米 FIE 家族只有 FIE1、FIE2 两个成员，凑不齐 5 条并系同源。</p>
+
+  <h2>实验目的</h2>
+  <p class="flush">1. 熟练掌握使用 Entrez 搜索序列的方法；2. 理解直系同源和并系同源的含义；3. 了解 EBI 提供的数据和工具资源；4. 学会使用 EBI 提供的 NEEDLE 和 WATER 进行两条序列的比对。</p>
+
+  <h3>一、ENTREZ 搜索</h3>
+
+  <h4 class="q">1.1 检索人 EGF 的核苷酸序列（限 RefSeq）</h4>
+  <p><span class="lab">检索方法<span class="pc">：</span></span>Nucleotide 库（<code>db=nuccore</code>）输入 <code>"human epidermal growth factor"[All Fields] AND refseq[filter]</code>。<span class="lab">结果<span class="pc">：</span></span>共 <b>62 条</b>，用 ESummary 逐条取回登录号与标题后按基因归类。</p>
+
+  <div class="tcap">表 1　62 条 RefSeq 记录按基因归类（2026-10-24 检索，写作时复核未变）</div>
+  <table class="compact">
+    <thead><tr><th style="width:19%">基因或条目</th><th class="c" style="width:8%">条数</th><th>代表登录号</th></tr></thead>
+    <tbody>
+      <tr><td>ERBB2（HER2）</td><td class="c">31</td><td><code>NM_004448.4</code>、<code>NM_001005862.3</code>、<code>NM_001289936.2</code>～<code>NM_001289938.2</code>、<code>NR_110535.2</code>；变体 7–31 另占 25 条（<code>NM_001382782.1</code> 起）</td></tr>
+      <tr><td>EGFR</td><td class="c">10</td><td><code>NM_005228.5</code>、<code>NM_201282.2</code>～<code>NM_201284.2</code>、<code>NM_001346897.2</code>～<code>NM_001346900.2</code>、<code>NM_001346941.2</code>（EGFRvIII）、<code>NG_007726.3</code></td></tr>
+      <tr><td>EGF 本身</td><td class="c">5</td><td><code>NM_001963.6</code>（variant 1）、<code>NM_001178130.3</code>、<code>NM_001178131.3</code>、<code>NM_001357021.2</code>、<code>NG_011441.2</code></td></tr>
+      <tr><td>ADGRF1 / ADGRE3</td><td class="c">5</td><td><code>NM_025048.4</code>、<code>NM_153840.4</code>、<code>NM_032571.5</code>、<code>NM_001289158.2</code>、<code>NM_001289159.2</code></td></tr>
+      <tr><td>DLK1</td><td class="c">3</td><td><code>NM_003836.7</code>、<code>NM_001317172.2</code>、<code>NG_016863.3</code></td></tr>
+      <tr><td>GPN3</td><td class="c">3</td><td><code>NM_016301.4</code>、<code>NM_001164372.2</code>、<code>NM_001164373.2</code></td></tr>
+      <tr><td>CDK12</td><td class="c">2</td><td><code>NM_016507.4</code>、<code>NM_015083.4</code></td></tr>
+      <tr><td>非人类来源</td><td class="c">3</td><td>大鼠 <code>NM_053744.2</code>（Dlk1）、大鼠 <code>NM_053403.2</code>（Grb7）、家蚕 <code>NM_001113262.1</code>（丝心蛋白重链）</td></tr>
+    </tbody>
+  </table>
+
+  <p class="flush"><span class="lab">讨论</span></p>
+  <ol>
+    <li>62 条里真正编码 EGF 配体的只有 5 条，其余大多是 EGF 通路上的受体与下游基因。Entrez 默认全字段自由词匹配，基因名出现在题目或蛋白注释里就算命中；ERBB2 与 EGFR 条数多，是因为各有大量转录本变体，而不是因为有多个基因。</li>
+    <li><code>refseq[filter]</code> 只保留人工校核记录，把 GenBank 原始提交挡在外面，但它只管“是不是 RefSeq”，不管“是不是人的”，表中最后 3 条就是例子。</li>
+    <li>把 "human" 从关键词挪到物种过滤（<code>"epidermal growth factor"[All Fields] AND "Homo sapiens"[Organism] AND refseq[filter]</code>），命中反而涨到 <b>1475 条</b><span class="pc">：</span>改写后 "human" 不再限制标题，鼠、大鼠、牛、犬、鸡的家族成员一并进来。检索式看起来更精确，召回未必更少。</li>
+  </ol>
+
+  
+
+  
+
+  <h4 class="q">1.2 检索人线粒体编码的蛋白质</h4>
+  <p><span class="lab">检索方法<span class="pc">：</span></span>Protein 库 <code>"Homo sapiens"[Organism] AND mitochondrion[filter]</code> → <b>886,234 条</b>；再加 <code>AND refseq[filter]</code> → <b>39 条</b>。39 条 = 13 个蛋白 × 3 个人类基因组<span class="pc">：</span>现代人（<code>YP_003024026.1</code>～<code>YP_003024038.1</code>）、尼安德特人（<code>YP_002124302.2</code> 起 13 条）、丹尼索瓦人（<code>YP_003541045.1</code> 起 13 条）。三组一一对应，长度几乎相同，只有尼安德特人 ND1 为 316 aa，比现代人短 2 aa。</p>
+
+  <div class="tcap">表 2　现代人线粒体基因组编码的 13 个蛋白（RefSeq，2026-10-24）</div>
+  <table class="compact t2">
+    <thead><tr><th style="width:29%">蛋白</th><th style="width:22%">登录号</th><th class="c" style="width:10%">长度 / aa</th><th>所属复合体</th></tr></thead>
+    <tbody>
+      <tr><td>NADH 脱氢酶亚基 1（ND1）</td><td><code>YP_003024026.1</code></td><td class="c">318</td><td>复合体 I</td></tr>
+      <tr><td>NADH 脱氢酶亚基 2（ND2）</td><td><code>YP_003024027.1</code></td><td class="c">347</td><td>复合体 I</td></tr>
+      <tr><td>NADH 脱氢酶亚基 3（ND3）</td><td><code>YP_003024033.1</code></td><td class="c">115</td><td>复合体 I</td></tr>
+      <tr><td>NADH 脱氢酶亚基 4（ND4）</td><td><code>YP_003024035.1</code></td><td class="c">459</td><td>复合体 I</td></tr>
+      <tr><td>NADH 脱氢酶亚基 4L（ND4L）</td><td><code>YP_003024034.1</code></td><td class="c">98</td><td>复合体 I</td></tr>
+      <tr><td>NADH 脱氢酶亚基 5（ND5）</td><td><code>YP_003024036.1</code></td><td class="c">603</td><td>复合体 I</td></tr>
+      <tr><td>NADH 脱氢酶亚基 6（ND6）</td><td><code>YP_003024037.1</code></td><td class="c">174</td><td>复合体 I</td></tr>
+      <tr><td>细胞色素 c 氧化酶亚基 I（COX1）</td><td><code>YP_003024028.1</code></td><td class="c">513</td><td>复合体 IV</td></tr>
+      <tr><td>细胞色素 c 氧化酶亚基 II（COX2）</td><td><code>YP_003024029.1</code></td><td class="c">227</td><td>复合体 IV</td></tr>
+      <tr><td>细胞色素 c 氧化酶亚基 III（COX3）</td><td><code>YP_003024032.1</code></td><td class="c">261</td><td>复合体 IV</td></tr>
+      <tr><td>ATP 合酶 F0 亚基 6（ATP6）</td><td><code>YP_003024031.1</code></td><td class="c">226</td><td>ATP 合酶</td></tr>
+      <tr><td>ATP 合酶 F0 亚基 8（ATP8）</td><td><code>YP_003024030.1</code></td><td class="c">68</td><td>ATP 合酶</td></tr>
+      <tr><td>细胞色素 b（CYTB）</td><td><code>YP_003024038.1</code></td><td class="c">380</td><td>复合体 III</td></tr>
+    </tbody>
+  </table>
+
+  <p><span class="lab">这些结果说明线粒体具有什么功能？</span>13 条全部是氧化磷酸化链上的膜内在蛋白<span class="pc">：</span>7 条属复合体 I，3 条属复合体 IV，2 条是 ATP 合酶 F0 段亚基，1 条是复合体 III 的细胞色素 b；没有一条是糖酵解或三羧酸循环的酶，也没有一条是可溶性蛋白。电子从 NADH/FADH₂ 经复合体 I、III、IV 交给 O₂，泵出的质子形成跨膜梯度，再由 ATP 合酶转成 ATP——这条链的膜蛋白部分由线粒体自己编码。</p>
+  <p>反过来看信息量更大。人类 mtDNA 参考序列 <code>NC_012920.1</code> 长 16,569 bp、环状，特征表恰好是 13 个 CDS + 22 个 tRNA + 2 个 rRNA，与检索结果吻合。线粒体里约 1500 种蛋白，自身基因组只编码这 13 种，其余全部由核基因组编码、经 TOM/TIM 复合体输入。这份结果划出的是线粒体“自己管什么”的边界。</p>
+
+  <h4 class="q">1.3 检索 5 条直系同源与 5 条并系同源序列</h4>
+  <p><span class="lab">选定分子<span class="pc">：</span></span>人 EGF（<code>gene:EGF</code>）。<span class="lab">步骤<span class="pc">：</span></span>① <code>EGF[Gene Name] AND "Homo sapiens"[Organism] AND refseq[filter]</code> 得 4 个转录本变体，用 ELink 取回对应 mRNA；② 直系同源<span class="pc">：</span>物种换为小鼠、大鼠、犬、鸡，各取 variant 1 的 RefSeq mRNA 与蛋白，不用自动预测的 <code>XM_</code>／<code>XP_</code>（预测模型会随注释更新而变）；③ 并系同源<span class="pc">：</span>取同为 EGFR 配体、由人基因组内复制产生的 TGFA、AREG、EREG、HBEGF，连同 EGF 凑成 5 条；④ <code>efetch … rettype=fasta</code> 存为 FASTA，供任务三使用。</p>
+
+  <div class="tcap">表 3　直系同源与并系同源序列（RefSeq，2026-10-24）</div>
+  <table class="compact t3">
+    <thead><tr><th style="width:20%">物种</th><th class="c" style="width:11%">关系</th><th style="width:19%">mRNA 登录号</th><th class="c" style="width:11%">长度 / nt</th><th style="width:19%">蛋白登录号</th><th class="c" style="width:11%">长度 / aa</th></tr></thead>
+    <tbody>
+      <tr><td><i>Homo sapiens</i></td><td class="c">直系同源</td><td><code>NM_001963.6</code></td><td class="c">6,388</td><td><code>NP_001954.2</code></td><td class="c">1,207</td></tr>
+      <tr><td><i>Mus musculus</i></td><td class="c">直系同源</td><td><code>NM_010113.4</code></td><td class="c">4,773</td><td><code>NP_034243.2</code></td><td class="c">1,217</td></tr>
+      <tr><td><i>Rattus norvegicus</i></td><td class="c">直系同源</td><td><code>NM_012842.2</code></td><td class="c">4,799</td><td><code>NP_036974.2</code></td><td class="c">1,132</td></tr>
+      <tr><td><i>Canis lupus familiaris</i></td><td class="c">直系同源</td><td><code>NM_001003094.3</code></td><td class="c">4,963</td><td><code>NP_001003094.3</code></td><td class="c">1,211</td></tr>
+      <tr><td><i>Gallus gallus</i></td><td class="c">直系同源</td><td><code>NM_001001292.2</code></td><td class="c">6,716</td><td><code>NP_001001292.2</code></td><td class="c">1,245</td></tr>
+      <tr><td><i>Homo sapiens</i>（EGF）</td><td class="c">并系同源</td><td><code>NM_001963.6</code></td><td class="c">6,388</td><td><code>NP_001954.2</code></td><td class="c">1,207</td></tr>
+      <tr><td><i>Homo sapiens</i>（TGFA）</td><td class="c">并系同源</td><td><code>NM_003236.4</code></td><td class="c">4,117</td><td><code>NP_003227.1</code></td><td class="c">160</td></tr>
+      <tr><td><i>Homo sapiens</i>（AREG）</td><td class="c">并系同源</td><td><code>NM_001657.4</code></td><td class="c">1,234</td><td><code>NP_001648.1</code></td><td class="c">252</td></tr>
+      <tr><td><i>Homo sapiens</i>（EREG）</td><td class="c">并系同源</td><td><code>NM_001432.3</code></td><td class="c">4,615</td><td><code>NP_001423.1</code></td><td class="c">169</td></tr>
+      <tr><td><i>Homo sapiens</i>（HBEGF）</td><td class="c">并系同源</td><td><code>NM_001945.3</code></td><td class="c">2,358</td><td><code>NP_001936.1</code></td><td class="c">208</td></tr>
+    </tbody>
+  </table>
+
+  
+
+  <h4 class="q">我对这两个概念的理解</h4>
+  <ul>
+    <li><span class="lab">直系同源</span>由物种分化产生，祖先基因在两个物种中各留一份，功能基本对应；判断线索是跨物种、序列高度相似、蛋白名与结构域一一对应。表中五条 EGF 蛋白都在 1,132–1,245 aa，因为它们是同一个祖先基因在五个物种里的延续。</li>
+    <li><span class="lab">并系同源</span>由基因组内复制产生，拷贝之间序列相似但功能已分化。TGFA 只有 160 aa、EREG 169 aa、HBEGF 208 aa、AREG 252 aa，都不足 EGF 的五分之一，长度差异本身就是分化的痕迹。两者是相对概念<span class="pc">：</span>TGFA 相对 EGF 是并系同源，相对小鼠 TGF-α 又是直系同源，所以表 3 必须保留物种一列。</li>
+  </ul>
+
+  
+
+  <h4 class="q">1.4 课堂之外学到的检索技巧</h4>
+  <ol>
+    <li><span class="lab">字段限定符与过滤器可以一次锁死库和分子类型。</span><code>[Organism]</code>、<code>[Gene Name]</code>、<code>[SLEN]</code>、<code>[prop]</code> 限定字段，<code>refseq[filter]</code>、<code>biomol_mrna[prop]</code> 限定记录性质。1.2 若不加 <code>mitochondrion[filter]</code>，单是物种限定就会返回两百多万条蛋白记录。</li>
+    <li><span class="lab">引号短语与自由词的结果集不同。</span>加引号是短语精确匹配，不加则三个词各自命中，1.1 与 1.2 的两个检索式就是现成的对照。</li>
+    <li><span class="lab">先看 Query Translation，再用 ELink 跨库。</span>ESearch 返回的 <code>querytranslation</code> 会写出 Entrez 把输入实际解析成了什么，是自查检索式最直接的办法。配合 ELink（<code>nuccore → protein → gene</code>）与 ESearch→ESummary/EFetch 批量取回，比在每个库里各搜一遍可靠。</li>
+    <li><span class="lab">登录号会被回收复用，必须连版本号一起记。</span>这是本次最意外的坑<span class="pc">：</span>按旧文献记下的 <code>NP_005623</code> 本该是人 EGF 前体，核对时发现它现在对应 <b>calpain-15</b>；<code>NM_003001</code> 现在对应 <b>SDHC</b>（TGF-α 的 mRNA 实际是 <code>NM_003236</code>）。只记 accession 不记 version 和 title 很危险。</li>
+  </ol>
+
+  <h3>二、EBI 浏览</h3>
+  <p>EBI 提供的不只是若干数据库，而是一条从原始测序数据到结构、从功能组学到药物靶点的数据与工具流水线，多数服务开放 REST 接口。</p>
+
+  <div class="tcap">表 4　EBI 提供的五个主要数据库</div>
+  <table class="compact">
+    <thead><tr><th style="width:17%">数据库</th><th style="width:42%">收录内容</th><th>我的理解</th></tr></thead>
+    <tbody>
+      <tr><td><b>ENA</b></td><td>INSDC 三方（EMBL／GenBank／DDBJ）核酸数据的欧洲分部<span class="pc">：</span>原始测序、EST、基因组、转录组、宏基因组</td><td>核酸序列的欧洲入口，与 GenBank 共用同一套登录号</td></tr>
+      <tr><td><b>UniProtKB</b></td><td>蛋白质条目，分 Swiss-Prot（人工校核，575,748 条）与 TrEMBL（自动注释，149,430,635 条）</td><td>蛋白注释最全的词典，交叉引用 GO、PDB、InterPro</td></tr>
+      <tr><td><b>Ensembl</b></td><td>多物种全基因组注释<span class="pc">：</span>基因、转录本、变异、调控区、同源基因</td><td>回答“基因在什么位置、有几个转录本”；本次用 release 116</td></tr>
+      <tr><td><b>ArrayExpress</b></td><td>芯片与高通量测序的功能基因组学原始数据与实验设计（已并入 BioStudies）</td><td>让表达数据可复用<span class="pc">：</span>检索 <code>epidermal growth factor</code> 得 1020 条，如 <code>E-GEOD-5282</code>（大鼠星形胶质细胞 EGF 处理的转录谱）</td></tr>
+      <tr><td><b>PDBe</b></td><td>大分子三维结构（X 射线、NMR、冷冻电镜）的条目、实验数据与分析工具</td><td>把序列变成结构<span class="pc">：</span>人 EGF 与 EGFR 胞外域复合物 <code>1NQL</code>，X 射线 2.80 Å</td></tr>
+    </tbody>
+  </table>
+
+  
+
+  <h4 class="q">我最感兴趣的两个数据库</h4>
+  <p><span class="lab">PDBe。</span>人 EGF 的成熟肽只有 53 aa，任何一条序列注释都说不清这 53 个残基折成什么样子。<code>1NQL</code> 给出了它与 EGFR 胞外域结合的三维结构，含 2 条多肽、1 个配体、2 个糖类聚合物；UniProt 的交叉引用行 <code>DR PDB; 1NQL; X-ray; 2.80 A; B=971-1023.</code> 还把 PDB 编号直接标在残基区间上。序列注释回答“这一段是什么”，结构回答“它怎么起作用”。</p>
+  <p><span class="lab">Ensembl。</span>我做玉米基因组相关工作，最常打交道的就是它。查人 EGF 时 REST 接口返回<span class="pc">：</span>基因 <code>ENSG00000138798</code>，GRCh38 4 号染色体 109,912,878–110,013,948（正链），规范转录本 <code>ENST00000265171.10</code>，1,207 aa，与 NCBI 的 <code>NM_001963.6</code> / <code>NP_001954.2</code> 完全对应。Ensembl 的长处是把基因组坐标、转录本结构与变异统一在一套 ID 体系里，NCBI 的长处是文献覆盖与注释广度；UniProt 的 <code>DR MANE-Select</code> 行就是两套体系的官方对齐。</p>
+
+  <h4 class="q">ENA / UniProt 的记录格式与 NCBI 有何不同</h4>
+  <p>在 ENA 检索到 mRNA 记录 <code>X04571.1</code>（4,871 bp），在 UniProt 检索到蛋白 <code>P01133</code>（<code>EGF_HUMAN</code>，Reviewed，1,207 aa，2026_03 版）。</p>
+
+  <div class="db-grid">
+    <div class="db">
+      <img src="shot-ena-X04571.png" alt="ENA X04571 记录页">
+      <div class="fig-id">图 1　ENA 中的 <code>X04571.1</code> 记录（Base Count 4,871）</div>
+    </div>
+    <div class="db">
+      <img src="shot-uniprot-P01133.png" alt="UniProt P01133 记录页">
+      <div class="fig-id">图 2　UniProt 中的 <code>P01133</code>（EGF_HUMAN，1,207 aa，Reviewed）</div>
+    </div>
+  </div>
+
+  
+
+  <div class="tcap">表 5　同一条 EGF mRNA 在 ENA 与 NCBI 中的记录写法</div>
+  <table class="compact">
+    <thead><tr><th style="width:13%">比较项</th><th style="width:44%">ENA（<code>X04571.1</code>，EMBL 格式）</th><th>NCBI（<code>NM_001963.6</code>，GenBank 格式）</th></tr></thead>
+    <tbody>
+      <tr><td>文件结构</td><td>行首两位是字段代码（<code>ID</code>／<code>AC</code>／<code>DE</code>／<code>KW</code>／<code>OS</code>／<code>FT</code>），<code>XX</code> 作分隔空行</td><td>列对齐的关键字块（<code>LOCUS</code>／<code>DEFINITION</code>／<code>FEATURES</code>），特征区是缩进表格式</td></tr>
+      <tr><td>首行</td><td class="mono"><code>ID X04571; SV 1; linear; mRNA; STD; HUM; 4871 BP.</code></td><td class="mono"><code>LOCUS NM_001963 6388 bp mRNA linear PRI 27-APR-2025</code></td></tr>
+      <tr><td>长度与版本</td><td>4,871 bp，Version 4，2008 年最后一次更新</td><td>6,388 bp，<code>NM_001963.6</code>，2025-04-27，标注 <code>RefSeq; MANE Select</code></td></tr>
+      <tr><td>编码区</td><td class="mono"><code>FT CDS 437..4060</code>，蛋白 <code>CAA28240.1</code></td><td class="mono"><code>CDS 454..4077</code>，蛋白 <code>NP_001954.2</code></td></tr>
+            <tr><td>交叉引用</td><td class="mono"><code>DR MD5;</code> <code>DR Ensembl-Gn;</code> <code>DR EuropePMC;</code> 各自成行</td><td class="mono"><code>db_xref="UniProtKB/Swiss-Prot:P01133"</code>、InterPro、GOA、<code>PDB:1NQL</code> 写在特征行内</td></tr>
+      <tr><td>文献</td><td class="mono"><code>RX DOI;</code> <code>RX PUBMED;</code></td><td><code>REFERENCE</code> 块 + <code>PUBMED</code> 注释</td></tr>
+    </tbody>
+  </table>
+
+  <p><span class="lab">差别还体现在蛋白记录上，方向相反。</span>UniProt 是行前缀式（<code>ID</code>／<code>AC</code>／<code>DE</code>／<code>GN</code>／<code>CC</code>／<code>FT</code>／<code>DR</code>／<code>SQ</code>），自由文本注释极多；NCBI 是列对齐式，序列头紧凑，注释集中在 <code>COMMENT</code> 与特征表。UniProt 在 <code>CC -!- FUNCTION:</code> 里写成完整句子，NCBI 只在校核来源里写一句 "propagated from UniProtKB/Swiss-Prot (P01133.2)"。</p>
+  <p>同一个分子，ENA 与 UniProt 给的是实验提交史加上人工整理过的知识，NCBI 给的是统一编号、注释传播与文献链接。<code>X04571</code> 只有 4,871 bp，是 1987 年提交的 cDNA；<code>NM_001963.6</code> 有 6,388 bp，含完整 5′/3′ UTR。两者不是同一段序列的两种写法，而是同一个分子的两代记录，差的 1,517 bp 来自后来补齐的 UTR。</p>
+
+  
+
+  <h3>三、两条序列比对</h3>
+  <p><span class="lab">比对对象<span class="pc">：</span></span>① 核酸<span class="pc">：</span>人 EGF mRNA <code>NM_001963.6</code>（6,388 nt）对小鼠 Egf mRNA <code>NM_010113.4</code>（4,773 nt）；② 蛋白<span class="pc">：</span>人 EGF <code>NP_001954.2</code>（1,207 aa）对小鼠 Egf <code>NP_034243.2</code>（1,217 aa），与 ① 同为直系同源；③ 并系同源对照<span class="pc">：</span>人 EGF 对 TGFA <code>NP_003227.1</code>（160 aa）。</p>
+  <p><span class="lab">工具与参数<span class="pc">：</span></span>EBI 在线 EMBOSS（Job Dispatcher，6.6.0）。Needle 为 Needleman-Wunsch 全局比对，Water 为 Smith-Waterman 局部比对；gap open 10.0、gap extend 0.5（EBI 默认值）；核酸用 EDNAFULL 与 EDNAMAT，蛋白用 EBLOSUM62。</p>
+
+  <div class="note">
+    <p><b>提交方式。</b>向 <code>www.ebi.ac.uk</code> 提交时，Job Dispatcher 按公平使用策略对本机 IP 返回 "You have been temporarily blocked from submitting new sequence analysis jobs"；改用同一套 Job Dispatcher 的开发镜像 <code>wwwdev.ebi.ac.uk</code> 提交成功。为交叉验证，又用本地 EMBOSS 6.6.0（同版本、同矩阵、同 gap 参数）独立复算全部 8 组，Length／Identity／Similarity／Gaps／Score 与在线结果逐项一致，见 <code>emboss_results/</code>。</p>
+  </div>
+
+  <div class="tcap">表 6　8 次双序列比对结果（gap open 10.0，gap extend 0.5）</div>
+  <table class="compact">
+    <thead><tr><th class="c" style="width:4%">#</th><th style="width:26%">序列对</th><th style="width:12%">类型</th><th style="width:11%">矩阵</th><th class="c" style="width:9%">比对长度</th><th class="c" style="width:12%">Identity</th><th class="c" style="width:9%">Similarity</th><th class="c" style="width:10%">Gaps</th><th class="c" style="width:7%">Score</th></tr></thead>
+    <tbody>
+      <tr><td class="c">1</td><td>人 EGF mRNA / 小鼠 Egf mRNA</td><td>Needle 全局</td><td>EDNAFULL</td><td class="c">6,663</td><td class="c">3,614（54.2%）</td><td class="c">54.2%</td><td class="c">2,165（32.5%）</td><td class="c">12,816.0</td></tr>
+      <tr><td class="c">2</td><td>同上</td><td>Needle 全局</td><td>EDNAMAT</td><td class="c">6,663</td><td class="c">3,614（54.2%）</td><td class="c">54.2%</td><td class="c">2,165（32.5%）</td><td class="c">12,816.0</td></tr>
+      <tr><td class="c">3</td><td>同上</td><td>Water 局部</td><td>EDNAFULL</td><td class="c">5,154</td><td class="c">3,614（<b>70.1%</b>）</td><td class="c">70.1%</td><td class="c">656（12.7%）</td><td class="c">12,819.0</td></tr>
+      <tr><td class="c">4</td><td>同上</td><td>Water 局部</td><td>EDNAMAT</td><td class="c">5,154</td><td class="c">3,614（70.1%）</td><td class="c">70.1%</td><td class="c">656（12.7%）</td><td class="c">12,819.0</td></tr>
+      <tr><td class="c">5</td><td>人 EGF 蛋白 / 小鼠 Egf 蛋白</td><td>Needle 全局</td><td>EBLOSUM62</td><td class="c">1,231</td><td class="c">805（65.4%）</td><td class="c">957（77.7%）</td><td class="c">38（3.1%）</td><td class="c">4,355.5</td></tr>
+      <tr><td class="c">6</td><td>同上</td><td>Water 局部</td><td>EBLOSUM62</td><td class="c">1,217</td><td class="c">805（66.1%）</td><td class="c">955（78.5%）</td><td class="c">24（2.0%）</td><td class="c">4,358.0</td></tr>
+      <tr><td class="c">7</td><td>人 EGF 蛋白 / 人 TGFA 蛋白</td><td>Needle 全局</td><td>EBLOSUM62</td><td class="c">1,224</td><td class="c">48（3.9%）</td><td class="c">78（6.4%）</td><td class="c">1,081（88.3%）</td><td class="c">128.0</td></tr>
+      <tr><td class="c">8</td><td>同上</td><td>Water 局部</td><td>EBLOSUM62</td><td class="c">99</td><td class="c">33（33.3%）</td><td class="c">50（50.5%）</td><td class="c">13（13.1%）</td><td class="c">138.5</td></tr>
+    </tbody>
+  </table>
+
+  
+
+  <h4 class="q">空位是散布的还是集中的？</h4>
+  <p><b>核酸全局比对（作业 1）。</b>6,663 列里有 2,165 个空位，按连续空位段（游程）统计后结论完全不同<span class="pc">：</span>共 <b>148 段</b>，其中 <b>130 段只有 1–9 bp</b>（1 bp 38 次、2–5 bp 73 次、6–9 bp 19 次），18 段达到或超过 10 bp，最长一段 <b>1,498 bp</b>。按人类序列位置分箱，5′UTR（1–453）154 个空位、占该段 30.0%；CDS（454–4,077）259 个、占 6.9%，一致性 74.9%；3′UTR（4,078–6,388）1,752 个、占 <b>72.6%</b>，一致性仅 21.3%。</p>
+  <p>所以答案是分层的<span class="pc">：</span><b>CDS 内的空位散布</b>，大量 1–3 bp 的小插入缺失，符合密码子水平的突变与小片段转录本差异；<b>UTR 的空位高度集中</b>，3′ 端是一整段缺失，本质是“这段根本没比对上”，而不是“这里发生了几次突变”——那段 1,498 bp 正好是人类的 4,891–6,388，小鼠 Egf 在 4,767 就结束了。</p>
+
+  
+
+  <figure>
+    <img src="fig_align_na.png" style="width:68%" alt="核酸比对点阵与滑窗一致性">
+    <figcaption>图 3　人 EGF mRNA 与小鼠 Egf mRNA 的全局比对。（a）比对点阵，对应止于人类 4,890 nt，其后 1,498 bp 在对方序列里没有落点；（b）50 nt 滑动窗口一致性，CDS 段稳定在 75% 上下，3′UTR 段塌到 20% 以下。</figcaption>
+  </figure>
+
+  <p><b>蛋白全局比对（作业 5）。</b>1,231 列里只有 38 个空位，分成 <b>12 段</b>，长度依次为 1、1、1、1、1、1、2、3、4、4、9、10 aa，全部散布且都很短。同一套统计放在蛋白上，两个前体蛋白从头到尾整体同源，没有大段缺失。</p>
+
+  <p><b>改变评分体系会怎样？</b>不会变。作业 1 与 2、作业 3 与 4 的结果逐位一致（Score 同为 12,816.0 与 12,819.0）。EDNAFULL 与 EDNAMAT 只在简并碱基（R、Y、N、K、M、S、W、B、D、H、V）的打分上有区别，而这两条序列都不含非 A/C/G/T 碱基，两个矩阵于是退化成同一张打分表。这个阴性结果反而说明<span class="pc">：</span>DNAmat 的价值在处理不确定序列（EST、基因组草图、含大量 N 的 contig）。</p>
+
+  <p><b>局部比对和全局比对的差别，取决于两条序列是否整体同源。</b>核酸<span class="pc">：</span>全局 6,663 列、一致性 54.2%；局部 5,154 列、一致性 <b>70.1%</b>，高出 15.9 个百分点，空位率从 32.5% 降到 12.7%。Water 找到的区间是人类 1–4,890 对小鼠 6–4,767，把 3′ 端不保守的尾巴整个裁掉了。蛋白<span class="pc">：</span>局部 1,217 列对全局 1,231 列，一致性 66.1% 对 65.4%，几乎无区别，因为两个前体蛋白从头到尾都同源。</p>
+  <p>并系同源那组（作业 7、8）差别最大。全局比对被迫把 1,207 aa 的 EGF 和 160 aa 的 TGFA 拉齐，空位率 88.3%、一致性只有 3.9%，这个数字没有生物学意义，它只是长度差的算术后果。局部比对只挑出 <b>99 列</b>（人 EGF 952–1,048 对 TGFA 29–116），一致性升到 33.3%、相似性 50.5%，而这 99 列正好落在两个蛋白的成熟 EGF 样结构域上<span class="pc">：</span>UniProt 注释里人 EGF 的成熟肽是 971–1,023、EGF 样重复 9 是 972–1,013，TGFA 的成熟肽是 40–89。Water 自己找到了两个并系同源蛋白之间真正保守的那一块，与 UniProt 特征表互相印证。</p>
+
+  <h2>讨论</h2>
+  <p>这次最意外的不是某个数字，而是同一个检索式换一个限定符，结果集能差出一个数量级。<code>mitochondrion[filter]</code> 给出 88 万条蛋白记录，加上 <code>refseq[filter]</code> 变成 39 条，而 39 条已经足够说明线粒体自己编码什么。检索的意义在于每条记录是否可靠、能否回答问题，条数本身不说明什么。任务三把“同源”落到了数字上<span class="pc">：</span>直系同源的人与小鼠 EGF，蛋白一致性 65.4%、相似性 77.7%、空位 3.1%；并系同源的人 EGF 与 TGFA，全局一致性 3.9%、空位 88.3%，局部比对在 99 列上给出 33.3%。相似性明显高于一致性，说明大量替换是保守替换。</p>
+  <p>方法上记住三件事<span class="pc">：</span>全局比对只有在两条序列确实整体同源时才说明问题，3.9% 不是“相似度低”的证据，而是算法在填空；局部比对是定位同源区段的工具，Water 的 99 列与 UniProt 成熟肽注释吻合；空位要按游程和区域统计才有意义，“2,165 个空位”与“148 段空位，其中 130 段不超过 9 bp、另有 1 段 1,498 bp”是两个完全不同的事实。</p>
+
+  
+
+  
+
+</main>
+</body>
+</html>

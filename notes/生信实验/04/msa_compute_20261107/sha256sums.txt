@@ -1,0 +1,8 @@
+1bcbc2ffb2fad2b838b4763bc7bcbc6901f27b0865d9fbe965aa1c3de307812a  /media/rlcao/Data/data/05-个人项目/rlcao/notes/生信实验/04/msa_compute_20261107/fie_mrna.fasta
+5e1b5c00678f95e57496608165baafa6b578f573e4be21d66e55d1df91539ddb  /media/rlcao/Data/data/05-个人项目/rlcao/notes/生信实验/04/msa_compute_20261107/fie_protein.fasta
+4b3e465039fae6693ba66aeebf34328cd65a23421bccc9ee952696a83cbd34e0  /media/rlcao/Data/data/05-个人项目/rlcao/notes/生信实验/04/msa_compute_20261107/clustalo_mrna_default.aln
+828a8029776379af32b1dc8115ae8f25dae71566d95b35260fe490da6fc7a1b2  /media/rlcao/Data/data/05-个人项目/rlcao/notes/生信实验/04/msa_compute_20261107/clustalo_mrna_iter3.aln
+60d266ee58acba93e73a095d37c87d5cdf3d336ca5a68d491d0c17b501b817bb  /media/rlcao/Data/data/05-个人项目/rlcao/notes/生信实验/04/msa_compute_20261107/clustalo_protein_default.aln
+f30ef4f318d82ad62ec6d4efbe27f94b940e178e3efff6dfce845c64502c28a4  /media/rlcao/Data/data/05-个人项目/rlcao/notes/生信实验/04/msa_compute_20261107/clustalo_protein_iter3.aln
+7a9cd387d83d908f09520e0f5c540f0b254f14495500bfd528fed0220df4ad11  /media/rlcao/Data/data/05-个人项目/rlcao/notes/生信实验/04/msa_compute_20261107/muscle_mrna.fasta
+6ab30df5650f60cba13b10fe3a629b5b2520af538cc7dfeecd10496156474a9e  /media/rlcao/Data/data/05-个人项目/rlcao/notes/生信实验/04/msa_compute_20261107/muscle_protein.fasta

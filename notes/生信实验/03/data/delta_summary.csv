@@ -1,0 +1,2 @@
+group,run,label,note,hsp,subjects,species,e005,e1,best_evalue,best_bitscore,top_pident,seconds
+任务三·DELTA-BLAST,t3b_deltablast,DELTA-BLAST,,15865,7146,857,4688,6506,0.0,1870.0,100.0,17.51

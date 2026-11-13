@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>生物信息学实验报告 1 — 曹荣麟 2024014209</title>
+<style>
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Times New Roman", "Noto Serif CJK SC", "Songti SC", serif;
+    font-size: 10pt;
+    line-height: 1.62;
+    color: #000;
+  }
+  .page {
+    width: 210mm; height: 297mm;
+    padding: 15mm 15mm 16mm 15mm;
+    position: relative;
+    overflow: hidden;
+    page-break-after: always;
+    background: #fff;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  /* title block */
+  h1 {
+    font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+    font-size: 21pt; font-weight: 700;
+    margin: 0 0 3mm 0; letter-spacing: 0;
+  }
+  .info { margin: 0 0 1.2mm 0; font-size: 10pt; line-height: 1.5; text-indent: 0; }
+  .info > span:not(.pc) { margin-right: 8mm; }
+  .head-rule { border: 0; border-top: 0.8pt solid #000; margin: 3mm 0 3.4mm 0; }
+
+  /* headings */
+  h2 {
+    font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+    font-size: 11pt; font-weight: 700;
+    margin: 4mm 0 1.6mm 0;
+    page-break-after: avoid;
+  }
+  h3 {
+    font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+    font-size: 14pt; font-weight: 700;
+    margin: 5.2mm 0 2mm 0;
+    page-break-after: avoid;
+  }
+  p { margin: 0 0 1.6mm 0; text-align: justify; text-indent: 2em; }
+  p.flush { text-indent: 0; }
+  .lab { font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif; font-weight: 700; font-size: 9.6pt; }
+  .pc { margin-right: -0.35em; }
+  code, .mono {
+    font-family: "Times New Roman", "Noto Sans Mono CJK SC", monospace;
+    font-size: 9.4pt;
+  }
+  a { color: #000; text-decoration: none; }
+
+  ol, ul { margin: 0 0 1.6mm 0; padding-left: 5.4mm; }
+  li { margin-bottom: 0.6mm; text-align: justify; }
+
+  /* three-line tables */
+  table {
+    width: 100%; border-collapse: collapse;
+    font-size: 8.8pt; line-height: 1.5;
+    margin: 1mm 0 2.4mm 0;
+  }
+  caption, .tcap {
+    caption-side: top; text-align: left;
+    font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+    font-size: 9pt; font-weight: 700; padding-bottom: 1.4mm;
+  }
+  thead th {
+    border-top: 1.2pt solid #000;
+    border-bottom: 0.6pt solid #000;
+    padding: 1.5mm 1.4mm;
+    font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+    font-size: 8.6pt; font-weight: 700;
+    text-align: left; vertical-align: bottom;
+  }
+  tbody td { padding: 1.3mm 1.4mm; vertical-align: top; }
+  tbody tr:last-child td { border-bottom: 1.2pt solid #000; }
+  td.c, th.c { text-align: center; }
+  td.src { font-size: 8.2pt; }
+  table.compact { font-size: 8.6pt; line-height: 1.45; }
+  table.compact tbody td { padding: 0.85mm 1.3mm; }
+  table.lit { font-size: 8.4pt; line-height: 1.45; }
+  table.lit tbody td { padding: 1.15mm 1.3mm; }
+
+  /* figures */
+  figure { margin: 1mm 0 2.4mm 0; page-break-inside: avoid; }
+  figure img { display: block; margin: 0 auto; max-width: 100%; }
+  figcaption {
+    font-size: 8.6pt; text-align: center; margin-top: 1.2mm;
+  }
+
+  /* database cards */
+  .db-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    column-gap: 7mm; row-gap: 3mm; margin-top: 1.6mm;
+  }
+  .db h4 {
+    font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+    font-size: 10pt; font-weight: 700;
+    margin: 0 0 0.8mm 0;
+  }
+  .db h4 .idx { font-weight: 400; margin-right: 1.2mm; }
+  .db p { font-size: 8.8pt; line-height: 1.5; margin: 0 0 1mm 0; }
+  .db img {
+    width: 100%; height: 24mm; object-fit: cover; object-position: top left;
+    display: block;
+  }
+  .db .fig-id { font-size: 8pt; text-align: center; margin-top: 0.5mm; }
+
+  .note { border: 0.6pt solid #000; padding: 1.5mm 2.4mm; margin: 1.2mm 0 1.6mm 0; }
+  .note p { font-size: 8.6pt; margin: 0 0 0.7mm 0; text-indent: 0; }
+  .note p:last-child { margin-bottom: 0; }
+
+  .page-no {
+    position: absolute; bottom: 8mm; left: 15mm; right: 15mm;
+    font-size: 8.5pt; text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== PAGE 1 ========== -->
+<div class="page">
+  <h1>实验一<span class="pc">：</span>NCBI 浏览与序列文件解读</h1>
+  <p class="info"><span>姓名<span class="pc">：</span>曹荣麟</span><span>班级<span class="pc">：</span>生技 2402</span><span>学号<span class="pc">：</span>2024014209</span></p>
+  <p class="info">实验掌握情况<span class="pc">：</span>基本没有太大问题</p>
+  <p class="info">你的疑问（最多 3 条）<span class="pc">：</span>见讨论区</p>
+  <hr class="head-rule">
+
+  <h2>前情提要</h2>
+  <p>本次实验的研究分子是玉米 <i>ZmFIE1</i>（fertilization independent endosperm 1，NCBI Gene ID 542075；基因符号 <code>LOC542075</code>），位于 4 号染色体负链，编码 461 aa 的 PRC2（Polycomb Repressive Complex 2）WD40 亚基。玉米基因组复制产生了 <i>FIE1</i>/<i>FIE2</i> 一对旁系同源基因，<i>FIE1</i> 又受基因组印记调控，正好用来练习跨库标识核对和序列文件解读。</p>
+  <p>目前已得到的结果是<span class="pc">：</span>母源等位基因在受精后约 2 天于初生胚乳中去甲基化激活，10–11 天达峰，父源等位基因保持甲基化沉默。近期研究表明 ZmFie1–PRC2 在籽粒灌浆期沉积 H3K27me3，平衡储藏物质合成与胚乳细胞增殖，并已被用于无融合生殖探索。</p>
+
+  <h2>实验目的</h2>
+  <p class="flush">1. 了解 NCBI 提供的数据库资源；2. 熟悉 GenBank 序列文件；3. 掌握 PubMed 文献检索方法。</p>
+
+  <h3>实验任务一<span class="pc">：</span>确定要研究的生物分子</h3>
+  <p><span class="lab">实验材料<span class="pc">：</span></span>玉米 <i>ZmFIE1</i>（Gene ID 542075；别名 <code>fie1</code>、<code>GRMZM2G118205</code>）。</p>
+  <p><span class="lab">实验方法<span class="pc">：</span></span>在 NCBI Gene 中以 <code>FIE1</code> 和物种 <i>Zea mays</i> 检索，核对基因名称、别名、染色体位置与关联序列；再用 UniProt（<code>Q8VZY7</code>）和 Ensembl Plants（<code>Zm00001eb173090</code>）交叉验证。</p>
+  <p><span class="lab">实验结果<span class="pc">：</span></span>几个库给出的标识并不相同，对照见表 1。</p>
+
+  <table>
+    <caption>表 1　<i>ZmFIE1</i> 在不同数据库中的标识体系</caption>
+    <thead>
+      <tr><th style="width:19%">标识体系</th><th style="width:36%">本基因的取值</th><th>说明</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>基因符号</td><td><code>LOC542075</code></td><td>玉米 <code>LOC</code> 号段表示基因名尚未获官方批准，<code>fie1</code> 只是别名</td></tr>
+      <tr><td>NCBI Gene ID</td><td>542075</td><td>跨库通用的基因身份标识</td></tr>
+      <tr><td>RefSeq mRNA / 蛋白</td><td><code>NM_001111711.1</code> / <code>NP_001105181.1</code></td><td>人工校核的参考序列，本次分析对象</td></tr>
+      <tr><td>UniProt</td><td><code>Q8VZY7</code>（FIE1_MAIZE，Reviewed，461 aa）</td><td>蛋白注释的权威词典，证据等级 PE 2</td></tr>
+      <tr><td>Ensembl Plants</td><td><code>Zm00001eb173090</code>（转录本 <code>_T001</code>，CDS <code>_P001</code>）</td><td>玉米自身的基因模型编号</td></tr>
+      <tr><td>InterPro / Pfam</td><td><code>IPR051243</code>（PcG_WD-repeat）；<code>PF00400</code>（WD40，2 个）</td><td>支持其属于 Polycomb 组的 WD40 折叠</td></tr>
+    </tbody>
+  </table>
+
+  <p><span class="lab">功能。</span>FIE1 是 PRC2 的 WD40 亚基，与具 H3K27 甲基转移酶活性的 E(z)（EZH2 同源）结合，同 MSI1 及 SUZ12 类蛋白（如 FIS2、VRN2）组成复合体，在特定位点沉积抑制性的 H3K27me3，关闭靶基因。功能注释显示它与胚胎和胚乳发育相关。</p>
+  <p><span class="lab">结构。</span>UniProt 注释了 6 个 WD40 重复（143–186、189–229、235–275、301–338、351–391、398–437），N 端 1–56 与 C 端 429–461 为低复杂度区。PDBe 中没有玉米 FIE1 的实验结构（2026-10-25 检索），库里主要是拟南芥、哺乳动物的同源蛋白和人 EGF–EGFR 复合物，结构判断只能靠同源建模外推。</p>
+
+  <div class="page-no">1 / 5</div>
+</div>
+
+<!-- ========== PAGE 2 ========== -->
+<div class="page">
+  <h3>实验任务二<span class="pc">：</span>浏览 NCBI 网站，了解可用的数据库资源</h3>
+  <p><span class="lab">实验材料<span class="pc">：</span></span>https://www.ncbi.nlm.nih.gov；<span class="lab">实验方法<span class="pc">：</span></span>从 NCBI 首页进入各数据库逐一体验，每个数据库结合本次实验的实际用法写一段说明，截图见各条目下方。</p>
+
+  <div class="db-grid">
+    <div class="db">
+      <h4><span class="idx">01</span>Gene（基因）</h4>
+      <p>按基因名或编号查基本资料时用它最方便。它给出名称、基因组位置、功能注释和相关文献，也能跳到序列、变异和结构域记录。本次用它确定 <code>LOC542075</code> 的位置、别名和全部 RefSeq 转录本。</p>
+      <img src="image-5.png" alt="NCBI Gene 检索页">
+      <div class="fig-id">图 1　NCBI Gene 检索页</div>
+    </div>
+    <div class="db">
+      <h4><span class="idx">02</span>Genome（基因组）</h4>
+      <p>要比较不同组装、或下载某个物种的基因组文件，一般从这里开始。序列、组装版本和注释都收在这里，也能查看基因在基因组上的位置。本次用它核对 <code>NC_050099.1</code> 属于 B73 NAM-5.0 参考组装。</p>
+      <img src="image-6.png" alt="NCBI Genome 页面">
+      <div class="fig-id">图 2　NCBI Genome 页面</div>
+    </div>
+    <div class="db">
+      <h4><span class="idx">03</span>Taxonomy（分类）</h4>
+      <p>生物名称在这里按分类层级整理，并把分类单元与 NCBI 的序列等资源连起来。查物种名、分类位置或 TaxID 时常用；遇到分类学争议，还得结合专业文献核对。本次用到的 <code>taxon:4577</code>（<i>Zea mays</i>）就由它维护。</p>
+      <img src="image-9.png" alt="NCBI Taxonomy 页面">
+      <div class="fig-id">图 3　NCBI Taxonomy 页面</div>
+    </div>
+    <div class="db">
+      <h4><span class="idx">04</span>SRA（序列读取档案）</h4>
+      <p>高通量测序的原始 reads 存在这里，实验、样本和测序平台信息一并记录。想找公开数据重新分析，可以按项目或样本检索。本次的 <code>NM_001111711.1</code> 就由 RNA-seq 证据 <code>SRR3147034.357.1</code> 支持其内含子边界。</p>
+      <img src="image-8.png" alt="NCBI SRA 页面">
+      <div class="fig-id">图 4　NCBI SRA 页面</div>
+    </div>
+    <div class="db">
+      <h4><span class="idx">05</span>CDD（保守结构域数据库）</h4>
+      <p>蛋白序列里有没有已知结构域、落在什么位置，可以用它比对。匹配结果只能帮助推测组成和功能，仍要其他证据佐证。本次据此确认 FIE1 含 WD40 重复（<code>cd00207</code>）。</p>
+      <img src="image-10.png" alt="NCBI CDD 页面">
+      <div class="fig-id">图 5　NCBI CDD 页面</div>
+    </div>
+    <div class="db">
+      <h4><span class="idx">06</span>PubMed（生物医学文献）</h4>
+      <p>文献的题录和摘要都在这里，可按主题、作者或期刊检索。部分记录能跳到 PubMed Central 或出版商全文，但 PubMed 本身只负责检索，不保证全文免费。本次用 MeSH 词加出版类型锁定 4 篇核心文献。</p>
+      <img src="image-11.png" alt="PubMed 页面">
+      <div class="fig-id">图 6　PubMed 页面</div>
+    </div>
+    <div class="db">
+      <h4><span class="idx">07</span>GEO（基因表达综合数据库）</h4>
+      <p>找基因表达数据先看这里，芯片和高通量测序结果都收在其中。可按样本和研究设计检索，下载公开数据做比较或重新分析。本次找印记表达的直接数据，也优先查它。</p>
+      <img src="image-12.png" alt="NCBI GEO 页面">
+      <div class="fig-id">图 7　NCBI GEO 页面</div>
+    </div>
+    <div class="db">
+      <h4><span class="idx">08</span>ClinVar（临床变异）</h4>
+      <p>人类变异与疾病、癌症或药物反应的解释汇总在这里，每条记录都附提交来源和证据。不同提交者的结论可能不一致，适合比较，不能单凭一条记录做诊断。本次用它确认人类同源物 <i>EGF</i> 与遗传病 HOMG4 的关系。</p>
+      <img src="image-13.png" alt="NCBI ClinVar 页面">
+      <div class="fig-id">图 8　NCBI ClinVar 页面</div>
+    </div>
+  </div>
+
+  <div class="page-no">2 / 5</div>
+</div>
+
+<!-- ========== PAGE 3 ========== -->
+<div class="page">
+  <h3>实验任务三<span class="pc">：</span>序列文件信息解读</h3>
+  <p><span class="lab">实验材料<span class="pc">：</span></span>RefSeq mRNA <code>NM_001111711.1</code>；Gene 记录 <code>LOC542075</code>。</p>
+  <p><span class="lab">实验方法<span class="pc">：</span></span>用 E-utilities 的 <code>esummary</code> 取基因与序列摘要，<code>efetch rettype=gb</code> 取 GenBank 全记录，<code>efetch rettype=gene_table</code> 取基因—转录本—外显子对照表，再逐项核对。</p>
+
+  <table class="compact">
+    <caption>表 2　<i>NM_001111711.1</i> 的序列文件信息与证据</caption>
+    <thead>
+      <tr><th class="c" style="width:5%">#</th><th style="width:15%">问题</th><th style="width:55%">结果</th><th style="width:25%">证据来源</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="c">1</td><td>序列登录号</td><td><code>NM_001111711.1</code>，<code>NM_</code> 前缀表示人工校核的 RefSeq mRNA</td><td class="src">ACCESSION / VERSION 行</td></tr>
+      <tr><td class="c">2</td><td>核苷酸总数</td><td>1,787 nt</td><td class="src">LOCUS 行“1787 bp”</td></tr>
+      <tr><td class="c">3</td><td>染色体位置</td><td>4 号染色体负链，<code>NC_050099.1:37,782,884–37,788,773</code>（1-based，跨度 5,890 bp）；参考组装 Zm-B73-REFERENCE-NAM-5.0（<code>GCF_902167145.1</code>），注释版本 <code>GCF_902167145.1-RS_2025_02</code></td><td class="src">efetch rettype=gene_table</td></tr>
+      <tr><td class="c">4</td><td>更新次数</td><td>版本号 <code>.1</code>，发布后未再更新。记录状态为 PROVISIONAL REFSEQ，未经 NCBI 最终复核；源序列 <code>AY061964.1</code>，内含子边界由 RNA-seq（<code>SRR3147034.357.1</code>）支持</td><td class="src">VERSION 行；COMMENT 块</td></tr>
+      <tr><td class="c">5</td><td>起始密码子</td><td>mRNA 第 169–171 nt，序列 <code>ATG</code></td><td class="src"><code>CDS 169..1554</code>；序列实测</td></tr>
+      <tr><td class="c">6</td><td>终止密码子</td><td>第 1552–1554 nt，序列 <code>TGA</code>；CDS 长 1,386 nt = 461×3 + 3</td><td class="src">同上</td></tr>
+      <tr><td class="c">7</td><td>编码氨基酸数</td><td>461 aa（<code>NP_001105181.1</code>）</td><td class="src"><code>NP_001105181.1</code> 的 LOCUS 行</td></tr>
+      <tr><td class="c">8</td><td>CDS 区域</td><td>169–1554（1,386 nt）</td><td class="src">GenBank CDS 特征行</td></tr>
+      <tr><td class="c">9</td><td>外显子 / 内含子</td><td>14 个外显子、13 个内含子；剪接后外显子总长 1,766 nt</td><td class="src">14 条 exon 特征；gene_table</td></tr>
+      <tr><td class="c">10</td><td>其他转录本</td><td><code>XM_023302232.2</code>（PREDICTED，1,738 nt，CDS 188–1480，蛋白 <code>XP_023158000.1</code>，430 aa）。GenBank 将其定义为 transcript variant X1，由 Gnomon 预测；CDS 比 NM 短 93 nt，蛋白短 31 aa。XM 会随注释更新，不能与 NM 等同看待。该基因无 RefSeqGene（<code>NG_</code>）记录</td><td class="src">efetch 两个转录本；<code>esearch refseqgene[filter]</code> 返回 0</td></tr>
+      <tr><td class="c">11</td><td>多聚腺苷酸化信号</td><td><code>AATAAA</code> 在 1,288–1,293 nt（CDS 内），是全序列唯一的 <code>AATAAA</code>（无 <code>ATTAAA</code>）。3′ 端 1,765–1,787 为 23 nt 连续 A，其中超出外显子注释的 21 nt（1,767–1,787）通常算作 poly(A) 尾。该信号距尾约 474 nt，远超 10–30 nt 的常见距离，很可能不是实际切割信号；记录中也无 <code>polyA_signal</code> 特征行</td><td class="src">序列扫描；GenBank ORIGIN</td></tr>
+    </tbody>
+  </table>
+
+  <figure>
+    <img src="fig_transcript.png" style="width:84%" alt="ZmFIE1 转录本结构">
+    <figcaption>图 9　<i>NM_001111711.1</i> 的转录本结构<span class="pc">：</span>14 个外显子、CDS 169–1554、AATAAA 信号与 21 nt poly(A) 尾</figcaption>
+  </figure>
+
+  <div class="note">
+    <p><span class="lab">坐标有两套约定。</span>NCBI <code>esummary</code> 的 <code>genomicinfo</code> 用 0-based 闭区间（37782883–37788772），Datasets API 的 <code>genomic_range</code> 与 gene_table 用 1-based（37782884–37788773）。三者换算后一致，但直接照抄 <code>esummary</code> 的数字会整体差 1 bp。以 gene_table 和 Gene Viewer 的 1-based 显示为准。</p>
+    <p><span class="lab">1,787 ≠ 1,766。</span>记录长度与外显子总长相差的 21 nt 落在 3′ 端一段 23 nt 的连续 A 内（1,765–1,787），不属于外显子注释。差的这 21 nt 可以当作 poly(A) 尾，但边界取决于注释，序列本身切不开。所以按“记录长度 = 外显子之和”对账永远对不上。</p>
+  </div>
+
+  <div class="page-no">3 / 5</div>
+</div>
+
+<!-- ========== PAGE 4 ========== -->
+<div class="page">
+  <h3>实验任务四<span class="pc">：</span>利用 PubMed 搜索文献</h3>
+  <p><span class="lab">实验材料<span class="pc">：</span></span>PubMed；检索主题为玉米 <i>Fie1</i>、fertilization independent endosperm 1、PRC2 与基因组印记。</p>
+  <p class="flush"><span class="lab">实验方法<span class="pc">：</span></span>检索分四步，每一步都记下检索式和命中数<span class="pc">：</span></p>
+  <ol>
+    <li>初检 <span class="mono">maize[Title/Abstract] AND (FIE1[Title/Abstract] OR "Polycomb"[Title/Abstract]) AND (imprint*[Title/Abstract] OR endosperm[Title/Abstract])</span>，命中 20 篇。</li>
+    <li>用 <span class="mono">maize[Title/Abstract] AND PRC2[Title/Abstract]</span> 补齐 PRC2 组分互作方向，命中 10 篇。</li>
+    <li>用 MeSH 与出版类型精筛<span class="pc">：</span><span class="mono">("Zea mays"[MeSH Terms] OR maize[Title/Abstract]) AND (FIE[Title/Abstract] OR FIS-PRC2[Title/Abstract] OR "Polycomb group"[Title/Abstract]) AND 2020:2026[Date - Publication]</span>，得 5 篇近期文献。</li>
+    <li>逐篇读摘要，判断证据属于表达、甲基化、互作、表型还是应用层面，避免只堆砌同一层证据。</li>
+  </ol>
+  <p>按题目要求选 3 篇（含 1 篇近期研究论文），另补 1 篇与应用前景直接相关的文献，见表 3。</p>
+
+  <table class="lit">
+    <caption>表 3　<i>ZmFIE1</i> 相关文献及其提供的证据</caption>
+    <thead>
+      <tr><th class="c" style="width:4%">#</th><th style="width:43%">文献</th><th class="c" style="width:9%">年份 / 类型</th><th>提供的关键证据</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="c">1</td>
+        <td>Hermon P, Srilunchang KO, Zou J, Dresselhaus T, Danilevskaya ON. Activation of the imprinted Polycomb Group <i>Fie1</i> gene in maize endosperm requires demethylation of the maternal allele. <i>Plant Mol Biol</i>. 2007;64(4):387–395. doi:10.1007/s11103-007-9160-0. PMID 17437065</td>
+        <td class="c">2007<br>研究论文</td>
+        <td>表达与甲基化<span class="pc">：</span>受精前 <i>Fie1</i> 在精子、卵细胞和中央细胞中均不表达；母源等位基因约 2 DAP 在初生胚乳激活，10–11 DAP 达峰。MSRE-PCR 与亚硫酸氢盐测序显示父源保持甲基化沉默、母源低甲基化且有活性。</td>
+      </tr>
+      <tr>
+        <td class="c">2</td>
+        <td>Ni J, Ma X, Feng Y, et al. Updating and interaction of polycomb repressive complex 2 components in maize (<i>Zea mays</i>). <i>Planta</i>. 2019;250(2):573–588. doi:10.1007/s00425-019-03193-4. PMID 31127375</td>
+        <td class="c">2019<br>研究论文</td>
+        <td>互作与定位<span class="pc">：</span>全基因组更新玉米 PRC2 组分（5 个 MSI1、3 个 E(z)、2 个 ESC、2 个 SUZ12）。<i>ZmFIE1</i> 在胚乳中优先表达，与 <i>ZmCLF</i>/<i>MEZ1</i> 同为母源印记基因；<i>ZmFIE2</i> 在胚乳中为父源优势表达。</td>
+      </tr>
+      <tr>
+        <td class="c">3</td>
+        <td>Wang J, Li S, Wu L, et al. The Fie1-PRC2 complex regulates H3K27me3 deposition to balance endosperm filling and development in cereals. <i>Plant Commun</i>. 2025;6(6):101343. doi:10.1016/j.xplc.2025.101343. PMID 40269501</td>
+        <td class="c">2025<br>近期论文</td>
+        <td>分子功能与表型<span class="pc">：</span>CUT&amp;Tag 描绘灌浆期 H3K27me3 动态。<i>zmfie1</i> 敲除导致胚乳提前细胞化、有丝分裂略增强、籽粒变小但醇溶蛋白积累更多；4 号染色体串联重复的 α-zein 基因 H3K27me3 大幅下降，并在 <i>ZmMADS</i> 位点间接抑制细胞增殖。</td>
+      </tr>
+      <tr>
+        <td class="c">4</td>
+        <td>Shi Q, Chen X, Ma L, Wei A, Fei X. Inspiration from apomictic species of Rutaceae: AGL11-FIE module induces autonomous development of maize embryo and endosperm without fertilization. <i>Theor Appl Genet</i>. 2025;138(8):195. doi:10.1007/s00122-025-04985-x. PMID 40754619</td>
+        <td class="c">2025<br>研究论文</td>
+        <td>应用<span class="pc">：</span>在食物玉米中构建 <i>AGL11</i>-OE/<i>fie</i> 双系，使体细胞胚与胚乳不依赖受精自主发育，为杂交种自繁殖提供路线。</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <figure>
+    <img src="fig_evidence.png" style="width:84%" alt="文献证据链">
+    <figcaption>图 10　4 篇文献覆盖的证据层面（实心点表示该文提供这一层证据，不代表证据强弱）<span class="pc">：</span>表达与甲基化 → 组分互作 → 敲除表型 → 无融合生殖应用</figcaption>
+  </figure>
+
+  <div class="page-no">4 / 5</div>
+</div>
+
+<!-- ========== PAGE 5 ========== -->
+<div class="page">
+  <h2>现有知识总结</h2>
+  <p><span class="lab">分子与表达。</span><i>ZmFIE1</i> 编码 PRC2 的 WD40 亚基，与 E(z)、MSI1、SUZ12/ESC 共同在靶位点沉积 H3K27me3 以沉默基因。禾谷类演化出籽粒特异、由基因复制产生的 FIE1，拟南芥只有一个组成型表达的 <i>FIE</i>。在胚乳中 <i>FIE1</i> 表现为母源表达、父源沉默，<i>FIE2</i> 则相反（Hermon 2007；Ni 2019）。</p>
+  <p><span class="lab">表型。</span><i>zmfie1</i> 突变体的胚乳提前细胞化、有丝分裂增多、籽粒变小，醇溶蛋白积累却增加。<i>FIE1</i> 在 <i>ZmMADS</i> 位点沉积 H3K27me3 间接抑制细胞增殖，在储藏物质合成与细胞增殖之间维持平衡（Wang 2025）。</p>
+  <p><span class="lab">应用。</span>调节 <i>FIE1</i> 活性可以改变 α-zein 基因簇与 <i>ZmMADS</i> 位点的 H3K27me3 水平，是提高蛋白品质、改变粒重的候选育种靶点。FIE 在拟南芥和烟草中是受精前抑制胚乳发育的开关，敲除后中央极核提前细胞化，形成不依赖受精的二倍体胚乳；<i>AGL11</i> 诱导体细胞胚加上 <i>fie</i> 敲除的组合已在食物玉米中产生无融合种子（Shi 2025）。若能复制到杂交玉米，杂交种便可自我繁殖。</p>
+
+  <h2>讨论</h2>
+  <p>这次实验最直接的体会是<span class="pc">：</span>同一个基因在不同库里挂着几套不同的“身份证”，必须逐个核对才能对上。<i>ZmFIE1</i> 在 NCBI Gene 里是 <code>LOC542075</code>，在 Ensembl Plants 里是 <code>Zm00001eb173090</code>，在 UniProt 里是 <code>Q8VZY7</code>，在 RefSeq 里是 <code>NM_001111711.1</code>。它们指向同一个基因，其中只有 RefSeq 那条带版本号。我起初以为 <code>LOC</code> 号段意味着这个基因没人研究，查过才知道 <code>LOC</code> 只表示基因名尚未被批准；初检就命中 20 篇相关文献，也有同源结构的报道。</p>
+  <p>另一个容易混淆的地方是记录长度和序列内容。<code>NM_001111711.1</code> 报告 1,787 nt，14 个外显子剪接后只有 1,766 nt，差的 21 nt 是 poly(A) 尾；多聚腺苷酸化信号 <code>AATAAA</code> 在 1,288–1,293 nt，与 poly(A) 尾相隔 474 nt。若按“1,787 = 外显子之和”对账，一定对不上。坐标也一样，<code>esummary</code> 的 0-based 数值直接抄下来会整体差 1 bp。这两处都是把记录内容和自己的换算混在一起造成的。</p>
+  <p>检索式本身也属于结论的一部分。<code>maize[Title/Abstract] AND PRC2[Title/Abstract]</code> 只返回 10 篇，换成 MeSH 词 <code>"Zea mays"[MeSH Terms]</code> 并限定 2020–2026 后，命中集合明显不同，因为 MeSH 是规范化的受控词，能捞到标题摘要里没有 maize 的文献。换检索式等于换证据集，所以本文把每一步的检索式和命中数都写出来。</p>
+
+  <h2>你的疑问（最多 3 条）</h2>
+  <p class="flush">1. <code>NM_001111711.1</code> 仍是 PROVISIONAL RefSeq，源序列 <code>AY061964.1</code> 的 5′/3′ 端是否完整，需要回溯原始文献确认。</p>
+  <p class="flush">2. <code>XM_023302232.2</code> 的剪接模式与 NM 相差一段，需要用 GT-AG 边界核对，判断这是真实的内含子变化还是注释模型的边界差异。</p>
+  <p class="flush">3. 玉米 FIE1 缺少实验解析的三维结构，结构层面的判断目前只能依赖 InterPro/Pfam 注释与同源建模。</p>
+
+  <h2>参考记录</h2>
+  <p class="flush" style="font-size:9pt;">NCBI Gene 542075 · RefSeq <code>NM_001111711.1</code> / <code>NP_001105181.1</code> · UniProt <code>Q8VZY7</code> · Ensembl Plants <code>Zm00001eb173090</code> · 文献 PMID 17437065、31127375、40269501、40754619（检索日期 2026-10-25）。</p>
+
+  <div class="page-no">5 / 5</div>
+</div>
+
+</body>
+</html>

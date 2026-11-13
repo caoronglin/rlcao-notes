@@ -1,0 +1,231 @@
+group,run,label,rank,species,sseqid,pident,length,evalue,bitscore,title
+任务一 BLASTN·算法对比,t1a_blastn_default,blastn（默认）,1,unknown,gi|1653960555|ref|NM_001963.6|,100.0,6388,0.0,11521.0,"Homo sapiens epidermal growth factor (EGF), transcript variant 1, mRNA"
+任务一 BLASTN·算法对比,t1a_blastn_default,blastn（默认）,2,Homo sapiens,homo_sapiens|ENST00000265171.10,100.0,6388,0.0,11521.0,cdna chromosome:GRCh38:4:109912883:110013766:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务一 BLASTN·算法对比,t1a_blastn_default,blastn（默认）,3,Pan paniscus,gi|2694443292|ref|XM_003830021.7|,98.968,6395,0.0,11221.0,"PREDICTED: Pan paniscus epidermal growth factor (EGF), mRNA"
+任务一 BLASTN·算法对比,t1a_blastn_default,blastn（默认）,4,Homo sapiens,homo_sapiens|ENST00000868530.1,99.572,5605,0.0,10018.0,cdna chromosome:GRCh38:4:109912884:110012960:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务一 BLASTN·算法对比,t1a_blastn_default,blastn（默认）,5,Pan troglodytes,pan_troglodytes|ENSPTRT00000030446.5,99.123,5587,0.0,9845.0,cdna chromosome:Pan_tro_3.0:4:112891595:112991072:1 gene:ENSPTRG00000016367.5 gene_biotype:protein_coding tran
+任务一 BLASTN·算法对比,t1a_blastn_default,blastn（默认）,6,Gorilla gorilla,gi|2695040446|ref|XM_019026088.4|,98.818,5583,0.0,9757.0,"PREDICTED: Gorilla gorilla gorilla epidermal growth factor (EGF), transcript variant X2, mRNA"
+任务一 BLASTN·算法对比,t1a_blastn_default,blastn（默认）,7,Pongo pygmaeus,gi|2695848088|ref|XM_054486120.2|,97.85,5210,0.0,8882.0,"PREDICTED: Pongo pygmaeus epidermal growth factor (EGF), transcript variant X1, mRNA"
+任务一 BLASTN·算法对比,t1a_blastn_default,blastn（默认）,8,Pongo pygmaeus,gi|2695848089|ref|XM_054486121.2|,97.446,5207,0.0,8801.0,"PREDICTED: Pongo pygmaeus epidermal growth factor (EGF), transcript variant X2, mRNA"
+任务一 BLASTN·算法对比,t1a_blastn_default,blastn（默认）,9,unknown,gi|1676317344|ref|NM_001178131.3|,100.0,4870,0.0,8783.0,"Homo sapiens epidermal growth factor (EGF), transcript variant 3, mRNA"
+任务一 BLASTN·算法对比,t1a_blastn_default,blastn（默认）,10,Homo sapiens,homo_sapiens|ENST00000868531.1,98.895,4887,0.0,8610.0,cdna chromosome:GRCh38:4:109912884:110012266:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务一 BLASTN·算法对比,t1b_megablast,megablast,1,unknown,gi|1653960555|ref|NM_001963.6|,100.0,6388,0.0,11797.0,"Homo sapiens epidermal growth factor (EGF), transcript variant 1, mRNA"
+任务一 BLASTN·算法对比,t1b_megablast,megablast,2,Homo sapiens,homo_sapiens|ENST00000265171.10,100.0,6388,0.0,11797.0,cdna chromosome:GRCh38:4:109912883:110013766:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务一 BLASTN·算法对比,t1b_megablast,megablast,3,Pan paniscus,gi|2694443292|ref|XM_003830021.7|,98.968,6395,0.0,11435.0,"PREDICTED: Pan paniscus epidermal growth factor (EGF), mRNA"
+任务一 BLASTN·算法对比,t1b_megablast,megablast,4,Homo sapiens,homo_sapiens|ENST00000868530.1,99.572,5605,0.0,10196.0,cdna chromosome:GRCh38:4:109912884:110012960:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务一 BLASTN·算法对比,t1b_megablast,megablast,5,Pan troglodytes,pan_troglodytes|ENSPTRT00000030446.5,99.123,5587,0.0,10043.0,cdna chromosome:Pan_tro_3.0:4:112891595:112991072:1 gene:ENSPTRG00000016367.5 gene_biotype:protein_coding tran
+任务一 BLASTN·算法对比,t1b_megablast,megablast,6,Gorilla gorilla,gi|2695040446|ref|XM_019026088.4|,98.818,5583,0.0,9936.0,"PREDICTED: Gorilla gorilla gorilla epidermal growth factor (EGF), transcript variant X2, mRNA"
+任务一 BLASTN·算法对比,t1b_megablast,megablast,7,unknown,gi|1676317344|ref|NM_001178131.3|,100.0,4870,0.0,8994.0,"Homo sapiens epidermal growth factor (EGF), transcript variant 3, mRNA"
+任务一 BLASTN·算法对比,t1b_megablast,megablast,8,Pongo pygmaeus,gi|2695848088|ref|XM_054486120.2|,97.869,5210,0.0,8992.0,"PREDICTED: Pongo pygmaeus epidermal growth factor (EGF), transcript variant X1, mRNA"
+任务一 BLASTN·算法对比,t1b_megablast,megablast,9,Pongo pygmaeus,gi|2695848089|ref|XM_054486121.2|,97.484,5207,0.0,8857.0,"PREDICTED: Pongo pygmaeus epidermal growth factor (EGF), transcript variant X2, mRNA"
+任务一 BLASTN·算法对比,t1b_megablast,megablast,10,Pan troglodytes,gi|2697805316|ref|XM_517395.8|,99.112,4842,0.0,8702.0,"PREDICTED: Pan troglodytes epidermal growth factor (EGF), transcript variant X7, mRNA"
+任务一 BLASTN·算法对比,t1c_dcmegablast,discontiguous megablast,1,unknown,gi|1653960555|ref|NM_001963.6|,100.0,6388,0.0,11521.0,"Homo sapiens epidermal growth factor (EGF), transcript variant 1, mRNA"
+任务一 BLASTN·算法对比,t1c_dcmegablast,discontiguous megablast,2,Homo sapiens,homo_sapiens|ENST00000265171.10,100.0,6388,0.0,11521.0,cdna chromosome:GRCh38:4:109912883:110013766:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务一 BLASTN·算法对比,t1c_dcmegablast,discontiguous megablast,3,Pan paniscus,gi|2694443292|ref|XM_003830021.7|,98.968,6395,0.0,11221.0,"PREDICTED: Pan paniscus epidermal growth factor (EGF), mRNA"
+任务一 BLASTN·算法对比,t1c_dcmegablast,discontiguous megablast,4,Homo sapiens,homo_sapiens|ENST00000868530.1,99.572,5605,0.0,10018.0,cdna chromosome:GRCh38:4:109912884:110012960:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务一 BLASTN·算法对比,t1c_dcmegablast,discontiguous megablast,5,Pan troglodytes,pan_troglodytes|ENSPTRT00000030446.5,99.123,5587,0.0,9845.0,cdna chromosome:Pan_tro_3.0:4:112891595:112991072:1 gene:ENSPTRG00000016367.5 gene_biotype:protein_coding tran
+任务一 BLASTN·算法对比,t1c_dcmegablast,discontiguous megablast,6,Gorilla gorilla,gi|2695040446|ref|XM_019026088.4|,98.818,5583,0.0,9757.0,"PREDICTED: Gorilla gorilla gorilla epidermal growth factor (EGF), transcript variant X2, mRNA"
+任务一 BLASTN·算法对比,t1c_dcmegablast,discontiguous megablast,7,Pongo pygmaeus,gi|2695848088|ref|XM_054486120.2|,97.85,5210,0.0,8882.0,"PREDICTED: Pongo pygmaeus epidermal growth factor (EGF), transcript variant X1, mRNA"
+任务一 BLASTN·算法对比,t1c_dcmegablast,discontiguous megablast,8,Pongo pygmaeus,gi|2695848089|ref|XM_054486121.2|,97.446,5207,0.0,8801.0,"PREDICTED: Pongo pygmaeus epidermal growth factor (EGF), transcript variant X2, mRNA"
+任务一 BLASTN·算法对比,t1c_dcmegablast,discontiguous megablast,9,unknown,gi|1676317344|ref|NM_001178131.3|,100.0,4870,0.0,8783.0,"Homo sapiens epidermal growth factor (EGF), transcript variant 3, mRNA"
+任务一 BLASTN·算法对比,t1c_dcmegablast,discontiguous megablast,10,Homo sapiens,homo_sapiens|ENST00000868531.1,98.895,4887,0.0,8610.0,cdna chromosome:GRCh38:4:109912884:110012266:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务一 BLASTN·word size,t1d_blastn_w7,blastn word_size 7,1,unknown,gi|1653960555|ref|NM_001963.6|,100.0,6388,0.0,11521.0,"Homo sapiens epidermal growth factor (EGF), transcript variant 1, mRNA"
+任务一 BLASTN·word size,t1d_blastn_w7,blastn word_size 7,2,Homo sapiens,homo_sapiens|ENST00000265171.10,100.0,6388,0.0,11521.0,cdna chromosome:GRCh38:4:109912883:110013766:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务一 BLASTN·word size,t1d_blastn_w7,blastn word_size 7,3,Pan paniscus,gi|2694443292|ref|XM_003830021.7|,98.968,6395,0.0,11221.0,"PREDICTED: Pan paniscus epidermal growth factor (EGF), mRNA"
+任务一 BLASTN·word size,t1d_blastn_w7,blastn word_size 7,4,Homo sapiens,homo_sapiens|ENST00000868530.1,99.572,5605,0.0,10018.0,cdna chromosome:GRCh38:4:109912884:110012960:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务一 BLASTN·word size,t1d_blastn_w7,blastn word_size 7,5,Pan troglodytes,pan_troglodytes|ENSPTRT00000030446.5,99.123,5587,0.0,9845.0,cdna chromosome:Pan_tro_3.0:4:112891595:112991072:1 gene:ENSPTRG00000016367.5 gene_biotype:protein_coding tran
+任务一 BLASTN·word size,t1d_blastn_w7,blastn word_size 7,6,Gorilla gorilla,gi|2695040446|ref|XM_019026088.4|,98.818,5583,0.0,9757.0,"PREDICTED: Gorilla gorilla gorilla epidermal growth factor (EGF), transcript variant X2, mRNA"
+任务一 BLASTN·word size,t1d_blastn_w7,blastn word_size 7,7,Pongo pygmaeus,gi|2695848088|ref|XM_054486120.2|,97.85,5210,0.0,8882.0,"PREDICTED: Pongo pygmaeus epidermal growth factor (EGF), transcript variant X1, mRNA"
+任务一 BLASTN·word size,t1d_blastn_w7,blastn word_size 7,8,Pongo pygmaeus,gi|2695848089|ref|XM_054486121.2|,97.446,5207,0.0,8801.0,"PREDICTED: Pongo pygmaeus epidermal growth factor (EGF), transcript variant X2, mRNA"
+任务一 BLASTN·word size,t1d_blastn_w7,blastn word_size 7,9,unknown,gi|1676317344|ref|NM_001178131.3|,100.0,4870,0.0,8783.0,"Homo sapiens epidermal growth factor (EGF), transcript variant 3, mRNA"
+任务一 BLASTN·word size,t1d_blastn_w7,blastn word_size 7,10,Homo sapiens,homo_sapiens|ENST00000868531.1,98.895,4887,0.0,8610.0,cdna chromosome:GRCh38:4:109912884:110012266:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务一 BLASTN·word size,t1e_blastn_w11,blastn word_size 11,1,unknown,gi|1653960555|ref|NM_001963.6|,100.0,6388,0.0,11521.0,"Homo sapiens epidermal growth factor (EGF), transcript variant 1, mRNA"
+任务一 BLASTN·word size,t1e_blastn_w11,blastn word_size 11,2,Homo sapiens,homo_sapiens|ENST00000265171.10,100.0,6388,0.0,11521.0,cdna chromosome:GRCh38:4:109912883:110013766:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务一 BLASTN·word size,t1e_blastn_w11,blastn word_size 11,3,Pan paniscus,gi|2694443292|ref|XM_003830021.7|,98.968,6395,0.0,11221.0,"PREDICTED: Pan paniscus epidermal growth factor (EGF), mRNA"
+任务一 BLASTN·word size,t1e_blastn_w11,blastn word_size 11,4,Homo sapiens,homo_sapiens|ENST00000868530.1,99.572,5605,0.0,10018.0,cdna chromosome:GRCh38:4:109912884:110012960:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务一 BLASTN·word size,t1e_blastn_w11,blastn word_size 11,5,Pan troglodytes,pan_troglodytes|ENSPTRT00000030446.5,99.123,5587,0.0,9845.0,cdna chromosome:Pan_tro_3.0:4:112891595:112991072:1 gene:ENSPTRG00000016367.5 gene_biotype:protein_coding tran
+任务一 BLASTN·word size,t1e_blastn_w11,blastn word_size 11,6,Gorilla gorilla,gi|2695040446|ref|XM_019026088.4|,98.818,5583,0.0,9757.0,"PREDICTED: Gorilla gorilla gorilla epidermal growth factor (EGF), transcript variant X2, mRNA"
+任务一 BLASTN·word size,t1e_blastn_w11,blastn word_size 11,7,Pongo pygmaeus,gi|2695848088|ref|XM_054486120.2|,97.85,5210,0.0,8882.0,"PREDICTED: Pongo pygmaeus epidermal growth factor (EGF), transcript variant X1, mRNA"
+任务一 BLASTN·word size,t1e_blastn_w11,blastn word_size 11,8,Pongo pygmaeus,gi|2695848089|ref|XM_054486121.2|,97.446,5207,0.0,8801.0,"PREDICTED: Pongo pygmaeus epidermal growth factor (EGF), transcript variant X2, mRNA"
+任务一 BLASTN·word size,t1e_blastn_w11,blastn word_size 11,9,unknown,gi|1676317344|ref|NM_001178131.3|,100.0,4870,0.0,8783.0,"Homo sapiens epidermal growth factor (EGF), transcript variant 3, mRNA"
+任务一 BLASTN·word size,t1e_blastn_w11,blastn word_size 11,10,Homo sapiens,homo_sapiens|ENST00000868531.1,98.895,4887,0.0,8610.0,cdna chromosome:GRCh38:4:109912884:110012266:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务一 BLASTN·word size,t1f_blastn_w15,blastn word_size 15,1,unknown,gi|1653960555|ref|NM_001963.6|,100.0,6388,0.0,11521.0,"Homo sapiens epidermal growth factor (EGF), transcript variant 1, mRNA"
+任务一 BLASTN·word size,t1f_blastn_w15,blastn word_size 15,2,Homo sapiens,homo_sapiens|ENST00000265171.10,100.0,6388,0.0,11521.0,cdna chromosome:GRCh38:4:109912883:110013766:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务一 BLASTN·word size,t1f_blastn_w15,blastn word_size 15,3,Pan paniscus,gi|2694443292|ref|XM_003830021.7|,98.968,6395,0.0,11221.0,"PREDICTED: Pan paniscus epidermal growth factor (EGF), mRNA"
+任务一 BLASTN·word size,t1f_blastn_w15,blastn word_size 15,4,Homo sapiens,homo_sapiens|ENST00000868530.1,99.572,5605,0.0,10018.0,cdna chromosome:GRCh38:4:109912884:110012960:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务一 BLASTN·word size,t1f_blastn_w15,blastn word_size 15,5,Pan troglodytes,pan_troglodytes|ENSPTRT00000030446.5,99.123,5587,0.0,9845.0,cdna chromosome:Pan_tro_3.0:4:112891595:112991072:1 gene:ENSPTRG00000016367.5 gene_biotype:protein_coding tran
+任务一 BLASTN·word size,t1f_blastn_w15,blastn word_size 15,6,Gorilla gorilla,gi|2695040446|ref|XM_019026088.4|,98.818,5583,0.0,9757.0,"PREDICTED: Gorilla gorilla gorilla epidermal growth factor (EGF), transcript variant X2, mRNA"
+任务一 BLASTN·word size,t1f_blastn_w15,blastn word_size 15,7,Pongo pygmaeus,gi|2695848088|ref|XM_054486120.2|,97.85,5210,0.0,8882.0,"PREDICTED: Pongo pygmaeus epidermal growth factor (EGF), transcript variant X1, mRNA"
+任务一 BLASTN·word size,t1f_blastn_w15,blastn word_size 15,8,Pongo pygmaeus,gi|2695848089|ref|XM_054486121.2|,97.446,5207,0.0,8801.0,"PREDICTED: Pongo pygmaeus epidermal growth factor (EGF), transcript variant X2, mRNA"
+任务一 BLASTN·word size,t1f_blastn_w15,blastn word_size 15,9,unknown,gi|1676317344|ref|NM_001178131.3|,100.0,4870,0.0,8783.0,"Homo sapiens epidermal growth factor (EGF), transcript variant 3, mRNA"
+任务一 BLASTN·word size,t1f_blastn_w15,blastn word_size 15,10,Homo sapiens,homo_sapiens|ENST00000868531.1,98.895,4887,0.0,8610.0,cdna chromosome:GRCh38:4:109912884:110012266:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务一 BLASTN·E 值,t1g_blastn_e1e50,blastn E=1e-50,1,unknown,gi|1653960555|ref|NM_001963.6|,100.0,6388,0.0,11521.0,"Homo sapiens epidermal growth factor (EGF), transcript variant 1, mRNA"
+任务一 BLASTN·E 值,t1g_blastn_e1e50,blastn E=1e-50,2,Homo sapiens,homo_sapiens|ENST00000265171.10,100.0,6388,0.0,11521.0,cdna chromosome:GRCh38:4:109912883:110013766:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务一 BLASTN·E 值,t1g_blastn_e1e50,blastn E=1e-50,3,Pan paniscus,gi|2694443292|ref|XM_003830021.7|,98.968,6395,0.0,11221.0,"PREDICTED: Pan paniscus epidermal growth factor (EGF), mRNA"
+任务一 BLASTN·E 值,t1g_blastn_e1e50,blastn E=1e-50,4,Homo sapiens,homo_sapiens|ENST00000868530.1,99.572,5605,0.0,10018.0,cdna chromosome:GRCh38:4:109912884:110012960:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务一 BLASTN·E 值,t1g_blastn_e1e50,blastn E=1e-50,5,Pan troglodytes,pan_troglodytes|ENSPTRT00000030446.5,99.123,5587,0.0,9845.0,cdna chromosome:Pan_tro_3.0:4:112891595:112991072:1 gene:ENSPTRG00000016367.5 gene_biotype:protein_coding tran
+任务一 BLASTN·E 值,t1g_blastn_e1e50,blastn E=1e-50,6,Gorilla gorilla,gi|2695040446|ref|XM_019026088.4|,98.818,5583,0.0,9757.0,"PREDICTED: Gorilla gorilla gorilla epidermal growth factor (EGF), transcript variant X2, mRNA"
+任务一 BLASTN·E 值,t1g_blastn_e1e50,blastn E=1e-50,7,Pongo pygmaeus,gi|2695848088|ref|XM_054486120.2|,97.85,5210,0.0,8882.0,"PREDICTED: Pongo pygmaeus epidermal growth factor (EGF), transcript variant X1, mRNA"
+任务一 BLASTN·E 值,t1g_blastn_e1e50,blastn E=1e-50,8,Pongo pygmaeus,gi|2695848089|ref|XM_054486121.2|,97.446,5207,0.0,8801.0,"PREDICTED: Pongo pygmaeus epidermal growth factor (EGF), transcript variant X2, mRNA"
+任务一 BLASTN·E 值,t1g_blastn_e1e50,blastn E=1e-50,9,unknown,gi|1676317344|ref|NM_001178131.3|,100.0,4870,0.0,8783.0,"Homo sapiens epidermal growth factor (EGF), transcript variant 3, mRNA"
+任务一 BLASTN·E 值,t1g_blastn_e1e50,blastn E=1e-50,10,Homo sapiens,homo_sapiens|ENST00000868531.1,98.895,4887,0.0,8610.0,cdna chromosome:GRCh38:4:109912884:110012266:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务一 BLASTN·E 值,t1h_blastn_e1e5,blastn E=1e-5,1,unknown,gi|1653960555|ref|NM_001963.6|,100.0,6388,0.0,11521.0,"Homo sapiens epidermal growth factor (EGF), transcript variant 1, mRNA"
+任务一 BLASTN·E 值,t1h_blastn_e1e5,blastn E=1e-5,2,Homo sapiens,homo_sapiens|ENST00000265171.10,100.0,6388,0.0,11521.0,cdna chromosome:GRCh38:4:109912883:110013766:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务一 BLASTN·E 值,t1h_blastn_e1e5,blastn E=1e-5,3,Pan paniscus,gi|2694443292|ref|XM_003830021.7|,98.968,6395,0.0,11221.0,"PREDICTED: Pan paniscus epidermal growth factor (EGF), mRNA"
+任务一 BLASTN·E 值,t1h_blastn_e1e5,blastn E=1e-5,4,Homo sapiens,homo_sapiens|ENST00000868530.1,99.572,5605,0.0,10018.0,cdna chromosome:GRCh38:4:109912884:110012960:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务一 BLASTN·E 值,t1h_blastn_e1e5,blastn E=1e-5,5,Pan troglodytes,pan_troglodytes|ENSPTRT00000030446.5,99.123,5587,0.0,9845.0,cdna chromosome:Pan_tro_3.0:4:112891595:112991072:1 gene:ENSPTRG00000016367.5 gene_biotype:protein_coding tran
+任务一 BLASTN·E 值,t1h_blastn_e1e5,blastn E=1e-5,6,Gorilla gorilla,gi|2695040446|ref|XM_019026088.4|,98.818,5583,0.0,9757.0,"PREDICTED: Gorilla gorilla gorilla epidermal growth factor (EGF), transcript variant X2, mRNA"
+任务一 BLASTN·E 值,t1h_blastn_e1e5,blastn E=1e-5,7,Pongo pygmaeus,gi|2695848088|ref|XM_054486120.2|,97.85,5210,0.0,8882.0,"PREDICTED: Pongo pygmaeus epidermal growth factor (EGF), transcript variant X1, mRNA"
+任务一 BLASTN·E 值,t1h_blastn_e1e5,blastn E=1e-5,8,Pongo pygmaeus,gi|2695848089|ref|XM_054486121.2|,97.446,5207,0.0,8801.0,"PREDICTED: Pongo pygmaeus epidermal growth factor (EGF), transcript variant X2, mRNA"
+任务一 BLASTN·E 值,t1h_blastn_e1e5,blastn E=1e-5,9,unknown,gi|1676317344|ref|NM_001178131.3|,100.0,4870,0.0,8783.0,"Homo sapiens epidermal growth factor (EGF), transcript variant 3, mRNA"
+任务一 BLASTN·E 值,t1h_blastn_e1e5,blastn E=1e-5,10,Homo sapiens,homo_sapiens|ENST00000868531.1,98.895,4887,0.0,8610.0,cdna chromosome:GRCh38:4:109912884:110012266:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务一 BLASTN·E 值,t1i_blastn_e1000,blastn E=1000,1,unknown,gi|1653960555|ref|NM_001963.6|,100.0,6388,0.0,11521.0,"Homo sapiens epidermal growth factor (EGF), transcript variant 1, mRNA"
+任务一 BLASTN·E 值,t1i_blastn_e1000,blastn E=1000,2,Homo sapiens,homo_sapiens|ENST00000265171.10,100.0,6388,0.0,11521.0,cdna chromosome:GRCh38:4:109912883:110013766:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务一 BLASTN·E 值,t1i_blastn_e1000,blastn E=1000,3,Pan paniscus,gi|2694443292|ref|XM_003830021.7|,98.968,6395,0.0,11221.0,"PREDICTED: Pan paniscus epidermal growth factor (EGF), mRNA"
+任务一 BLASTN·E 值,t1i_blastn_e1000,blastn E=1000,4,Homo sapiens,homo_sapiens|ENST00000868530.1,99.572,5605,0.0,10018.0,cdna chromosome:GRCh38:4:109912884:110012960:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务一 BLASTN·E 值,t1i_blastn_e1000,blastn E=1000,5,Pan troglodytes,pan_troglodytes|ENSPTRT00000030446.5,99.123,5587,0.0,9845.0,cdna chromosome:Pan_tro_3.0:4:112891595:112991072:1 gene:ENSPTRG00000016367.5 gene_biotype:protein_coding tran
+任务一 BLASTN·E 值,t1i_blastn_e1000,blastn E=1000,6,Gorilla gorilla,gi|2695040446|ref|XM_019026088.4|,98.818,5583,0.0,9757.0,"PREDICTED: Gorilla gorilla gorilla epidermal growth factor (EGF), transcript variant X2, mRNA"
+任务一 BLASTN·E 值,t1i_blastn_e1000,blastn E=1000,7,Pongo pygmaeus,gi|2695848088|ref|XM_054486120.2|,97.85,5210,0.0,8882.0,"PREDICTED: Pongo pygmaeus epidermal growth factor (EGF), transcript variant X1, mRNA"
+任务一 BLASTN·E 值,t1i_blastn_e1000,blastn E=1000,8,Pongo pygmaeus,gi|2695848089|ref|XM_054486121.2|,97.446,5207,0.0,8801.0,"PREDICTED: Pongo pygmaeus epidermal growth factor (EGF), transcript variant X2, mRNA"
+任务一 BLASTN·E 值,t1i_blastn_e1000,blastn E=1000,9,unknown,gi|1676317344|ref|NM_001178131.3|,100.0,4870,0.0,8783.0,"Homo sapiens epidermal growth factor (EGF), transcript variant 3, mRNA"
+任务一 BLASTN·E 值,t1i_blastn_e1000,blastn E=1000,10,Homo sapiens,homo_sapiens|ENST00000868531.1,98.895,4887,0.0,8610.0,cdna chromosome:GRCh38:4:109912884:110012266:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务二 BLASTP·全长蛋白,t2a_blastp_default,blastp（默认）,1,Homo sapiens,gi|166362728|ref|NP_001954.2|,100.0,1207,0.0,2509.0,pro-epidermal growth factor isoform 1 preproprotein [Homo sapiens]
+任务二 BLASTP·全长蛋白,t2a_blastp_default,blastp（默认）,2,unknown,sp|P01133|EGF_HUMAN,100.0,1207,0.0,2509.0,Pro-epidermal growth factor OS=Homo sapiens OX=9606 GN=EGF PE=1 SV=2
+任务二 BLASTP·全长蛋白,t2a_blastp_default,blastp（默认）,3,Pan paniscus,gi|397519856|ref|XP_003830069.1|,98.674,1207,0.0,2480.0,pro-epidermal growth factor [Pan paniscus]
+任务二 BLASTP·全长蛋白,t2a_blastp_default,blastp（默认）,4,Pan troglodytes,gi|2468663339|ref|XP_517395.5|,98.509,1207,0.0,2475.0,pro-epidermal growth factor isoform X7 [Pan troglodytes]
+任务二 BLASTP·全长蛋白,t2a_blastp_default,blastp（默认）,5,Pan troglodytes,gi|2468663335|ref|XP_009446410.4|,97.86,1215,0.0,2467.0,pro-epidermal growth factor isoform X5 [Pan troglodytes]
+任务二 BLASTP·全长蛋白,t2a_blastp_default,blastp（默认）,6,Pan troglodytes,gi|2468663331|ref|XP_016807514.3|,97.22,1223,0.0,2460.0,pro-epidermal growth factor isoform X3 [Pan troglodytes]
+任务二 BLASTP·全长蛋白,t2a_blastp_default,blastp（默认）,7,Pan troglodytes,gi|2468663333|ref|XP_054539260.1|,97.22,1223,0.0,2460.0,pro-epidermal growth factor isoform X2 [Pan troglodytes]
+任务二 BLASTP·全长蛋白,t2a_blastp_default,blastp（默认）,8,Pan troglodytes,gi|2468663329|ref|XP_024211956.2|,97.22,1223,0.0,2459.0,pro-epidermal growth factor isoform X4 [Pan troglodytes]
+任务二 BLASTP·全长蛋白,t2a_blastp_default,blastp（默认）,9,Pan troglodytes,gi|2468663327|ref|XP_054539259.1|,96.588,1231,0.0,2454.0,pro-epidermal growth factor isoform X1 [Pan troglodytes]
+任务二 BLASTP·全长蛋白,t2a_blastp_default,blastp（默认）,10,Pongo abelii,gi|2464180314|ref|XP_002815105.3|,96.523,1208,0.0,2423.0,pro-epidermal growth factor isoform X10 [Pongo abelii]
+任务二 BLASTP·word size,t2b_blastp_w2,blastp word_size 2,1,Homo sapiens,gi|166362728|ref|NP_001954.2|,100.0,1207,0.0,2509.0,pro-epidermal growth factor isoform 1 preproprotein [Homo sapiens]
+任务二 BLASTP·word size,t2b_blastp_w2,blastp word_size 2,2,unknown,sp|P01133|EGF_HUMAN,100.0,1207,0.0,2509.0,Pro-epidermal growth factor OS=Homo sapiens OX=9606 GN=EGF PE=1 SV=2
+任务二 BLASTP·word size,t2b_blastp_w2,blastp word_size 2,3,Pan paniscus,gi|397519856|ref|XP_003830069.1|,98.674,1207,0.0,2480.0,pro-epidermal growth factor [Pan paniscus]
+任务二 BLASTP·word size,t2b_blastp_w2,blastp word_size 2,4,Pan troglodytes,gi|2468663339|ref|XP_517395.5|,98.509,1207,0.0,2475.0,pro-epidermal growth factor isoform X7 [Pan troglodytes]
+任务二 BLASTP·word size,t2b_blastp_w2,blastp word_size 2,5,Pan troglodytes,gi|2468663335|ref|XP_009446410.4|,97.86,1215,0.0,2467.0,pro-epidermal growth factor isoform X5 [Pan troglodytes]
+任务二 BLASTP·word size,t2b_blastp_w2,blastp word_size 2,6,Pan troglodytes,gi|2468663331|ref|XP_016807514.3|,97.22,1223,0.0,2460.0,pro-epidermal growth factor isoform X3 [Pan troglodytes]
+任务二 BLASTP·word size,t2b_blastp_w2,blastp word_size 2,7,Pan troglodytes,gi|2468663333|ref|XP_054539260.1|,97.22,1223,0.0,2460.0,pro-epidermal growth factor isoform X2 [Pan troglodytes]
+任务二 BLASTP·word size,t2b_blastp_w2,blastp word_size 2,8,Pan troglodytes,gi|2468663329|ref|XP_024211956.2|,97.22,1223,0.0,2459.0,pro-epidermal growth factor isoform X4 [Pan troglodytes]
+任务二 BLASTP·word size,t2b_blastp_w2,blastp word_size 2,9,Pan troglodytes,gi|2468663327|ref|XP_054539259.1|,96.588,1231,0.0,2454.0,pro-epidermal growth factor isoform X1 [Pan troglodytes]
+任务二 BLASTP·word size,t2b_blastp_w2,blastp word_size 2,10,Pongo abelii,gi|2464180314|ref|XP_002815105.3|,96.523,1208,0.0,2423.0,pro-epidermal growth factor isoform X10 [Pongo abelii]
+任务二 BLASTP·word size,t2c_blastp_w6,blastp word_size 6,1,Homo sapiens,gi|166362728|ref|NP_001954.2|,100.0,1207,0.0,2509.0,pro-epidermal growth factor isoform 1 preproprotein [Homo sapiens]
+任务二 BLASTP·word size,t2c_blastp_w6,blastp word_size 6,2,unknown,sp|P01133|EGF_HUMAN,100.0,1207,0.0,2509.0,Pro-epidermal growth factor OS=Homo sapiens OX=9606 GN=EGF PE=1 SV=2
+任务二 BLASTP·word size,t2c_blastp_w6,blastp word_size 6,3,Pan paniscus,gi|397519856|ref|XP_003830069.1|,98.674,1207,0.0,2480.0,pro-epidermal growth factor [Pan paniscus]
+任务二 BLASTP·word size,t2c_blastp_w6,blastp word_size 6,4,Pan troglodytes,gi|2468663339|ref|XP_517395.5|,98.509,1207,0.0,2475.0,pro-epidermal growth factor isoform X7 [Pan troglodytes]
+任务二 BLASTP·word size,t2c_blastp_w6,blastp word_size 6,5,Pan troglodytes,gi|2468663335|ref|XP_009446410.4|,97.86,1215,0.0,2467.0,pro-epidermal growth factor isoform X5 [Pan troglodytes]
+任务二 BLASTP·word size,t2c_blastp_w6,blastp word_size 6,6,Pan troglodytes,gi|2468663331|ref|XP_016807514.3|,97.22,1223,0.0,2460.0,pro-epidermal growth factor isoform X3 [Pan troglodytes]
+任务二 BLASTP·word size,t2c_blastp_w6,blastp word_size 6,7,Pan troglodytes,gi|2468663333|ref|XP_054539260.1|,97.22,1223,0.0,2460.0,pro-epidermal growth factor isoform X2 [Pan troglodytes]
+任务二 BLASTP·word size,t2c_blastp_w6,blastp word_size 6,8,Pan troglodytes,gi|2468663329|ref|XP_024211956.2|,97.22,1223,0.0,2459.0,pro-epidermal growth factor isoform X4 [Pan troglodytes]
+任务二 BLASTP·word size,t2c_blastp_w6,blastp word_size 6,9,Pan troglodytes,gi|2468663327|ref|XP_054539259.1|,96.588,1231,0.0,2454.0,pro-epidermal growth factor isoform X1 [Pan troglodytes]
+任务二 BLASTP·word size,t2c_blastp_w6,blastp word_size 6,10,Pongo abelii,gi|2464180314|ref|XP_002815105.3|,96.523,1208,0.0,2423.0,pro-epidermal growth factor isoform X10 [Pongo abelii]
+任务二 BLASTP·替换矩阵,t2d_blastp_blosum45,blastp BLOSUM45,1,Homo sapiens,gi|166362728|ref|NP_001954.2|,100.0,1207,0.0,2504.0,pro-epidermal growth factor isoform 1 preproprotein [Homo sapiens]
+任务二 BLASTP·替换矩阵,t2d_blastp_blosum45,blastp BLOSUM45,2,unknown,sp|P01133|EGF_HUMAN,100.0,1207,0.0,2504.0,Pro-epidermal growth factor OS=Homo sapiens OX=9606 GN=EGF PE=1 SV=2
+任务二 BLASTP·替换矩阵,t2d_blastp_blosum45,blastp BLOSUM45,3,Pan paniscus,gi|397519856|ref|XP_003830069.1|,98.674,1207,0.0,2477.0,pro-epidermal growth factor [Pan paniscus]
+任务二 BLASTP·替换矩阵,t2d_blastp_blosum45,blastp BLOSUM45,4,Pan troglodytes,gi|2468663339|ref|XP_517395.5|,98.509,1207,0.0,2473.0,pro-epidermal growth factor isoform X7 [Pan troglodytes]
+任务二 BLASTP·替换矩阵,t2d_blastp_blosum45,blastp BLOSUM45,5,Pan troglodytes,gi|2468663335|ref|XP_009446410.4|,97.86,1215,0.0,2463.0,pro-epidermal growth factor isoform X5 [Pan troglodytes]
+任务二 BLASTP·替换矩阵,t2d_blastp_blosum45,blastp BLOSUM45,6,Pan troglodytes,gi|2468663331|ref|XP_016807514.3|,97.22,1223,0.0,2456.0,pro-epidermal growth factor isoform X3 [Pan troglodytes]
+任务二 BLASTP·替换矩阵,t2d_blastp_blosum45,blastp BLOSUM45,7,Pan troglodytes,gi|2468663329|ref|XP_024211956.2|,97.22,1223,0.0,2455.0,pro-epidermal growth factor isoform X4 [Pan troglodytes]
+任务二 BLASTP·替换矩阵,t2d_blastp_blosum45,blastp BLOSUM45,8,Pan troglodytes,gi|2468663333|ref|XP_054539260.1|,97.22,1223,0.0,2454.0,pro-epidermal growth factor isoform X2 [Pan troglodytes]
+任务二 BLASTP·替换矩阵,t2d_blastp_blosum45,blastp BLOSUM45,9,Pan troglodytes,gi|2468663327|ref|XP_054539259.1|,96.588,1231,0.0,2447.0,pro-epidermal growth factor isoform X1 [Pan troglodytes]
+任务二 BLASTP·替换矩阵,t2d_blastp_blosum45,blastp BLOSUM45,10,Pongo abelii,gi|2464180314|ref|XP_002815105.3|,96.523,1208,0.0,2420.0,pro-epidermal growth factor isoform X10 [Pongo abelii]
+任务二 BLASTP·替换矩阵,t2e_blastp_blosum90,blastp BLOSUM90,1,Homo sapiens,gi|166362728|ref|NP_001954.2|,100.0,1207,0.0,2643.0,pro-epidermal growth factor isoform 1 preproprotein [Homo sapiens]
+任务二 BLASTP·替换矩阵,t2e_blastp_blosum90,blastp BLOSUM90,2,unknown,sp|P01133|EGF_HUMAN,100.0,1207,0.0,2643.0,Pro-epidermal growth factor OS=Homo sapiens OX=9606 GN=EGF PE=1 SV=2
+任务二 BLASTP·替换矩阵,t2e_blastp_blosum90,blastp BLOSUM90,3,Pan paniscus,gi|397519856|ref|XP_003830069.1|,98.674,1207,0.0,2615.0,pro-epidermal growth factor [Pan paniscus]
+任务二 BLASTP·替换矩阵,t2e_blastp_blosum90,blastp BLOSUM90,4,Pan troglodytes,gi|2468663339|ref|XP_517395.5|,98.509,1207,0.0,2611.0,pro-epidermal growth factor isoform X7 [Pan troglodytes]
+任务二 BLASTP·替换矩阵,t2e_blastp_blosum90,blastp BLOSUM90,5,Pan troglodytes,gi|2468663335|ref|XP_009446410.4|,97.86,1215,0.0,2602.0,pro-epidermal growth factor isoform X5 [Pan troglodytes]
+任务二 BLASTP·替换矩阵,t2e_blastp_blosum90,blastp BLOSUM90,6,Pan troglodytes,gi|2468663331|ref|XP_016807514.3|,97.22,1223,0.0,2594.0,pro-epidermal growth factor isoform X3 [Pan troglodytes]
+任务二 BLASTP·替换矩阵,t2e_blastp_blosum90,blastp BLOSUM90,7,Pan troglodytes,gi|2468663329|ref|XP_024211956.2|,97.22,1223,0.0,2593.0,pro-epidermal growth factor isoform X4 [Pan troglodytes]
+任务二 BLASTP·替换矩阵,t2e_blastp_blosum90,blastp BLOSUM90,8,Pan troglodytes,gi|2468663333|ref|XP_054539260.1|,97.22,1223,0.0,2592.0,pro-epidermal growth factor isoform X2 [Pan troglodytes]
+任务二 BLASTP·替换矩阵,t2e_blastp_blosum90,blastp BLOSUM90,9,Pan troglodytes,gi|2468663327|ref|XP_054539259.1|,96.588,1231,0.0,2586.0,pro-epidermal growth factor isoform X1 [Pan troglodytes]
+任务二 BLASTP·替换矩阵,t2e_blastp_blosum90,blastp BLOSUM90,10,Pongo abelii,gi|2464180314|ref|XP_002815105.3|,96.523,1208,0.0,2552.0,pro-epidermal growth factor isoform X10 [Pongo abelii]
+任务二 BLASTP·E 值,t2f_blastp_e1e3,blastp E=1e-3,1,Homo sapiens,gi|166362728|ref|NP_001954.2|,100.0,1207,0.0,2509.0,pro-epidermal growth factor isoform 1 preproprotein [Homo sapiens]
+任务二 BLASTP·E 值,t2f_blastp_e1e3,blastp E=1e-3,2,unknown,sp|P01133|EGF_HUMAN,100.0,1207,0.0,2509.0,Pro-epidermal growth factor OS=Homo sapiens OX=9606 GN=EGF PE=1 SV=2
+任务二 BLASTP·E 值,t2f_blastp_e1e3,blastp E=1e-3,3,Pan paniscus,gi|397519856|ref|XP_003830069.1|,98.674,1207,0.0,2480.0,pro-epidermal growth factor [Pan paniscus]
+任务二 BLASTP·E 值,t2f_blastp_e1e3,blastp E=1e-3,4,Pan troglodytes,gi|2468663339|ref|XP_517395.5|,98.509,1207,0.0,2475.0,pro-epidermal growth factor isoform X7 [Pan troglodytes]
+任务二 BLASTP·E 值,t2f_blastp_e1e3,blastp E=1e-3,5,Pan troglodytes,gi|2468663335|ref|XP_009446410.4|,97.86,1215,0.0,2467.0,pro-epidermal growth factor isoform X5 [Pan troglodytes]
+任务二 BLASTP·E 值,t2f_blastp_e1e3,blastp E=1e-3,6,Pan troglodytes,gi|2468663331|ref|XP_016807514.3|,97.22,1223,0.0,2460.0,pro-epidermal growth factor isoform X3 [Pan troglodytes]
+任务二 BLASTP·E 值,t2f_blastp_e1e3,blastp E=1e-3,7,Pan troglodytes,gi|2468663333|ref|XP_054539260.1|,97.22,1223,0.0,2460.0,pro-epidermal growth factor isoform X2 [Pan troglodytes]
+任务二 BLASTP·E 值,t2f_blastp_e1e3,blastp E=1e-3,8,Pan troglodytes,gi|2468663329|ref|XP_024211956.2|,97.22,1223,0.0,2459.0,pro-epidermal growth factor isoform X4 [Pan troglodytes]
+任务二 BLASTP·E 值,t2f_blastp_e1e3,blastp E=1e-3,9,Pan troglodytes,gi|2468663327|ref|XP_054539259.1|,96.588,1231,0.0,2454.0,pro-epidermal growth factor isoform X1 [Pan troglodytes]
+任务二 BLASTP·E 值,t2f_blastp_e1e3,blastp E=1e-3,10,Pongo abelii,gi|2464180314|ref|XP_002815105.3|,96.523,1208,0.0,2423.0,pro-epidermal growth factor isoform X10 [Pongo abelii]
+任务二 BLASTP·E 值,t2g_blastp_e1000,blastp E=1000,1,Homo sapiens,gi|166362728|ref|NP_001954.2|,100.0,1207,0.0,2509.0,pro-epidermal growth factor isoform 1 preproprotein [Homo sapiens]
+任务二 BLASTP·E 值,t2g_blastp_e1000,blastp E=1000,2,unknown,sp|P01133|EGF_HUMAN,100.0,1207,0.0,2509.0,Pro-epidermal growth factor OS=Homo sapiens OX=9606 GN=EGF PE=1 SV=2
+任务二 BLASTP·E 值,t2g_blastp_e1000,blastp E=1000,3,Pan paniscus,gi|397519856|ref|XP_003830069.1|,98.674,1207,0.0,2480.0,pro-epidermal growth factor [Pan paniscus]
+任务二 BLASTP·E 值,t2g_blastp_e1000,blastp E=1000,4,Pan troglodytes,gi|2468663339|ref|XP_517395.5|,98.509,1207,0.0,2475.0,pro-epidermal growth factor isoform X7 [Pan troglodytes]
+任务二 BLASTP·E 值,t2g_blastp_e1000,blastp E=1000,5,Pan troglodytes,gi|2468663335|ref|XP_009446410.4|,97.86,1215,0.0,2467.0,pro-epidermal growth factor isoform X5 [Pan troglodytes]
+任务二 BLASTP·E 值,t2g_blastp_e1000,blastp E=1000,6,Pan troglodytes,gi|2468663331|ref|XP_016807514.3|,97.22,1223,0.0,2460.0,pro-epidermal growth factor isoform X3 [Pan troglodytes]
+任务二 BLASTP·E 值,t2g_blastp_e1000,blastp E=1000,7,Pan troglodytes,gi|2468663333|ref|XP_054539260.1|,97.22,1223,0.0,2460.0,pro-epidermal growth factor isoform X2 [Pan troglodytes]
+任务二 BLASTP·E 值,t2g_blastp_e1000,blastp E=1000,8,Pan troglodytes,gi|2468663329|ref|XP_024211956.2|,97.22,1223,0.0,2459.0,pro-epidermal growth factor isoform X4 [Pan troglodytes]
+任务二 BLASTP·E 值,t2g_blastp_e1000,blastp E=1000,9,Pan troglodytes,gi|2468663327|ref|XP_054539259.1|,96.588,1231,0.0,2454.0,pro-epidermal growth factor isoform X1 [Pan troglodytes]
+任务二 BLASTP·E 值,t2g_blastp_e1000,blastp E=1000,10,Pongo abelii,gi|2464180314|ref|XP_002815105.3|,96.523,1208,0.0,2423.0,pro-epidermal growth factor isoform X10 [Pongo abelii]
+任务二 BLASTP·短序列,t2h_blastp_short_def,27 aa 短片段（默认）,1,Homo sapiens,gi|1258116119|ref|NP_001343950.1|,100.0,27,1.07e-12,61.6,pro-epidermal growth factor isoform 4 precursor [Homo sapiens]
+任务二 BLASTP·短序列,t2h_blastp_short_def,27 aa 短片段（默认）,2,Homo sapiens,gi|296011013|ref|NP_001171601.1|,100.0,27,1.17e-12,61.6,pro-epidermal growth factor isoform 2 precursor [Homo sapiens]
+任务二 BLASTP·短序列,t2h_blastp_short_def,27 aa 短片段（默认）,3,Pan paniscus,gi|397519856|ref|XP_003830069.1|,100.0,27,1.22e-12,61.6,pro-epidermal growth factor [Pan paniscus]
+任务二 BLASTP·短序列,t2h_blastp_short_def,27 aa 短片段（默认）,4,Pan troglodytes,gi|2468663339|ref|XP_517395.5|,100.0,27,1.23e-12,61.6,pro-epidermal growth factor isoform X7 [Pan troglodytes]
+任务二 BLASTP·短序列,t2h_blastp_short_def,27 aa 短片段（默认）,5,Homo sapiens,gi|296011015|ref|NP_001171602.1|,100.0,27,1.23e-12,61.6,pro-epidermal growth factor isoform 3 precursor [Homo sapiens]
+任务二 BLASTP·短序列,t2h_blastp_short_def,27 aa 短片段（默认）,6,Pan troglodytes,gi|2468663335|ref|XP_009446410.4|,100.0,27,1.24e-12,61.6,pro-epidermal growth factor isoform X5 [Pan troglodytes]
+任务二 BLASTP·短序列,t2h_blastp_short_def,27 aa 短片段（默认）,7,Homo sapiens,gi|166362728|ref|NP_001954.2|,100.0,27,1.26e-12,61.6,pro-epidermal growth factor isoform 1 preproprotein [Homo sapiens]
+任务二 BLASTP·短序列,t2h_blastp_short_def,27 aa 短片段（默认）,8,unknown,sp|P01133|EGF_HUMAN,100.0,27,1.26e-12,61.6,Pro-epidermal growth factor OS=Homo sapiens OX=9606 GN=EGF PE=1 SV=2
+任务二 BLASTP·短序列,t2h_blastp_short_def,27 aa 短片段（默认）,9,Pan troglodytes,gi|2468663331|ref|XP_016807514.3|,100.0,27,1.27e-12,61.6,pro-epidermal growth factor isoform X3 [Pan troglodytes]
+任务二 BLASTP·短序列,t2h_blastp_short_def,27 aa 短片段（默认）,10,Pan troglodytes,gi|2468663333|ref|XP_054539260.1|,100.0,27,1.28e-12,61.6,pro-epidermal growth factor isoform X2 [Pan troglodytes]
+任务二 BLASTP·短序列,t2i_blastp_short_w2,27 aa 短片段 word_size 2,1,Homo sapiens,gi|1258116119|ref|NP_001343950.1|,100.0,27,1.07e-12,61.6,pro-epidermal growth factor isoform 4 precursor [Homo sapiens]
+任务二 BLASTP·短序列,t2i_blastp_short_w2,27 aa 短片段 word_size 2,2,Homo sapiens,gi|296011013|ref|NP_001171601.1|,100.0,27,1.17e-12,61.6,pro-epidermal growth factor isoform 2 precursor [Homo sapiens]
+任务二 BLASTP·短序列,t2i_blastp_short_w2,27 aa 短片段 word_size 2,3,Pan paniscus,gi|397519856|ref|XP_003830069.1|,100.0,27,1.22e-12,61.6,pro-epidermal growth factor [Pan paniscus]
+任务二 BLASTP·短序列,t2i_blastp_short_w2,27 aa 短片段 word_size 2,4,Pan troglodytes,gi|2468663339|ref|XP_517395.5|,100.0,27,1.23e-12,61.6,pro-epidermal growth factor isoform X7 [Pan troglodytes]
+任务二 BLASTP·短序列,t2i_blastp_short_w2,27 aa 短片段 word_size 2,5,Homo sapiens,gi|296011015|ref|NP_001171602.1|,100.0,27,1.23e-12,61.6,pro-epidermal growth factor isoform 3 precursor [Homo sapiens]
+任务二 BLASTP·短序列,t2i_blastp_short_w2,27 aa 短片段 word_size 2,6,Pan troglodytes,gi|2468663335|ref|XP_009446410.4|,100.0,27,1.24e-12,61.6,pro-epidermal growth factor isoform X5 [Pan troglodytes]
+任务二 BLASTP·短序列,t2i_blastp_short_w2,27 aa 短片段 word_size 2,7,Homo sapiens,gi|166362728|ref|NP_001954.2|,100.0,27,1.26e-12,61.6,pro-epidermal growth factor isoform 1 preproprotein [Homo sapiens]
+任务二 BLASTP·短序列,t2i_blastp_short_w2,27 aa 短片段 word_size 2,8,unknown,sp|P01133|EGF_HUMAN,100.0,27,1.26e-12,61.6,Pro-epidermal growth factor OS=Homo sapiens OX=9606 GN=EGF PE=1 SV=2
+任务二 BLASTP·短序列,t2i_blastp_short_w2,27 aa 短片段 word_size 2,9,Pan troglodytes,gi|2468663331|ref|XP_016807514.3|,100.0,27,1.27e-12,61.6,pro-epidermal growth factor isoform X3 [Pan troglodytes]
+任务二 BLASTP·短序列,t2i_blastp_short_w2,27 aa 短片段 word_size 2,10,Pan troglodytes,gi|2468663333|ref|XP_054539260.1|,100.0,27,1.28e-12,61.6,pro-epidermal growth factor isoform X2 [Pan troglodytes]
+任务二 BLASTP·短序列,t2j_blastp_short_w3,27 aa 短片段 word_size 3,1,Homo sapiens,gi|1258116119|ref|NP_001343950.1|,100.0,27,1.07e-12,61.6,pro-epidermal growth factor isoform 4 precursor [Homo sapiens]
+任务二 BLASTP·短序列,t2j_blastp_short_w3,27 aa 短片段 word_size 3,2,Homo sapiens,gi|296011013|ref|NP_001171601.1|,100.0,27,1.17e-12,61.6,pro-epidermal growth factor isoform 2 precursor [Homo sapiens]
+任务二 BLASTP·短序列,t2j_blastp_short_w3,27 aa 短片段 word_size 3,3,Pan paniscus,gi|397519856|ref|XP_003830069.1|,100.0,27,1.22e-12,61.6,pro-epidermal growth factor [Pan paniscus]
+任务二 BLASTP·短序列,t2j_blastp_short_w3,27 aa 短片段 word_size 3,4,Pan troglodytes,gi|2468663339|ref|XP_517395.5|,100.0,27,1.23e-12,61.6,pro-epidermal growth factor isoform X7 [Pan troglodytes]
+任务二 BLASTP·短序列,t2j_blastp_short_w3,27 aa 短片段 word_size 3,5,Homo sapiens,gi|296011015|ref|NP_001171602.1|,100.0,27,1.23e-12,61.6,pro-epidermal growth factor isoform 3 precursor [Homo sapiens]
+任务二 BLASTP·短序列,t2j_blastp_short_w3,27 aa 短片段 word_size 3,6,Pan troglodytes,gi|2468663335|ref|XP_009446410.4|,100.0,27,1.24e-12,61.6,pro-epidermal growth factor isoform X5 [Pan troglodytes]
+任务二 BLASTP·短序列,t2j_blastp_short_w3,27 aa 短片段 word_size 3,7,Homo sapiens,gi|166362728|ref|NP_001954.2|,100.0,27,1.26e-12,61.6,pro-epidermal growth factor isoform 1 preproprotein [Homo sapiens]
+任务二 BLASTP·短序列,t2j_blastp_short_w3,27 aa 短片段 word_size 3,8,unknown,sp|P01133|EGF_HUMAN,100.0,27,1.26e-12,61.6,Pro-epidermal growth factor OS=Homo sapiens OX=9606 GN=EGF PE=1 SV=2
+任务二 BLASTP·短序列,t2j_blastp_short_w3,27 aa 短片段 word_size 3,9,Pan troglodytes,gi|2468663331|ref|XP_016807514.3|,100.0,27,1.27e-12,61.6,pro-epidermal growth factor isoform X3 [Pan troglodytes]
+任务二 BLASTP·短序列,t2j_blastp_short_w3,27 aa 短片段 word_size 3,10,Pan troglodytes,gi|2468663333|ref|XP_054539260.1|,100.0,27,1.28e-12,61.6,pro-epidermal growth factor isoform X2 [Pan troglodytes]
+任务四 翻译搜索·翻译搜索,t4a_blastx,BLASTX（mRNA 查蛋白库）,1,Homo sapiens,gi|166362728|ref|NP_001954.2|,100.0,1198,0.0,2454.0,pro-epidermal growth factor isoform 1 preproprotein [Homo sapiens]
+任务四 翻译搜索·翻译搜索,t4a_blastx,BLASTX（mRNA 查蛋白库）,2,unknown,sp|P01133|EGF_HUMAN,100.0,1198,0.0,2454.0,Pro-epidermal growth factor OS=Homo sapiens OX=9606 GN=EGF PE=1 SV=2
+任务四 翻译搜索·翻译搜索,t4a_blastx,BLASTX（mRNA 查蛋白库）,3,Pan paniscus,gi|397519856|ref|XP_003830069.1|,98.664,1198,0.0,2428.0,pro-epidermal growth factor [Pan paniscus]
+任务四 翻译搜索·翻译搜索,t4a_blastx,BLASTX（mRNA 查蛋白库）,4,Pan troglodytes,gi|2468663339|ref|XP_517395.5|,98.581,1198,0.0,2424.0,pro-epidermal growth factor isoform X7 [Pan troglodytes]
+任务四 翻译搜索·翻译搜索,t4a_blastx,BLASTX（mRNA 查蛋白库）,5,Pan troglodytes,gi|2468663335|ref|XP_009446410.4|,97.927,1206,0.0,2416.0,pro-epidermal growth factor isoform X5 [Pan troglodytes]
+任务四 翻译搜索·翻译搜索,t4a_blastx,BLASTX（mRNA 查蛋白库）,6,Pan troglodytes,gi|2468663329|ref|XP_024211956.2|,97.282,1214,0.0,2410.0,pro-epidermal growth factor isoform X4 [Pan troglodytes]
+任务四 翻译搜索·翻译搜索,t4a_blastx,BLASTX（mRNA 查蛋白库）,7,Pan troglodytes,gi|2468663333|ref|XP_054539260.1|,97.282,1214,0.0,2410.0,pro-epidermal growth factor isoform X2 [Pan troglodytes]
+任务四 翻译搜索·翻译搜索,t4a_blastx,BLASTX（mRNA 查蛋白库）,8,Pan troglodytes,gi|2468663331|ref|XP_016807514.3|,97.282,1214,0.0,2408.0,pro-epidermal growth factor isoform X3 [Pan troglodytes]
+任务四 翻译搜索·翻译搜索,t4a_blastx,BLASTX（mRNA 查蛋白库）,9,Pan troglodytes,gi|2468663327|ref|XP_054539259.1|,96.645,1222,0.0,2402.0,pro-epidermal growth factor isoform X1 [Pan troglodytes]
+任务四 翻译搜索·翻译搜索,t4a_blastx,BLASTX（mRNA 查蛋白库）,10,Symphalangus syndactylus,gi|2491666416|ref|XP_055129957.1|,96.58,1199,0.0,2371.0,pro-epidermal growth factor isoform X1 [Symphalangus syndactylus]
+任务四 翻译搜索·翻译搜索,t4b_tblastx_small,TBLASTX（mRNA 查家族 mRNA 库）,1,unknown,ref|NM_001963.6|,100.0,1023,0.0,2581.0,"Homo sapiens epidermal growth factor (EGF), transcript variant 1, mRNA"
+任务四 翻译搜索·翻译搜索,t4b_tblastx_small,TBLASTX（mRNA 查家族 mRNA 库）,2,Pan paniscus,ref|XM_003830021.7|,98.631,1023,0.0,2552.0,"PREDICTED: Pan paniscus epidermal growth factor (EGF), mRNA"
+任务四 翻译搜索·翻译搜索,t4b_tblastx_small,TBLASTX（mRNA 查家族 mRNA 库）,3,Pan troglodytes,ref|XM_009448135.5|,98.534,1023,0.0,2547.0,"PREDICTED: Pan troglodytes epidermal growth factor (EGF), transcript variant X5, mRNA"
+任务四 翻译搜索·翻译搜索,t4b_tblastx_small,TBLASTX（mRNA 查家族 mRNA 库）,4,Pan troglodytes,ref|XM_517395.8|,98.534,1023,0.0,2547.0,"PREDICTED: Pan troglodytes epidermal growth factor (EGF), transcript variant X7, mRNA"
+任务四 翻译搜索·翻译搜索,t4b_tblastx_small,TBLASTX（mRNA 查家族 mRNA 库）,5,Gorilla gorilla,ref|XM_019026089.4|,98.534,1023,0.0,2546.0,"PREDICTED: Gorilla gorilla gorilla epidermal growth factor (EGF), transcript variant X1, mRNA"
+任务四 翻译搜索·翻译搜索,t4b_tblastx_small,TBLASTX（mRNA 查家族 mRNA 库）,6,Gorilla gorilla,ref|XM_019026088.4|,98.534,1023,0.0,2546.0,"PREDICTED: Gorilla gorilla gorilla epidermal growth factor (EGF), transcript variant X2, mRNA"
+任务四 翻译搜索·翻译搜索,t4b_tblastx_small,TBLASTX（mRNA 查家族 mRNA 库）,7,Pongo abelii,ref|XM_002815059.5|,96.97,1023,0.0,2508.0,"PREDICTED: Pongo abelii epidermal growth factor (EGF), transcript variant X10, mRNA"
+任务四 翻译搜索·翻译搜索,t4b_tblastx_small,TBLASTX（mRNA 查家族 mRNA 库）,8,Symphalangus syndactylus,ref|XM_055273982.2|,97.067,1023,0.0,2507.0,"PREDICTED: Symphalangus syndactylus epidermal growth factor (EGF), transcript variant X1, mRNA"
+任务四 翻译搜索·翻译搜索,t4b_tblastx_small,TBLASTX（mRNA 查家族 mRNA 库）,9,Pongo pygmaeus,ref|XM_054486120.2|,96.774,1023,0.0,2501.0,"PREDICTED: Pongo pygmaeus epidermal growth factor (EGF), transcript variant X1, mRNA"
+任务四 翻译搜索·翻译搜索,t4b_tblastx_small,TBLASTX（mRNA 查家族 mRNA 库）,10,Pongo pygmaeus,ref|XM_054486121.2|,96.774,1023,0.0,2501.0,"PREDICTED: Pongo pygmaeus epidermal growth factor (EGF), transcript variant X2, mRNA"
+任务四 翻译搜索·翻译搜索,t4c_blastn_small,BLASTN（mRNA 查家族 mRNA 库）,1,unknown,ref|NM_001963.6|,100.0,6388,0.0,11797.0,"Homo sapiens epidermal growth factor (EGF), transcript variant 1, mRNA"
+任务四 翻译搜索·翻译搜索,t4c_blastn_small,BLASTN（mRNA 查家族 mRNA 库）,2,Pan paniscus,ref|XM_003830021.7|,98.968,6395,0.0,11435.0,"PREDICTED: Pan paniscus epidermal growth factor (EGF), mRNA"
+任务四 翻译搜索·翻译搜索,t4c_blastn_small,BLASTN（mRNA 查家族 mRNA 库）,3,Gorilla gorilla,ref|XM_019026088.4|,98.818,5583,0.0,9936.0,"PREDICTED: Gorilla gorilla gorilla epidermal growth factor (EGF), transcript variant X2, mRNA"
+任务四 翻译搜索·翻译搜索,t4c_blastn_small,BLASTN（mRNA 查家族 mRNA 库）,4,unknown,ref|NM_001178131.3|,100.0,4870,0.0,8994.0,"Homo sapiens epidermal growth factor (EGF), transcript variant 3, mRNA"
+任务四 翻译搜索·翻译搜索,t4c_blastn_small,BLASTN（mRNA 查家族 mRNA 库）,5,Pongo pygmaeus,ref|XM_054486120.2|,97.869,5210,0.0,8992.0,"PREDICTED: Pongo pygmaeus epidermal growth factor (EGF), transcript variant X1, mRNA"
+任务四 翻译搜索·翻译搜索,t4c_blastn_small,BLASTN（mRNA 查家族 mRNA 库）,6,Pongo pygmaeus,ref|XM_054486121.2|,97.484,5207,0.0,8857.0,"PREDICTED: Pongo pygmaeus epidermal growth factor (EGF), transcript variant X2, mRNA"
+任务四 翻译搜索·翻译搜索,t4c_blastn_small,BLASTN（mRNA 查家族 mRNA 库）,7,Pan troglodytes,ref|XM_517395.8|,99.112,4842,0.0,8702.0,"PREDICTED: Pan troglodytes epidermal growth factor (EGF), transcript variant X7, mRNA"
+任务四 翻译搜索·翻译搜索,t4c_blastn_small,BLASTN（mRNA 查家族 mRNA 库）,8,Pan troglodytes,ref|XM_009448135.5|,98.623,4866,0.0,8591.0,"PREDICTED: Pan troglodytes epidermal growth factor (EGF), transcript variant X5, mRNA"
+任务四 翻译搜索·翻译搜索,t4c_blastn_small,BLASTN（mRNA 查家族 mRNA 库）,9,Pan troglodytes,ref|XM_024356188.3|,98.16,4890,0.0,8486.0,"PREDICTED: Pan troglodytes epidermal growth factor (EGF), transcript variant X4, mRNA"
+任务四 翻译搜索·翻译搜索,t4c_blastn_small,BLASTN（mRNA 查家族 mRNA 库）,10,Pan troglodytes,ref|XM_054683285.2|,98.139,4890,0.0,8480.0,"PREDICTED: Pan troglodytes epidermal growth factor (EGF), transcript variant X2, mRNA"
+任务四 翻译搜索·翻译搜索,t4d_tblastx_human,TBLASTX（mRNA 查人 cDNA 库）,1,unknown,ENST00000868530.1,100.0,1023,0.0,2581.0,cdna chromosome:GRCh38:4:109912884:110012960:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务四 翻译搜索·翻译搜索,t4d_tblastx_human,TBLASTX（mRNA 查人 cDNA 库）,2,unknown,ENST00000265171.10,100.0,1023,0.0,2581.0,cdna chromosome:GRCh38:4:109912883:110013766:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务四 翻译搜索·翻译搜索,t4d_tblastx_human,TBLASTX（mRNA 查人 cDNA 库）,3,unknown,ENST00000868529.1,100.0,992,0.0,2496.0,cdna chromosome:GRCh38:4:109912884:110013766:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务四 翻译搜索·翻译搜索,t4d_tblastx_human,TBLASTX（mRNA 查人 cDNA 库）,4,unknown,ENST00000503392.1,100.0,903,0.0,2258.0,cdna chromosome:GRCh38:4:109913241:110011501:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务四 翻译搜索·翻译搜索,t4d_tblastx_human,TBLASTX（mRNA 查人 cDNA 库）,5,unknown,ENST00000951655.1,99.758,826,0.0,2049.0,cdna chromosome:GRCh38:4:109912884:110012255:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务四 翻译搜索·翻译搜索,t4d_tblastx_human,TBLASTX（mRNA 查人 cDNA 库）,6,unknown,ENST00000868531.1,99.636,825,0.0,2044.0,cdna chromosome:GRCh38:4:109912884:110012266:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务四 翻译搜索·翻译搜索,t4d_tblastx_human,TBLASTX（mRNA 查人 cDNA 库）,7,unknown,ENST00000934497.1,100.0,821,0.0,2040.0,cdna chromosome:GRCh38:4:109913255:110012266:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务四 翻译搜索·翻译搜索,t4d_tblastx_human,TBLASTX（mRNA 查人 cDNA 库）,8,unknown,ENST00000868532.1,100.0,719,0.0,1840.0,cdna chromosome:GRCh38:4:109912884:110012250:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务四 翻译搜索·翻译搜索,t4d_tblastx_human,TBLASTX（mRNA 查人 cDNA 库）,9,unknown,ENST00000652245.1,100.0,756,0.0,1752.0,cdna chromosome:GRCh38:4:109912889:110013755:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_
+任务四 翻译搜索·翻译搜索,t4d_tblastx_human,TBLASTX（mRNA 查人 cDNA 库）,10,unknown,ENST00000509793.5,98.978,685,0.0,1733.0,cdna chromosome:GRCh38:4:109912884:110011994:1 gene:ENSG00000138798.14 gene_biotype:protein_coding transcript_

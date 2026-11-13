@@ -1,0 +1,5 @@
+alignment	model_positions_used	complete_agree	complete_agree_pct	residue_pairs	aligned_pairs	pair_agree_pct
+clustalo_default	36	0	0.0	19481	16908	86.8
+clustalo_iter3	36	0	0.0	19481	16908	86.8
+muscle	36	0	0.0	19481	16908	86.8
+clustalo_pfam	36	0	0.0	19481	16908	86.8

@@ -1,0 +1,5 @@
+alignment	gap_total	gap_inside_repeat	gap_inside_pct	gap_between_pct
+clustalo_default	4713	199	4.2	95.8
+clustalo_iter3	4533	199	4.4	95.6
+muscle	7917	199	2.5	97.5
+clustalo_pfam	4713	199	4.2	95.8

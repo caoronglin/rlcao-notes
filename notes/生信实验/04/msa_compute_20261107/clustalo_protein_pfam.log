@@ -1,0 +1,8 @@
+Using 1 threads
+Read 11 sequences (type: Protein) from /media/rlcao/Data/data/05-个人项目/rlcao/notes/生信实验/04/msa_compute_20261107/fie_protein.fasta
+not more sequences (11) than cluster-size (100), turn off mBed
+Calculating pairwise ktuple-distances...
+Ktuple-distance calculation progress: 0 % (0 out of 66)Ktuple-distance calculation progress: 15 % (10 out of 66)Ktuple-distance calculation progress: 28 % (19 out of 66)Ktuple-distance calculation progress: 40 % (27 out of 66)Ktuple-distance calculation progress: 51 % (34 out of 66)Ktuple-distance calculation progress: 60 % (40 out of 66)Ktuple-distance calculation progress: 68 % (45 out of 66)Ktuple-distance calculation progress: 74 % (49 out of 66)Ktuple-distance calculation progress: 78 % (52 out of 66)Ktuple-distance calculation progress: 81 % (54 out of 66)Ktuple-distance calculation progress: 83 % (55 out of 66)Ktuple-distance calculation progress done. CPU time: 0.00u 0.00s 00:00:00.00 Elapsed: 00:00:00
+Guide-tree computation done.
+Progressive alignment progress: 10 % (1 out of 10)Progressive alignment progress: 20 % (2 out of 10)Progressive alignment progress: 30 % (3 out of 10)Progressive alignment progress: 40 % (4 out of 10)Progressive alignment progress: 50 % (5 out of 10)Progressive alignment progress: 60 % (6 out of 10)Progressive alignment progress: 69 % (7 out of 10)Progressive alignment progress: 80 % (8 out of 10)Progressive alignment progress: 89 % (9 out of 10)Progressive alignment progress: 100 % (10 out of 10)Progressive alignment progress done. CPU time: 0.11u 0.02s 00:00:00.13 Elapsed: 00:00:01
+Alignment written to /media/rlcao/Data/data/05-个人项目/rlcao/notes/生信实验/04/msa_compute_20261107/clustalo_protein_pfam.aln

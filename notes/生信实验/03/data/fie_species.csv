@@ -1,0 +1,1201 @@
+run,label,species,subjects
+fie_t1a_blastn_default,blastn 默认,Triticum aestivum,18
+fie_t1a_blastn_default,blastn 默认,Brachypodium distachyon,17
+fie_t1a_blastn_default,blastn 默认,Glycine max,15
+fie_t1a_blastn_default,blastn 默认,Daucus carota,8
+fie_t1a_blastn_default,blastn 默认,Elaeis guineensis,7
+fie_t1a_blastn_default,blastn 默认,Cynara cardunculus,7
+fie_t1a_blastn_default,blastn 默认,Zea mays,6
+fie_t1a_blastn_default,blastn 默认,Solanum lycopersicum,6
+fie_t1a_blastn_default,blastn 默认,Oryza sativa,5
+fie_t1a_blastn_default,blastn 默认,Phoenix dactylifera,5
+fie_t1a_blastn_default,blastn 默认,Nelumbo nucifera,5
+fie_t1a_blastn_default,blastn 默认,Lathyrus oleraceus,5
+fie_t1a_blastn_default,blastn 默认,Vigna angularis,5
+fie_t1a_blastn_default,blastn 默认,Arabidopsis thaliana,5
+fie_t1a_blastn_default,blastn 默认,Sorghum bicolor,4
+fie_t1a_blastn_default,blastn 默认,Oryza glaberrima,4
+fie_t1a_blastn_default,blastn 默认,Hordeum vulgare,4
+fie_t1a_blastn_default,blastn 默认,Phalaenopsis equestris,4
+fie_t1a_blastn_default,blastn 默认,Nelumbo lutea,4
+fie_t1a_blastn_default,blastn 默认,Arachis hypogaea,4
+fie_t1a_blastn_default,blastn 默认,Carex rostrata,4
+fie_t1a_blastn_default,blastn 默认,Pyrus communis,4
+fie_t1a_blastn_default,blastn 默认,Trifolium pratense,4
+fie_t1a_blastn_default,blastn 默认,Selaginella moellendorffii,4
+fie_t1a_blastn_default,blastn 默认,Panicum virgatum,3
+fie_t1a_blastn_default,blastn 默认,Phragmites australis,3
+fie_t1a_blastn_default,blastn 默认,Magnolia sinica,3
+fie_t1a_blastn_default,blastn 默认,Populus trichocarpa,3
+fie_t1a_blastn_default,blastn 默认,Beta vulgaris,3
+fie_t1a_blastn_default,blastn 默认,Amaranthus tricolor,3
+fie_t1a_blastn_default,blastn 默认,Carica papaya,3
+fie_t1a_blastn_default,blastn 默认,Gossypium hirsutum,3
+fie_t1a_blastn_default,blastn 默认,Sesamum indicum,3
+fie_t1a_blastn_default,blastn 默认,Medicago truncatula,3
+fie_t1a_blastn_default,blastn 默认,Dipteris shenzhenensis,3
+fie_t1a_blastn_default,blastn 默认,Adiantum capillus,3
+fie_t1a_blastn_default,blastn 默认,Panicum hallii,2
+fie_t1a_blastn_default,blastn 默认,Typha latifolia,2
+fie_t1a_blastn_default,blastn 默认,Musa acuminata,2
+fie_t1a_blastn_default,blastn 默认,Theobroma cacao,2
+fie_t1a_blastn_default,blastn 默认,Pyrus x,2
+fie_t1a_blastn_default,blastn 默认,Malus domestica,2
+fie_t1a_blastn_default,blastn 默认,Arachis duranensis,2
+fie_t1a_blastn_default,blastn 默认,Arachis ipaensis,2
+fie_t1a_blastn_default,blastn 默认,Vitis vinifera,2
+fie_t1a_blastn_default,blastn 默认,Quercus suber,2
+fie_t1a_blastn_default,blastn 默认,Malania oleifera,2
+fie_t1a_blastn_default,blastn 默认,Cucumis melo,2
+fie_t1a_blastn_default,blastn 默认,Nicotiana tabacum,2
+fie_t1a_blastn_default,blastn 默认,Cannabis sativa,2
+fie_t1a_blastn_default,blastn 默认,Coffea arabica,2
+fie_t1a_blastn_default,blastn 默认,Coptis chinensis,2
+fie_t1a_blastn_default,blastn 默认,Primulina tabacum,2
+fie_t1a_blastn_default,blastn 默认,Solanum dulcamara,2
+fie_t1a_blastn_default,blastn 默认,Cupressus sempervirens,2
+fie_t1a_blastn_default,blastn 默认,Primulina huaijiensis,2
+fie_t1a_blastn_default,blastn 默认,Lycium ferocissimum,2
+fie_t1a_blastn_default,blastn 默认,Primulina eburnea,2
+fie_t1a_blastn_default,blastn 默认,Gossypium raimondii,2
+fie_t1a_blastn_default,blastn 默认,Helianthus annuus,2
+fie_t1a_blastn_default,blastn 默认,Silene latifolia,2
+fie_t1a_blastn_default,blastn 默认,Rutidosis leptorrhynchoides,2
+fie_t1a_blastn_default,blastn 默认,Cibotium barometz,2
+fie_t1a_blastn_default,blastn 默认,Lygodium microphyllum,2
+fie_t1a_blastn_default,blastn 默认,Setaria viridis,1
+fie_t1a_blastn_default,blastn 默认,Setaria italica,1
+fie_t1a_blastn_default,blastn 默认,Miscanthus floridulus,1
+fie_t1a_blastn_default,blastn 默认,Oryza brachyantha,1
+fie_t1a_blastn_default,blastn 默认,Lolium rigidum,1
+fie_t1a_blastn_default,blastn 默认,Triticum dicoccoides,1
+fie_t1a_blastn_default,blastn 默认,Triticum urartu,1
+fie_t1a_blastn_default,blastn 默认,Lolium perenne,1
+fie_t1a_blastn_default,blastn 默认,Aegilops tauschii,1
+fie_t1a_blastn_default,blastn 默认,Tasmannia lanceolata,1
+fie_t1a_blastn_default,blastn 默认,Typha angustifolia,1
+fie_t1a_blastn_default,blastn 默认,Dioscorea cayenensis,1
+fie_t1a_blastn_default,blastn 默认,Telopea speciosissima,1
+fie_t1a_blastn_default,blastn 默认,Dendrobium catenatum,1
+fie_t1a_blastn_default,blastn 默认,Amborella trichopoda,1
+fie_t1a_blastn_default,blastn 默认,Asparagus officinalis,1
+fie_t1a_blastn_default,blastn 默认,Juglans microcarpa,1
+fie_t1a_blastn_default,blastn 默认,Benincasa hispida,1
+fie_t1a_blastn_default,blastn 默认,Juglans regia,1
+fie_t1a_blastn_default,blastn 默认,Carya illinoinensis,1
+fie_t1a_blastn_default,blastn 默认,Cucurbita maxima,1
+fie_t1a_blastn_default,blastn 默认,Diospyros lotus,1
+fie_t1a_blastn_default,blastn 默认,Curcuma longa,1
+fie_t1a_blastn_default,blastn 默认,Vitis riparia,1
+fie_t1a_blastn_default,blastn 默认,Hakea prostrata,1
+fie_t1a_blastn_default,blastn 默认,Prunus dulcis,1
+fie_t1a_blastn_default,blastn 默认,Hevea brasiliensis,1
+fie_t1a_blastn_default,blastn 默认,Populus euphratica,1
+fie_t1a_blastn_default,blastn 默认,Theobroma umbraticum,1
+fie_t1a_blastn_default,blastn 默认,Prunus persica,1
+fie_t1a_blastn_default,blastn 默认,Hibiscus syriacus,1
+fie_t1a_blastn_default,blastn 默认,Syzygium oleosum,1
+fie_t1a_blastn_default,blastn 默认,Euphorbia lathyris,1
+fie_t1a_blastn_default,blastn 默认,Cucurbita pepo,1
+fie_t1a_blastn_default,blastn 默认,Cucurbita moschata,1
+fie_t1a_blastn_default,blastn 默认,Populus nigra,1
+fie_t1a_blastn_default,blastn 默认,Rhodamnia argentea,1
+fie_t1a_blastn_default,blastn 默认,Cornus florida,1
+fie_t1a_blastn_default,blastn 默认,Corylus avellana,1
+fie_t1a_blastn_default,blastn 默认,Prunus mume,1
+fie_t1a_blastn_default,blastn 默认,Malus sylvestris,1
+fie_t1a_blastn_default,blastn 默认,Eschscholzia californica,1
+fie_t1a_blastn_default,blastn 默认,Vicia villosa,1
+fie_t1a_blastn_default,blastn 默认,Cucumis sativus,1
+fie_t1a_blastn_default,blastn 默认,Nicotiana sylvestris,1
+fie_t1a_blastn_default,blastn 默认,Nymphaea colorata,1
+fie_t1a_blastn_default,blastn 默认,Arachis stenosperma,1
+fie_t1a_blastn_default,blastn 默认,Dryas octopetala,1
+fie_t1a_blastn_default,blastn 默认,Cajanus cajan,1
+fie_t1a_blastn_default,blastn 默认,Jatropha curcas,1
+fie_t1a_blastn_default,blastn 默认,Cicer arietinum,1
+fie_t1a_blastn_default,blastn 默认,Prunus avium,1
+fie_t1a_blastn_default,blastn 默认,Manihot esculenta,1
+fie_t1a_blastn_default,blastn 默认,Gastrolobium bilobum,1
+fie_t1a_blastn_default,blastn 默认,Nicotiana tomentosiformis,1
+fie_t1a_blastn_default,blastn 默认,Coffea eugenioides,1
+fie_t1a_blastn_default,blastn 默认,Abrus precatorius,1
+fie_t1a_blastn_default,blastn 默认,Populus alba,1
+fie_t1a_blastn_default,blastn 默认,Momordica charantia,1
+fie_t1a_blastn_default,blastn 默认,Camellia sinensis,1
+fie_t1a_blastn_default,blastn 默认,Alnus glutinosa,1
+fie_t1a_blastn_default,blastn 默认,Humulus lupulus,1
+fie_t1a_blastn_default,blastn 默认,Durio zibethinus,1
+fie_t1a_blastn_default,blastn 默认,Solanum pennellii,1
+fie_t1a_blastn_default,blastn 默认,Gossypium arboreum,1
+fie_t1a_blastn_default,blastn 默认,Pinus tabuliformis,1
+fie_t1a_blastn_default,blastn 默认,Cryptomeria japonica,1
+fie_t1a_blastn_default,blastn 默认,Henckelia pumila,1
+fie_t1a_blastn_default,blastn 默认,Citrus sinensis,1
+fie_t1a_blastn_default,blastn 默认,Rosa rugosa,1
+fie_t1a_blastn_default,blastn 默认,Rosa chinensis,1
+fie_t1a_blastn_default,blastn 默认,Lactuca virosa,1
+fie_t1a_blastn_default,blastn 默认,Actinidia eriantha,1
+fie_t1a_blastn_default,blastn 默认,Lactuca saligna,1
+fie_t1a_blastn_default,blastn 默认,Lactuca serriola,1
+fie_t1a_blastn_default,blastn 默认,Lactuca sativa,1
+fie_t1a_blastn_default,blastn 默认,Argentina anserina,1
+fie_t1a_blastn_default,blastn 默认,Salvia splendens,1
+fie_t1a_blastn_default,blastn 默认,Wolffia australiana,1
+fie_t1a_blastn_default,blastn 默认,Salvia hispanica,1
+fie_t1a_blastn_default,blastn 默认,Spinacia oleracea,1
+fie_t1a_blastn_default,blastn 默认,Erigeron canadensis,1
+fie_t1a_blastn_default,blastn 默认,Urtica dioica,1
+fie_t1a_blastn_default,blastn 默认,Tripterygium wilfordii,1
+fie_t1a_blastn_default,blastn 默认,Rhododendron vialii,1
+fie_t1a_blastn_default,blastn 默认,Medicago sativa,1
+fie_t1a_blastn_default,blastn 默认,Andrographis paniculata,1
+fie_t1a_blastn_default,blastn 默认,Erythranthe guttata,1
+fie_t1a_blastn_default,blastn 默认,Physcomitrium patens,1
+fie_t1b_megablast,megablast,Zea mays,6
+fie_t1b_megablast,megablast,Phoenix dactylifera,5
+fie_t1b_megablast,megablast,Sorghum bicolor,4
+fie_t1b_megablast,megablast,Panicum virgatum,3
+fie_t1b_megablast,megablast,Phragmites australis,3
+fie_t1b_megablast,megablast,Panicum hallii,2
+fie_t1b_megablast,megablast,Setaria viridis,1
+fie_t1b_megablast,megablast,Setaria italica,1
+fie_t1b_megablast,megablast,Miscanthus floridulus,1
+fie_t1b_megablast,megablast,Eschscholzia californica,1
+fie_t1c_dcmegablast,discontiguous megablast,Brachypodium distachyon,17
+fie_t1c_dcmegablast,discontiguous megablast,Glycine max,11
+fie_t1c_dcmegablast,discontiguous megablast,Triticum aestivum,9
+fie_t1c_dcmegablast,discontiguous megablast,Daucus carota,8
+fie_t1c_dcmegablast,discontiguous megablast,Elaeis guineensis,7
+fie_t1c_dcmegablast,discontiguous megablast,Cynara cardunculus,7
+fie_t1c_dcmegablast,discontiguous megablast,Zea mays,6
+fie_t1c_dcmegablast,discontiguous megablast,Oryza sativa,5
+fie_t1c_dcmegablast,discontiguous megablast,Phoenix dactylifera,5
+fie_t1c_dcmegablast,discontiguous megablast,Nelumbo nucifera,5
+fie_t1c_dcmegablast,discontiguous megablast,Lathyrus oleraceus,5
+fie_t1c_dcmegablast,discontiguous megablast,Vigna angularis,5
+fie_t1c_dcmegablast,discontiguous megablast,Sorghum bicolor,4
+fie_t1c_dcmegablast,discontiguous megablast,Oryza glaberrima,4
+fie_t1c_dcmegablast,discontiguous megablast,Phalaenopsis equestris,4
+fie_t1c_dcmegablast,discontiguous megablast,Nelumbo lutea,4
+fie_t1c_dcmegablast,discontiguous megablast,Arachis hypogaea,4
+fie_t1c_dcmegablast,discontiguous megablast,Carex rostrata,4
+fie_t1c_dcmegablast,discontiguous megablast,Pyrus communis,4
+fie_t1c_dcmegablast,discontiguous megablast,Trifolium pratense,4
+fie_t1c_dcmegablast,discontiguous megablast,Selaginella moellendorffii,4
+fie_t1c_dcmegablast,discontiguous megablast,Panicum virgatum,3
+fie_t1c_dcmegablast,discontiguous megablast,Phragmites australis,3
+fie_t1c_dcmegablast,discontiguous megablast,Magnolia sinica,3
+fie_t1c_dcmegablast,discontiguous megablast,Beta vulgaris,3
+fie_t1c_dcmegablast,discontiguous megablast,Amaranthus tricolor,3
+fie_t1c_dcmegablast,discontiguous megablast,Carica papaya,3
+fie_t1c_dcmegablast,discontiguous megablast,Solanum lycopersicum,3
+fie_t1c_dcmegablast,discontiguous megablast,Gossypium hirsutum,3
+fie_t1c_dcmegablast,discontiguous megablast,Sesamum indicum,3
+fie_t1c_dcmegablast,discontiguous megablast,Medicago truncatula,3
+fie_t1c_dcmegablast,discontiguous megablast,Dipteris shenzhenensis,3
+fie_t1c_dcmegablast,discontiguous megablast,Adiantum capillus,3
+fie_t1c_dcmegablast,discontiguous megablast,Panicum hallii,2
+fie_t1c_dcmegablast,discontiguous megablast,Hordeum vulgare,2
+fie_t1c_dcmegablast,discontiguous megablast,Typha latifolia,2
+fie_t1c_dcmegablast,discontiguous megablast,Musa acuminata,2
+fie_t1c_dcmegablast,discontiguous megablast,Theobroma cacao,2
+fie_t1c_dcmegablast,discontiguous megablast,Populus trichocarpa,2
+fie_t1c_dcmegablast,discontiguous megablast,Pyrus x,2
+fie_t1c_dcmegablast,discontiguous megablast,Malus domestica,2
+fie_t1c_dcmegablast,discontiguous megablast,Arachis duranensis,2
+fie_t1c_dcmegablast,discontiguous megablast,Arachis ipaensis,2
+fie_t1c_dcmegablast,discontiguous megablast,Vitis vinifera,2
+fie_t1c_dcmegablast,discontiguous megablast,Quercus suber,2
+fie_t1c_dcmegablast,discontiguous megablast,Malania oleifera,2
+fie_t1c_dcmegablast,discontiguous megablast,Cucumis melo,2
+fie_t1c_dcmegablast,discontiguous megablast,Nicotiana tabacum,2
+fie_t1c_dcmegablast,discontiguous megablast,Cannabis sativa,2
+fie_t1c_dcmegablast,discontiguous megablast,Coffea arabica,2
+fie_t1c_dcmegablast,discontiguous megablast,Coptis chinensis,2
+fie_t1c_dcmegablast,discontiguous megablast,Primulina tabacum,2
+fie_t1c_dcmegablast,discontiguous megablast,Solanum dulcamara,2
+fie_t1c_dcmegablast,discontiguous megablast,Cupressus sempervirens,2
+fie_t1c_dcmegablast,discontiguous megablast,Primulina huaijiensis,2
+fie_t1c_dcmegablast,discontiguous megablast,Lycium ferocissimum,2
+fie_t1c_dcmegablast,discontiguous megablast,Primulina eburnea,2
+fie_t1c_dcmegablast,discontiguous megablast,Gossypium raimondii,2
+fie_t1c_dcmegablast,discontiguous megablast,Helianthus annuus,2
+fie_t1c_dcmegablast,discontiguous megablast,Silene latifolia,2
+fie_t1c_dcmegablast,discontiguous megablast,Rutidosis leptorrhynchoides,2
+fie_t1c_dcmegablast,discontiguous megablast,Arabidopsis thaliana,2
+fie_t1c_dcmegablast,discontiguous megablast,Cibotium barometz,2
+fie_t1c_dcmegablast,discontiguous megablast,Lygodium microphyllum,2
+fie_t1c_dcmegablast,discontiguous megablast,Setaria viridis,1
+fie_t1c_dcmegablast,discontiguous megablast,Setaria italica,1
+fie_t1c_dcmegablast,discontiguous megablast,Miscanthus floridulus,1
+fie_t1c_dcmegablast,discontiguous megablast,Oryza brachyantha,1
+fie_t1c_dcmegablast,discontiguous megablast,Lolium rigidum,1
+fie_t1c_dcmegablast,discontiguous megablast,Triticum dicoccoides,1
+fie_t1c_dcmegablast,discontiguous megablast,Triticum urartu,1
+fie_t1c_dcmegablast,discontiguous megablast,Lolium perenne,1
+fie_t1c_dcmegablast,discontiguous megablast,Aegilops tauschii,1
+fie_t1c_dcmegablast,discontiguous megablast,Tasmannia lanceolata,1
+fie_t1c_dcmegablast,discontiguous megablast,Typha angustifolia,1
+fie_t1c_dcmegablast,discontiguous megablast,Dioscorea cayenensis,1
+fie_t1c_dcmegablast,discontiguous megablast,Telopea speciosissima,1
+fie_t1c_dcmegablast,discontiguous megablast,Dendrobium catenatum,1
+fie_t1c_dcmegablast,discontiguous megablast,Amborella trichopoda,1
+fie_t1c_dcmegablast,discontiguous megablast,Asparagus officinalis,1
+fie_t1c_dcmegablast,discontiguous megablast,Juglans microcarpa,1
+fie_t1c_dcmegablast,discontiguous megablast,Benincasa hispida,1
+fie_t1c_dcmegablast,discontiguous megablast,Juglans regia,1
+fie_t1c_dcmegablast,discontiguous megablast,Carya illinoinensis,1
+fie_t1c_dcmegablast,discontiguous megablast,Cucurbita maxima,1
+fie_t1c_dcmegablast,discontiguous megablast,Diospyros lotus,1
+fie_t1c_dcmegablast,discontiguous megablast,Curcuma longa,1
+fie_t1c_dcmegablast,discontiguous megablast,Vitis riparia,1
+fie_t1c_dcmegablast,discontiguous megablast,Hakea prostrata,1
+fie_t1c_dcmegablast,discontiguous megablast,Prunus dulcis,1
+fie_t1c_dcmegablast,discontiguous megablast,Hevea brasiliensis,1
+fie_t1c_dcmegablast,discontiguous megablast,Populus euphratica,1
+fie_t1c_dcmegablast,discontiguous megablast,Theobroma umbraticum,1
+fie_t1c_dcmegablast,discontiguous megablast,Prunus persica,1
+fie_t1c_dcmegablast,discontiguous megablast,Hibiscus syriacus,1
+fie_t1c_dcmegablast,discontiguous megablast,Syzygium oleosum,1
+fie_t1c_dcmegablast,discontiguous megablast,Euphorbia lathyris,1
+fie_t1c_dcmegablast,discontiguous megablast,Cucurbita pepo,1
+fie_t1c_dcmegablast,discontiguous megablast,Cucurbita moschata,1
+fie_t1c_dcmegablast,discontiguous megablast,Populus nigra,1
+fie_t1c_dcmegablast,discontiguous megablast,Rhodamnia argentea,1
+fie_t1c_dcmegablast,discontiguous megablast,Cornus florida,1
+fie_t1c_dcmegablast,discontiguous megablast,Corylus avellana,1
+fie_t1c_dcmegablast,discontiguous megablast,Prunus mume,1
+fie_t1c_dcmegablast,discontiguous megablast,Malus sylvestris,1
+fie_t1c_dcmegablast,discontiguous megablast,Eschscholzia californica,1
+fie_t1c_dcmegablast,discontiguous megablast,Vicia villosa,1
+fie_t1c_dcmegablast,discontiguous megablast,Cucumis sativus,1
+fie_t1c_dcmegablast,discontiguous megablast,Nicotiana sylvestris,1
+fie_t1c_dcmegablast,discontiguous megablast,Nymphaea colorata,1
+fie_t1c_dcmegablast,discontiguous megablast,Arachis stenosperma,1
+fie_t1c_dcmegablast,discontiguous megablast,Dryas octopetala,1
+fie_t1c_dcmegablast,discontiguous megablast,Cajanus cajan,1
+fie_t1c_dcmegablast,discontiguous megablast,Jatropha curcas,1
+fie_t1c_dcmegablast,discontiguous megablast,Cicer arietinum,1
+fie_t1c_dcmegablast,discontiguous megablast,Prunus avium,1
+fie_t1c_dcmegablast,discontiguous megablast,Manihot esculenta,1
+fie_t1c_dcmegablast,discontiguous megablast,Gastrolobium bilobum,1
+fie_t1c_dcmegablast,discontiguous megablast,Nicotiana tomentosiformis,1
+fie_t1c_dcmegablast,discontiguous megablast,Coffea eugenioides,1
+fie_t1c_dcmegablast,discontiguous megablast,Abrus precatorius,1
+fie_t1c_dcmegablast,discontiguous megablast,Populus alba,1
+fie_t1c_dcmegablast,discontiguous megablast,Momordica charantia,1
+fie_t1c_dcmegablast,discontiguous megablast,Camellia sinensis,1
+fie_t1c_dcmegablast,discontiguous megablast,Alnus glutinosa,1
+fie_t1c_dcmegablast,discontiguous megablast,Humulus lupulus,1
+fie_t1c_dcmegablast,discontiguous megablast,Durio zibethinus,1
+fie_t1c_dcmegablast,discontiguous megablast,Solanum pennellii,1
+fie_t1c_dcmegablast,discontiguous megablast,Gossypium arboreum,1
+fie_t1c_dcmegablast,discontiguous megablast,Pinus tabuliformis,1
+fie_t1c_dcmegablast,discontiguous megablast,Cryptomeria japonica,1
+fie_t1c_dcmegablast,discontiguous megablast,Henckelia pumila,1
+fie_t1c_dcmegablast,discontiguous megablast,Citrus sinensis,1
+fie_t1c_dcmegablast,discontiguous megablast,Rosa rugosa,1
+fie_t1c_dcmegablast,discontiguous megablast,Rosa chinensis,1
+fie_t1c_dcmegablast,discontiguous megablast,Lactuca virosa,1
+fie_t1c_dcmegablast,discontiguous megablast,Actinidia eriantha,1
+fie_t1c_dcmegablast,discontiguous megablast,Lactuca saligna,1
+fie_t1c_dcmegablast,discontiguous megablast,Lactuca serriola,1
+fie_t1c_dcmegablast,discontiguous megablast,Lactuca sativa,1
+fie_t1c_dcmegablast,discontiguous megablast,Argentina anserina,1
+fie_t1c_dcmegablast,discontiguous megablast,Salvia splendens,1
+fie_t1c_dcmegablast,discontiguous megablast,Wolffia australiana,1
+fie_t1c_dcmegablast,discontiguous megablast,Salvia hispanica,1
+fie_t1c_dcmegablast,discontiguous megablast,Spinacia oleracea,1
+fie_t1c_dcmegablast,discontiguous megablast,Erigeron canadensis,1
+fie_t1c_dcmegablast,discontiguous megablast,Urtica dioica,1
+fie_t1c_dcmegablast,discontiguous megablast,Tripterygium wilfordii,1
+fie_t1c_dcmegablast,discontiguous megablast,Rhododendron vialii,1
+fie_t1c_dcmegablast,discontiguous megablast,Medicago sativa,1
+fie_t1c_dcmegablast,discontiguous megablast,Andrographis paniculata,1
+fie_t1c_dcmegablast,discontiguous megablast,Erythranthe guttata,1
+fie_t1c_dcmegablast,discontiguous megablast,Physcomitrium patens,1
+fie_t2a_blastp_default,blastp 默认,Homo sapiens,106
+fie_t2a_blastp_default,blastp 默认,Mus musculus,97
+fie_t2a_blastp_default,blastp 默认,Arabidopsis thaliana,63
+fie_t2a_blastp_default,blastp 默认,Schizosaccharomyces pombe (strain 972 / ATCC 24843),47
+fie_t2a_blastp_default,blastp 默认,Dictyostelium discoideum,44
+fie_t2a_blastp_default,blastp 默认,Bos taurus,41
+fie_t2a_blastp_default,blastp 默认,Rattus norvegicus,38
+fie_t2a_blastp_default,blastp 默认,Danio rerio,34
+fie_t2a_blastp_default,blastp 默认,Saccharomyces cerevisiae (strain ATCC 204508 / S288c),33
+fie_t2a_blastp_default,blastp 默认,Xenopus laevis,31
+fie_t2a_blastp_default,blastp 默认,unknown,25
+fie_t2a_blastp_default,blastp 默认,Drosophila melanogaster,24
+fie_t2a_blastp_default,blastp 默认,Caenorhabditis elegans,24
+fie_t2a_blastp_default,blastp 默认,Xenopus tropicalis,23
+fie_t2a_blastp_default,blastp 默认,Pongo abelii,20
+fie_t2a_blastp_default,blastp 默认,Oryza sativa subsp. japonica,19
+fie_t2a_blastp_default,blastp 默认,Gallus gallus,17
+fie_t2a_blastp_default,blastp 默认,Neurospora crassa (strain ATCC 24698 / 74-OR23-1A / CBS 708.71 / DSM 1257 / FGSC 987),12
+fie_t2a_blastp_default,blastp 默认,Yarrowia lipolytica (strain CLIB 122 / E 150),10
+fie_t2a_blastp_default,blastp 默认,Brachypodium distachyon,9
+fie_t2a_blastp_default,blastp 默认,Macaca fascicularis,9
+fie_t2a_blastp_default,blastp 默认,Candida glabrata (strain ATCC 2001 / BCRC 20586 / JCM 3761 / NBRC 0622 / NRRL Y-65 / CBS 138),9
+fie_t2a_blastp_default,blastp 默认,Aspergillus fumigatus (strain ATCC MYA-4609 / CBS 101355 / FGSC A1100 / Af293),9
+fie_t2a_blastp_default,blastp 默认,Phoenix dactylifera,8
+fie_t2a_blastp_default,blastp 默认,Cryptococcus deneoformans (strain JEC21 / ATCC MYA-565),8
+fie_t2a_blastp_default,blastp 默认,Cryptococcus deneoformans (strain B-3501A),8
+fie_t2a_blastp_default,blastp 默认,Chlamydomonas reinhardtii,8
+fie_t2a_blastp_default,blastp 默认,Emericella nidulans (strain FGSC A4 / ATCC 38163 / CBS 112.46 / NRRL 194 / M139),8
+fie_t2a_blastp_default,blastp 默认,Kluyveromyces lactis (strain ATCC 8585 / CBS 2359 / DSM 70799 / NBRC 1267 / NRRL Y-1140 / WM37),8
+fie_t2a_blastp_default,blastp 默认,Debaryomyces hansenii (strain ATCC 36239 / CBS 767 / BCRC 21394 / JCM 1990 / NBRC 0083 / IGC 2968),8
+fie_t2a_blastp_default,blastp 默认,Candida albicans (strain SC5314 / ATCC MYA-2876),8
+fie_t2a_blastp_default,blastp 默认,Zea mays,7
+fie_t2a_blastp_default,blastp 默认,Elaeis guineensis,7
+fie_t2a_blastp_default,blastp 默认,Aspergillus oryzae (strain ATCC 42149 / RIB 40),7
+fie_t2a_blastp_default,blastp 默认,Eremothecium gossypii (strain ATCC 10895 / CBS 109.51 / FGSC 9923 / NRRL Y-1056),7
+fie_t2a_blastp_default,blastp 默认,Chaetomium globosum (strain ATCC 6205 / CBS 148.51 / DSM 1962 / NBRC 6347 / NRRL 1970),7
+fie_t2a_blastp_default,blastp 默认,Caenorhabditis briggsae,7
+fie_t2a_blastp_default,blastp 默认,Nicotiana tabacum,6
+fie_t2a_blastp_default,blastp 默认,Aspergillus clavatus (strain ATCC 1007 / CBS 513.65 / DSM 816 / NCTC 3887 / NRRL 1 / QM 1276 / 107),6
+fie_t2a_blastp_default,blastp 默认,Aspergillus fischeri (strain ATCC 1020 / DSM 3700 / CBS 544.65 / FGSC A1164 / JCM 1740 / NRRL 181 / WB 181),6
+fie_t2a_blastp_default,blastp 默认,Pyricularia oryzae (strain 70-15 / ATCC MYA-4617 / FGSC 8958),6
+fie_t2a_blastp_default,blastp 默认,Nelumbo nucifera,5
+fie_t2a_blastp_default,blastp 默认,Lathyrus oleraceus,5
+fie_t2a_blastp_default,blastp 默认,Glycine max,5
+fie_t2a_blastp_default,blastp 默认,Vigna angularis,5
+fie_t2a_blastp_default,blastp 默认,Drosophila virilis,5
+fie_t2a_blastp_default,blastp 默认,Salmo salar,5
+fie_t2a_blastp_default,blastp 默认,Drosophila pseudoobscura pseudoobscura,5
+fie_t2a_blastp_default,blastp 默认,Aspergillus niger (strain ATCC MYA-4892 / CBS 513.88 / FGSC A1513),5
+fie_t2a_blastp_default,blastp 默认,Drosophila mojavensis,5
+fie_t2a_blastp_default,blastp 默认,Oryza glaberrima,4
+fie_t2a_blastp_default,blastp 默认,Phalaenopsis equestris,4
+fie_t2a_blastp_default,blastp 默认,Nelumbo lutea,4
+fie_t2a_blastp_default,blastp 默认,Carex rostrata,4
+fie_t2a_blastp_default,blastp 默认,Arachis hypogaea,4
+fie_t2a_blastp_default,blastp 默认,Pyrus communis,4
+fie_t2a_blastp_default,blastp 默认,Trifolium pratense,4
+fie_t2a_blastp_default,blastp 默认,Selaginella moellendorffii,4
+fie_t2a_blastp_default,blastp 默认,Aspergillus terreus (strain NIH 2624 / FGSC A1156),4
+fie_t2a_blastp_default,blastp 默认,Drosophila grimshawi,4
+fie_t2a_blastp_default,blastp 默认,Drosophila persimilis,4
+fie_t2a_blastp_default,blastp 默认,Drosophila ananassae,4
+fie_t2a_blastp_default,blastp 默认,Aspergillus fumigatus (strain CBS 144.89 / FGSC A1163 / CEA10),4
+fie_t2a_blastp_default,blastp 默认,Drosophila simulans,4
+fie_t2a_blastp_default,blastp 默认,Drosophila sechellia,4
+fie_t2a_blastp_default,blastp 默认,Drosophila yakuba,4
+fie_t2a_blastp_default,blastp 默认,Drosophila erecta,4
+fie_t2a_blastp_default,blastp 默认,Aedes aegypti,4
+fie_t2a_blastp_default,blastp 默认,Sclerotinia sclerotiorum (strain ATCC 18683 / 1980 / Ss-1),4
+fie_t2a_blastp_default,blastp 默认,Mycosarcoma maydis,4
+fie_t2a_blastp_default,blastp 默认,Coccidioides immitis (strain RS),4
+fie_t2a_blastp_default,blastp 默认,Saccharomyces cerevisiae (strain YJM789),4
+fie_t2a_blastp_default,blastp 默认,Panicum virgatum,3
+fie_t2a_blastp_default,blastp 默认,Phragmites australis,3
+fie_t2a_blastp_default,blastp 默认,Triticum aestivum,3
+fie_t2a_blastp_default,blastp 默认,Magnolia sinica,3
+fie_t2a_blastp_default,blastp 默认,Sesamum indicum,3
+fie_t2a_blastp_default,blastp 默认,Gossypium hirsutum,3
+fie_t2a_blastp_default,blastp 默认,Carica papaya,3
+fie_t2a_blastp_default,blastp 默认,Amaranthus tricolor,3
+fie_t2a_blastp_default,blastp 默认,Medicago truncatula,3
+fie_t2a_blastp_default,blastp 默认,Dipteris shenzhenensis,3
+fie_t2a_blastp_default,blastp 默认,Thermochaetoides thermophila (strain DSM 1495 / CBS 144.50 / DAOM 24625 / IMI 039719),3
+fie_t2a_blastp_default,blastp 默认,Trichoplax adhaerens,3
+fie_t2a_blastp_default,blastp 默认,Nostoc sp. (strain PCC 7120 / SAG 25.82 / UTEX 2576),3
+fie_t2a_blastp_default,blastp 默认,Sus scrofa,3
+fie_t2a_blastp_default,blastp 默认,Drosophila willistoni,3
+fie_t2a_blastp_default,blastp 默认,Penicillium rubens (strain ATCC 28089 / DSM 1075 / NRRL 1951 / Wisconsin 54-1255),3
+fie_t2a_blastp_default,blastp 默认,Gibberella zeae (strain ATCC MYA-4620 / CBS 123657 / FGSC 9075 / NRRL 31084 / PH-1),3
+fie_t2a_blastp_default,blastp 默认,Talaromyces marneffei (strain ATCC 18224 / CBS 334.59 / QM 7333),3
+fie_t2a_blastp_default,blastp 默认,Meyerozyma guilliermondii (strain ATCC 6260 / CBS 566 / DSM 6381 / JCM 1539 / NBRC 10279 / NRRL Y-324),3
+fie_t2a_blastp_default,blastp 默认,Cricetulus griseus,3
+fie_t2a_blastp_default,blastp 默认,Culex quinquefasciatus,3
+fie_t2a_blastp_default,blastp 默认,Encephalitozoon cuniculi (strain GB-M1),3
+fie_t2a_blastp_default,blastp 默认,Oryctolagus cuniculus,3
+fie_t2a_blastp_default,blastp 默认,Scheffersomyces stipitis (strain ATCC 58785 / CBS 6054 / NBRC 10063 / NRRL Y-11545),3
+fie_t2a_blastp_default,blastp 默认,Podospora anserina (strain S / ATCC MYA-4624 / DSM 980 / FGSC 10383),3
+fie_t2a_blastp_default,blastp 默认,Tetrahymena thermophila (strain SB210),3
+fie_t2a_blastp_default,blastp 默认,Brugia malayi,3
+fie_t2a_blastp_default,blastp 默认,Vanderwaltozyma polyspora (strain ATCC 22028 / DSM 70294 / BCRC 21397 / CBS 2163 / NBRC 10782 / NRRL Y-8283 / UCD 57-17),3
+fie_t2a_blastp_default,blastp 默认,Sorghum bicolor,2
+fie_t2a_blastp_default,blastp 默认,Panicum hallii,2
+fie_t2a_blastp_default,blastp 默认,Typha latifolia,2
+fie_t2a_blastp_default,blastp 默认,Malania oleifera,2
+fie_t2a_blastp_default,blastp 默认,Cucumis melo,2
+fie_t2a_blastp_default,blastp 默认,Arachis duranensis,2
+fie_t2a_blastp_default,blastp 默认,Arachis ipaensis,2
+fie_t2a_blastp_default,blastp 默认,Theobroma cacao,2
+fie_t2a_blastp_default,blastp 默认,Coffea arabica,2
+fie_t2a_blastp_default,blastp 默认,Malus domestica,2
+fie_t2a_blastp_default,blastp 默认,Quercus suber,2
+fie_t2a_blastp_default,blastp 默认,Coptis chinensis,2
+fie_t2a_blastp_default,blastp 默认,Gossypium raimondii,2
+fie_t2a_blastp_default,blastp 默认,Rutidosis leptorrhynchoides,2
+fie_t2a_blastp_default,blastp 默认,Helianthus annuus,2
+fie_t2a_blastp_default,blastp 默认,Cupressus sempervirens,2
+fie_t2a_blastp_default,blastp 默认,Solanum dulcamara,2
+fie_t2a_blastp_default,blastp 默认,Solanum lycopersicum,2
+fie_t2a_blastp_default,blastp 默认,Primulina eburnea,2
+fie_t2a_blastp_default,blastp 默认,Primulina huaijiensis,2
+fie_t2a_blastp_default,blastp 默认,Primulina tabacum,2
+fie_t2a_blastp_default,blastp 默认,Silene latifolia,2
+fie_t2a_blastp_default,blastp 默认,Cannabis sativa,2
+fie_t2a_blastp_default,blastp 默认,Medicago sativa,2
+fie_t2a_blastp_default,blastp 默认,Cibotium barometz,2
+fie_t2a_blastp_default,blastp 默认,Lygodium microphyllum,2
+fie_t2a_blastp_default,blastp 默认,Schistosoma mansoni,2
+fie_t2a_blastp_default,blastp 默认,Postia placenta (strain ATCC 44394 / Madison 698-R),2
+fie_t2a_blastp_default,blastp 默认,Nematostella vectensis,2
+fie_t2a_blastp_default,blastp 默认,Aspergillus flavus (strain ATCC 200026 / FGSC A1120 / IAM 13836 / NRRL 3357 / JCM 12722 / SRRC 167),2
+fie_t2a_blastp_default,blastp 默认,Talaromyces stipitatus (strain ATCC 10500 / CBS 375.48 / QM 6759 / NRRL 1006),2
+fie_t2a_blastp_default,blastp 默认,Arthroderma otae (strain ATCC MYA-4605 / CBS 113480),2
+fie_t2a_blastp_default,blastp 默认,Trichophyton verrucosum (strain HKI 0517),2
+fie_t2a_blastp_default,blastp 默认,Arthroderma benhamiae (strain ATCC MYA-4681 / CBS 112371),2
+fie_t2a_blastp_default,blastp 默认,Candida albicans (strain WO-1),2
+fie_t2a_blastp_default,blastp 默认,Ixodes scapularis,2
+fie_t2a_blastp_default,blastp 默认,Paramecium tetraurelia,2
+fie_t2a_blastp_default,blastp 默认,Leishmania major,2
+fie_t2a_blastp_default,blastp 默认,Uncinocarpus reesii (strain UAMH 1704),2
+fie_t2a_blastp_default,blastp 默认,Monosiga brevicollis,2
+fie_t2a_blastp_default,blastp 默认,Anopheles gambiae,2
+fie_t2a_blastp_default,blastp 默认,Synechocystis sp. (strain ATCC 27184 / PCC 6803 / Kazusa),2
+fie_t2a_blastp_default,blastp 默认,Botrytis cinerea (strain B05.10),2
+fie_t2a_blastp_default,blastp 默认,Phaeosphaeria nodorum (strain SN15 / ATCC MYA-4574 / FGSC 10173),2
+fie_t2a_blastp_default,blastp 默认,Nicotiana plumbaginifolia,2
+fie_t2a_blastp_default,blastp 默认,Komagataella phaffii (strain GS115 / ATCC 20864),2
+fie_t2a_blastp_default,blastp 默认,Sordaria macrospora (strain ATCC MYA-333 / DSM 997 / K(L3346) / K-hell),2
+fie_t2a_blastp_default,blastp 默认,Takifugu rubripes,2
+fie_t2a_blastp_default,blastp 默认,Malassezia globosa (strain ATCC MYA-4612 / CBS 7966),2
+fie_t2a_blastp_default,blastp 默认,Canis lupus familiaris,2
+fie_t2a_blastp_default,blastp 默认,Setaria viridis,1
+fie_t2a_blastp_default,blastp 默认,Setaria italica,1
+fie_t2a_blastp_default,blastp 默认,Miscanthus floridulus,1
+fie_t2a_blastp_default,blastp 默认,Oryza brachyantha,1
+fie_t2a_blastp_default,blastp 默认,Lolium rigidum,1
+fie_t2a_blastp_default,blastp 默认,Lolium perenne,1
+fie_t2a_blastp_default,blastp 默认,Triticum dicoccoides,1
+fie_t2a_blastp_default,blastp 默认,Triticum urartu,1
+fie_t2a_blastp_default,blastp 默认,Curcuma longa,1
+fie_t2a_blastp_default,blastp 默认,Typha angustifolia,1
+fie_t2a_blastp_default,blastp 默认,Dendrobium catenatum,1
+fie_t2a_blastp_default,blastp 默认,Diospyros lotus,1
+fie_t2a_blastp_default,blastp 默认,Camellia sinensis,1
+fie_t2a_blastp_default,blastp 默认,Cucurbita moschata,1
+fie_t2a_blastp_default,blastp 默认,Cucurbita maxima,1
+fie_t2a_blastp_default,blastp 默认,Hevea brasiliensis,1
+fie_t2a_blastp_default,blastp 默认,Gastrolobium bilobum,1
+fie_t2a_blastp_default,blastp 默认,Juglans regia,1
+fie_t2a_blastp_default,blastp 默认,Carya illinoinensis,1
+fie_t2a_blastp_default,blastp 默认,Euphorbia lathyris,1
+fie_t2a_blastp_default,blastp 默认,Benincasa hispida,1
+fie_t2a_blastp_default,blastp 默认,Telopea speciosissima,1
+fie_t2a_blastp_default,blastp 默认,Cucumis sativus,1
+fie_t2a_blastp_default,blastp 默认,Jatropha curcas,1
+fie_t2a_blastp_default,blastp 默认,Theobroma umbraticum,1
+fie_t2a_blastp_default,blastp 默认,Momordica charantia,1
+fie_t2a_blastp_default,blastp 默认,Populus trichocarpa,1
+fie_t2a_blastp_default,blastp 默认,Populus nigra,1
+fie_t2a_blastp_default,blastp 默认,Populus alba,1
+fie_t2a_blastp_default,blastp 默认,Populus euphratica,1
+fie_t2a_blastp_default,blastp 默认,Abrus precatorius,1
+fie_t2a_blastp_default,blastp 默认,Citrus sinensis,1
+fie_t2a_blastp_default,blastp 默认,Vicia villosa,1
+fie_t2a_blastp_default,blastp 默认,Actinidia eriantha,1
+fie_t2a_blastp_default,blastp 默认,Prunus dulcis,1
+fie_t2a_blastp_default,blastp 默认,Arachis stenosperma,1
+fie_t2a_blastp_default,blastp 默认,Tasmannia lanceolata,1
+fie_t2a_blastp_default,blastp 默认,Prunus avium,1
+fie_t2a_blastp_default,blastp 默认,Prunus persica,1
+fie_t2a_blastp_default,blastp 默认,Nymphaea colorata,1
+fie_t2a_blastp_default,blastp 默认,Prunus mume,1
+fie_t2a_blastp_default,blastp 默认,Lactuca saligna,1
+fie_t2a_blastp_default,blastp 默认,Lactuca serriola,1
+fie_t2a_blastp_default,blastp 默认,Lactuca virosa,1
+fie_t2a_blastp_default,blastp 默认,Lactuca sativa,1
+fie_t2a_blastp_default,blastp 默认,Malus sylvestris,1
+fie_t2a_blastp_default,blastp 默认,Syzygium oleosum,1
+fie_t2a_blastp_default,blastp 默认,Coffea eugenioides,1
+fie_t2a_blastp_default,blastp 默认,Nicotiana sylvestris,1
+fie_t2a_blastp_default,blastp 默认,Nicotiana tomentosiformis,1
+fie_t2a_blastp_default,blastp 默认,Pinus tabuliformis,1
+fie_t2a_blastp_default,blastp 默认,Durio zibethinus,1
+fie_t2a_blastp_default,blastp 默认,Erigeron canadensis,1
+fie_t2a_blastp_default,blastp 默认,Dryas octopetala,1
+fie_t2a_blastp_default,blastp 默认,Salvia hispanica,1
+fie_t2a_blastp_default,blastp 默认,Gossypium arboreum,1
+fie_t2a_blastp_default,blastp 默认,Rhododendron vialii,1
+fie_t2a_blastp_default,blastp 默认,Vitis riparia,1
+fie_t2a_blastp_default,blastp 默认,Cryptomeria japonica,1
+fie_t2a_blastp_default,blastp 默认,Lycium ferocissimum,1
+fie_t2a_blastp_default,blastp 默认,Cicer arietinum,1
+fie_t2a_blastp_default,blastp 默认,Manihot esculenta,1
+fie_t2a_blastp_default,blastp 默认,Hibiscus syriacus,1
+fie_t2a_blastp_default,blastp 默认,Salvia splendens,1
+fie_t2a_blastp_default,blastp 默认,Rosa chinensis,1
+fie_t2a_blastp_default,blastp 默认,Rosa rugosa,1
+fie_t2a_blastp_default,blastp 默认,Corylus avellana,1
+fie_t2a_blastp_default,blastp 默认,Vitis vinifera,1
+fie_t2a_blastp_default,blastp 默认,Eschscholzia californica,1
+fie_t2a_blastp_default,blastp 默认,Cornus florida,1
+fie_t2a_blastp_default,blastp 默认,Tripterygium wilfordii,1
+fie_t2a_blastp_default,blastp 默认,Hakea prostrata,1
+fie_t2a_blastp_default,blastp 默认,Andrographis paniculata,1
+fie_t2a_blastp_default,blastp 默认,Alnus glutinosa,1
+fie_t2a_blastp_default,blastp 默认,Argentina anserina,1
+fie_t2a_blastp_default,blastp 默认,Spinacia oleracea,1
+fie_t2a_blastp_default,blastp 默认,Wolffia australiana,1
+fie_t2a_blastp_default,blastp 默认,Solanum pennellii,1
+fie_t2a_blastp_default,blastp 默认,Erythranthe guttata,1
+fie_t2a_blastp_default,blastp 默认,Amborella trichopoda,1
+fie_t2a_blastp_default,blastp 默认,Humulus lupulus,1
+fie_t2a_blastp_default,blastp 默认,Cajanus cajan,1
+fie_t2a_blastp_default,blastp 默认,Rhodamnia argentea,1
+fie_t2a_blastp_default,blastp 默认,Henckelia pumila,1
+fie_t2a_blastp_default,blastp 默认,Asparagus officinalis,1
+fie_t2a_blastp_default,blastp 默认,Physcomitrium patens,1
+fie_t2a_blastp_default,blastp 默认,Capsicum annuum,1
+fie_t2a_blastp_default,blastp 默认,Musca domestica,1
+fie_t2a_blastp_default,blastp 默认,Auxenochlorella protothecoides,1
+fie_t2a_blastp_default,blastp 默认,Branchiostoma floridae,1
+fie_t2a_blastp_default,blastp 默认,Felis catus,1
+fie_t2a_blastp_default,blastp 默认,Pan troglodytes,1
+fie_t2a_blastp_default,blastp 默认,Thermomonospora curvata,1
+fie_t2a_blastp_default,blastp 默认,Tetraodon nigroviridis,1
+fie_t2a_blastp_default,blastp 默认,Glossina morsitans morsitans,1
+fie_t2a_blastp_default,blastp 默认,Trypanosoma brucei rhodesiense,1
+fie_t2a_blastp_default,blastp 默认,Trypanosoma brucei brucei,1
+fie_t2a_blastp_default,blastp 默认,Schizosaccharomyces japonicus (strain yFS275 / FY16936),1
+fie_t2a_blastp_default,blastp 默认,Podospora anserina,1
+fie_t2a_blastp_default,blastp 默认,Heterostelium pallidum (strain ATCC 26659 / Pp 5 / PN500),1
+fie_t2a_blastp_default,blastp 默认,Solanum tuberosum,1
+fie_t2a_blastp_default,blastp 默认,Strongylocentrotus purpuratus,1
+fie_t2a_blastp_default,blastp 默认,Leishmania donovani,1
+fie_t2a_blastp_default,blastp 默认,Trypanosoma brucei brucei (strain 927/4 GUTat10.1),1
+fie_t2a_blastp_default,blastp 默认,Tuber melanosporum (strain Mel28),1
+fie_t2a_blastp_default,blastp 默认,Oreochromis niloticus,1
+fie_t2a_blastp_default,blastp 默认,Coprinopsis cinerea (strain Okayama-7 / 130 / ATCC MYA-4618 / FGSC 9003),1
+fie_t2a_blastp_default,blastp 默认,Biomphalaria glabrata,1
+fie_t2a_blastp_default,blastp 默认,Ajellomyces capsulatus (strain H143),1
+fie_t2a_blastp_default,blastp 默认,Ajellomyces capsulatus (strain G186AR / H82 / ATCC MYA-2454 / RMSCC 2432),1
+fie_t2a_blastp_default,blastp 默认,Hydra vulgaris,1
+fie_t2a_blastp_default,blastp 默认,Leishmania infantum,1
+fie_t2a_blastp_default,blastp 默认,Leishmania chagasi,1
+fie_t2a_blastp_default,blastp 默认,Oryza sativa subsp. indica,1
+fie_t2a_blastp_default,blastp 默认,Pyrenophora tritici-repentis (strain Pt-1C-BFP),1
+fie_t2a_blastp_default,blastp 默认,Tamias striatus,1
+fie_t2a_blastp_default,blastp 默认,Candida albicans,1
+fie_t2a_blastp_default,blastp 默认,Blastomyces gilchristii (strain SLH14081),1
+fie_t2a_blastp_default,blastp 默认,Ajellomyces dermatitidis (strain ER-3 / ATCC MYA-2586),1
+fie_t2a_blastp_default,blastp 默认,Brassica napus,1
+fie_t2a_blastp_default,blastp 默认,Candida tropicalis (strain ATCC MYA-3404 / T1),1
+fie_t2a_blastp_default,blastp 默认,Verticillium dahliae (strain VdLs.17 / ATCC MYA-4575 / FGSC 10137),1
+fie_t2a_blastp_default,blastp 默认,Flammulina velutipes,1
+fie_t2a_blastp_default,blastp 默认,Fusarium vanettenii (strain ATCC MYA-4622 / CBS 123669 / FGSC 9596 / NRRL 45880 / 77-13-4),1
+fie_t2a_blastp_default,blastp 默认,Phaeodactylum tricornutum (strain CCAP 1055/1),1
+fie_t2a_blastp_default,blastp 默认,Paracoccidioides brasiliensis (strain Pb18),1
+fie_t2a_blastp_default,blastp 默认,Gekko japonicus,1
+fie_t2a_blastp_default,blastp 默认,Candida dubliniensis (strain CD36 / ATCC MYA-646 / CBS 7987 / NCPF 3949 / NRRL Y-17841),1
+fie_t2a_blastp_default,blastp 默认,Loligo forbesii,1
+fie_t2a_blastp_default,blastp 默认,Coccidioides posadasii (strain C735),1
+fie_t2a_blastp_default,blastp 默认,Paracoccidioides brasiliensis (strain Pb03),1
+fie_t2a_blastp_default,blastp 默认,Cryphonectria parasitica,1
+fie_t2a_blastp_default,blastp 默认,Pinctada fucata,1
+fie_t2a_blastp_default,blastp 默认,Zygosaccharomyces rouxii (strain ATCC 2623 / CBS 732 / NBRC 1130 / NCYC 568 / NRRL Y-229),1
+fie_t2a_blastp_default,blastp 默认,Lymnaea stagnalis,1
+fie_t2a_blastp_default,blastp 默认,Puccinia graminis f. sp. tritici (strain CRL 75-36-700-3 / race SCCL),1
+fie_t2a_blastp_default,blastp 默认,Schistosoma japonicum,1
+fie_t2a_blastp_default,blastp 默认,Calliphora vicina,1
+fie_t2a_blastp_default,blastp 默认,Saccharomyces cerevisiae (strain JAY291),1
+fie_t2a_blastp_default,blastp 默认,Komagataella pastoris,1
+fie_t2a_blastp_default,blastp 默认,Saccharomyces cerevisiae (strain RM11-1a),1
+fie_t2a_blastp_default,blastp 默认,Streptococcus pyogenes serotype M1,1
+fie_t2a_blastp_default,blastp 默认,Streptococcus pyogenes serotype M3 (strain SSI-1),1
+fie_t2a_blastp_default,blastp 默认,Streptococcus pyogenes serotype M4 (strain MGAS10750),1
+fie_t2a_blastp_default,blastp 默认,Streptococcus pyogenes serotype M3 (strain ATCC BAA-595 / MGAS315),1
+fie_t2a_blastp_default,blastp 默认,Streptococcus pyogenes serotype M28 (strain MGAS6180),1
+fie_t2a_blastp_default,blastp 默认,Streptococcus pyogenes serotype M2 (strain MGAS10270),1
+fie_t2a_blastp_default,blastp 默认,Homarus americanus,1
+fie_t2a_blastp_default,blastp 默认,Streptococcus pneumoniae (strain Taiwan19F-14),1
+fie_t2a_blastp_default,blastp 默认,Streptococcus pneumoniae (strain P1031),1
+fie_t2a_blastp_default,blastp 默认,Streptococcus pneumoniae (strain JJA),1
+fie_t2a_blastp_default,blastp 默认,Streptococcus pneumoniae (strain ATCC BAA-255 / R6),1
+fie_t2a_blastp_default,blastp 默认,Streptococcus pneumoniae (strain CGSP14),1
+fie_t2a_blastp_default,blastp 默认,Streptococcus pneumoniae (strain ATCC 700669 / Spain 23F-1),1
+fie_t2a_blastp_default,blastp 默认,Streptococcus pneumoniae (strain Hungary19A-6),1
+fie_t2a_blastp_default,blastp 默认,Streptococcus pneumoniae (strain 70585),1
+fie_t2a_blastp_default,blastp 默认,Streptococcus pneumoniae serotype 19F (strain G54),1
+fie_t2a_blastp_default,blastp 默认,Streptococcus pneumoniae serotype 2 (strain D39 / NCTC 7466),1
+fie_t2a_blastp_default,blastp 默认,Thermomicrobium roseum (strain ATCC 27502 / DSM 5159 / P-2),1
+fie_t2a_blastp_default,blastp 默认,Saccharomyces cerevisiae (strain Lalvin EC1118 / Prise de mousse),1
+fie_t2a_blastp_default,blastp 默认,Streptococcus suis (strain 05ZYH33),1
+fie_t2a_blastp_default,blastp 默认,Streptococcus pneumoniae serotype 4 (strain ATCC BAA-334 / TIGR4),1
+fie_t2a_blastp_default,blastp 默认,Actinoplanes sp. (strain ATCC 31044 / CBS 674.73 / SE50/110),1
+fie_t2a_blastp_default,blastp 默认,Streptococcus pyogenes serotype M49 (strain NZ131),1
+fie_t3_deltablast,DELTA-BLAST,Homo sapiens,282
+fie_t3_deltablast,DELTA-BLAST,Mus musculus,263
+fie_t3_deltablast,DELTA-BLAST,Arabidopsis thaliana,159
+fie_t3_deltablast,DELTA-BLAST,Schizosaccharomyces pombe (strain 972 / ATCC 24843),126
+fie_t3_deltablast,DELTA-BLAST,Saccharomyces cerevisiae (strain ATCC 204508 / S288c),110
+fie_t3_deltablast,DELTA-BLAST,Rattus norvegicus,99
+fie_t3_deltablast,DELTA-BLAST,Dictyostelium discoideum,95
+fie_t3_deltablast,DELTA-BLAST,Xenopus laevis,85
+fie_t3_deltablast,DELTA-BLAST,Bos taurus,80
+fie_t3_deltablast,DELTA-BLAST,Danio rerio,76
+fie_t3_deltablast,DELTA-BLAST,Drosophila melanogaster,63
+fie_t3_deltablast,DELTA-BLAST,Caenorhabditis elegans,61
+fie_t3_deltablast,DELTA-BLAST,Xenopus tropicalis,50
+fie_t3_deltablast,DELTA-BLAST,Pongo abelii,50
+fie_t3_deltablast,DELTA-BLAST,Gallus gallus,31
+fie_t3_deltablast,DELTA-BLAST,Oryza sativa subsp. japonica,30
+fie_t3_deltablast,DELTA-BLAST,Candida glabrata (strain ATCC 2001 / BCRC 20586 / JCM 3761 / NBRC 0622 / NRRL Y-65 / CBS 138),28
+fie_t3_deltablast,DELTA-BLAST,Candida albicans (strain SC5314 / ATCC MYA-2876),26
+fie_t3_deltablast,DELTA-BLAST,unknown,25
+fie_t3_deltablast,DELTA-BLAST,Kluyveromyces lactis (strain ATCC 8585 / CBS 2359 / DSM 70799 / NBRC 1267 / NRRL Y-1140 / WM37),25
+fie_t3_deltablast,DELTA-BLAST,Debaryomyces hansenii (strain ATCC 36239 / CBS 767 / BCRC 21394 / JCM 1990 / NBRC 0083 / IGC 2968),25
+fie_t3_deltablast,DELTA-BLAST,Eremothecium gossypii (strain ATCC 10895 / CBS 109.51 / FGSC 9923 / NRRL Y-1056),24
+fie_t3_deltablast,DELTA-BLAST,Neurospora crassa (strain ATCC 24698 / 74-OR23-1A / CBS 708.71 / DSM 1257 / FGSC 987),23
+fie_t3_deltablast,DELTA-BLAST,Yarrowia lipolytica (strain CLIB 122 / E 150),22
+fie_t3_deltablast,DELTA-BLAST,Aspergillus fumigatus (strain ATCC MYA-4609 / CBS 101355 / FGSC A1100 / Af293),20
+fie_t3_deltablast,DELTA-BLAST,Aspergillus oryzae (strain ATCC 42149 / RIB 40),19
+fie_t3_deltablast,DELTA-BLAST,Aspergillus clavatus (strain ATCC 1007 / CBS 513.65 / DSM 816 / NCTC 3887 / NRRL 1 / QM 1276 / 107),18
+fie_t3_deltablast,DELTA-BLAST,Emericella nidulans (strain FGSC A4 / ATCC 38163 / CBS 112.46 / NRRL 194 / M139),18
+fie_t3_deltablast,DELTA-BLAST,Cryptococcus deneoformans (strain B-3501A),17
+fie_t3_deltablast,DELTA-BLAST,Cryptococcus deneoformans (strain JEC21 / ATCC MYA-565),17
+fie_t3_deltablast,DELTA-BLAST,Scheffersomyces stipitis (strain ATCC 58785 / CBS 6054 / NBRC 10063 / NRRL Y-11545),17
+fie_t3_deltablast,DELTA-BLAST,Macaca fascicularis,16
+fie_t3_deltablast,DELTA-BLAST,Chlamydomonas reinhardtii,16
+fie_t3_deltablast,DELTA-BLAST,Caenorhabditis briggsae,16
+fie_t3_deltablast,DELTA-BLAST,Aspergillus terreus (strain NIH 2624 / FGSC A1156),15
+fie_t3_deltablast,DELTA-BLAST,Aspergillus niger (strain ATCC MYA-4892 / CBS 513.88 / FGSC A1513),15
+fie_t3_deltablast,DELTA-BLAST,Meyerozyma guilliermondii (strain ATCC 6260 / CBS 566 / DSM 6381 / JCM 1539 / NBRC 10279 / NRRL Y-324),15
+fie_t3_deltablast,DELTA-BLAST,Aspergillus fischeri (strain ATCC 1020 / DSM 3700 / CBS 544.65 / FGSC A1164 / JCM 1740 / NRRL 181 / WB 181),14
+fie_t3_deltablast,DELTA-BLAST,Saccharomyces cerevisiae (strain YJM789),14
+fie_t3_deltablast,DELTA-BLAST,Pyricularia oryzae (strain 70-15 / ATCC MYA-4617 / FGSC 8958),13
+fie_t3_deltablast,DELTA-BLAST,Phaeosphaeria nodorum (strain SN15 / ATCC MYA-4574 / FGSC 10173),13
+fie_t3_deltablast,DELTA-BLAST,Mycosarcoma maydis,13
+fie_t3_deltablast,DELTA-BLAST,Chaetomium globosum (strain ATCC 6205 / CBS 148.51 / DSM 1962 / NBRC 6347 / NRRL 1970),13
+fie_t3_deltablast,DELTA-BLAST,Lodderomyces elongisporus (strain ATCC 11503 / CBS 2605 / JCM 1781 / NBRC 1676 / NRRL YB-4239),13
+fie_t3_deltablast,DELTA-BLAST,Coccidioides immitis (strain RS),12
+fie_t3_deltablast,DELTA-BLAST,Drosophila pseudoobscura pseudoobscura,11
+fie_t3_deltablast,DELTA-BLAST,Vanderwaltozyma polyspora (strain ATCC 22028 / DSM 70294 / BCRC 21397 / CBS 2163 / NBRC 10782 / NRRL Y-8283 / UCD 57-17),11
+fie_t3_deltablast,DELTA-BLAST,Drosophila virilis,10
+fie_t3_deltablast,DELTA-BLAST,Aedes aegypti,10
+fie_t3_deltablast,DELTA-BLAST,Thermochaetoides thermophila (strain DSM 1495 / CBS 144.50 / DAOM 24625 / IMI 039719),10
+fie_t3_deltablast,DELTA-BLAST,Aspergillus fumigatus (strain CBS 144.89 / FGSC A1163 / CEA10),10
+fie_t3_deltablast,DELTA-BLAST,Brachypodium distachyon,9
+fie_t3_deltablast,DELTA-BLAST,Drosophila grimshawi,9
+fie_t3_deltablast,DELTA-BLAST,Drosophila yakuba,9
+fie_t3_deltablast,DELTA-BLAST,Drosophila ananassae,9
+fie_t3_deltablast,DELTA-BLAST,Drosophila persimilis,9
+fie_t3_deltablast,DELTA-BLAST,Sus scrofa,9
+fie_t3_deltablast,DELTA-BLAST,Drosophila mojavensis,9
+fie_t3_deltablast,DELTA-BLAST,Sclerotinia sclerotiorum (strain ATCC 18683 / 1980 / Ss-1),9
+fie_t3_deltablast,DELTA-BLAST,Acanthamoeba polyphaga mimivirus,9
+fie_t3_deltablast,DELTA-BLAST,Phoenix dactylifera,8
+fie_t3_deltablast,DELTA-BLAST,Drosophila willistoni,8
+fie_t3_deltablast,DELTA-BLAST,Drosophila erecta,8
+fie_t3_deltablast,DELTA-BLAST,Tetrahymena thermophila (strain SB210),8
+fie_t3_deltablast,DELTA-BLAST,Culex quinquefasciatus,8
+fie_t3_deltablast,DELTA-BLAST,Zea mays,7
+fie_t3_deltablast,DELTA-BLAST,Elaeis guineensis,7
+fie_t3_deltablast,DELTA-BLAST,Nicotiana tabacum,7
+fie_t3_deltablast,DELTA-BLAST,Oryctolagus cuniculus,7
+fie_t3_deltablast,DELTA-BLAST,Anopheles gambiae,7
+fie_t3_deltablast,DELTA-BLAST,Medicago truncatula,6
+fie_t3_deltablast,DELTA-BLAST,Drosophila simulans,6
+fie_t3_deltablast,DELTA-BLAST,Drosophila sechellia,6
+fie_t3_deltablast,DELTA-BLAST,Penicillium rubens (strain ATCC 28089 / DSM 1075 / NRRL 1951 / Wisconsin 54-1255),6
+fie_t3_deltablast,DELTA-BLAST,Botrytis cinerea (strain B05.10),6
+fie_t3_deltablast,DELTA-BLAST,Nelumbo nucifera,5
+fie_t3_deltablast,DELTA-BLAST,Lathyrus oleraceus,5
+fie_t3_deltablast,DELTA-BLAST,Glycine max,5
+fie_t3_deltablast,DELTA-BLAST,Vigna angularis,5
+fie_t3_deltablast,DELTA-BLAST,Salmo salar,5
+fie_t3_deltablast,DELTA-BLAST,Synechocystis sp. (strain ATCC 27184 / PCC 6803 / Kazusa),5
+fie_t3_deltablast,DELTA-BLAST,Aspergillus flavus (strain ATCC 200026 / FGSC A1120 / IAM 13836 / NRRL 3357 / JCM 12722 / SRRC 167),5
+fie_t3_deltablast,DELTA-BLAST,Gibberella zeae (strain ATCC MYA-4620 / CBS 123657 / FGSC 9075 / NRRL 31084 / PH-1),5
+fie_t3_deltablast,DELTA-BLAST,Podospora anserina (strain S / ATCC MYA-4624 / DSM 980 / FGSC 10383),5
+fie_t3_deltablast,DELTA-BLAST,Malassezia globosa (strain ATCC MYA-4612 / CBS 7966),5
+fie_t3_deltablast,DELTA-BLAST,Oryza glaberrima,4
+fie_t3_deltablast,DELTA-BLAST,Nelumbo lutea,4
+fie_t3_deltablast,DELTA-BLAST,Phalaenopsis equestris,4
+fie_t3_deltablast,DELTA-BLAST,Carex rostrata,4
+fie_t3_deltablast,DELTA-BLAST,Pyrus communis,4
+fie_t3_deltablast,DELTA-BLAST,Arachis hypogaea,4
+fie_t3_deltablast,DELTA-BLAST,Trifolium pratense,4
+fie_t3_deltablast,DELTA-BLAST,Selaginella moellendorffii,4
+fie_t3_deltablast,DELTA-BLAST,Nematostella vectensis,4
+fie_t3_deltablast,DELTA-BLAST,Coprinopsis cinerea (strain Okayama-7 / 130 / ATCC MYA-4618 / FGSC 9003),4
+fie_t3_deltablast,DELTA-BLAST,Candida albicans (strain WO-1),4
+fie_t3_deltablast,DELTA-BLAST,Monosiga brevicollis,4
+fie_t3_deltablast,DELTA-BLAST,Arthroderma benhamiae (strain ATCC MYA-4681 / CBS 112371),4
+fie_t3_deltablast,DELTA-BLAST,Canis lupus familiaris,4
+fie_t3_deltablast,DELTA-BLAST,Cricetulus griseus,4
+fie_t3_deltablast,DELTA-BLAST,Candida dubliniensis (strain CD36 / ATCC MYA-646 / CBS 7987 / NCPF 3949 / NRRL Y-17841),4
+fie_t3_deltablast,DELTA-BLAST,Komagataella phaffii (strain GS115 / ATCC 20864),4
+fie_t3_deltablast,DELTA-BLAST,Brugia malayi,4
+fie_t3_deltablast,DELTA-BLAST,Saccharomyces cerevisiae (strain RM11-1a),4
+fie_t3_deltablast,DELTA-BLAST,Nostoc sp. (strain PCC 7120 / SAG 25.82 / UTEX 2576),3
+fie_t3_deltablast,DELTA-BLAST,Panicum virgatum,3
+fie_t3_deltablast,DELTA-BLAST,Phragmites australis,3
+fie_t3_deltablast,DELTA-BLAST,Triticum aestivum,3
+fie_t3_deltablast,DELTA-BLAST,Carica papaya,3
+fie_t3_deltablast,DELTA-BLAST,Sesamum indicum,3
+fie_t3_deltablast,DELTA-BLAST,Magnolia sinica,3
+fie_t3_deltablast,DELTA-BLAST,Solanum lycopersicum,3
+fie_t3_deltablast,DELTA-BLAST,Gossypium hirsutum,3
+fie_t3_deltablast,DELTA-BLAST,Amaranthus tricolor,3
+fie_t3_deltablast,DELTA-BLAST,Dipteris shenzhenensis,3
+fie_t3_deltablast,DELTA-BLAST,Trichoplax adhaerens,3
+fie_t3_deltablast,DELTA-BLAST,Ixodes scapularis,3
+fie_t3_deltablast,DELTA-BLAST,Sordaria macrospora (strain ATCC MYA-333 / DSM 997 / K(L3346) / K-hell),3
+fie_t3_deltablast,DELTA-BLAST,Pyrenophora tritici-repentis (strain Pt-1C-BFP),3
+fie_t3_deltablast,DELTA-BLAST,Talaromyces marneffei (strain ATCC 18224 / CBS 334.59 / QM 7333),3
+fie_t3_deltablast,DELTA-BLAST,Arthroderma otae (strain ATCC MYA-4605 / CBS 113480),3
+fie_t3_deltablast,DELTA-BLAST,Trichophyton verrucosum (strain HKI 0517),3
+fie_t3_deltablast,DELTA-BLAST,Leishmania major,3
+fie_t3_deltablast,DELTA-BLAST,Candida tropicalis (strain ATCC MYA-3404 / T1),3
+fie_t3_deltablast,DELTA-BLAST,Encephalitozoon cuniculi (strain GB-M1),3
+fie_t3_deltablast,DELTA-BLAST,Lachancea thermotolerans (strain ATCC 56472 / CBS 6340 / NRRL Y-8284),3
+fie_t3_deltablast,DELTA-BLAST,Trypanosoma brucei brucei (strain 927/4 GUTat10.1),3
+fie_t3_deltablast,DELTA-BLAST,Saccharomyces cerevisiae (strain JAY291),3
+fie_t3_deltablast,DELTA-BLAST,Saccharomyces cerevisiae (strain Lalvin EC1118 / Prise de mousse),3
+fie_t3_deltablast,DELTA-BLAST,Zygosaccharomyces rouxii (strain ATCC 2623 / CBS 732 / NBRC 1130 / NCYC 568 / NRRL Y-229),3
+fie_t3_deltablast,DELTA-BLAST,Komagataella pastoris,3
+fie_t3_deltablast,DELTA-BLAST,Histoplasma mississippiense,3
+fie_t3_deltablast,DELTA-BLAST,Pichia angusta,3
+fie_t3_deltablast,DELTA-BLAST,Giardia intestinalis (strain ATCC 50803 / WB clone C6),3
+fie_t3_deltablast,DELTA-BLAST,Enterobacter sp. (strain 638),3
+fie_t3_deltablast,DELTA-BLAST,Sorghum bicolor,2
+fie_t3_deltablast,DELTA-BLAST,Panicum hallii,2
+fie_t3_deltablast,DELTA-BLAST,Typha latifolia,2
+fie_t3_deltablast,DELTA-BLAST,Primulina eburnea,2
+fie_t3_deltablast,DELTA-BLAST,Primulina huaijiensis,2
+fie_t3_deltablast,DELTA-BLAST,Primulina tabacum,2
+fie_t3_deltablast,DELTA-BLAST,Rutidosis leptorrhynchoides,2
+fie_t3_deltablast,DELTA-BLAST,Helianthus annuus,2
+fie_t3_deltablast,DELTA-BLAST,Malania oleifera,2
+fie_t3_deltablast,DELTA-BLAST,Malus domestica,2
+fie_t3_deltablast,DELTA-BLAST,Silene latifolia,2
+fie_t3_deltablast,DELTA-BLAST,Coffea arabica,2
+fie_t3_deltablast,DELTA-BLAST,Cupressus sempervirens,2
+fie_t3_deltablast,DELTA-BLAST,Cucumis melo,2
+fie_t3_deltablast,DELTA-BLAST,Quercus suber,2
+fie_t3_deltablast,DELTA-BLAST,Solanum dulcamara,2
+fie_t3_deltablast,DELTA-BLAST,Arachis duranensis,2
+fie_t3_deltablast,DELTA-BLAST,Arachis ipaensis,2
+fie_t3_deltablast,DELTA-BLAST,Theobroma cacao,2
+fie_t3_deltablast,DELTA-BLAST,Cannabis sativa,2
+fie_t3_deltablast,DELTA-BLAST,Medicago sativa,2
+fie_t3_deltablast,DELTA-BLAST,Gossypium raimondii,2
+fie_t3_deltablast,DELTA-BLAST,Coptis chinensis,2
+fie_t3_deltablast,DELTA-BLAST,Schistosoma mansoni,2
+fie_t3_deltablast,DELTA-BLAST,Pan troglodytes,2
+fie_t3_deltablast,DELTA-BLAST,Cibotium barometz,2
+fie_t3_deltablast,DELTA-BLAST,Lygodium microphyllum,2
+fie_t3_deltablast,DELTA-BLAST,Talaromyces stipitatus (strain ATCC 10500 / CBS 375.48 / QM 6759 / NRRL 1006),2
+fie_t3_deltablast,DELTA-BLAST,Paramecium tetraurelia,2
+fie_t3_deltablast,DELTA-BLAST,Postia placenta (strain ATCC 44394 / Madison 698-R),2
+fie_t3_deltablast,DELTA-BLAST,Nicotiana plumbaginifolia,2
+fie_t3_deltablast,DELTA-BLAST,Uncinocarpus reesii (strain UAMH 1704),2
+fie_t3_deltablast,DELTA-BLAST,Leishmania infantum,2
+fie_t3_deltablast,DELTA-BLAST,Strongylocentrotus purpuratus,2
+fie_t3_deltablast,DELTA-BLAST,Oryza sativa subsp. indica,2
+fie_t3_deltablast,DELTA-BLAST,Schizosaccharomyces japonicus (strain yFS275 / FY16936),2
+fie_t3_deltablast,DELTA-BLAST,Takifugu rubripes,2
+fie_t3_deltablast,DELTA-BLAST,Laccaria bicolor (strain S238N-H82 / ATCC MYA-4686),2
+fie_t3_deltablast,DELTA-BLAST,Oryzias latipes,2
+fie_t3_deltablast,DELTA-BLAST,Heliocidaris crassispina,2
+fie_t3_deltablast,DELTA-BLAST,Clavispora lusitaniae (strain ATCC 42720),2
+fie_t3_deltablast,DELTA-BLAST,Lotus japonicus,2
+fie_t3_deltablast,DELTA-BLAST,Deinococcus radiodurans (strain ATCC 13939 / DSM 20539 / JCM 16871 / CCUG 27074 / LMG 4051 / NBRC 15346 / NCIMB 9279 / VKM B-1422 / R1),2
+fie_t3_deltablast,DELTA-BLAST,Shigella boydii serotype 18 (strain CDC 3083-94 / BS512),2
+fie_t3_deltablast,DELTA-BLAST,Salmonella gallinarum (strain 287/91 / NCTC 13346),2
+fie_t3_deltablast,DELTA-BLAST,Agrobacterium fabrum (strain C58 / ATCC 33970),2
+fie_t3_deltablast,DELTA-BLAST,Salmonella choleraesuis (strain SC-B67),2
+fie_t3_deltablast,DELTA-BLAST,Escherichia coli O7:K1 (strain IAI39 / ExPEC),2
+fie_t3_deltablast,DELTA-BLAST,Shigella sonnei (strain Ss046),2
+fie_t3_deltablast,DELTA-BLAST,Escherichia coli O157:H7 (strain EC4115 / EHEC),2
+fie_t3_deltablast,DELTA-BLAST,Escherichia coli O157:H7,2
+fie_t3_deltablast,DELTA-BLAST,Salmonella typhi,2
+fie_t3_deltablast,DELTA-BLAST,Shigella boydii serotype 4 (strain Sb227),2
+fie_t3_deltablast,DELTA-BLAST,Shigella dysenteriae serotype 1 (strain Sd197),2
+fie_t3_deltablast,DELTA-BLAST,Escherichia coli O17:K52:H18 (strain UMN026 / ExPEC),2
+fie_t3_deltablast,DELTA-BLAST,Escherichia coli (strain K12),2
+fie_t3_deltablast,DELTA-BLAST,Escherichia coli (strain ATCC 8739 / DSM 1576 / NBRC 3972 / NCIMB 8545 / WDCM 00012 / Crooks),2
+fie_t3_deltablast,DELTA-BLAST,Escherichia coli (strain K12 / DH10B),2
+fie_t3_deltablast,DELTA-BLAST,Escherichia coli (strain K12 / MC4100 / BW2952),2
+fie_t3_deltablast,DELTA-BLAST,Escherichia coli (strain 55989 / EAEC),2
+fie_t3_deltablast,DELTA-BLAST,Escherichia coli O139:H28 (strain E24377A / ETEC),2
+fie_t3_deltablast,DELTA-BLAST,Escherichia coli O6:H1 (strain CFT073 / ATCC 700928 / UPEC),2
+fie_t3_deltablast,DELTA-BLAST,Escherichia coli O6:K15:H31 (strain 536 / UPEC),2
+fie_t3_deltablast,DELTA-BLAST,Salmonella typhimurium (strain LT2 / SGSC1412 / ATCC 700720),2
+fie_t3_deltablast,DELTA-BLAST,Salmonella enteritidis PT4 (strain P125109),2
+fie_t3_deltablast,DELTA-BLAST,Shigella flexneri,2
+fie_t3_deltablast,DELTA-BLAST,Shigella flexneri serotype 5b (strain 8401),2
+fie_t3_deltablast,DELTA-BLAST,Escherichia coli (strain UTI89 / UPEC),2
+fie_t3_deltablast,DELTA-BLAST,Escherichia coli O81 (strain ED1a),2
+fie_t3_deltablast,DELTA-BLAST,Escherichia coli O45:K1 (strain S88 / ExPEC),2
+fie_t3_deltablast,DELTA-BLAST,Escherichia coli O127:H6 (strain E2348/69 / EPEC),2
+fie_t3_deltablast,DELTA-BLAST,Escherichia fergusonii (strain ATCC 35469 / DSM 13698 / CCUG 18766 / IAM 14443 / JCM 21226 / LMG 7866 / NBRC 102419 / NCTC 12128 / CDC 0568-73),2
+fie_t3_deltablast,DELTA-BLAST,Serratia proteamaculans (strain 568),2
+fie_t3_deltablast,DELTA-BLAST,Escherichia coli O8 (strain IAI1),2
+fie_t3_deltablast,DELTA-BLAST,Pseudomonas aeruginosa (strain ATCC 15692 / DSM 22644 / CIP 104116 / JCM 14847 / LMG 12228 / 1C / PRS 101 / PAO1),2
+fie_t3_deltablast,DELTA-BLAST,Erwinia tasmaniensis (strain DSM 17950 / CFBP 7177 / CIP 109463 / NCPPB 4357 / Et1/99),2
+fie_t3_deltablast,DELTA-BLAST,Phlebotomus orientalis,2
+fie_t3_deltablast,DELTA-BLAST,Bacillus subtilis (strain 168),2
+fie_t3_deltablast,DELTA-BLAST,Setaria viridis,1
+fie_t3_deltablast,DELTA-BLAST,Miscanthus floridulus,1
+fie_t3_deltablast,DELTA-BLAST,Setaria italica,1
+fie_t3_deltablast,DELTA-BLAST,Podospora anserina,1
+fie_t3_deltablast,DELTA-BLAST,Lolium perenne,1
+fie_t3_deltablast,DELTA-BLAST,Lolium rigidum,1
+fie_t3_deltablast,DELTA-BLAST,Oryza brachyantha,1
+fie_t3_deltablast,DELTA-BLAST,Triticum dicoccoides,1
+fie_t3_deltablast,DELTA-BLAST,Triticum urartu,1
+fie_t3_deltablast,DELTA-BLAST,Curcuma longa,1
+fie_t3_deltablast,DELTA-BLAST,Typha angustifolia,1
+fie_t3_deltablast,DELTA-BLAST,Salvia splendens,1
+fie_t3_deltablast,DELTA-BLAST,Andrographis paniculata,1
+fie_t3_deltablast,DELTA-BLAST,Salvia hispanica,1
+fie_t3_deltablast,DELTA-BLAST,Dendrobium catenatum,1
+fie_t3_deltablast,DELTA-BLAST,Wolffia australiana,1
+fie_t3_deltablast,DELTA-BLAST,Vicia villosa,1
+fie_t3_deltablast,DELTA-BLAST,Jatropha curcas,1
+fie_t3_deltablast,DELTA-BLAST,Diospyros lotus,1
+fie_t3_deltablast,DELTA-BLAST,Actinidia eriantha,1
+fie_t3_deltablast,DELTA-BLAST,Camellia sinensis,1
+fie_t3_deltablast,DELTA-BLAST,Citrus sinensis,1
+fie_t3_deltablast,DELTA-BLAST,Carya illinoinensis,1
+fie_t3_deltablast,DELTA-BLAST,Gastrolobium bilobum,1
+fie_t3_deltablast,DELTA-BLAST,Lactuca virosa,1
+fie_t3_deltablast,DELTA-BLAST,Cucumis sativus,1
+fie_t3_deltablast,DELTA-BLAST,Lactuca saligna,1
+fie_t3_deltablast,DELTA-BLAST,Lactuca serriola,1
+fie_t3_deltablast,DELTA-BLAST,Lactuca sativa,1
+fie_t3_deltablast,DELTA-BLAST,Rhododendron vialii,1
+fie_t3_deltablast,DELTA-BLAST,Juglans regia,1
+fie_t3_deltablast,DELTA-BLAST,Cryptomeria japonica,1
+fie_t3_deltablast,DELTA-BLAST,Erigeron canadensis,1
+fie_t3_deltablast,DELTA-BLAST,Erythranthe guttata,1
+fie_t3_deltablast,DELTA-BLAST,Syzygium oleosum,1
+fie_t3_deltablast,DELTA-BLAST,Telopea speciosissima,1
+fie_t3_deltablast,DELTA-BLAST,Euphorbia lathyris,1
+fie_t3_deltablast,DELTA-BLAST,Solanum pennellii,1
+fie_t3_deltablast,DELTA-BLAST,Populus alba,1
+fie_t3_deltablast,DELTA-BLAST,Populus euphratica,1
+fie_t3_deltablast,DELTA-BLAST,Populus trichocarpa,1
+fie_t3_deltablast,DELTA-BLAST,Populus nigra,1
+fie_t3_deltablast,DELTA-BLAST,Malus sylvestris,1
+fie_t3_deltablast,DELTA-BLAST,Coffea eugenioides,1
+fie_t3_deltablast,DELTA-BLAST,Lycium ferocissimum,1
+fie_t3_deltablast,DELTA-BLAST,Tripterygium wilfordii,1
+fie_t3_deltablast,DELTA-BLAST,Hakea prostrata,1
+fie_t3_deltablast,DELTA-BLAST,Cucurbita moschata,1
+fie_t3_deltablast,DELTA-BLAST,Cucurbita maxima,1
+fie_t3_deltablast,DELTA-BLAST,Abrus precatorius,1
+fie_t3_deltablast,DELTA-BLAST,Prunus mume,1
+fie_t3_deltablast,DELTA-BLAST,Hevea brasiliensis,1
+fie_t3_deltablast,DELTA-BLAST,Prunus dulcis,1
+fie_t3_deltablast,DELTA-BLAST,Prunus avium,1
+fie_t3_deltablast,DELTA-BLAST,Benincasa hispida,1
+fie_t3_deltablast,DELTA-BLAST,Eschscholzia californica,1
+fie_t3_deltablast,DELTA-BLAST,Prunus persica,1
+fie_t3_deltablast,DELTA-BLAST,Nicotiana sylvestris,1
+fie_t3_deltablast,DELTA-BLAST,Amborella trichopoda,1
+fie_t3_deltablast,DELTA-BLAST,Arachis stenosperma,1
+fie_t3_deltablast,DELTA-BLAST,Theobroma umbraticum,1
+fie_t3_deltablast,DELTA-BLAST,Nicotiana tomentosiformis,1
+fie_t3_deltablast,DELTA-BLAST,Henckelia pumila,1
+fie_t3_deltablast,DELTA-BLAST,Cajanus cajan,1
+fie_t3_deltablast,DELTA-BLAST,Manihot esculenta,1
+fie_t3_deltablast,DELTA-BLAST,Vitis vinifera,1
+fie_t3_deltablast,DELTA-BLAST,Corylus avellana,1
+fie_t3_deltablast,DELTA-BLAST,Momordica charantia,1
+fie_t3_deltablast,DELTA-BLAST,Vitis riparia,1
+fie_t3_deltablast,DELTA-BLAST,Cicer arietinum,1
+fie_t3_deltablast,DELTA-BLAST,Dryas octopetala,1
+fie_t3_deltablast,DELTA-BLAST,Alnus glutinosa,1
+fie_t3_deltablast,DELTA-BLAST,Tasmannia lanceolata,1
+fie_t3_deltablast,DELTA-BLAST,Humulus lupulus,1
+fie_t3_deltablast,DELTA-BLAST,Rosa chinensis,1
+fie_t3_deltablast,DELTA-BLAST,Rosa rugosa,1
+fie_t3_deltablast,DELTA-BLAST,Argentina anserina,1
+fie_t3_deltablast,DELTA-BLAST,Cornus florida,1
+fie_t3_deltablast,DELTA-BLAST,Durio zibethinus,1
+fie_t3_deltablast,DELTA-BLAST,Branchiostoma floridae,1
+fie_t3_deltablast,DELTA-BLAST,Pinus tabuliformis,1
+fie_t3_deltablast,DELTA-BLAST,Spinacia oleracea,1
+fie_t3_deltablast,DELTA-BLAST,Gossypium arboreum,1
+fie_t3_deltablast,DELTA-BLAST,Nymphaea colorata,1
+fie_t3_deltablast,DELTA-BLAST,Hibiscus syriacus,1
+fie_t3_deltablast,DELTA-BLAST,Rhodamnia argentea,1
+fie_t3_deltablast,DELTA-BLAST,Thermomonospora curvata,1
+fie_t3_deltablast,DELTA-BLAST,Physcomitrium patens,1
+fie_t3_deltablast,DELTA-BLAST,Tetraodon nigroviridis,1
+fie_t3_deltablast,DELTA-BLAST,Felis catus,1
+fie_t3_deltablast,DELTA-BLAST,Glossina morsitans morsitans,1
+fie_t3_deltablast,DELTA-BLAST,Heterostelium pallidum (strain ATCC 26659 / Pp 5 / PN500),1
+fie_t3_deltablast,DELTA-BLAST,Capsicum annuum,1
+fie_t3_deltablast,DELTA-BLAST,Asparagus officinalis,1
+fie_t3_deltablast,DELTA-BLAST,Paracoccidioides brasiliensis (strain Pb18),1
+fie_t3_deltablast,DELTA-BLAST,Paracoccidioides brasiliensis (strain Pb03),1
+fie_t3_deltablast,DELTA-BLAST,Ajellomyces capsulatus (strain H143),1
+fie_t3_deltablast,DELTA-BLAST,Ajellomyces capsulatus (strain G186AR / H82 / ATCC MYA-2454 / RMSCC 2432),1
+fie_t3_deltablast,DELTA-BLAST,Oreochromis niloticus,1
+fie_t3_deltablast,DELTA-BLAST,Blastomyces gilchristii (strain SLH14081),1
+fie_t3_deltablast,DELTA-BLAST,Ajellomyces dermatitidis (strain ER-3 / ATCC MYA-2586),1
+fie_t3_deltablast,DELTA-BLAST,Fusarium vanettenii (strain ATCC MYA-4622 / CBS 123669 / FGSC 9596 / NRRL 45880 / 77-13-4),1
+fie_t3_deltablast,DELTA-BLAST,Tuber melanosporum (strain Mel28),1
+fie_t3_deltablast,DELTA-BLAST,Phaeodactylum tricornutum (strain CCAP 1055/1),1
+fie_t3_deltablast,DELTA-BLAST,Trypanosoma brucei rhodesiense,1
+fie_t3_deltablast,DELTA-BLAST,Trypanosoma brucei brucei,1
+fie_t3_deltablast,DELTA-BLAST,Hydra vulgaris,1
+fie_t3_deltablast,DELTA-BLAST,Biomphalaria glabrata,1
+fie_t3_deltablast,DELTA-BLAST,Brassica napus,1
+fie_t3_deltablast,DELTA-BLAST,Leishmania chagasi,1
+fie_t3_deltablast,DELTA-BLAST,Coccidioides posadasii (strain C735),1
+fie_t3_deltablast,DELTA-BLAST,Actinoplanes sp. (strain ATCC 31044 / CBS 674.73 / SE50/110),1
+fie_t3_deltablast,DELTA-BLAST,Verticillium dahliae (strain VdLs.17 / ATCC MYA-4575 / FGSC 10137),1
+fie_t3_deltablast,DELTA-BLAST,Flammulina velutipes,1
+fie_t3_deltablast,DELTA-BLAST,Solanum tuberosum,1
+fie_t3_deltablast,DELTA-BLAST,Homarus americanus,1
+fie_t3_deltablast,DELTA-BLAST,Pinctada fucata,1
+fie_t3_deltablast,DELTA-BLAST,Musca domestica,1
+fie_t3_deltablast,DELTA-BLAST,Loligo forbesii,1
+fie_t3_deltablast,DELTA-BLAST,Tamias striatus,1
+fie_t3_deltablast,DELTA-BLAST,Lymnaea stagnalis,1
+fie_t3_deltablast,DELTA-BLAST,Calliphora vicina,1
+fie_t3_deltablast,DELTA-BLAST,Candida albicans,1
+fie_t3_deltablast,DELTA-BLAST,Schistosoma japonicum,1
+fie_t3_deltablast,DELTA-BLAST,Cryphonectria parasitica,1
+fie_t3_deltablast,DELTA-BLAST,Auxenochlorella protothecoides,1
+fie_t3_deltablast,DELTA-BLAST,Pisum sativum,1
+fie_t3_deltablast,DELTA-BLAST,Leishmania donovani,1
+fie_t3_deltablast,DELTA-BLAST,Lithospermum erythrorhizon,1
+fie_t3_deltablast,DELTA-BLAST,Badhamia polycephala,1
+fie_t3_deltablast,DELTA-BLAST,Prunus armeniaca,1
+fie_t3_deltablast,DELTA-BLAST,Osmerus mordax,1
+fie_t3_deltablast,DELTA-BLAST,Puccinia graminis f. sp. tritici (strain CRL 75-36-700-3 / race SCCL),1
+fie_t3_deltablast,DELTA-BLAST,Taeniopygia guttata,1
+fie_t3_deltablast,DELTA-BLAST,Ajellomyces capsulatus,1
+fie_t3_deltablast,DELTA-BLAST,Mesocricetus auratus,1
+fie_t3_deltablast,DELTA-BLAST,Bombyx mori,1
+fie_t3_deltablast,DELTA-BLAST,Nicotiana benthamiana,1
+fie_t3_deltablast,DELTA-BLAST,Lytechinus variegatus,1
+fie_t3_deltablast,DELTA-BLAST,Penicillium oxalicum,1
+fie_t3_deltablast,DELTA-BLAST,Penicillium oxalicum (strain 114-2 / CGMCC 5302),1
+fie_t3_deltablast,DELTA-BLAST,Gekko japonicus,1
+fie_t3_deltablast,DELTA-BLAST,Euplotoides octocarinatus,1
+fie_t3_deltablast,DELTA-BLAST,Carassius auratus,1
+fie_t3_deltablast,DELTA-BLAST,Rhinolophus ferrumequinum,1
+fie_t3_deltablast,DELTA-BLAST,Rhizopus delemar (strain RA 99-880 / ATCC MYA-4621 / FGSC 9543 / NRRL 43880),1
+fie_t3_deltablast,DELTA-BLAST,Leishmania braziliensis,1
+fie_t3_deltablast,DELTA-BLAST,Toxoplasma gondii,1
+fie_t3_deltablast,DELTA-BLAST,Ailuropoda melanoleuca,1
+fie_t3_deltablast,DELTA-BLAST,Papio anubis,1
+fie_t3_deltablast,DELTA-BLAST,Verticillium alfalfae (strain VaMs.102 / ATCC MYA-4576 / FGSC 10136),1
+fie_t3_deltablast,DELTA-BLAST,Candida tropicalis,1
+fie_t3_deltablast,DELTA-BLAST,Kluyveromyces marxianus (strain DMKU3-1042 / BCC 29191 / NBRC 104275),1
+fie_t3_deltablast,DELTA-BLAST,Haemophilus influenzae (strain 86-028NP),1
+fie_t3_deltablast,DELTA-BLAST,Haemophilus influenzae (strain PittGG),1
+fie_t3_deltablast,DELTA-BLAST,Giardia intestinalis,1
+fie_t3_deltablast,DELTA-BLAST,Haemophilus influenzae (strain ATCC 51907 / DSM 11121 / KW20 / Rd),1
+fie_t3_deltablast,DELTA-BLAST,Haemophilus influenzae (strain PittEE),1
+fie_t3_deltablast,DELTA-BLAST,Biston betularia,1
+fie_t3_deltablast,DELTA-BLAST,Syntrophus aciditrophicus (strain SB),1
+fie_t3_deltablast,DELTA-BLAST,Saccharomyces cerevisiae (strain AWRI1631),1
+fie_t3_deltablast,DELTA-BLAST,Thiobacillus denitrificans (strain ATCC 25259 / T1),1
+fie_t3_deltablast,DELTA-BLAST,Thioalkalivibrio sulfidiphilus (strain HL-EbGR7),1
+fie_t3_deltablast,DELTA-BLAST,Histophilus somni (strain 129Pt),1
+fie_t3_deltablast,DELTA-BLAST,Vibrio atlanticus (strain LGP32),1
+fie_t3_deltablast,DELTA-BLAST,Pasteurella multocida (strain Pm70),1
+fie_t3_deltablast,DELTA-BLAST,Mannheimia succiniciproducens (strain KCTC 0769BP / MBEL55E),1
+fie_t3_deltablast,DELTA-BLAST,Histophilus somni (strain 2336),1
+fie_t3_deltablast,DELTA-BLAST,Chlamydia muridarum (strain MoPn / Nigg),1
+fie_t3_deltablast,DELTA-BLAST,Shewanella oneidensis (strain ATCC 700550 / JCM 31522 / CIP 106686 / LMG 19005 / NCIMB 14063 / MR-1),1
+fie_t3_deltablast,DELTA-BLAST,Shewanella frigidimarina (strain NCIMB 400),1
+fie_t3_deltablast,DELTA-BLAST,Heliconius melpomene,1
+fie_t3_deltablast,DELTA-BLAST,Shewanella denitrificans (strain OS217 / ATCC BAA-1090 / DSM 15013),1
+fie_t3_deltablast,DELTA-BLAST,Pseudoalteromonas translucida (strain TAC 125),1
+fie_t3_deltablast,DELTA-BLAST,Chlamydia trachomatis serovar D (strain ATCC VR-885 / DSM 19411 / UW-3/Cx),1
+fie_t3_deltablast,DELTA-BLAST,Chlamydia trachomatis serovar L2b (strain UCH-1/proctitis),1
+fie_t3_deltablast,DELTA-BLAST,Chlamydia trachomatis serovar A (strain ATCC VR-571B / DSM 19440 / HAR-13),1
+fie_t3_deltablast,DELTA-BLAST,Chlamydia trachomatis serovar L2 (strain ATCC VR-902B / DSM 19102 / 434/Bu),1
+fie_t3_deltablast,DELTA-BLAST,Photobacterium profundum (strain SS9),1
+fie_t3_deltablast,DELTA-BLAST,Coxiella burnetii (strain RSA 493 / Nine Mile phase I),1
+fie_t3_deltablast,DELTA-BLAST,Shewanella woodyi (strain ATCC 51908 / MS32),1
+fie_t3_deltablast,DELTA-BLAST,Shewanella baltica (strain OS195),1
+fie_t3_deltablast,DELTA-BLAST,Shewanella baltica (strain OS185),1
+fie_t3_deltablast,DELTA-BLAST,Shewanella baltica (strain OS155 / ATCC BAA-1091),1
+fie_t3_deltablast,DELTA-BLAST,Shewanella baltica (strain OS223),1
+fie_t3_deltablast,DELTA-BLAST,Leptospira interrogans serogroup Icterohaemorrhagiae serovar copenhageni (strain Fiocruz L1-130),1
+fie_t3_deltablast,DELTA-BLAST,Shewanella sp. (strain W3-18-1),1
+fie_t3_deltablast,DELTA-BLAST,Shewanella putrefaciens (strain CN-32 / ATCC BAA-453),1
+fie_t3_deltablast,DELTA-BLAST,Shewanella sediminis (strain HAW-EB3),1
+fie_t3_deltablast,DELTA-BLAST,Shewanella halifaxensis (strain HAW-EB4),1
+fie_t3_deltablast,DELTA-BLAST,Geobacter sulfurreducens (strain ATCC 51573 / DSM 12127 / PCA),1
+fie_t3_deltablast,DELTA-BLAST,Actinobacillus succinogenes (strain ATCC 55618 / DSM 22257 / CCUG 43843 / 130Z),1
+fie_t3_deltablast,DELTA-BLAST,Haemophilus ducreyi (strain 35000HP / ATCC 700724),1
+fie_t3_deltablast,DELTA-BLAST,Aeromonas salmonicida (strain A449),1
+fie_t3_deltablast,DELTA-BLAST,Desulfitobacterium nosdiversum,1
+fie_t3_deltablast,DELTA-BLAST,Shewanella sp. (strain MR-7),1
+fie_t3_deltablast,DELTA-BLAST,Shewanella sp. (strain MR-4),1
+fie_t3_deltablast,DELTA-BLAST,Shewanella sp. (strain ANA-3),1
+fie_t3_deltablast,DELTA-BLAST,Hahella chejuensis (strain KCTC 2396),1
+fie_t3_deltablast,DELTA-BLAST,Protochlamydia amoebophila (strain UWE25),1
+fie_t3_deltablast,DELTA-BLAST,Bordetella avium (strain 197N),1
+fie_t3_deltablast,DELTA-BLAST,Actinobacillus pleuropneumoniae serotype 5b (strain L20),1
+fie_t3_deltablast,DELTA-BLAST,Shewanella pealeana (strain ATCC 700345 / ANG-SQ1),1
+fie_t3_deltablast,DELTA-BLAST,Vesicomyosocius okutanii subsp. Calyptogena okutanii (strain HA),1
+fie_t3_deltablast,DELTA-BLAST,Yersinia pseudotuberculosis serotype O:3 (strain YPIII),1
+fie_t3_deltablast,DELTA-BLAST,Yersinia pseudotuberculosis serotype I (strain IP32953),1
+fie_t3_deltablast,DELTA-BLAST,Yersinia pestis (strain Pestoides F),1
+fie_t3_deltablast,DELTA-BLAST,Yersinia pestis bv. Antiqua (strain Nepal516),1
+fie_t3_deltablast,DELTA-BLAST,Yersinia pestis bv. Antiqua (strain Angola),1
+fie_t3_deltablast,DELTA-BLAST,Yersinia pestis,1
+fie_t3_deltablast,DELTA-BLAST,Yersinia pseudotuberculosis serotype IB (strain PB1/+),1
+fie_t3_deltablast,DELTA-BLAST,Yersinia pestis bv. Antiqua (strain Antiqua),1
+fie_t3_deltablast,DELTA-BLAST,Yersinia pseudotuberculosis serotype O:1b (strain IP 31758),1
+fie_t3_deltablast,DELTA-BLAST,Alcanivorax borkumensis (strain ATCC 700651 / DSM 11573 / NCIMB 13689 / SK2),1
+fie_t3_deltablast,DELTA-BLAST,Heliconius erato,1
+fie_t3_deltablast,DELTA-BLAST,Aeromonas hydrophila subsp. hydrophila (strain ATCC 7966 / DSM 30187 / BCRC 13018 / CCUG 14551 / JCM 1027 / KCTC 2358 / NCIMB 9240 / NCTC 8049),1
+fie_t3_deltablast,DELTA-BLAST,Nitrosococcus oceani (strain ATCC 19707 / BCRC 17464 / JCM 30415 / NCIMB 11848 / C-107),1
+fie_t3_deltablast,DELTA-BLAST,Actinobacillus pleuropneumoniae serotype 3 (strain JL03),1
+fie_t3_deltablast,DELTA-BLAST,Alkalilimnicola ehrlichii (strain ATCC BAA-1101 / DSM 17681 / MLHE-1),1
+fie_t3_deltablast,DELTA-BLAST,Saccharophagus degradans (strain 2-40 / ATCC 43961 / DSM 17024),1
+fie_t3_deltablast,DELTA-BLAST,Shewanella loihica (strain ATCC BAA-1088 / PV-4),1
+fie_t3_deltablast,DELTA-BLAST,Chlamydia caviae (strain ATCC VR-813 / DSM 19441 / 03DC25 / GPIC),1
+fie_t3_deltablast,DELTA-BLAST,Chlamydia felis (strain Fe/C-56),1
+fie_t3_deltablast,DELTA-BLAST,Legionella pneumophila (strain Paris),1
+fie_t3_deltablast,DELTA-BLAST,Salmonella paratyphi C (strain RKS4594),1
+fie_t3_deltablast,DELTA-BLAST,Legionella pneumophila subsp. pneumophila (strain Philadelphia 1 / ATCC 33152 / DSM 7513),1
+fie_t3_deltablast,DELTA-BLAST,Legionella pneumophila (strain Corby),1
+fie_t3_deltablast,DELTA-BLAST,Legionella pneumophila (strain Lens),1
+fie_t3_deltablast,DELTA-BLAST,Shewanella piezotolerans (strain WP3 / JCM 13877),1
+fie_t3_deltablast,DELTA-BLAST,Shewanella amazonensis (strain ATCC BAA-1098 / SB2B),1
+fie_t3_deltablast,DELTA-BLAST,Salmonella paratyphi B (strain ATCC BAA-1250 / SPB7),1
+fie_t3_deltablast,DELTA-BLAST,Geobacter metallireducens (strain ATCC 53774 / DSM 7210 / GS-15),1
+fie_t3_deltablast,DELTA-BLAST,Yersinia enterocolitica serotype O:8 / biotype 1B (strain NCTC 13174 / 8081),1
+fie_t3_deltablast,DELTA-BLAST,Wigglesworthia glossinidia brevipalpis,1
+fie_t3_deltablast,DELTA-BLAST,Chromobacterium violaceum (strain ATCC 12472 / DSM 30191 / JCM 1249 / CCUG 213 / NBRC 12614 / NCIMB 9131 / NCTC 9757 / MK),1
+fie_t3_deltablast,DELTA-BLAST,Vibrio parahaemolyticus serotype O3:K6 (strain RIMD 2210633),1
+fie_t3_deltablast,DELTA-BLAST,Ralstonia nicotianae (strain ATCC BAA-1114 / GMI1000),1
+fie_t3_deltablast,DELTA-BLAST,Chlorobaculum tepidum (strain ATCC 49652 / DSM 12025 / NBRC 103806 / TLS),1
+fie_t3_deltablast,DELTA-BLAST,Escherichia coli (strain SE11),1
+fie_t3_deltablast,DELTA-BLAST,Escherichia coli O9:H4 (strain HS),1
+fie_t3_deltablast,DELTA-BLAST,Salmonella schwarzengrund (strain CVM19633),1
+fie_t3_deltablast,DELTA-BLAST,Salmonella newport (strain SL254),1
+fie_t3_deltablast,DELTA-BLAST,Salmonella dublin (strain CT_02021853),1
+fie_t3_deltablast,DELTA-BLAST,Salmonella agona (strain SL483),1
+fie_t3_deltablast,DELTA-BLAST,Escherichia coli (strain SMS-3-5 / SECEC),1
+fie_t3_deltablast,DELTA-BLAST,Bordetella bronchiseptica (strain ATCC BAA-588 / NCTC 13252 / RB50),1
+fie_t3_deltablast,DELTA-BLAST,Salmonella heidelberg (strain SL476),1
+fie_t3_deltablast,DELTA-BLAST,Sodalis glossinidius (strain morsitans),1
+fie_t3_deltablast,DELTA-BLAST,Bordetella pertussis (strain Tohama I / ATCC BAA-589 / NCTC 13251),1
+fie_t3_deltablast,DELTA-BLAST,Vibrio vulnificus (strain CMCP6),1
+fie_t3_deltablast,DELTA-BLAST,Desulfotalea psychrophila (strain LSv54 / DSM 12343),1
+fie_t3_deltablast,DELTA-BLAST,Vibrio vulnificus (strain YJ016),1
+fie_t3_deltablast,DELTA-BLAST,Anaeromyxobacter sp. (strain K),1
+fie_t3_deltablast,DELTA-BLAST,Idiomarina loihiensis (strain ATCC BAA-735 / DSM 15497 / L2-TR),1
+fie_t3_deltablast,DELTA-BLAST,Escherichia coli O1:K1 / APEC,1
+fie_t3_deltablast,DELTA-BLAST,Klebsiella pneumoniae subsp. pneumoniae (strain ATCC 700721 / MGH 78578),1
+fie_t3_deltablast,DELTA-BLAST,Kuenenia stuttgartiensis,1
+fie_t3_deltablast,DELTA-BLAST,Hydrogenovibrio crunogenus (strain DSM 25203 / XCL-2),1
+fie_t3_deltablast,DELTA-BLAST,Chromohalobacter israelensis (strain ATCC BAA-138 / DSM 3043 / CIP 106854 / NCIMB 13768 / 1H11),1
+fie_t3_deltablast,DELTA-BLAST,Anaeromyxobacter dehalogenans (strain ATCC BAA-258 / DSM 21875 / 2CP-1),1
+fie_t3_deltablast,DELTA-BLAST,Xanthomonas oryzae pv. oryzae (strain KACC10331 / KXO85),1
+fie_t3_deltablast,DELTA-BLAST,Xanthomonas oryzae pv. oryzae (strain PXO99A),1
+fie_t3_deltablast,DELTA-BLAST,Xanthomonas oryzae pv. oryzae (strain MAFF 311018),1
+fie_t3_deltablast,DELTA-BLAST,Xanthomonas euvesicatoria pv. vesicatoria (strain 85-10),1
+fie_t3_deltablast,DELTA-BLAST,Xanthomonas citri pv. citri (strain 306),1
+fie_t3_deltablast,DELTA-BLAST,Acinetobacter baylyi (strain ATCC 33305 / BD413 / ADP1),1
+fie_t3_deltablast,DELTA-BLAST,Bordetella parapertussis (strain 12822 / ATCC BAA-587 / NCTC 13253),1
+fie_t3_deltablast,DELTA-BLAST,Cynara cardunculus,1
+fie_t3_deltablast,DELTA-BLAST,Taylorella asinigenitalis (strain MCE3),1
+fie_t3_deltablast,DELTA-BLAST,Cupriavidus metallidurans (strain ATCC 43123 / DSM 2839 / NBRC 102507 / CH34),1
+fie_t3_deltablast,DELTA-BLAST,Hamiltonella defensa subsp. Acyrthosiphon pisum (strain 5AT),1
+fie_t3_deltablast,DELTA-BLAST,Azoarcus sp. (strain BH72),1
+fie_t3_deltablast,DELTA-BLAST,Xanthomonas campestris pv. campestris (strain ATCC 33913 / DSM 3586 / NCPPB 528 / LMG 568 / P 25),1
+fie_t3_deltablast,DELTA-BLAST,Xanthomonas campestris pv. campestris (strain B100),1
+fie_t3_deltablast,DELTA-BLAST,Xanthomonas campestris pv. campestris (strain 8004),1
+fie_t3_deltablast,DELTA-BLAST,Anaeromyxobacter dehalogenans (strain 2CP-C),1
+fie_t3_deltablast,DELTA-BLAST,Chlamydia abortus (strain DSM 27085 / S26/3),1
+fie_t3_deltablast,DELTA-BLAST,Buchnera aphidicola subsp. Acyrthosiphon pisum (strain APS),1
+fie_t3_deltablast,DELTA-BLAST,Francisella tularensis subsp. mediasiatica (strain FSC147),1
+fie_t3_deltablast,DELTA-BLAST,Mycobacterium tuberculosis (strain ATCC 25618 / H37Rv),1
+fie_t3_deltablast,DELTA-BLAST,Xylella fastidiosa (strain 9a5c),1
+fie_t3_deltablast,DELTA-BLAST,Nitrosospira multiformis (strain ATCC 25196 / NCIMB 11849 / C 71),1
+fie_t3_deltablast,DELTA-BLAST,Francisella tularensis subsp. tularensis (strain SCHU S4 / Schu 4),1
+fie_t3_deltablast,DELTA-BLAST,Francisella tularensis subsp. tularensis (strain FSC 198),1
+fie_t3_deltablast,DELTA-BLAST,Citrobacter koseri (strain ATCC BAA-895 / CDC 4225-83 / SGSC4696),1
+fie_t3_deltablast,DELTA-BLAST,Marinomonas sp. (strain MWYL1),1
+fie_t3_deltablast,DELTA-BLAST,Sporomusa acidovorans (strain ATCC 49682 / DSM 3132 / Mol),1
+fie_t3_deltablast,DELTA-BLAST,Salmonella paratyphi A (strain AKU_12601),1
+fie_t3_deltablast,DELTA-BLAST,Salmonella paratyphi A (strain ATCC 9150 / SARB42),1
+fie_t3_deltablast,DELTA-BLAST,Phlebotomus perniciosus,1
+fie_t3_deltablast,DELTA-BLAST,Aliivibrio fischeri (strain MJ11),1
+fie_t3_deltablast,DELTA-BLAST,Aliivibrio fischeri (strain ATCC 700601 / ES114),1
+fie_t3_deltablast,DELTA-BLAST,Orientia tsutsugamushi (strain Ikeda),1
+fie_t3_deltablast,DELTA-BLAST,Ruthia magnifica subsp. Calyptogena magnifica,1
+fie_t3_deltablast,DELTA-BLAST,Buchnera aphidicola subsp. Acyrthosiphon pisum (strain 5A),1
+fie_t3_deltablast,DELTA-BLAST,Anaplasma marginale (strain St. Maries),1
+fie_t3_deltablast,DELTA-BLAST,Edwardsiella ictaluri (strain 93-146),1
+fie_t3_deltablast,DELTA-BLAST,Arthroderma otae,1
+fie_t3_deltablast,DELTA-BLAST,Blochmanniella floridana,1
+fie_t3_deltablast,DELTA-BLAST,Klebsiella variicola (strain 342),1
+fie_t3_deltablast,DELTA-BLAST,Francisella tularensis subsp. novicida (strain ATCC 15482 / CCUG 33449 / U112),1
+fie_t3_deltablast,DELTA-BLAST,Methylococcus capsulatus (strain ATCC 33009 / NCIMB 11132 / Bath),1
+fie_t3_deltablast,DELTA-BLAST,Francisella tularensis subsp. holarctica (strain OSU18),1
+fie_t3_deltablast,DELTA-BLAST,Francisella tularensis subsp. holarctica (strain LVS),1
+fie_t3_deltablast,DELTA-BLAST,Orientia tsutsugamushi (strain Boryong),1
+fie_t3_deltablast,DELTA-BLAST,Dechloromonas aromatica (strain RCB),1
+fie_t3_deltablast,DELTA-BLAST,Vibrio cholerae serotype O1 (strain M66-2),1
+fie_t3_deltablast,DELTA-BLAST,Vibrio cholerae serotype O1 (strain ATCC 39315 / El Tor Inaba N16961),1
+fie_t3_deltablast,DELTA-BLAST,Vibrio cholerae serotype O1 (strain ATCC 39541 / Classical Ogawa 395 / O395),1
+fie_t3_deltablast,DELTA-BLAST,Cupriavidus pinatubonensis (strain JMP 134 / LMG 1197),1
+fie_t3_deltablast,DELTA-BLAST,Nitrosomonas europaea (strain ATCC 19718 / CIP 103999 / KCTC 2705 / NBRC 14298),1
+fie_t3_deltablast,DELTA-BLAST,Pectobacterium atrosepticum (strain SCRI 1043 / ATCC BAA-672),1
+fie_t3_deltablast,DELTA-BLAST,Photorhabdus laumondii subsp. laumondii (strain DSM 15139 / CIP 105565 / TT01),1
+fie_t3_deltablast,DELTA-BLAST,Formosa agariphila (strain DSM 15362 / KCTC 12365 / LMG 23005 / KMM 3901 / M-2Alg 35-1),1
+fie_t3_deltablast,DELTA-BLAST,Paraburkholderia xenovorans (strain LB400),1
+fie_t3_deltablast,DELTA-BLAST,Cronobacter sakazakii (strain ATCC BAA-894),1
+fie_t3_deltablast,DELTA-BLAST,Buchnera aphidicola subsp. Acyrthosiphon pisum (strain Tuc7),1
+fie_t3_deltablast,DELTA-BLAST,Paraburkholderia phytofirmans (strain DSM 17436 / LMG 22146 / PsJN),1
+fie_t3_deltablast,DELTA-BLAST,Methylobacillus flagellatus (strain ATCC 51484 / DSM 6875 / VKM B-1610 / KT),1
+fie_t3_deltablast,DELTA-BLAST,Mycolicibacterium smegmatis (strain ATCC 700084 / mc(2)155),1
+fie_t3_deltablast,DELTA-BLAST,Colwellia psychrerythraea (strain 34H / ATCC BAA-681),1
+fie_t3_deltablast,DELTA-BLAST,Francisella tularensis subsp. tularensis (strain WY96-3418),1
+fie_t3_deltablast,DELTA-BLAST,Trichophyton rubrum,1
+fie_t3_deltablast,DELTA-BLAST,Hyphomicrobium sp.,1
+fie_t3_deltablast,DELTA-BLAST,Wolbachia pipientis wMel,1
+fie_t3_deltablast,DELTA-BLAST,Burkholderia thailandensis (strain ATCC 700388 / DSM 13276 / CCUG 48851 / CIP 106301 / E264),1
+fie_t3_deltablast,DELTA-BLAST,Wolbachia sp. subsp. Drosophila simulans (strain wRi),1
+fie_t3_deltablast,DELTA-BLAST,Ruegeria sp. (strain TM1040),1
+fie_t3_deltablast,DELTA-BLAST,Caulobacter vibrioides (strain ATCC 19089 / CIP 103742 / CB 15),1
+fie_t3_deltablast,DELTA-BLAST,Aromatoleum aromaticum (strain DSM 19018 / LMG 30748 / EbN1),1
+fie_t3_deltablast,DELTA-BLAST,Albidiferax ferrireducens (strain ATCC BAA-621 / DSM 15236 / T118),1
+fie_t3_deltablast,DELTA-BLAST,Streptomyces avermitilis (strain ATCC 31267 / DSM 46492 / JCM 5070 / NBRC 14893 / NCIMB 12804 / NRRL 8165 / MA-4680),1
+fie_t3_deltablast,DELTA-BLAST,Chlamydia pneumoniae,1
+fie_t3_deltablast,DELTA-BLAST,Burkholderia pseudomallei (strain K96243),1
+fie_t3_deltablast,DELTA-BLAST,Burkholderia pseudomallei (strain 1710b),1
+fie_t3_deltablast,DELTA-BLAST,Pseudoalteromonas atlantica (strain T6c / ATCC BAA-1087),1
+fie_t3_deltablast,DELTA-BLAST,Pseudomonas fluorescens (strain Pf0-1),1
+fie_t3_deltablast,DELTA-BLAST,Polaromonas sp. (strain JS666 / ATCC BAA-500),1
+fie_t3_deltablast,DELTA-BLAST,Dickeya dadantii (strain 3937),1
+fie_t3_deltablast,DELTA-BLAST,Burkholderia mallei (strain ATCC 23344),1
+fie_t3_deltablast,DELTA-BLAST,Arthroderma benhamiae,1
+fie_t3_deltablast,DELTA-BLAST,Rickettsia typhi (strain ATCC VR-144 / Wilmington),1
+fie_t3_deltablast,DELTA-BLAST,Buchnera aphidicola subsp. Baizongia pistaciae (strain Bp),1
+fie_t3_deltablast,DELTA-BLAST,Wolbachia pipientis subsp. Culex pipiens (strain wPip),1
+fie_t3_deltablast,DELTA-BLAST,Trichophyton schoenleinii,1
+fie_t3_deltablast,DELTA-BLAST,Syntrophotalea carbinolica (strain DSM 2380 / NBRC 103641 / GraBd1),1
+fie_t3_deltablast,DELTA-BLAST,Pseudomonas entomophila (strain DSM 28517 / CCUG 61470 / CECT 7985 / L48),1
+fie_t3_deltablast,DELTA-BLAST,Paraburkholderia phymatum (strain DSM 17167 / CIP 108236 / LMG 21445 / STM815),1
+fie_t3_deltablast,DELTA-BLAST,Trichophyton equinum,1
+fie_t3_deltablast,DELTA-BLAST,Trichophyton tonsurans,1
+fie_t3_deltablast,DELTA-BLAST,Lentinula edodes,1
+fie_t3_deltablast,DELTA-BLAST,Pseudomonas syringae pv. syringae (strain B728a),1
+fie_t3_deltablast,DELTA-BLAST,Pseudomonas syringae pv. tomato (strain ATCC BAA-871 / DC3000),1
+fie_t3_deltablast,DELTA-BLAST,Pseudomonas savastanoi pv. phaseolicola (strain 1448A / Race 6),1
+fie_t3_deltablast,DELTA-BLAST,Omphalotus olearius,1
+fie_t3_deltablast,DELTA-BLAST,Mycoplasma mycoides subsp. mycoides SC (strain CCUG 32753 / NCTC 10114 / PG1),1
+fie_t3_deltablast,DELTA-BLAST,Plasmodium knowlesi (strain H),1

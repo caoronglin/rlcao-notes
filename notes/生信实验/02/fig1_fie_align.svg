@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="3000" height="1290" viewBox="0 0 1000 430">
+<style>text{font-family:"Noto Sans CJK SC",sans-serif;fill:#111}</style>
+<rect x="0.0" y="0.0" width="1000.0" height="430.0" fill="#fff"/>
+<text x="8.0" y="20.0" font-size="19.5" text-anchor="start" fill="#111" font-weight="700">（a）核酸直系同源比对　　（b）蛋白直系同源与并系同源比对</text>
+<rect x="100.0" y="123.6" width="45.0" height="206.4" fill="#1f3f66"/>
+<rect x="155.0" y="225.5" width="45.0" height="104.5" fill="#9db6d4"/>
+<text x="122.0" y="117.6" font-size="14.3" text-anchor="middle" fill="#111" font-weight="700">56.3%</text>
+<text x="177.0" y="219.5" font-size="14.3" text-anchor="middle" fill="#111" font-weight="normal">28.5%</text>
+<text x="150.0" y="348.0" font-size="14.3" text-anchor="middle" fill="#111" font-weight="normal">Needle 全局</text>
+<rect x="250.0" y="115.5" width="45.0" height="214.5" fill="#466f87"/>
+<rect x="305.0" y="236.1" width="45.0" height="93.9" fill="#9db6d4"/>
+<text x="272.0" y="109.5" font-size="14.3" text-anchor="middle" fill="#111" font-weight="700">58.5%</text>
+<text x="327.0" y="230.1" font-size="14.3" text-anchor="middle" fill="#111" font-weight="normal">25.6%</text>
+<text x="300.0" y="348.0" font-size="14.3" text-anchor="middle" fill="#111" font-weight="normal">Water 局部</text>
+<line x1="100.0" y1="330.0" x2="400.0" y2="330.0" stroke="#333" stroke-width="0.9"/>
+<text x="100.0" y="372.0" font-size="13.7" text-anchor="start" fill="#111" font-weight="normal">深色 identity，浅色 gaps；局部比对把一致性从 56.3% 提到 58.5%。</text>
+<rect x="520.0" y="202.4" width="25.0" height="127.6" fill="#1f3f66"/>
+<rect x="548.0" y="180.4" width="25.0" height="149.6" fill="#cfdcec"/>
+<rect x="576.0" y="288.6" width="25.0" height="41.4" fill="#999"/>
+<text x="560.0" y="348.0" font-size="13.0" text-anchor="middle" fill="#111" font-weight="normal">Needle 直系</text>
+<rect x="630.0" y="170.9" width="25.0" height="159.1" fill="#466f87"/>
+<rect x="658.0" y="144.8" width="25.0" height="185.2" fill="#cfdcec"/>
+<rect x="686.0" y="329.3" width="25.0" height="0.7" fill="#999"/>
+<text x="670.0" y="348.0" font-size="13.0" text-anchor="middle" fill="#111" font-weight="normal">Water 直系</text>
+<rect x="740.0" y="192.1" width="25.0" height="137.9" fill="#6b8db8"/>
+<rect x="768.0" y="175.3" width="25.0" height="154.7" fill="#cfdcec"/>
+<rect x="796.0" y="290.8" width="25.0" height="39.2" fill="#999"/>
+<text x="780.0" y="348.0" font-size="13.0" text-anchor="middle" fill="#111" font-weight="normal">Needle 并系</text>
+<rect x="850.0" y="159.1" width="25.0" height="170.9" fill="#9db6d4"/>
+<rect x="878.0" y="140.1" width="25.0" height="189.9" fill="#cfdcec"/>
+<rect x="906.0" y="330.0" width="25.0" height="0.0" fill="#999"/>
+<text x="890.0" y="348.0" font-size="13.0" text-anchor="middle" fill="#111" font-weight="normal">Water 并系</text>
+<line x1="520.0" y1="330.0" x2="950.0" y2="330.0" stroke="#333" stroke-width="0.9"/>
+<text x="520.0" y="372.0" font-size="13.7" text-anchor="start" fill="#111" font-weight="normal">深色 identity，浅色 similarity，灰色 gaps。</text>
+</svg>

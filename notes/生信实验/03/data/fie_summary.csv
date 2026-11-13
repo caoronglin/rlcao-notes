@@ -1,0 +1,26 @@
+group,run,label,hsp,subjects,species,e005,best_bitscore,best_pident,seconds
+BLASTN·算法,fie_t1a_blastn_default,blastn（默认）,360,335,153,313,3223.0,100.0,1.09
+BLASTN·算法,fie_t1b_megablast,megablast,29,27,10,27,3301.0,100.0,0.35
+BLASTN·算法,fie_t1c_dcmegablast,discontiguous megablast,332,313,153,312,3223.0,100.0,3.18
+BLASTN·word size,fie_t1d_blastn_w7,blastn word_size 7,418,372,153,315,3223.0,100.0,21.74
+BLASTN·word size,fie_t1e_blastn_w11,blastn word_size 11,360,335,153,313,3223.0,100.0,1.07
+BLASTN·word size,fie_t1f_blastn_w15,blastn word_size 15,252,242,113,227,3223.0,100.0,0.63
+BLASTN·E 值,fie_t1g_blastn_e1e50,blastn E=1e-50,299,297,148,297,3223.0,100.0,1.06
+BLASTN·E 值,fie_t1h_blastn_e1e5,blastn E=1e-5,325,313,153,313,3223.0,100.0,1.06
+BLASTN·E 值,fie_t1i_blastn_e1000,blastn E=1000,2116,2083,153,313,3223.0,100.0,1.48
+BLASTP·全长,fie_t2a_blastp_default,blastp（默认）,2252,1355,314,689,955.0,100.0,3.41
+BLASTP·word size,fie_t2b_blastp_w2,blastp word_size 2,2254,1363,315,694,955.0,100.0,4.85
+BLASTP·word size,fie_t2c_blastp_w6,blastp word_size 6,971,809,269,522,955.0,100.0,1.31
+BLASTP·矩阵,fie_t2d_blastp_blosum45,blastp BLOSUM45,2130,1287,292,698,956.0,100.0,2.82
+BLASTP·矩阵,fie_t2e_blastp_blosum90,blastp BLOSUM90,1916,1180,293,705,1004.0,100.0,4.11
+BLASTP·E 值,fie_t2f_blastp_e1e3,blastp E=1e-3,722,604,244,604,955.0,100.0,2.83
+BLASTP·E 值,fie_t2g_blastp_e1000,blastp E=1000,4306,2482,662,690,955.0,100.0,4.64
+BLASTP·短序列,fie_t2h_short_default,27 aa 片段（blastp-short，word 2）,11690,11393,2220,139,71.0,100.0,4.14
+BLASTP·短序列,fie_t2j_short_w3,27 aa 片段 word_size 3,3088,3052,1172,139,71.0,100.0,0.91
+翻译搜索·翻译搜索,fie_t4a_blastx_plant,BLASTX：mRNA → 蛋白库,401,396,202,396,851.0,100.0,0.91
+翻译搜索·翻译搜索,fie_t4d_blastp_e1e5,BLASTP：蛋白 → 蛋白库（同库对照）,423,417,211,417,955.0,100.0,0.51
+翻译搜索·翻译搜索,fie_t4b_tblastx_plant,TBLASTX：mRNA → 核酸库,4599,340,154,340,908.0,100.0,6.43
+翻译搜索·翻译搜索,fie_t4c_blastn_plant,BLASTN：mRNA → 核酸库（同库对照）,325,313,153,313,3223.0,100.0,0.27
+翻译搜索·库规模对照,fie_t4b_tblastx_fam,TBLASTX：mRNA → 家族小库 280 条,4033,280,154,280,908.0,100.0,0.2
+翻译搜索·库规模对照,fie_t4c_blastn_fam,BLASTN：mRNA → 家族小库 280 条,23,22,10,22,3301.0,100.0,0.06
+DELTA-BLAST,fie_t3_deltablast,DELTA-BLAST,8901,3162,570,2782,425.0,100.0,5.02

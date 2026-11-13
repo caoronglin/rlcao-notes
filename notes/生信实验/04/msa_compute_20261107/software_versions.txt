@@ -1,0 +1,11 @@
+Downloaded Ubuntu packages, extracted without system installation:
+Package: clustalo
+Version: 1.2.4-8build2
+Package: muscle
+Version: 1:5.1.0-1build1
+Package: libargtable2-0
+Version: 13-4build1
+1.2.4
+muscle 5.2.linux64 [-]
+Built Dec 16 2025 21:26:16
+

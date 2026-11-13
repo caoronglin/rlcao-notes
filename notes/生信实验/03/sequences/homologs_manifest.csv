@@ -1,0 +1,50 @@
+file,type,gene,accession,species,pident_to_query,evalue,bitscore,source_run,note
+orthologs_EGF_protein_12.fa,直系同源,EGF,sp|P01133|EGF_HUMAN,Homo sapiens,100.0,0.0e+00,2509,blastp 默认,query 本身，UniProt Reviewed
+orthologs_EGF_protein_12.fa,直系同源,EGF,XP_054539259.1,Pan troglodytes,96.6,0.0e+00,2454,blastp 默认,黑猩猩
+orthologs_EGF_protein_12.fa,直系同源,EGF,XP_005555736.3,Macaca fascicularis,93.2,0.0e+00,2284,blastp 默认,食蟹猴
+orthologs_EGF_protein_12.fa,直系同源,EGF,sp|P01132|EGF_MOUSE,Mus musculus,66.2,0.0e+00,1612,blastp 默认,小鼠
+orthologs_EGF_protein_12.fa,直系同源,EGF,sp|P07522|EGF_RAT,Rattus norvegicus,67.1,0.0e+00,1546,blastp 默认,大鼠
+orthologs_EGF_protein_12.fa,直系同源,EGF,sp|Q9BEA0|EGF_CANLF,Canis lupus familiaris,78.4,0.0e+00,1947,blastp 默认,犬
+orthologs_EGF_protein_12.fa,直系同源,EGF,NP_999185.1,Sus scrofa,80.3,0.0e+00,1988,blastp 默认,猪
+orthologs_EGF_protein_12.fa,直系同源,EGF,NP_001001292.2,Gallus gallus,52.3,0.0e+00,1244,blastp 默认,鸡
+orthologs_EGF_protein_12.fa,直系同源,EGF,NP_001106478.1,Xenopus tropicalis,45.9,0.0e+00,994,blastp 默认,热带爪蟾
+orthologs_EGF_protein_12.fa,直系同源,EGF,XP_014067426.1,Salmo salar,45.2,0.0e+00,1005,blastp 默认,大西洋鲑
+orthologs_EGF_protein_12.fa,直系同源,EGF,XP_087136465.1,Danio rerio,40.7,0.0e+00,848,blastp 默认,斑马鱼
+orthologs_EGF_protein_12.fa,直系同源,EGF,XP_021439780.2,Oncorhynchus mykiss,44.6,0.0e+00,998,blastp 默认,虹鳟
+paralogs_EGF_family_protein_10.fa,并系同源,EGF,NP_001954.2,Homo sapiens,100.0,0.0e+00,2509,blastp 默认,epidermal growth factor
+paralogs_EGF_family_protein_10.fa,并系同源,TGFA,NP_003227.1,Homo sapiens,33.0,5.1e-06,51,blastp 默认,transforming growth factor alpha
+paralogs_EGF_family_protein_10.fa,并系同源,AREG,NP_001648.1,Homo sapiens,27.8,1.7e-01,39,blastp 默认,amphiregulin
+paralogs_EGF_family_protein_10.fa,并系同源,EREG,NP_001423.1,Homo sapiens,26.7,6.6e-07,54,blastp 默认,epiregulin
+paralogs_EGF_family_protein_10.fa,并系同源,HBEGF,NP_001936.1,Homo sapiens,30.8,2.8e+00,35,blastp 默认,heparin-binding EGF-like growth factor
+paralogs_EGF_family_protein_10.fa,并系同源,BTC,sp|P35070|BTC_HUMAN,Homo sapiens,27.5,2.0e-03,44,blastp 默认,betacellulin
+paralogs_EGF_family_protein_10.fa,并系同源,NRG1,sp|Q02297|NRG1_HUMAN,Homo sapiens,24.1,1.1e+00,37,blastp 默认,neuregulin-1
+paralogs_EGF_family_protein_10.fa,并系同源,NRG2,sp|O14511|NRG2_HUMAN,Homo sapiens,30.1,2.0e-03,47,blastp 默认,neuregulin-2
+paralogs_EGF_family_protein_10.fa,并系同源,NRG3,sp|P56975|NRG3_HUMAN,Homo sapiens,26.6,6.9e+00,35,blastp 默认,neuregulin-3
+paralogs_EGF_family_protein_10.fa,并系同源,NRG4,sp|Q8WWG1|NRG4_HUMAN,Homo sapiens,30.1,2.1e-02,40,blastp 默认,neuregulin-4
+homologs_deltablast_27.fa,DELTA-BLAST >=95,NP_001954.2,gi|166362728|ref|NP_001954.2|,Homo sapiens,100.0,0.0e+00,1870,DELTA-BLAST,pro-epidermal growth factor isoform 1 preproprotein [Homo sapiens]
+homologs_deltablast_27.fa,DELTA-BLAST >=95,XP_003830069.1,gi|397519856|ref|XP_003830069.1|,Pan paniscus,98.7,0.0e+00,1864,DELTA-BLAST,pro-epidermal growth factor [Pan paniscus]
+homologs_deltablast_27.fa,DELTA-BLAST >=95,XP_517395.5,gi|2468663339|ref|XP_517395.5|,Pan troglodytes,98.5,0.0e+00,1859,DELTA-BLAST,pro-epidermal growth factor isoform X7 [Pan troglodytes]
+homologs_deltablast_27.fa,DELTA-BLAST 90-95,NP_001171601.1,gi|296011013|ref|NP_001171601.1|,Homo sapiens,92.5,0.0e+00,1787,DELTA-BLAST,pro-epidermal growth factor isoform 2 precursor [Homo sapiens]
+homologs_deltablast_27.fa,DELTA-BLAST 90-95,XP_033070881.1,gi|1825842842|ref|XP_033070881.1|,Trachypithecus francoisi,94.0,0.0e+00,1782,DELTA-BLAST,pro-epidermal growth factor isoform X2 [Trachypithecus francoisi]
+homologs_deltablast_27.fa,DELTA-BLAST 90-95,XP_010387379.1,gi|724946315|ref|XP_010387379.1|,Rhinopithecus roxellana,93.7,0.0e+00,1780,DELTA-BLAST,pro-epidermal growth factor isoform X8 [Rhinopithecus roxellana]
+homologs_deltablast_27.fa,DELTA-BLAST 80-90,XP_010387372.1,gi|724946303|ref|XP_010387372.1|,Rhinopithecus roxellana,89.5,0.0e+00,1747,DELTA-BLAST,pro-epidermal growth factor isoform X1 [Rhinopithecus roxellana]
+homologs_deltablast_27.fa,DELTA-BLAST 80-90,XP_039324359.1,gi|1984037930|ref|XP_039324359.1|,Saimiri boliviensis,89.5,0.0e+00,1701,DELTA-BLAST,pro-epidermal growth factor isoform X2 [Saimiri boliviensis]
+homologs_deltablast_27.fa,DELTA-BLAST 80-90,XP_011825962.1,gi|795325681|ref|XP_011825962.1|,Mandrillus leucophaeus,89.7,0.0e+00,1679,DELTA-BLAST,PREDICTED: pro-epidermal growth factor isoform X3 [Mandrillus leucophaeus]
+homologs_deltablast_27.fa,DELTA-BLAST 70-80,XP_057562222.1,gi|2528640108|ref|XP_057562222.1|,Hippopotamus amphibius,79.5,0.0e+00,1551,DELTA-BLAST,pro-epidermal growth factor isoform X3 [Hippopotamus amphibius kiboko]
+homologs_deltablast_27.fa,DELTA-BLAST 70-80,XP_019597526.3,gi|3399072987|ref|XP_019597526.3|,Rhinolophus sinicus,79.8,0.0e+00,1550,DELTA-BLAST,pro-epidermal growth factor isoform X1 [Rhinolophus sinicus]
+homologs_deltablast_27.fa,DELTA-BLAST 70-80,XP_047654802.1,gi|2225000004|ref|XP_047654802.1|,Phacochoerus africanus,79.6,0.0e+00,1539,DELTA-BLAST,pro-epidermal growth factor isoform X2 [Phacochoerus africanus]
+homologs_deltablast_27.fa,DELTA-BLAST 60-70,XP_054342101.1,gi|2463493669|ref|XP_054342101.1|,Pongo pygmaeus,65.2,0.0e+00,1386,DELTA-BLAST,pro-epidermal growth factor isoform X6 [Pongo pygmaeus]
+homologs_deltablast_27.fa,DELTA-BLAST 60-70,XP_051021530.1,gi|2318335024|ref|XP_051021530.1|,Acomys russatus,69.8,0.0e+00,1385,DELTA-BLAST,pro-epidermal growth factor [Acomys russatus]
+homologs_deltablast_27.fa,DELTA-BLAST 60-70,XP_087054870.1,gi|3377603046|ref|XP_087054870.1|,Heterocephalus glaber,69.1,0.0e+00,1368,DELTA-BLAST,pro-epidermal growth factor isoform X1 [Heterocephalus glaber]
+homologs_deltablast_27.fa,DELTA-BLAST 50-60,XP_027693377.1,gi|1561916344|ref|XP_027693377.1|,Vombatus ursinus,59.3,0.0e+00,1131,DELTA-BLAST,pro-epidermal growth factor isoform X1 [Vombatus ursinus]
+homologs_deltablast_27.fa,DELTA-BLAST 50-60,XP_020857031.1,gi|1190413743|ref|XP_020857031.1|,Phascolarctos cinereus,59.2,0.0e+00,1125,DELTA-BLAST,pro-epidermal growth factor isoform X2 [Phascolarctos cinereus]
+homologs_deltablast_27.fa,DELTA-BLAST 50-60,XP_074084812.1,gi|2990445460|ref|XP_074084812.1|,Macrotis lagotis,59.5,0.0e+00,1123,DELTA-BLAST,pro-epidermal growth factor isoform X2 [Macrotis lagotis]
+homologs_deltablast_27.fa,DELTA-BLAST 40-50,XP_065490986.1,gi|2740732934|ref|XP_065490986.1|,Caloenas nicobarica,49.8,0.0e+00,996,DELTA-BLAST,pro-epidermal growth factor isoform X1 [Caloenas nicobarica]
+homologs_deltablast_27.fa,DELTA-BLAST 40-50,XP_074888993.1,gi|3013928211|ref|XP_074888993.1|,Buteo buteo,48.0,0.0e+00,973,DELTA-BLAST,pro-epidermal growth factor isoform X2 [Buteo buteo]
+homologs_deltablast_27.fa,DELTA-BLAST 40-50,XP_069638927.1,gi|2852041600|ref|XP_069638927.1|,Haliaeetus albicilla,47.6,0.0e+00,967,DELTA-BLAST,pro-epidermal growth factor isoform X2 [Haliaeetus albicilla]
+homologs_deltablast_27.fa,DELTA-BLAST 30-40,XP_029107733.1,gi|1658083324|ref|XP_029107733.1|,Scleropages formosus,39.9,0.0e+00,807,DELTA-BLAST,pro-epidermal growth factor [Scleropages formosus]
+homologs_deltablast_27.fa,DELTA-BLAST 30-40,XP_065128781.1,gi|2732073543|ref|XP_065128781.1|,Paramisgurnus dabryanus,39.4,0.0e+00,795,DELTA-BLAST,pro-epidermal growth factor [Paramisgurnus dabryanus]
+homologs_deltablast_27.fa,DELTA-BLAST 30-40,XP_083747541.1,gi|3344539010|ref|XP_083747541.1|,Microchirus variegatus,39.5,0.0e+00,792,DELTA-BLAST,pro-epidermal growth factor [Microchirus variegatus]
+homologs_deltablast_27.fa,DELTA-BLAST <30,Q91ZX7,sp|Q91ZX7|LRP1_MOUSE,Mus musculus,29.1,2.6e-103,365,DELTA-BLAST,Prolow-density lipoprotein receptor-related protein 1 OS=Mus musculus OX=10090 G
+homologs_deltablast_27.fa,DELTA-BLAST <30,G3V928,sp|G3V928|LRP1_RAT,Rattus norvegicus,28.9,4.0e-103,364,DELTA-BLAST,Prolow-density lipoprotein receptor-related protein 1 OS=Rattus norvegicus OX=10
+homologs_deltablast_27.fa,DELTA-BLAST <30,P98157,sp|P98157|LRP1_CHICK,Gallus gallus,29.4,1.8e-102,363,DELTA-BLAST,Low-density lipoprotein receptor-related protein 1 OS=Gallus gallus OX=9031 GN=L

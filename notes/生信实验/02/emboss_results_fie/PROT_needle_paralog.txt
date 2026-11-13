@@ -1,0 +1,77 @@
+########################################
+# Program: needle
+# Rundate: Fri  6 Nov 2026 10:47:08
+# Commandline: needle
+#    -auto
+#    -stdout
+#    -asequence emboss_needle-R20261106-104703-0680-90506550-p1m.asequence
+#    -bsequence emboss_needle-R20261106-104703-0680-90506550-p1m.bsequence
+#    -datafile EBLOSUM62
+#    -gapopen 10.0
+#    -sprotein1
+#    -sprotein2
+# Align_format: srspair
+# Report_file: stdout
+########################################
+
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: NP_001105181.1
+# 2: NP_001105182.1
+# Matrix: EBLOSUM62
+# Gap_penalty: 10.0
+# Extend_penalty: 0.5
+#
+# Length: 461
+# Identity:     289/461 (62.7%)
+# Similarity:   324/461 (70.3%)
+# Gaps:          82/461 (17.8%)
+# Score: 1585.0
+# 
+#
+#=======================================
+
+NP_001105181.      1 MPPSKARRKRSLRDITATVATGTVANSKPGSSSTNEGKQQDKKKEGPQEP     50
+                                                                       
+NP_001105182.      0 --------------------------------------------------      0
+
+NP_001105181.     51 DIPPLPPVVVNIVPRQGLGCEVVEGLLVPSRKREYKPNSKYTVGNHPIYA    100
+                             :..:.|.||||||..||.|||||||||||..|:|.|..|:||
+NP_001105182.      1 --------MAKLGPGQGLGCEAAEGSLVPSRKREYKPCGKHTEGKRPLYA     42
+
+NP_001105181.    101 IGFNFIDMRYYDVFAIASCNSVIIYRCLENGGFGLLQNYVDEDKDESFYT    150
+                     |||||:|.|||||||....|.|..|||||||.|.|||.||||||||||||
+NP_001105182.     43 IGFNFMDARYYDVFATVGGNRVTTYRCLENGSFALLQAYVDEDKDESFYT     92
+
+NP_001105181.    151 LSWTIDQVDSSPLLVAAGSNRIIRVINCATEKLDKSLVGHGGSIHEIRTH    200
+                     |||..|.||.||||||||||.||||||||||||.||.||||.||:||||.
+NP_001105182.     93 LSWARDHVDGSPLLVAAGSNGIIRVINCATEKLAKSFVGHGDSINEIRTQ    142
+
+NP_001105181.    201 ASKPSLIISASKDESIRLWNVHTGICILVFAGAGGHRHDVLSVDFHPTEV    250
+                     ..|||||||||||||:||||||||||||:||||||||::||||||||:::
+NP_001105182.    143 PLKPSLIISASKDESVRLWNVHTGICILIFAGAGGHRNEVLSVDFHPSDI    192
+
+NP_001105181.    251 GIFASCGMDNTVKIWSMKEFWIYVEKSYSWTGHPSKFPTRNIQFPVLTAA    300
+                     ..|||||||||||||||||||:||:||||||..||||||:.:|||||.||
+NP_001105182.    193 ERFASCGMDNTVKIWSMKEFWLYVDKSYSWTDLPSKFPTKYVQFPVLIAA    242
+
+NP_001105181.    301 VHSDYVDCTRWLGDFILSKSVKNAVLLWEPKPDKRRPGEGSVDVLQKYPV    350
+                     |||:|||||||||||||||||.|.::|||||..::.|||||:|:||||||
+NP_001105182.    243 VHSNYVDCTRWLGDFILSKSVDNEIVLWEPKTKEQSPGEGSIDILQKYPV    292
+
+NP_001105181.    351 PKCSLWFMKFSCDFYSNQMAIGNNKGEIYVWEVQSSPPVLIDRLCNQECK    400
+                     |:|.:||:||||||:.||:||||.:|:||||||||||||||.||.||:||
+NP_001105182.    293 PECDIWFIKFSCDFHFNQLAIGNREGKIYVWEVQSSPPVLIARLYNQQCK    342
+
+NP_001105181.    401 SPIRQTAVSFDGSTILGAADDGAIWRWDEVDPAASSSKPDQAAAPAAGVG    450
+                     ||||||||||||||||||.:||.||||||||..:|.:             
+NP_001105182.    343 SPIRQTAVSFDGSTILGAGEDGTIWRWDEVDHPSSRN-------------    379
+
+NP_001105181.    451 AGAGADADADA    461
+                                
+NP_001105182.    379 -----------    379
+
+
+#---------------------------------------
+#---------------------------------------

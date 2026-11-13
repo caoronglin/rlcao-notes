@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="330" viewBox="0 0 860 330">
+<rect x="0" y="0" width="860" height="330" fill="#fbfbfb" stroke="#c9c9c9" stroke-width="1"/>
+<rect x="0" y="0" width="860" height="24" fill="#eef2f6"/>
+<line x1="0" y1="24" x2="860" y2="24" stroke="#c9c9c9" stroke-width="1"/>
+<text x="12" y="16.5" font-family="DejaVu Sans Mono, Noto Sans Mono CJK SC, monospace" font-size="11.5" fill="#20507a">NCBI Entrez &#183; E-utilities &#183; 2026-11-06</text>
+<text x="16" y="34.0" font-family="DejaVu Sans Mono, Noto Sans Mono CJK SC, monospace" font-size="12.5" fill="#1a1a1a" font-weight="700">esearch   db=nuccore</text>
+<text x="26" y="51.5" font-family="DejaVu Sans Mono, Noto Sans Mono CJK SC, monospace" font-size="12.5" fill="#1a1a1a">term = Zea mays[Organism] AND "fertilization independent</text>
+<text x="26" y="69.0" font-family="DejaVu Sans Mono, Noto Sans Mono CJK SC, monospace" font-size="12.5" fill="#1a1a1a">endosperm"[Title] AND refseq[filter]</text>
+<text x="26" y="86.5" font-family="DejaVu Sans Mono, Noto Sans Mono CJK SC, monospace" font-size="12.5" fill="#333333">Count = 3      IdList = 162462771  162462641  1897973403</text>
+<text x="16" y="121.5" font-family="DejaVu Sans Mono, Noto Sans Mono CJK SC, monospace" font-size="12.5" fill="#1a1a1a" font-weight="700">elink     dbfrom=gene  db=nuccore  linkname=gene_nuccore_refseqrna</text>
+<text x="26" y="139.0" font-family="DejaVu Sans Mono, Noto Sans Mono CJK SC, monospace" font-size="12.5" fill="#333333">id=542075 (fie1)  ->  162462641  1897973403</text>
+<text x="26" y="156.5" font-family="DejaVu Sans Mono, Noto Sans Mono CJK SC, monospace" font-size="12.5" fill="#333333">id=542076 (fie2)  ->  162462771</text>
+<text x="16" y="191.5" font-family="DejaVu Sans Mono, Noto Sans Mono CJK SC, monospace" font-size="12.5" fill="#1a1a1a" font-weight="700">esummary  db=nuccore  id = 162462771,162462641,1897973403</text>
+<text x="26" y="209.0" font-family="DejaVu Sans Mono, Noto Sans Mono CJK SC, monospace" font-size="12.5" fill="#333333">NM_001111711.1  1787 nt   Zea mays fertilization independent</text>
+<text x="26" y="226.5" font-family="DejaVu Sans Mono, Noto Sans Mono CJK SC, monospace" font-size="12.5" fill="#333333">                            endosperm 1 (LOC542075), mRNA</text>
+<text x="26" y="244.0" font-family="DejaVu Sans Mono, Noto Sans Mono CJK SC, monospace" font-size="12.5" fill="#333333">NM_001111712.1  1711 nt   Zea mays fertilization independent</text>
+<text x="26" y="261.5" font-family="DejaVu Sans Mono, Noto Sans Mono CJK SC, monospace" font-size="12.5" fill="#333333">                            endosperm 2 (LOC542076), mRNA</text>
+<text x="26" y="279.0" font-family="DejaVu Sans Mono, Noto Sans Mono CJK SC, monospace" font-size="12.5" fill="#333333">XM_023302232.2  1738 nt   PREDICTED: Zea mays fertilization</text>
+<text x="26" y="296.5" font-family="DejaVu Sans Mono, Noto Sans Mono CJK SC, monospace" font-size="12.5" fill="#333333">                            independent endosperm 1, variant X1</text>
+</svg>

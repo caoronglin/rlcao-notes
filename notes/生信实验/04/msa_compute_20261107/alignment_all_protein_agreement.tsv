@@ -1,0 +1,7 @@
+method_a	method_b	pairs_a	pairs_b	shared	f1
+clustalo_default	clustalo_iter3	231524	231550	230563	0.995793
+clustalo_default	muscle	231524	230798	226906	0.981593
+clustalo_default	clustalo_pfam	231524	231524	231524	1.0
+clustalo_iter3	muscle	231550	230798	226542	0.979963
+clustalo_iter3	clustalo_pfam	231550	231524	230563	0.995793
+muscle	clustalo_pfam	230798	231524	226906	0.981593

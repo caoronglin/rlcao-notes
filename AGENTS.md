@@ -1,103 +1,118 @@
 # AGENTS.md
 
-> 本文件是 `/media/rlcao/Data/data/05-个人项目/rlcao` 这个 **Obsidian 个人知识库**对自动化代理（agent / 脚本）的行为约束。
-> 文中每条事实均经实测核实。**若与本文描述不符，以实测为准，并同步更新本文。**
+> 约束在本库（`/media/rlcao/Data/data/05-个人项目/rlcao`）中工作的 agent 与脚本。
+> 这里写的是**当前实测状态**，不是设计意图。与实测冲突时以实测为准，并顺手把本文改对。
+> 最近核对：2026-11-06（main 分支）。
 
 ---
 
-## 0. 库的性质
+## 0. 任务路由
+
+先按要做的事找到对应章节，再动手；跳过这一步最容易踩链接和备份的坑。
+
+| 要做的事 | 先读 | 关键动作 |
+|---|---|---|
+| 改、移动、重命名笔记 | §3 | 先审计链接，再 `git mv` |
+| 归档旧版本 | §2.2 | `git mv` + 当日 `README.md` |
+| 判断备份是否正常 | §4.1 | `git check-ignore -v`，不能只看 `git status` |
+| 写或改课程实验报告 | §7 | 模板字段 + 5 页版式 + 逐页验收 |
+| 动 `.obsidian/` 配置 | §6 | 先确认连锁影响 |
+| 新建笔记、项目、实验 | §2、§6 | 不预建空目录 |
+| 改 `_posts/` | §5 | 它只是暂存副本，不是 Hexo 源 |
+
+---
+
+## 1. 库的性质
 
 | 项 | 值 |
 |---|---|
 | 类型 | Obsidian vault（个人知识库），**不是** Hexo 源目录 |
-| 库根 | `/media/rlcao/Data/data/05-个人项目/rlcao` |
 | 主远程 | `origin` → `cnb.cool/crl-code/obsidian-notes` |
 | 副远程 | `github` → `github.com/caoronglin/rlcao-notes.git` |
-| 分支 | `main`（活跃）、`backup/pre-pdf-cleanup-main` |
+| 分支 | `main`；另有回滚点分支 `backup/pre-pdf-cleanup-main` |
 | 自动备份 | obsidian-git，提交信息固定为 `vault backup: <时间戳>` |
 
-组织方法为 **PARA**（Projects / Areas / Resources / Archives），2026-10-05 起按此整理。
+组织方法为 PARA（Projects / Areas / Resources / Archives），2026-10-05 起执行。
 方法论来源：<https://forum-zh.obsidian.md/t/topic/48042>
 
 ---
 
-## 1. 最高约束：`notes` / `wiki` / `_posts` 是三个独立项目
-
-**这三个目录各自是独立项目，彼此不合并、不互相搬运文件、不共享目录结构变更。**
-
-| 项目 | 目录 | 性质 | 硬约束 |
-|---|---|---|---|
-| notes | `notes/` | 课程与考试素材库（讲义扫描、教材 OCR、文献） | 归档课表属**他人成果**，保持扫描原貌 |
-| wiki | `wiki/` | 自撰知识库（章节化，每册带 `index.md`） | 已发布结构，**链接与 `index.md` 导航是一等公民** |
-| post | `_posts/` | Hexo 博客文章暂存副本 | 见 §5 Hexo 约束 |
-
-三者的共同点仅限**遵循同一套命名与 frontmatter 规范**（PARA §3.2「跨平台复制相同结构」）。
-
-### 1.1 已知的、必须保持的同名文件
-
-`wiki/` 与 `notes/` 下**存在大量同名 md，这是有意为之，不是冗余**：
+## 2. 目录与归档
 
 ```
-notes/class-notes/分子生物学/第0N章 *.md          ← 《现代分子生物学》第 6 版主教材（高教社 2025）
-notes/class-notes/分子生物学/笔记和课后习题详解/第0N章 *.md  ← 第 5 版配套教辅（中国石化 2019）
+inbox.md          PARA 的「收件箱」，是文件不是目录
+notes/            课程与考试素材：讲义扫描、教材 OCR、文献、课程实验原始输出
+wiki/             自撰知识库，章节化，每册带 index.md
+_posts/           Hexo 博客文章暂存副本
+vault/            项目、实验记录、方法、文献笔记、大纲笔记、系统与工具、日记
+muban/            模板与 dashboard.css
+panel/            首页组件（hero、操作台、洞察镜、快捷入口）
+assets/           全部附件落盘位置（gitignore）
+4-存档/YYYY-MM-DD/ 被取代的版本，按日期归档
 ```
 
-两本书**章节序不同**（教辅把「疾病与人类健康」置于第 9 章，主教材置于第 11 章）。
-**绝对不要"合并"它们** —— 详见 §3.2。
+### 2.1 `notes` / `wiki` / `_posts` 是三个独立项目
+
+这三个目录各自独立，**不合并、不互相搬运、不共享目录结构变更**。
+
+| 项目 | 性质 | 硬约束 |
+|---|---|---|
+| notes | 课程与考试素材库 | 归档课表属他人成果，保持扫描原貌 |
+| wiki | 自撰知识库 | 已发布结构，链接与 `index.md` 导航是一等公民 |
+| _posts | Hexo 文章暂存 | 见 §5 |
+
+共同点只有一套命名与 frontmatter 规范（PARA §3.2）。
+
+`wiki/` 与 `notes/` 下存在大量同名 md，这是有意为之：
+
+```
+notes/class-notes/分子生物学/第0N章 *.md                    ← 主教材（高教社，第 6 版）
+notes/class-notes/分子生物学/笔记和课后习题详解/第0N章 *.md  ← 教辅（中国石化，第 5 版）
+```
+
+两本书章节序不同（「疾病与人类健康」在教辅是第 9 章、主教材是第 11 章），**不要合并**。
+
+### 2.2 归档纪律
+
+- 归档是**移动**，不是删除：一律 `git mv` 进 `4-存档/<日期>/`；PDF 被 gitignore 时用普通 `mv`。
+- 每次归档写 `README.md`，逐条记录：原位置、被谁取代、取代理由。
+- **有实内容的目录不因体量小而归档**。判据是「是否沉淀物」，不是大小。
+- 现有索引：`4-存档/2026-10-05/README.md`、`4-存档/2026-10-27/README.md`。
+
+### 2.3 不预建空目录
+
+PARA §3.3：永远不要在为内容找到用途之前创建空文件夹。预想出来的「领域 / 资源」目录会让后来者反复扑空。
 
 ---
 
-## 2. PARA 目录约定
-
-```
-0-收件箱   → inbox.md（文件，非目录；未建目录，因 PARA §3.3 禁止预建空目录）
-1-项目     → vault/项目/  +  notes/、wiki/、_posts/ 各自内部的项目
-2-领域     → 不预建，等有内容时再建
-3-资源     → 不预建，等有内容时再建
-4-存档     → 4-存档/YYYY-MM-DD/，每次整理建一个日期子目录并写 README.md
-```
-
-**PARA §3.3：永远不要在需要存放内容前创建空文件夹。**
-被预想出来的领域/资源文件夹会让后来者反复扑空，收益为负。
-
-### 2.1 归档纪律
-
-- 归档 = **移动**，不是删除。被取代的版本一律 `git mv` 进 `4-存档/<日期>/`。
-- 每次归档必须写 `README.md`，逐条记录：原位置、被谁取代、取代理由。
-- **有实内容的目录不因体量小而归档**。判据是"是否沉淀物"，不是"是否够大"。
-- 现有归档索引：`4-存档/2026-10-05/README.md`、`4-存档/2026-10-27/README.md`
-
----
-
-## 3. 链接规则（最容易踩坑的一节）
+## 3. 链接规则
 
 ### 3.1 Obsidian 的链接语义
 
-- Obsidian 按**文件名（basename）**解析 `[[链接]]`，**不是**按路径。
-- `app.json` 中 `newLinkFormat = "absolute"` → 本库约定**使用相对库根的全路径**：
-  ```
-  ✅ [[notes/class-notes/分子生物学/第01章 绪论|第01章 绪论]]
-  ❌ [[第01章 绪论]]          ← 全库有同名文件，指向不确定
-  ```
-- 同文件夹内的短链接（`[[第1课-2026-06-17]]`）合法且无歧义，Obsidian 同目录优先级最高。
+- Obsidian 按**文件名（basename）**解析 `[[链接]]`，不是按路径。
+- `app.json` 中 `newLinkFormat = "absolute"`，本库约定**写相对库根的全路径**：
 
-### 3.2 同名文件的歧义必须显式消解
+```
+✅ [[notes/class-notes/分子生物学/第01章 绪论|第01章 绪论]]
+❌ [[第01章 绪论]]        ← 全库有同名文件，指向不确定
+```
 
-移动或新建文件后，**若库内已存在同名文件，必须把指向它的链接改成全路径限定**，否则链接指向哪本是不确定的。
+- 同文件夹内的短链接合法且无歧义，Obsidian 同目录优先级最高。
 
-2026-10-05 已对以下两处完成消歧：
-- `notes/class-notes/分子生物学/_index.md`（11 条）
-- `notes/class-notes/分子生物学/笔记和课后习题详解/_index.md`（11 条）
+### 3.2 同名文件必须显式消歧
+
+移动或新建文件后，若库内已有同名文件，把指向它的链接改成全路径限定，否则链接指向哪一本不确定。
+2026-10-05 已完成两处消歧：`notes/class-notes/分子生物学/_index.md`（11 条）、同目录下 `笔记和课后习题详解/_index.md`（11 条）。
 
 ### 3.3 改名前必须审计链接
 
-审计脚本必须同时处理**五种情况**，否则会大量误报（2026-10-05 实测：朴素写法误报率超过 60%）：
+审计脚本要同时处理五种情况，否则误报率很高（2026-10-05 实测：朴素写法误报超过 60%）：
 
-1. 围栏代码块 —— 用逐行开关，不能用 `re.sub(r'```.*?```')`（围栏不配对时会整体错位）
+1. 围栏代码块 —— 逐行开关，不能用 `re.sub(r'```.*?```')`，围栏不配对时会整体错位
 2. 行内代码 `` `...` `` —— Obsidian 不解析其中的链接
-3. `[[目标|别名]]` 的别名式写法 —— 只匹配裸形式会漏
-4. 路径后缀解析 —— `[[答题/01_宏观认知.html]]` 由 Obsidian 按路径尾部匹配到 `notes/考证/.../答题/01_宏观认知.html`
-5. **标题锚点必须先剥掉再判存在性，且剥空要跳过** —— `[[notes/.../01-范式.md#精读 1 · X 2020]]` 的目标是文件，`#` 之后只是滚动位置；不剥锚点会把整条当悬空（2026-10-23 实测：`结构生物学/AI结构预测/` 的 32 条锚点链接全部被误报）。但 `[[#本章小节]]` 指向**当前文件内的标题**，Obsidian 合法，剥锚点后 base 为空串必须 `continue`，否则反被误报（同日实测踩到）。剥完锚点确认文件存在后，可再比对目标文件的 `^#+ ` 标题行验证锚点本身是否有效
+3. `[[目标|别名]]` —— 只匹配裸形式会漏
+4. 路径后缀解析 —— `[[答题/01_宏观认知.html]]` 靠路径尾部匹配
+5. 标题锚点 —— 先剥 `#` 再判存在；剥空说明是 `[[#本章小节]]`（指向本文件标题），必须跳过
 
 ```bash
 python3 - <<'PY'
@@ -130,8 +145,8 @@ bad=[]
 for p in mds:
     s=strip_code(io.open(p,encoding='utf-8',errors='ignore').read()); d=os.path.dirname(p)
     for raw in re.findall(r'\[\[([^\]]+)\]\]',s):
-        base = raw.split('|')[0].partition('#')[0].strip()  # 第 5 种情况：剥标题锚点
-        if not base: continue                 # [[#标题]] 是本文件锚点，Obsidian 合法，跳过
+        base = raw.split('|')[0].partition('#')[0].strip()
+        if not base: continue
         if base.startswith('<%') or base.startswith('http'): continue
         if not ok(base,d): bad.append((p,base))
 print('md %d ｜ 悬空 %d'%(len(mds),len(bad)))
@@ -139,153 +154,190 @@ for (p,b),n in Counter(bad).items(): print('  [[%s]] ×%d  <- %s'%(b,n,p))
 PY
 ```
 
-### 3.4 移动文件一律用 `git mv`
+### 3.4 移动文件用 `git mv`
 
-保留历史。注意 `git mv` **不会自动创建目标父目录**，必须先 `mkdir -p`。
+保留历史。`git mv` 不会自动创建目标父目录，先 `mkdir -p`。
 
 ---
 
-## 4. 版本控制与备份（血的教训）
+## 4. 版本控制与备份
 
-### 4.1 静默失效是本库头号风险
+### 4.1 静默失效是头号风险
 
-2026-10-05 之前，`.gitignore` 排除了 `assets/` `日记/` `panel/` `项目/`，而 obsidian-git 每天照常提交 `vault backup:` —— **看起来备份正常，实际这些内容从未进过仓库**：
+2026-10-05 之前，`.gitignore` 排除了 `assets/`、`日记/`、`panel/`、`项目/`，而 obsidian-git 每天照常提交 `vault backup:`。备份看起来正常，这些内容却从未进过仓库：
 
-- `vault/日记/`、`vault/项目/` 历史上 **0 次提交**
-- `panel/`、`assets/` 曾被跟踪（7 / 19 次提交），在 `609a19f`「目录扁平化」那次提交里被**顺带排除**，属误伤
-- `Home.md` 依赖 `panel/hero.md`，hero 又引用 `assets/workbench-hero.png` → 换机重克隆首页必现坏链
+- `vault/日记/`、`vault/项目/` 历史上 0 次提交
+- `panel/`、`assets/` 曾被跟踪，在 `609a19f`「目录扁平化」时被顺带排除
+- `Home.md` 依赖 `panel/hero.md`，hero 又引用 `assets/workbench-hero.png`，换机重克隆必现坏链
 
-> 🛑 **禁止只看 `git status` 干净就判定备份正常。** 必须显式 `git check-ignore -v <path>`。
-
-### 4.2 双向校验清单
+**只看 `git status` 干净不能说明备份正常**，必须显式检查：
 
 ```bash
-git check-ignore -v <path>     # 该被跟踪的是否真被跟踪
-git check-ignore -v notes/bio/生信学习/covid_cite.h5ad   # 该被排除的是否真被排除
+git check-ignore -v <path>                                # 该跟踪的是否真被跟踪
+git check-ignore -v notes/bio/生信学习/单细胞/笔记/my_data/covid_cite.h5ad
 ```
 
-### 4.3 正确排除的（勿放行）
+### 4.2 应当排除的内容（勿放行）
 
-`.obsidian/`（含插件设置，避免密钥泄露）、`*.pdf`、`*.h5ad`、`*.zip`、`*.docx`、`*.fa`、`__pycache__/`、`.lamindb/`
+`.obsidian/`（含插件设置，避免密钥泄露）、`*.pdf`、`*.h5ad`、`*.zip`、`*.docx`、`*.fa`、`__pycache__/`、`.lamindb/`。
 
-### 4.4 破坏性操作前
+### 4.3 破坏性操作前留回滚点
 
 ```bash
-git tag pre-<动作>-$(date +%F)          # 轻量回滚点
+git tag pre-<动作>-$(date +%F)
 find . -type f -not -path './.git/*' > /tmp/files-before.txt
 ```
 
-2026-10-05 的回滚点：`pre-PARA-2026-10-05` → `b85d50a`
+已知回滚点：`pre-PARA-2026-10-05` → `b85d50a`。
 
 ---
 
 ## 5. Hexo 约束（`_posts/`）
 
-- **本库不是 Hexo 源目录**：库根无 `_config.yml`、无 `package.json`。
-  `_posts/` 只是博客文章的**暂存副本**，实际 Hexo 工程在本库之外。
-- 推论：**改 `_posts/` 的 `date` 不会影响线上 permalink**，可以放心整理。
-- 文章 schema 参照 `hexo.md` / `R2img.md`（Hexo-Next 风格）：
-  `title` / `date`（带时区 ISO）/ `categories`（二级列表）/ `tags` / 可选 `abbrlink` `banner` `excerpt`
-- 不要臆造 `excerpt` 摘要正文 —— 那是内容，会变成编造。
+- 本库不是 Hexo 源目录：库根没有 `_config.yml`、没有 `package.json`。`_posts/` 只是博客文章的暂存副本，Hexo 工程在库外。
+- 因此改 `_posts/` 的 `date` 不影响线上 permalink。
+- 文章 schema 参照 `hexo.md` / `R2img.md`：`title` / `date`（带时区 ISO）/ `categories`（二级列表）/ `tags` / 可选 `abbrlink` `banner` `excerpt`。
+- 不要臆造 `excerpt` 正文，那是内容，会变成编造。
 
 ---
 
-## 6. Obsidian 配置契约（改动即连锁）
+## 6. Obsidian 配置契约
 
-`.obsidian/` 虽被 gitignore，但**这些设置是本库的承重结构**，改前先想清楚连锁范围：
+`.obsidian/` 被 gitignore，但这些设置是承重结构，改动会连锁：
 
 | 配置项 | 值 | 影响面 |
 |---|---|---|
-| `templates.json` → `folder` | `muban` | 所有 Templater/模板路径 |
+| `templates.json` → `folder` | `muban` | 所有 Templater / 模板路径 |
 | `daily-notes.json` → `folder` | `vault/日记` | 每日笔记落盘位置 |
 | `daily-notes.json` → `template` | `muban/daily-note-template.md` | 日记模板 |
 | `app.json` → `attachmentFolderPath` | `assets` | 全部附件落盘 |
-| `app.json` → `newLinkFormat` | `absolute` | 见 §3.1 链接风格 |
+| `app.json` → `newLinkFormat` | `absolute` | 见 §3.1 |
 | `Home.md` → `cssclasses` | `knowledge-home` | 样式表在 `muban/dashboard.css` |
-| `panel/hero.md` | 引用 `assets/workbench-hero.png` | 两者任一缺失 → 首页坏链 |
+| `panel/hero.md` | 引用 `assets/workbench-hero.png` | 任一缺失 → 首页坏链 |
 
-`Home.md` embed 了 4 个 panel：`hero` / `操作台` / `洞察镜` / `快捷入口`。全部用 `dataviewjs`，依赖 dataview 插件与 `moment`。
-
----
-
-## 7. 反例黑名单
-
-1. ❌ 不 `ls` 就按记忆或历史结论中的结构动手 —— 目录已变更过多次（`609a19f` 就把 `notes/` `muban/` `panel/` 从 `vault/` 移回了库根）
-2. ❌ 只看 `git status` 干净就判定备份正常
-3. ❌ 把 `notes/class-notes/分子生物学/` 两层当重复内容合并 —— **那是两本不同的书**
-4. ❌ 用短链接指向同名文件
-5. ❌ 用 `rm -rf` 代替 `git mv` 做归档
-6. ❌ 预建空的领域/资源目录（违反 PARA §3.3）
-7. ❌ 因目录"体量小"就归档 —— 判据是是否沉淀物
-8. ❌ 移动 `covid_cite.h5ad` —— 它是 `AnnData.ipynb` 的活数据，且已被 gitignore
-9. ❌ 在 Obsidian 运行时编辑 `.obsidian/` 下的 leveldb（会被覆盖）
-10. ❌ 瘦身前不做物理备份 + 不用 `git mv` 逐文件恢复
+`Home.md` 嵌入 4 个 panel（hero / 操作台 / 洞察镜 / 快捷入口），全部是 `dataviewjs`，依赖 dataview 插件与 `moment`。
 
 ---
 
-## 8. 已知遗留（未处理，供后续参考）
+## 7. 课程实验报告（`notes/生信实验/`）
 
-| # | 事项 | 说明 |
-|---|---|---|
-| 1 | `muban/` 内 4 条模板占位链接**故意保留** | `[[status/to_read]]` ×3、`[[{{annotation.imageRelativePath}}]]` ×1（后者是 Zotero 模板的 Templater 变量，不是真链接）。链接语法本身是模板的目的，不是缺陷。除这 4 条外，全库悬空链接为 0（2026-10-27 复核：473 个 md） |
-| 2 | lamindb 实例已失效 | `notes/bio/生信学习/单细胞/笔记/my_data/.lamindb/` 记录的是 **Windows 路径** `D:/data/rlcao/...`，当前平台为 Linux |
-| 3 | Zotero 工作流已接通（2026-10-16） | 使用 Zotero Integration + Better BibTeX，模板 `muban/zotero-literature-template.md`；笔记位于 `vault/文献笔记` |
-| 4 | `notes/class-notes/遗传学/` 命名不当 | 530 个文件中 526 个是 jpg、仅 2 个 md，实为扫描档案；第 2、4 章尚未转录 |
-| 5 | `wiki/c/chapter6.md` 有 20 处 C 宏被误转成 wikilink | 均在代码块内，Obsidian 渲染无害，保留原样；标题行 2 处已修为行内代码 |
-| 6 | `_posts` 4 篇的 date 取自 git 首次提交日 | 未经作者确认真实发表日期，核实后可改 |
-| 7 | `vault/文献笔记/Hermon 2007 maize Fie1 基因印记.md` 的 `zotero:` 为空 | 该条为**手工整理**（内容取自 PubMed，PMID 17437065 / DOI 10.1007/s11103-007-9160-0），不是 Zotero Integration 导入产物，故无 item key。需要 Zotero 链接与批注时用 Ctrl+Alt+Z 导入同一条目后回填字段，**不要手编 `zotero://select/library/items/...` 假 key** |
-| 8 | 课程实验报告的 PDF 不入库 | `.gitignore` 排除 `*.pdf`（见 §4.3），换机重克隆后需从 `notes/生信实验/*/` 重新导出；md 源文件已入库 |
+课程实验的原始输出留在 `notes/生信实验/<课次>/`，知识沉淀进 `vault/`，两边不互相搬文件。
 
-### 8.1 2026-10-05 链接清理记录
+### 7.1 目录与产物
 
-初判 48 条悬空链接，复核后**真实悬空仅 32 条**，其余为误报。处置如下：
+```
+notes/生信实验/NN/
+├── 生物信息学实验报告_N_姓名_学号.md     正文（入库）
+├── 同名 .html                            固定页数版式源（入库）
+├── 同名 .pdf                             提交件（gitignore，见 §4.2）
+├── fig_*.png / fig_*.svg                 报告插图与矢量源
+├── image-*.png                           数据库截图等原始证据
+├── data/                                 数据表 + 作图配置
+├── charts/                               可交互图（ECharts HTML）
+└── records/                              GenBank / gene_table / UniProt / PubMed 原始记录
+```
 
-| 类别 | 条数 | 处置 |
-|---|---|---|
-| 指向已改名文件 | 4 | 重定向到现名；同步去掉已失效的「（待创建）」标注 |
-| 标签被误写成 wikilink | 1 行 | 还原为真正的 Obsidian 标签 `#课堂笔记` 等 |
-| C 宏误转（标题行） | 2 | 改为行内代码 `` `define` `` |
-| 概念前瞻链接（笔记未写就绪） | 15 | 转为纯文本，**不伪造目标文件** |
-| 目录从未创建 | 1 | 删除 `notes/bio/_index.md` 的导航行，而非预建空目录（PARA §3.3） |
-| 模板占位符 | 4 | **保留** |
+报告文件名格式固定：`生物信息学实验报告_N_姓名_学号.pdf`。
 
-⚠️ 概念前瞻链接转为纯文本后，「想写但还没写」的信号随之消失。如需保留该信号，改用 `TODO` 前缀或 `[^1]` 脚注，不要用空悬空链接。
+### 7.2 报告结构与模板
 
----
+课程模板（WPS 排版）的字段要照抄，不要省：
 
-## 9. 每周维护（PARA §5，约 5 分钟）
+- 标题：`实验N： <题目>`
+- 抬头三行：`姓名／班级／学号`、`实验掌握情况：…`、`你的疑问（最多 3 条）：见讨论区`
+- 正文顺序：`前情提要：`（研究分子 + 目前结果）→ `实验目的：` → `实验任务一： …`（每任务下 `实验材料／实验方法／实验结果`）→ `现有知识总结` → `讨论`
+- 文末把 3 条疑问单列成 `你的疑问（最多 3 条）`
 
-1. 重命名 `inbox.md` 中的新条目（给它一个能检索的名字）
-2. 把新内容归入正确的项目 / 领域 / 资源
-3. 更新活跃项目；把完成或搁置的项目移入 `4-存档/`
-## 10. 2026-10-16 工作流配置
+### 7.3 版式契约
 
-- `vault/项目`统一存放项目资料；原 BSA-seq、mazie-ltr-ide 已移动为项目下的 BSA-seq、maize-ltr-ide。
-- `vault/方法`存放实验方法、生信分析、甲基化；`vault/系统与工具`存放电脑与服务器资料。
-- 新实验记录位于 `vault/实验记录`，大纲位于 `vault/大纲笔记`，总览和使用说明位于 `vault/工作台`。
-- 每日笔记和 Zotero 笔记的路径契约不变。
-- `Home.md`仍嵌入 panel 的四个组件，使用 Dataview；QuickAdd 的原生模板创建流程负责新建记录。
-- 新项目和实验通过 `type`、`status`、`date`、`project` 等属性进入 Bases 总览；模板目录须从实验数据视图中排除。
-- Mindmap NextGen 替换无法在当前 Obsidian 正常渲染的旧 Mind Map；大纲仍以 Markdown 为唯一内容源。
+- **5 页 A4 以内**，不得靠缩字号凑页数。正文 10 pt，行距 1.6，页边距 15 mm。
+- 字体：正文宋体（本机用 Noto Serif CJK SC），西文与数字 Times New Roman，标题用雅黑粗体（Noto Sans CJK SC Bold）。
+- **全文黑色**，取消蓝色强调、彩色链接、灰色页眉页脚；页码居中。
+- 表格一律**三线表**：顶线 1.2 pt、表头下线 0.6 pt、底线 1.2 pt，无竖线。
+- 图注写「图 N　…」，表注写「表 N　…」；图内不要再放大标题，避免与图注重复、也避免标注互相压字。
+- 插图用 SVG（宽 1000 px）画好后无头 Chrome 3× 截图；`.svg` 源与 `.png` 一起留在课次目录，便于改字而非重画。
 
-## 11. 2026-10-27 生物信息学课程实验的入库方式
+### 7.4 生成与验收
 
-课程实验在 `notes/生信实验/` 保留**原始输出**（序列 FASTA、EMBOSS 比对结果、数据表），`vault/` 只放**知识沉淀**，两边不互相搬动文件。
+```bash
+google-chrome --headless=new --no-sandbox --disable-gpu \
+  --no-pdf-header-footer --print-to-pdf="报告.pdf" \
+  --virtual-time-budget=5000 "file://$PWD/报告.html"
+
+pdfinfo 报告.pdf | grep Pages          # 必须 5
+pdftoppm -png -r 90 报告.pdf /tmp/p    # 逐页看图
+pdftotext -f N -l N -layout 报告.pdf - | tail -c 100   # 每页末句是否完整
+```
+
+`.page` 容器固定 210×297 mm 并设了 `overflow: hidden`，溢出会被**静默裁掉**，所以必须逐页核对末句；页脚用绝对定位，内容区底部至少留 12 mm。
+
+### 7.5 内容准确性清单
+
+- 坐标：`esummary.genomicinfo` 是 **0-based**；Gene Viewer、`gene_table`、Datasets API 是 **1-based**。混用会整体差 1 bp。
+- 长度：`NM_001111711.1` 的 1,787 nt = 14 个外显子 1,766 nt + 3′ 端 21 nt；但序列末端的连续 A 实为 **23 nt（1,765–1,787）**，尾巴边界取决于外显子注释，不能写成「正好 21 个 A」。
+- 多聚腺苷酸化信号：典型 `AATAAA` 距切割位点 10–30 nt。若候选位点距 poly(A) 尾 474 nt 且在 CDS 内，应判为「很可能不是功能信号」，不要直接当答案。
+- 复合体组成：FIE 就是植物中的 EED 同源物，**不能**再与 EED 并列为两个亚基；植物 PRC2 写作 E(z)、FIE、MSI1 + SUZ12 类蛋白（FIS2/VRN2）。
+- 登录号会回收复用，必须同时记 version 与 title（如 `NP_005623` → calpain-15、`NM_003001` → SDHC）。
+- 数据库结论要带检索日期；检索命中数不等于「这个基因有 N 篇文献」。
+- 图注只描述图能支持的内容；矩阵类图要写清实心/空心含义，并说明它表示「是否涉及」而非证据强弱。
+
+### 7.6 其他产物契约
 
 | 产物 | 位置 | 契约 |
 |---|---|---|
-| 实验报告（md + PDF） | `notes/生信实验/<课次>/` | PDF 不入库（见 §8 第 8 条）；实验目录设 `_index.md` 作导航 |
 | 实验记录 | `vault/实验记录/<日期-时间>-<标题>.md` | QuickAdd `experiment-record-template.md`；`type: experiment`、`status`、`project` 填完整笔记链接 |
 | 项目概览 | `vault/项目/<项目名>/<项目名>-项目概览.md` | `project-dashboard-template.md`；`type: project` |
 | 方法沉淀 | `vault/方法/生信分析/NN_<主题>.md` | `bio-note-template.md`；`tags: [生信, bio/pipeline]` |
-| 大纲（可出导图） | `vault/大纲笔记/<主题>.md` | `outline-note-template.md`；标题 + 缩进列表，Ctrl+Alt+M 出导图 |
-| 文献 | `vault/文献笔记/<作者 年份 主题>.md` | `zotero-literature-template.md`；手写条目须声明非导入产物（`zotero:` 留空） |
-| 独立数据表 | `vault/工作台/*.duowei` | Duowei 插件的 JSON 结构（`records[].values` 按 `field.id` 赋值，`singleSelect` 存 `option.id`） |
+| 大纲 | `vault/大纲笔记/<主题>.md` | `outline-note-template.md`；标题 + 缩进列表，Ctrl+Alt+M 出导图 |
+| 文献 | `vault/文献笔记/<作者 年份 主题>.md` | `zotero-literature-template.md`；手写条目 `zotero:` 留空并声明非导入产物 |
+| 独立数据表 | `vault/工作台/*.duowei` | Duowei 插件 JSON；`records[].values` 按 `field.id`，`singleSelect` 存 `option.id` |
 
-**归档约定**：被取代的初稿与残留素材用 `git mv` 移入 `4-存档/<日期>/`，并在该日期的 `README.md` 里逐条记录「原位置 / 被谁取代 / 理由」（PDF 被 gitignore 时用普通 `mv`）。2026-10-27 首次执行：`练习NCBI.md`、`练习NCBI.pdf` 与 10 张未被引用的残留截图移入 `4-存档/2026-10-27/生信实验一-被取代版本/`。
+---
 
-**已落地的实例**：`vault/项目/生信实验课程/`、`vault/实验记录/2026-10-25-194000-生信实验一 NCBI浏览与序列文件解读.md`、`vault/实验记录/2026-10-25-195500-生信实验二 Entrez搜索与双序列比对.md`、`vault/方法/生信分析/04_序列检索与双序列比对.md`、`vault/方法/生信分析/05_基因记录与序列文件解读.md`、`vault/大纲笔记/生信实验课程知识结构.md`、`vault/文献笔记/`（5 条：Hermon 2007 / Ni 2019 / Wang 2025 / Shi 2025 / Bubb 2024）。
+## 8. 反例黑名单
 
-**2026-10-27 补充**：实验一复核时发现三处必须记录的事实——① NCBI `esummary.genomicinfo` 给的是 **0-based** 坐标，Gene Viewer / `efetch rettype=gene_table` / Datasets API 给 **1-based**，直接抄 `esummary` 会整体差 1 bp；② `NM_001111711.1` 的 1787 nt = 14 个外显子剪接 **1766 nt** + 3′ 端 **21 nt poly(A) 尾**，不是"外显子对不上账"；③ 序列登录号会被回收复用（`NP_005623` → calpain-15、`NM_003001` → SDHC），必须记 version + title。
+1. 不 `ls` 就按记忆或历史结论动手 —— 目录变更过多次（`609a19f` 把 `notes/` `muban/` `panel/` 从 `vault/` 移回库根）
+2. 只看 `git status` 干净就判定备份正常
+3. 把 `notes/class-notes/分子生物学/` 两层当重复内容合并 —— 那是两本不同的书
+4. 用短链接指向同名文件
+5. 用 `rm -rf` 代替 `git mv` 做归档
+6. 预建空的领域 / 资源目录
+7. 因目录「体量小」就归档
+8. 移动 `covid_cite.h5ad` —— 它是 `AnnData.ipynb` 的活数据，且已被 gitignore
+9. 在 Obsidian 运行时编辑 `.obsidian/` 下的 leveldb（会被覆盖）
+10. 瘦身前不做物理备份、不用 `git mv` 逐文件恢复
+11. 为凑页数把报告字号调到 9 pt 以下或把插图压到看不清
+12. 手改导出的 PNG 而不改 `.svg` 源
 
-**核对方式**：Bases 与面板过滤条件可在库外复算——`type == "experiment" AND file.inFolder("vault/实验记录")`、`type == "project"`、`file.inFolder("vault/文献笔记")`；全库悬空链接用 §3.3 脚本复核（2026-10-27：473 个 md，悬空 0，仅模板占位 1 条豁免）。
+---
+
+## 9. 维护、遗留与变更
+
+### 9.1 每周维护（约 5 分钟）
+
+1. 给 `inbox.md` 里的新条目起可检索的名字
+2. 归入正确的项目 / 领域 / 资源
+3. 更新活跃项目；完成或搁置的项目移入 `4-存档/`
+
+### 9.2 已知遗留
+
+| # | 事项 | 说明 |
+|---|---|---|
+| 1 | `muban/` 内 4 条模板占位链接**故意保留** | `[[status/to_read]]` ×3、`[[{{annotation.imageRelativePath}}]]` ×1（Templater 变量）。链接语法本身是模板目的。除此之外全库悬空链接为 0 |
+| 2 | lamindb 实例已失效 | `notes/bio/生信学习/单细胞/笔记/my_data/.lamindb/` 记录的是 Windows 路径 `D:/data/rlcao/...`，当前为 Linux |
+| 3 | Zotero 工作流已接通（2026-10-16） | Zotero Integration + Better BibTeX，模板 `muban/zotero-literature-template.md`，笔记在 `vault/文献笔记` |
+| 4 | `notes/class-notes/遗传学/` 命名不当 | 530 个文件中 526 个是 jpg、仅 2 个 md，实为扫描档案；第 2、4 章未转录 |
+| 5 | `wiki/c/chapter6.md` 有 20 处 C 宏被误转成 wikilink | 均在代码块内，渲染无害；标题行 2 处已修为行内代码 |
+| 6 | `_posts` 4 篇的 date 取自 git 首次提交日 | 未经作者确认真实发表日期 |
+| 7 | `vault/文献笔记/Hermon 2007 maize Fie1 基因印记.md` 的 `zotero:` 为空 | 手工整理条目，非 Zotero 导入；需要批注时用 Ctrl+Alt+Z 重新导入回填，不要手编假 key |
+| 8 | 课程实验报告的 PDF 不入库 | `.gitignore` 排除 `*.pdf`；换机重克隆后需从 `notes/生信实验/*/` 重新导出，md 与 html 已入库 |
+
+### 9.3 变更记录
+
+- **2026-11-06（晚）** 实验二、三补入 NCBI 检索证据图：实验二新增 `fig_entrez_search.svg/.png`（E-utilities 的 esearch/elink/esummary 原始输出，由 `02/scripts/make_entrez_figure.py` 生成）；实验三新增 `03/shot-ncbi-blastn.png`（NCBI BLAST 网页版结果页截图，RID `EVDGFU20016`，blastn/megablast、`core_nt` 限 `Viridiplantae[Organism]`，52 条命中，前 5 条含 `AY195850.2`（标题含 type 2，不能仅凭此认定为 FIE2））。两份报告仍为 5 页；为此收紧段距（p 1.0→0.85 mm、表 1.8→1.5 mm、图 1.6→1.3 mm）并压缩若干段落。
+  **踩坑**：本机无头 Chrome 访问 `www.ncbi.nlm.nih.gov/{nuccore,gene,assembly,books}` 一律返回 reCAPTCHA 挑战页（等待 45 s 后升级为图片验证码），拿不到 Entrez 网页截图；`blast.ncbi.nlm.nih.gov` 与 `www.ncbi.nlm.nih.gov/` 首页不受影响。该现象仅针对当时无头 Chrome；同日可见浏览器成功获取 Nucleotide 搜索页面截图。E-utilities 渲染图应标明是 API 记录，不能冒充网页截图。
+- **2026-11-06** 实验二、三的研究分子统一到玉米 `ZmFIE1`：实验二 1.3 改为 5 条 FIE1 直系 + 5 条 FIE2 并系（跨禾本科补齐），10 组 EMBOSS 比对；实验三重跑 BLASTN/BLASTP/PSI/DELTA/翻译搜索，核酸库改为 11 个植物物种 Ensembl Plants cDNA + FIE 家族（652,197 条），蛋白库 576,022 条；报告改为 WeasyPrint 排版，02、03 均为 5 页。
+- **2026-10-30** 实验一报告按课程模板重排：宋体 + Times + 雅黑、全文黑、5 页、三线表；重绘转录本结构图与文献证据矩阵；修正 FIE/EED 亚基表述、poly(A) 信号判读、文献计数口径。
+- **2026-10-27** 生信实验入库方式定稿；记录 0-based/1-based、1787=1766+21、登录号复用三条事实。
+- **2026-10-16** `vault/` 下确立项目、实验记录、方法、文献、大纲、系统与工具的落盘位置。
+- **2026-10-05** 完成 PARA 整理、链接消歧与 `.gitignore` 修复。

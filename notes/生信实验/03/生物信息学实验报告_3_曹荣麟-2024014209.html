@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8">
+<title>生物信息学实验报告_3_曹荣麟-2024014209</title>
+<style>
+@page {
+  size: A4;
+  margin: 15mm 15mm 15mm 15mm;
+  @bottom-center { content: counter(page) " / " counter(pages); font-size: 8.5pt; color: #000; }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: "Times New Roman", "Noto Serif CJK SC", "Songti SC", serif;
+  font-size: 10pt; line-height: 1.6; color: #000;
+}
+h1 {
+  font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+  font-size: 17pt; font-weight: 700; margin: 0 0 2.5mm 0;
+}
+h2 {
+  font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+  font-size: 11pt; font-weight: 700; margin: 2.4mm 0 1.0mm 0;
+  break-after: avoid;
+}
+h3 {
+  font-family: "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+  font-size: 10.4pt; font-weight: 700; margin: 2.6mm 0 1mm 0;
+  break-after: avoid;
+}
+p { margin: 0 0 0.85mm 0; text-align: justify; text-indent: 2em; }
+p.info { text-indent: 0; font-size: 10pt; line-height: 1.5; margin-bottom: 1.2mm; }
+p.info span { margin-right: 8mm; }
+code {
+  font-family: "Times New Roman", "Noto Sans Mono CJK SC", monospace;
+  font-size: 8.8pt;
+}
+a { color: #000; text-decoration: none; }
+ul, ol { margin: 0 0 1.1mm 0; padding-left: 5.2mm; }
+li { margin-bottom: 0.35mm; text-align: justify; text-indent: 0; }
+table {
+  width: 100%; border-collapse: collapse; table-layout: fixed;
+  font-size: 8.0pt; line-height: 1.30; margin: 0.6mm 0 1.5mm 0;
+}
+thead th {
+  border-top: 1.2pt solid #000; border-bottom: 0.6pt solid #000;
+  padding: 0.8mm 1.1mm; font-family: "Noto Sans CJK SC", sans-serif;
+  font-size: 8pt; font-weight: 700; text-align: left; vertical-align: bottom;
+}
+tbody tr { break-inside: avoid; }
+tbody td { padding: 0.55mm 1.1mm; vertical-align: top; }
+tbody tr:last-child td { border-bottom: 1.2pt solid #000; }
+.tcap {
+  font-family: "Noto Sans CJK SC", sans-serif; font-size: 9pt; font-weight: 700;
+  margin: 1.3mm 0 0.5mm 0; text-indent: 0; break-after: avoid;
+}
+figure { margin: 1.0mm 0 1.3mm 0; break-inside: avoid; text-align: center; }
+figure img { width: 80%; height: auto; }
+figure img[src^="shot_terminal_"] { width: 92%; }
+figure img[src="shot-ncbi-blastn-list.png"] { width: 85%; }
+figure img[src="fig4_homologs.png"] { width: 70%; }
+figure img[src="shot-ncbi-blast-results.png"] { width: 78%; }
+figure img[src="shot_alignment.png"] { width: 80%; }
+figcaption { font-size: 8.5pt; text-align: center; margin-top: 0.6mm; text-indent: 0; line-height: 1.4; }
+</style></head><body>
+<h1 id="实验三数据库搜索blast">实验三：数据库搜索—BLAST</h1>
+<p class="info">姓名：曹荣麟　班级：生技 2402　学号：2024014209</p>
+<p class="info">实验掌握情况：基本没有太大问题</p>
+<p>你的疑问（最多 3 条）：见讨论区</p>
+<h2 id="前情提要">前情提要</h2>
+<p>研究分子沿用实验二的<strong>玉米 ZmFIE1</strong>：RefSeq mRNA <code>NM_001111711.1</code>（1,787 nt）、蛋白 <code>NP_001105181.1</code>（461 aa，UniProt <code>Q8VZY7</code>），4 号染色体负链，PRC2 的 WD40 亚基。实验二整理的拟南芥与禾本科 FIE 家族候选，其直系或并系关系仍待验证。</p>
+<p>本实验以序列相似性为依据，同一 query、同一库，比较 BLASTN 算法与参数、BLASTP 全长与短片段、PSI-BLAST 逐轮漂移、DELTA-BLAST profile 搜索和 BLASTX/TBLASTX 翻译搜索。本地 BLAST+ 2.16.0 装于 <code>tools/deb/</code>；核酸库为 11 个植物物种 Ensembl Plants release-62 cDNA 加 FIE 家族 RefSeq mRNA（652,197 条），蛋白库为 UniProt Swiss-Prot 加 FIE 家族 RefSeq 蛋白（576,022 条）；<code>-max_target_seqs</code> 分别为核酸扫描 1,000,000、蛋白及翻译搜索 20,000、PSI/DELTA 50,000。</p>
+<h2 id="实验目的">实验目的</h2>
+<ol type="1">
+<li>掌握 BLAST 数据库搜索方法；2. 比较算法与参数对搜索结果的影响；3. 根据研究目的调整参数并解释结果；4. 保存直系及并系同源序列。</li>
+</ol>
+<h2 id="实验任务一blastn">实验任务一：BLASTN</h2>
+<p><strong>材料</strong>：query <code>NM_001111711.1</code>（1,787 nt）；核酸库 652,197 条。</p>
+<p><strong>方法</strong>：固定 query 与库，只改一个变量：算法（blastn / dc-megablast / megablast）、word size（7/11/15）、E-value（1e-50/1e-5/10/1000），共 9 次；命中数按去重后的 subject 计，同一序列的多个 HSP 只留最高分。</p>
+<div class="tcap">表 1　三种算法的默认参数（BLAST+ 2.16 XML 报告实测）</div>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>参数</th>
+<th>blastn</th>
+<th>dc-megablast</th>
+<th>megablast</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>word size</td>
+<td>11</td>
+<td>11</td>
+<td>28</td>
+</tr>
+<tr>
+<td>替换打分</td>
+<td>2 / −3</td>
+<td>2 / −3</td>
+<td>1 / −2</td>
+</tr>
+<tr>
+<td>gap open / extend</td>
+<td>5 / 2</td>
+<td>5 / 2</td>
+<td>0 / 0</td>
+</tr>
+<tr>
+<td>E-value</td>
+<td>10</td>
+<td>10</td>
+<td>10</td>
+</tr>
+<tr>
+<td>设计目标</td>
+<td>中等相似度的较长匹配</td>
+<td>跨物种远缘同源</td>
+<td>高相似序列的快速搜索</td>
+</tr>
+</tbody>
+</table>
+<p>物种列为标题解析的名称标签数，含 unknown 类别，非严格去重的物种数。</p>
+<div class="tcap">表 2　9 次搜索（命中序列 / 物种标签 / 耗时 / E&lt;0.005）</div>
+<table>
+<thead>
+<tr>
+<th>变量</th>
+<th>取值</th>
+<th>命中</th>
+<th>物种标签</th>
+<th>耗时</th>
+<th>E&lt;0.005</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>算法</td>
+<td>blastn</td>
+<td>335</td>
+<td>153</td>
+<td>1.09 s</td>
+<td>313</td>
+</tr>
+<tr>
+<td>算法</td>
+<td>dc-megablast</td>
+<td>313</td>
+<td>153</td>
+<td>3.18 s</td>
+<td>312</td>
+</tr>
+<tr>
+<td>算法</td>
+<td>megablast</td>
+<td>27</td>
+<td>10</td>
+<td>0.35 s</td>
+<td>27</td>
+</tr>
+<tr>
+<td>word size</td>
+<td>7</td>
+<td>372</td>
+<td>153</td>
+<td>21.74 s</td>
+<td>315</td>
+</tr>
+<tr>
+<td>word size</td>
+<td>11（默认）</td>
+<td>335</td>
+<td>153</td>
+<td>1.07 s</td>
+<td>313</td>
+</tr>
+<tr>
+<td>word size</td>
+<td>15</td>
+<td>242</td>
+<td>153</td>
+<td>0.63 s</td>
+<td>227</td>
+</tr>
+<tr>
+<td>E-value</td>
+<td>1e-50</td>
+<td>297</td>
+<td>153</td>
+<td>1.06 s</td>
+<td>297</td>
+</tr>
+<tr>
+<td>E-value</td>
+<td>1e-5</td>
+<td>313</td>
+<td>153</td>
+<td>1.06 s</td>
+<td>313</td>
+</tr>
+<tr>
+<td>E-value</td>
+<td>1000</td>
+<td>2,083</td>
+<td>153</td>
+<td>1.48 s</td>
+<td>313</td>
+</tr>
+</tbody>
+</table>
+<p><strong>结果分析</strong></p>
+<ul>
+<li>blastn 与 dc-megablast 前 10 条逐条相同，megablast 仅第 10 位不同（Miscanthus <code>XM_066470013.1</code> 换为 Panicum hallii <code>XM_025965193.1</code>）。前 10 条均为禾本科 FIE1/FIE2，含玉米 <code>NM_001111711.1</code>（100%）、高粱 <code>XM_002443778.2</code>（84.8%）；高排名较一致，低排名有差异。</li>
+<li>megablast 要求 28 个连续碱基一致，仅召回 27 条（blastn 的约 8%）；dc-megablast 以不连续词检出 313 条，耗时为 blastn 的 2.9 倍。word size 7 多 11% 命中但耗时约 20 倍，15 少 28%；三种设置的前 10 条相同。</li>
+<li>E 值 1e-50 剩 297 条，1000 增至 2,083 条（6.2 倍）；严格阈值下 E&lt;0.005 为 297 条，其余为 313 条。</li>
+</ul>
+<p><strong>网页版复核。</strong> NCBI BLAST 网页版对同一 query 检索：blastn、优化项 megablast（word size 28、match/mismatch 1/−2）、库 <code>core_nt</code>、Entrez 限定 <code>Viridiplantae[Organism]</code>，RID <code>EVDGFU20016</code>（2026-11-06），返回 52 条命中。前 5 条依次为 <code>NM_001111711.1</code>（100%）、<code>BT062211.1</code>（100%）、<code>MW222954.1</code>（99.49%）、<code>BT024091.1</code>（98.84%）、<code>AY195850.2</code>（98.55%）。图 1 为网页版结果页截图，图 2 由同一结果页裁取列表上部；图 3 至图 5 在隔离 Linux 终端中实际执行本地命令后截屏，公共参数用 shell 变量复用、长进度行已折叠。网页版与本地库组成不同，命中数不能直接比较；序列相似性不足以确定直系或并系关系。</p>
+<figure><img src="shot-ncbi-blast-results.png" alt="NCBI BLAST 网页版搜索结果" /><figcaption>图 1　NCBI BLAST 网页版结果页（RID EVDGFU20016，blastn/megablast，core_nt 限 Viridiplantae，52 条命中）</figcaption></figure>
+<figure><img src="shot-ncbi-blastn-list.png" alt="NCBI BLAST 结果列表" /><figcaption>图 2　网页版结果列表上部：52 条命中被选中，首位 Zea mays 的 Max Score 3301、Query Cover 100%</figcaption></figure>
+<figure><img src="shot_terminal_seqcheck.png" alt="BLASTN 汇总表的终端核查" /><figcaption>图 3　汇总表前 4 次运行的 HSP、去重 subject 数与耗时，对应表 2 的算法组与 word size 7</figcaption></figure>
+<figure><img src="shot_terminal_blastn.png" alt="本地 blastn 与 megablast 终端记录" /><figcaption>图 4　本地 blastn 与 megablast 在同一 query／库下去重后的 subject 数（335 / 27，与表 2 一致）</figcaption></figure>
+<h2 id="实验任务二blastp">实验任务二：BLASTP</h2>
+<p><strong>材料</strong>：query <code>NP_001105181.1</code>（461 aa）；27 aa 片段取自第 143–169 位，覆盖第一个 WD40 重复。蛋白库 576,022 条。</p>
+<p><strong>方法</strong>：全长蛋白跑默认参数，再改 word size（2/6）、矩阵（BLOSUM45/90）、E-value（1e-3/1000）；短片段用 <code>blastp-short</code>，比较默认与 <code>-word_size 2/3</code>。XML 报告读出的默认参数：blastp 为 word 3、BLOSUM62、gap 11/1、E=10；blastp-short 为 word 2、PAM30、gap 9/1、E=20000。</p>
+<div class="tcap">表 3　blastp 参数敏感性（query = 461 aa）</div>
+<table>
+<thead>
+<tr>
+<th>变量</th>
+<th>取值</th>
+<th>命中</th>
+<th>物种标签</th>
+<th>E&lt;0.005</th>
+<th>最高 bitscore</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>默认</td>
+<td>word 3 / BLOSUM62 / E=10</td>
+<td>1,355</td>
+<td>314</td>
+<td>689</td>
+<td>955</td>
+</tr>
+<tr>
+<td>word size</td>
+<td>2</td>
+<td>1,363</td>
+<td>315</td>
+<td>694</td>
+<td>955</td>
+</tr>
+<tr>
+<td>word size</td>
+<td>6</td>
+<td>809</td>
+<td>269</td>
+<td>522</td>
+<td>955</td>
+</tr>
+<tr>
+<td>矩阵</td>
+<td>BLOSUM45</td>
+<td>1,287</td>
+<td>292</td>
+<td>698</td>
+<td>956</td>
+</tr>
+<tr>
+<td>矩阵</td>
+<td>BLOSUM90</td>
+<td>1,180</td>
+<td>293</td>
+<td>705</td>
+<td>1,004</td>
+</tr>
+<tr>
+<td>E-value</td>
+<td>1e-3</td>
+<td>604</td>
+<td>244</td>
+<td>604</td>
+<td>955</td>
+</tr>
+<tr>
+<td>E-value</td>
+<td>1000</td>
+<td>2,482</td>
+<td>662</td>
+<td>690</td>
+<td>955</td>
+</tr>
+</tbody>
+</table>
+<p>默认搜索前 10 条依次为 <code>NP_001105181.1</code>（query 自身，100%，955 bits）、UniProt <code>Q8VZY7</code>（同一蛋白，100%，955 bits）、玉米 isoform <code>XP_023158000.1</code>（93.0%，834 bits）、高粱 FIE1 <code>XP_002443823.1</code>（79.7%，753 bits）、Setaria viridis FIE2 <code>XP_072150685.1</code>（71.8%，650 bits）及 5 条 77% 左右的 FIE2 候选。第 5 位一致性较低但比对更长（429 aa 对 374 aa），bitscore 反而更高；前十含 3 条同一物种的不同条目，不能当作独立直系同源。1,355 条命中里仅 <strong>209 条</strong>标题明确为 FIE1/FIE2（114 个名称标签），其余 1,146 条未标注 FIE；314 个名称标签不能视为 FIE 物种分布。以上均为待基因树验证的 FIE1/FIE2 候选。参数改动主要影响长尾命中数，高排名成员多数不变但排序改变（表 3）。</p>
+<div class="tcap">表 4　27 aa 短片段（143–169）</div>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr>
+<th>任务</th>
+<th>word / 矩阵 / gap / E</th>
+<th>命中</th>
+<th>物种标签</th>
+<th>E&lt;0.005</th>
+<th>最高 bitscore</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>blastp-short 默认</td>
+<td>2 / PAM30 / 9-1 / 20000</td>
+<td>11,393</td>
+<td>2,220</td>
+<td>139</td>
+<td>71.0</td>
+</tr>
+<tr>
+<td>blastp-short word 2</td>
+<td>2 / PAM30 / 9-1 / 20000</td>
+<td>11,393</td>
+<td>2,220</td>
+<td>139</td>
+<td>71.0</td>
+</tr>
+<tr>
+<td>blastp-short word 3</td>
+<td>3 / PAM30 / 9-1 / 20000</td>
+<td>3,052</td>
+<td>1,172</td>
+<td>139</td>
+<td>71.0</td>
+</tr>
+</tbody>
+</table>
+<p>短序列用较短种子与 PAM30 适配短比对；显著性仍需结合比对长度与搜索空间解释。默认 <code>blastp-short</code> 首位为 Setaria viridis FIE2 <code>XP_072150685.1</code>（85.2%，71 bits），玉米自身 100% 的该片段列第 2（57.9 bits）；关闭组成校正（<code>-comp_based_stats 0</code>）后玉米回到第 1（88.0 bits，E=5.59e-21），Setaria 降至第 4，短序列排名对组成假设敏感。</p>
+<h2 id="实验任务三psi-blast-与-delta-blast">实验任务三：PSI-BLAST 与 DELTA-BLAST</h2>
+<p><strong>材料</strong>：query <code>NP_001105181.1</code>；蛋白库 576,022 条；DELTA-BLAST 用 CDD <code>cdd_delta</code>。</p>
+<p><strong>PSI-BLAST</strong>：BLAST+ 2.16 既不接受 <code>-save_psiblast_after_each_round</code>，<code>-num_iterations 1</code> 也不写 PSSM 检查点，故每次从第 1 轮重跑到第 N 轮，取最后一轮，连跑 12 轮。</p>
+<div class="tcap">表 5　PSI-BLAST 逐轮结果</div>
+<table>
+<colgroup>
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>轮次</th>
+<th>累计序列</th>
+<th>本轮新增</th>
+<th>E&lt;0.005</th>
+<th>本轮新增中最好</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1,355</td>
+<td>1,355</td>
+<td>689</td>
+<td>玉米 FIE1 自身，955 bits，E=0</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2,723</td>
+<td>1,368</td>
+<td>2,538</td>
+<td>蓝藻 WD40 <code>Q55563</code>，13.9%，164 bits，E=2.48e-42</td>
+</tr>
+<tr>
+<td>3</td>
+<td>3,112</td>
+<td>389</td>
+<td>2,771</td>
+<td>大鼠 IFT172 <code>Q9JKU3</code>，11.1%，77.4 bits，E=1.29e-13</td>
+</tr>
+<tr>
+<td>4</td>
+<td>3,359</td>
+<td>247</td>
+<td>2,951</td>
+<td>黄单胞菌 TolB <code>Q5H299</code>，14.9%，57.4 bits，E=1.14e-07</td>
+</tr>
+<tr>
+<td>8</td>
+<td>3,768</td>
+<td>18</td>
+<td>3,340</td>
+<td>猩猩 GEF <code>Q5R5M3</code>，43.7 bits，E=3e-3</td>
+</tr>
+<tr>
+<td>12</td>
+<td>3,810</td>
+<td>2</td>
+<td>3,383</td>
+<td>盘基网柄菌 RhoGAP，33.8 bits，E=4.0</td>
+</tr>
+</tbody>
+</table>
+<p>第 1 轮 1,355 条中 689 条 E&lt;0.005；首条是 query 自身 <code>NP_001105181.1</code>（955 bits，E=0），第二、三条为 UniProt <code>Q8VZY7</code> 与玉米 isoform <code>XP_023158000.1</code>（93.0%）。689 条显著命中已含全部 209 条 FIE1/FIE2，其余是其它 WD40 蛋白。第 2 轮首条仍是 query 自身（955 bits，E=0），与第一轮相同；新增 1,368 条里最高分是蓝藻 <code>Q55563</code>（未表征 WD40，13.9%，164 bits，E=2.48e-42），紧随拟南芥 RACK1B、盘基网柄菌 tipD、酵母 MDV1、人 TEP1 等，均非已确认的 FIE 家族成员，可能只是共享 WD40 结构域的局部相似。第 3 轮最高为大鼠 IFT172（11.1%），第 4 轮起 TolB、Tol-Pal 亦被检出，identity 10–15%。12 轮未收敛：新增从 1,368 降到 2 但始终不为 0，累计 3,810 条、E&lt;0.005 3,383 条；收紧 <code>-inclusion_ethresh</code> 或限定分类范围可评估变化，但不保证收敛。</p>
+<p><strong>假阳性判断。</strong> 以 FIE 家族同源序列为目标，结果中存在假阳性：第 1 轮 689 条显著命中里仅 209 条标题为 FIE1/FIE2，其余是 RACK1、MDV1 等其它 WD40 蛋白；第 2 轮起又新增蓝藻 WD40（13.9%）、大鼠 IFT172（11.1%）、细菌 TolB（14.9%）等低一致性、跨域命中。它们与 FIE 共享 WD40 重复，属结构域层面的局部相似，不是直系或并系同源；PSSM 纳入后会继续把同类蛋白拉入结果，这也是未收敛的可能原因。仅凭 E 值和 bitscore 不能排除，需结合覆盖度、结构域架构与基因树鉴别。</p>
+<p><strong>DELTA-BLAST</strong>：5.02 s，命中 3,162 条、8,901 个 HSP、570 个名称标签（含 unknown 25 个）。第一条是 query 自身的自身比对而非直系或并系同源，425 bits、E=7.84e-145；第二条为 UniProt <code>Q8VZY7</code>，第三条玉米 isoform（93.0%，376 bits，E=1.93e-126），第四、五条为高粱 FIE1（79.7%，343 bits）和 Setaria FIE2（70.8%，295 bits）。第 6、7 位是蓝藻 <code>Q8YRI1</code>（18.2%）和 Podospora HET-E-1（17.3%），275/266 bits，比水稻 FIE1（第 8 位，60.9%，257 bits）还高。名称标签覆盖动物、真菌、植物与原生生物，最多依次为人 282、小鼠 263、拟南芥 159、裂殖酵母 126、酿酒酵母 110、大鼠 99、盘基网柄菌 95、非洲爪蟾 85；其中多数是其它 WD40 蛋白，属 CDD 结构域 profile 的跨物种相似，不能当作 FIE 的物种分布。图 5 为上述结果文件的终端核查记录。</p>
+<figure><img src="shot_terminal_psi_delta.png" alt="PSI-BLAST 与 DELTA-BLAST 终端记录" /><figcaption>图 5　PSI-BLAST 逐轮表与 DELTA-BLAST 汇总、首位命中（425 bits、E=7.84e-145）的终端核查记录</figcaption></figure>
+<h2 id="实验任务四translated-blast-与同源序列保存">实验任务四：Translated BLAST 与同源序列保存</h2>
+<p><strong>材料</strong>：query <code>NM_001111711.1</code>；库为蛋白库与 FIE 家族 mRNA 小库（280 条）。</p>
+<div class="tcap">表 6　翻译搜索与直接搜索</div>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+<col style="width: 14%" />
+</colgroup>
+<thead>
+<tr>
+<th>搜索</th>
+<th>query → 库</th>
+<th>命中</th>
+<th>HSP</th>
+<th>物种标签</th>
+<th>耗时</th>
+<th>前 10 与直接搜索</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>BLASTX</td>
+<td>mRNA → 蛋白库</td>
+<td>1,234</td>
+<td>1,960</td>
+<td>292</td>
+<td>4.76 s</td>
+<td>与 BLASTP 重 9/10</td>
+</tr>
+<tr>
+<td>TBLASTX</td>
+<td>mRNA → FIE mRNA 库</td>
+<td>280</td>
+<td>4,129</td>
+<td>154</td>
+<td>0.19 s</td>
+<td>与 BLASTN 重 7/10</td>
+</tr>
+<tr>
+<td>BLASTN</td>
+<td>mRNA → FIE mRNA 库</td>
+<td>22</td>
+<td>23</td>
+<td>10</td>
+<td>0.06 s</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>BLASTX 前 10 条与 BLASTP 重 9 条，首位为玉米 FIE1（851 bits，430 aa 对齐），“先翻译再比”与蛋白搜索基本等价。TBLASTX 检出 280 条家族 mRNA、BLASTN 检出 22 条；一条序列可对应多个 HSP。</p>
+<p><strong>保存的序列</strong>：</p>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>文件</th>
+<th>内容</th>
+<th>条数</th>
+<th>与 query 的 identity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sequences/fie_orthologs_10.fasta</code></td>
+<td>FIE1 候选（含 query 自身）</td>
+<td>10</td>
+<td>100% → 59.0%</td>
+</tr>
+<tr>
+<td><code>sequences/fie_paralogs_10.fasta</code></td>
+<td>FIE2 并系候选</td>
+<td>10</td>
+<td>77.7% → 63.8%</td>
+</tr>
+<tr>
+<td><code>sequences/fie_delta_layers.fasta</code></td>
+<td>DELTA-BLAST 分层抽样</td>
+<td>21</td>
+<td>100% → 32.7%</td>
+</tr>
+</tbody>
+</table>
+<p>FIE1 文件含 query 自身，除自身外仅 9 条候选，尚不能视为 10 条经验证的独立直系同源序列。分层抽样按任务书从高到低取，但本地 FIE 家族在 80–90% 区间没有独立命中，40–50% 与 30–40% 各只有 1 条，实际保存 21 条、18 个物种；明细见 <code>fie_delta_layers.tsv</code>。候选多数无配对 mRNA 且含同一物种的不同 isoform，后续分析前须按登录号去重；名称标签数与命中排名不能当作独立同源序列计数。</p>
+<figure><img src="fig4_homologs.png" alt="直系同源与并系同源的一致性谱" /><figcaption>图 6　10 条 FIE1 候选（含 query，上）与 10 条 FIE2 候选（下）对 ZmFIE1 的蛋白一致性</figcaption></figure>
+<p>拟南芥 FIE 的 identity 为 59.0%，高粱 FIE2 为 77.7%；identity 高低不能直接判断直系或并系关系，须结合基因树与注释验证。</p>
+<h2 id="现有知识总结">现有知识总结</h2>
+<p>BLAST 算法、word size、替换矩阵和 E-value 阈值影响灵敏度、耗时与结果；高排名序列也需结合覆盖度、注释及进化关系解释。PSI/DELTA 能检出远缘 WD40 蛋白，但须结合结构域与物种信息鉴别。</p>
+<h2 id="讨论">讨论</h2>
+<p>默认 <code>blastp-short</code> 把 Setaria FIE2（85%）排在玉米自身（100%）之前，关闭组成校正后才恢复。名称标签含 unknown 与重复，不能当作物种数。标题中的“FIE1-like”（水稻 466 aa、小麦 461 aa）暂依长度与相似性归 FIE2 支，仍需基因树验证。</p>
+<h2 id="你的疑问最多-3-条">你的疑问（最多 3 条）</h2>
+<ol type="1">
+<li>PSI-BLAST 第 2 轮的蓝藻 WD40 是远缘同源，还是 WD40 折叠的组成偏好？</li>
+<li>DELTA-BLAST 把蓝藻 WD40 排在水稻 FIE1 之前，是否该按分类范围限定 CDD 权重？</li>
+<li>水稻、小麦的“FIE1-like”属于 FIE2 还是第三个拷贝？</li>
+</ol>
+
+</body></html>

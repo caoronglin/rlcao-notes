@@ -1,8 +1,8 @@
 # AGENTS.md
 
-> 约束在本库（`/media/rlcao/Data/data/05-个人项目/rlcao`）中工作的 agent 与脚本。
+> 约束在本库（`/mnt/data/rlcao`）中工作的 agent 与脚本。
 > 这里写的是**当前实测状态**，不是设计意图。与实测冲突时以实测为准，并顺手把本文改对。
-> 最近核对：2026-11-06（main 分支）。
+> 最近核对：2026-11-14（main 分支）。
 
 ---
 
@@ -212,10 +212,10 @@ find . -type f -not -path './.git/*' > /tmp/files-before.txt
 | `daily-notes.json` → `template` | `muban/daily-note-template.md` | 日记模板 |
 | `app.json` → `attachmentFolderPath` | `assets` | 全部附件落盘 |
 | `app.json` → `newLinkFormat` | `absolute` | 见 §3.1 |
-| `Home.md` → `cssclasses` | `knowledge-home` | 样式表在 `muban/dashboard.css` |
-| `panel/hero.md` | 引用 `assets/workbench-hero.png` | 任一缺失 → 首页坏链 |
+| `Home.md` → `cssclasses` | `knowledge-home` | `.obsidian/snippets/workflow-workbench.css`，仅首页生效 |
+| `panel/hero.md` | 原生每日笔记、QuickAdd 入口与真实记录统计 | 依赖每日笔记命令、QuickAdd、Dataview；不再依赖背景图片 |
 
-`Home.md` 嵌入 4 个 panel（hero / 操作台 / 洞察镜 / 快捷入口），全部是 `dataviewjs`，依赖 dataview 插件与 `moment`。
+`Home.md` 嵌入 4 个 panel（hero / 操作台 / 洞察镜 / 快捷入口），全部是 `dataviewjs`，依赖 dataview 插件与 `moment`。待办按今日日记、状态为 `进行中` 的项目/实验、历史清单分组；日记中的“明日计划”不提前计入今天。历史清单只在首页折叠，不修改原笔记或项目状态。首页使用阅读视图，停用重复的旧 `workbench` CSS。
 
 ---
 

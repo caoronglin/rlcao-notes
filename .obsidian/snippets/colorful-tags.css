@@ -1,0 +1,62 @@
+/* 标签配色：Ant Design 色板，只给四类高频标签上色，其余保持中性
+   （color as accent only —— 全库 20+ 标签全上色会变成调料盘） */
+.tag {
+  border-radius: 4px;
+  padding: 1px 8px;
+  font-size: 0.85em;
+  border: 1px solid var(--background-modifier-border);
+  background: var(--background-secondary);
+  color: var(--text-muted);
+}
+
+/* 生信 / 生物信息学 —— blue */
+.tag[href="#生信"],
+.tag[href="#生物信息学"],
+.tag[href="#bio"] {
+  background: #e6f4ff;
+  border-color: #91caff;
+  color: #0958d9;
+}
+
+/* 课程 / 教材 / 习题 —— purple */
+.tag[href="#课程"],
+.tag[href="#课程实验"],
+.tag[href="#教材"],
+.tag[href="#习题"],
+.tag[href="#考研真题"] {
+  background: #f9f0ff;
+  border-color: #d3adf7;
+  color: #531dab;
+}
+
+/* 文献精读 / 文献全文 —— orange */
+.tag[href="#文献精读"],
+.tag[href="#文献全文"] {
+  background: #fff7e6;
+  border-color: #ffd591;
+  color: #d46b08;
+}
+
+/* 基因组 / 结构生物学 —— green */
+.tag[href="#植物基因组学"],
+.tag[href="#结构生物学"],
+.tag[href="#分子生物学"] {
+  background: #f6ffed;
+  border-color: #b7eb8f;
+  color: #389e0d;
+}
+
+/* 深色主题下降低饱和度，避免刺眼 */
+.theme-dark .tag[href="#生信"],
+.theme-dark .tag[href="#生物信息学"],
+.theme-dark .tag[href="#bio"] { background: rgba(22, 119, 255, .18); border-color: rgba(22, 119, 255, .45); color: #91caff; }
+.theme-dark .tag[href="#课程"],
+.theme-dark .tag[href="#课程实验"],
+.theme-dark .tag[href="#教材"],
+.theme-dark .tag[href="#习题"],
+.theme-dark .tag[href="#考研真题"] { background: rgba(114, 46, 209, .18); border-color: rgba(114, 46, 209, .45); color: #d3adf7; }
+.theme-dark .tag[href="#文献精读"],
+.theme-dark .tag[href="#文献全文"] { background: rgba(250, 140, 22, .18); border-color: rgba(250, 140, 22, .45); color: #ffd591; }
+.theme-dark .tag[href="#植物基因组学"],
+.theme-dark .tag[href="#结构生物学"],
+.theme-dark .tag[href="#分子生物学"] { background: rgba(82, 196, 26, .18); border-color: rgba(82, 196, 26, .45); color: #b7eb8f; }

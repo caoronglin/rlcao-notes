@@ -1,0 +1,20 @@
+{
+  "textFontFamily": "HONOR Sans CN",
+  "monospaceFontFamily": "JetBrainsMono Nerd Font Mono",
+  "interfaceFontFamily": "HONOR Sans CN,JetBrainsMonoNL Nerd Font Mono",
+  "baseFontSizeAction": true,
+  "nativeMenus": true,
+  "cssTheme": "Minimal",
+  "accentColor": "#1677ff",
+  "baseFontSize": 17,
+  "enabledCssSnippets": [
+    "antd-workbench",
+    "code-block",
+    "colorful-tags",
+    "outliner-guides",
+    "notes-focus"
+  ],
+  "theme": "obsidian",
+  "showRibbon": true,
+  "showViewHeader": true
+}

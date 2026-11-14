@@ -1,0 +1,19 @@
+/* =========================================================
+   Outliner 列表层级竖线（增强）
+   说明：Outliner 插件仓库早年提供的 snippet.css 已从仓库移除，
+   4.x 版改用 Obsidian 原生的缩进参考线。这里直接调原生变量做等效加粗，
+   配色跟随主题强调色。
+   ========================================================= */
+
+body {
+  --indentation-guide-width: 2px;
+  --indentation-guide-width-active: 2px;
+  --indentation-guide-color: color-mix(in srgb, var(--interactive-accent) 24%, transparent);
+  --indentation-guide-color-active: color-mix(in srgb, var(--interactive-accent) 70%, transparent);
+}
+
+/* 大纲拖拽时高亮被移动的整棵子树 */
+.cm-formatting-list-ol,
+.cm-formatting-list-ul {
+  font-weight: 600;
+}

@@ -1,0 +1,129 @@
+/* XL Toolbox — 思维导图视图。令牌对齐 Ant Design：radius 8、间距 8 的倍数、单色主调 */
+.xl-mm-view {
+  --xl-mm-bg: var(--background-primary);
+  --xl-mm-card: var(--background-secondary);
+  --xl-mm-line: var(--background-modifier-border);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 0;
+}
+
+.xl-mm-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--xl-mm-line);
+  background: var(--xl-mm-card);
+  flex: 0 0 auto;
+}
+
+.xl-mm-btn {
+  height: 28px;
+  padding: 0 10px;
+  font-size: 12px;
+  line-height: 26px;
+  border-radius: 6px;
+  border: 1px solid var(--xl-mm-line);
+  background: var(--background-primary);
+  color: var(--text-normal);
+  box-shadow: none;
+  cursor: pointer;
+}
+.xl-mm-btn:hover { border-color: #1677ff; color: #1677ff; }
+.xl-mm-btn:active { background: #e6f4ff; }
+
+.xl-mm-meta {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.xl-mm-scroll {
+  flex: 1 1 auto;
+  overflow: auto;
+  padding: 16px;
+  background: var(--xl-mm-bg);
+}
+
+.xl-mm-canvas {
+  position: relative;
+  transform-origin: 0 0;
+  transform: scale(1);
+}
+
+.xl-mm-edges {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.xl-mm-node {
+  position: absolute;
+  box-sizing: border-box;
+  padding: 8px 12px;
+  border: 1px solid var(--xl-mm-line);
+  border-left: 3px solid var(--xl-mm-accent, #1677ff);
+  border-radius: 8px;
+  background: var(--xl-mm-bg);
+  color: var(--text-normal);
+  font-size: 13px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: box-shadow 120ms ease, transform 120ms ease;
+}
+.xl-mm-node:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  z-index: 2;
+}
+.xl-mm-node.is-root {
+  background: color-mix(in srgb, var(--xl-mm-accent) 10%, var(--xl-mm-bg));
+  border-width: 2px;
+  border-left-width: 2px;
+}
+.xl-mm-node.is-heading {
+  background: color-mix(in srgb, var(--xl-mm-accent) 6%, var(--xl-mm-bg));
+}
+
+.xl-mm-line { white-space: pre-wrap; overflow-wrap: anywhere; }
+
+.xl-mm-toggle {
+  position: absolute;
+  right: -11px;
+  top: 50%;
+  transform: translateY(-50%);
+  min-width: 20px;
+  height: 20px;
+  padding: 0 4px;
+  border-radius: 10px;
+  border: 1px solid var(--xl-mm-accent, #1677ff);
+  background: var(--background-primary);
+  color: var(--xl-mm-accent, #1677ff);
+  font-size: 11px;
+  line-height: 18px;
+  text-align: center;
+  cursor: pointer;
+  z-index: 3;
+}
+.xl-mm-toggle:hover { background: var(--xl-mm-accent, #1677ff); color: #fff; }
+
+.xl-mm-empty {
+  color: var(--text-muted);
+  font-size: 13px;
+  padding: 24px;
+}
+
+.xl-mm-probe {
+  position: absolute;
+  visibility: hidden;
+  white-space: nowrap;
+  font-size: 13px;
+  line-height: 20px;
+  font-family: var(--font-text);
+  pointer-events: none;
+}

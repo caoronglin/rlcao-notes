@@ -1,0 +1,29 @@
+{
+  "promptDelete": true,
+  "pdfExportSettings": {
+    "includeName": true,
+    "pageSize": "A4",
+    "landscape": false,
+    "margin": "2",
+    "downscalePercent": 30
+  },
+  "strictLineBreaks": true,
+  "showLineNumber": false,
+  "vimMode": false,
+  "alwaysUpdateLinks": true,
+  "foldCode": true,
+  "defaultViewMode": "source",
+  "attachmentFolderPath": "assets",
+  "newFileLocation": "current",
+  "readableLineLength": true,
+  "useMarkdownLinks": false,
+  "smartQuotes": false,
+  "autoPairBrackets": true,
+  "autoPairMarkdown": true,
+  "propertiesInDocument": "visible",
+  "spellcheck": false,
+  "newLinkFormat": "absolute",
+  "showUnsupportedFiles": true,
+  "showInlineTitle": false,
+  "livePreview": true
+}

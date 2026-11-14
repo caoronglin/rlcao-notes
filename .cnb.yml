@@ -1,0 +1,29 @@
+# CNB 云原生构建：每次推送到 main 或在 PR 上跑一次库结构自检。
+# 检查项与本地 `python3 scripts/ci/vault_check.py` 完全一致，不维护第二套逻辑。
+# 文档：https://docs.cnb.cool/zh/build/grammar.html
+main:
+  push:
+    - name: vault-check
+      docker:
+        image: python:3.12
+      stages:
+        - name: 结构自检
+          jobs:
+            - name: 链接 / frontmatter / 配置 / 体积
+              script: |
+                python3 scripts/ci/vault_check.py --strict
+            - name: 统计
+              script: |
+                echo "md: $(git ls-files '*.md' | wc -l)"
+                echo "跟踪文件: $(git ls-files | wc -l)"
+                du -sh .git | awk '{print "仓库体积(Git 目录): " $1}'
+  pull_request:
+    - name: vault-check-pr
+      docker:
+        image: python:3.12
+      stages:
+        - name: 结构自检
+          jobs:
+            - name: 链接 / frontmatter / 配置 / 体积
+              script: |
+                python3 scripts/ci/vault_check.py --strict

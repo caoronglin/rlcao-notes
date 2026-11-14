@@ -1,5 +1,23 @@
-# ===== Obsidian 配置目录（含插件设置，避免密钥泄露）=====
-.obsidian/
+# ===== Obsidian 配置目录 =====
+# 2026-11-14 起改为白名单：只放行「没它笔记就跑不起来」的配置，以及自研插件源码。
+# 第三方插件的 data.json 可能含绝对路径与密钥，继续整体排除。
+# 若改动这里，跑 python3 scripts/ci/vault_check.py 验证「配置已纳入版本控制」一项。
+.obsidian/*
+!.obsidian/plugins/
+!.obsidian/snippets/
+!.obsidian/app.json
+!.obsidian/appearance.json
+!.obsidian/community-plugins.json
+!.obsidian/core-plugins.json
+!.obsidian/daily-notes.json
+!.obsidian/hotkeys.json
+!.obsidian/templates.json
+!.obsidian/types.json
+.obsidian/plugins/*
+!.obsidian/plugins/xl-toolbox/
+# 工作区布局属于本机状态，换机后按自己的窗口重新排
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
 
 # ===== 2026-10-05 修正（PARA 技巧5：备份）=====
 # 原先 assets/ 日记/ panel/ 项目/ 被排除在外，导致：

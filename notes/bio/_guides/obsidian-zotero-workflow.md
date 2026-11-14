@@ -126,6 +126,8 @@
 
 ### 3.1 所需插件
 
+> **本库实际状态（2026-11-14）**：只装 Zotero Integration + Dataview 两个。下表其余插件（Tag Wrangler、Advanced Tables、Excalidraw、Recent Files、Calendar）按需再装，本文保留它们是为了记录可选方案，不代表已启用。
+
 | 插件 | 作用 | 安装位置 |
 |------|------|---------|
 | **Zotero Integration** | 导入 Zotero 批注到 Obsidian | 社区插件 |

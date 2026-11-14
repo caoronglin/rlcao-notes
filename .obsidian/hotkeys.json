@@ -1,0 +1,56 @@
+{
+  "quickadd:choice:66543c0c-4861-4c8e-b6c7-933fc43caf99": [
+    {
+      "modifiers": [
+        "Mod",
+        "Alt"
+      ],
+      "key": "Q"
+    }
+  ],
+  "obsidian-zotero-desktop-connector:zdc-exp-导入或更新文献笔记": [
+    {
+      "modifiers": [
+        "Mod",
+        "Alt"
+      ],
+      "key": "Z"
+    }
+  ],
+  "obsidian-zotero-desktop-connector:zdc-插入引用": [
+    {
+      "modifiers": [
+        "Mod",
+        "Alt"
+      ],
+      "key": "C"
+    }
+  ],
+  "quickadd:runQuickAdd": [
+    {
+      "modifiers": [
+        "Mod",
+        "Alt"
+      ],
+      "key": "N"
+    }
+  ],
+  "xl-toolbox:open-mindmap": [
+    {
+      "modifiers": [
+        "Mod",
+        "Alt"
+      ],
+      "key": "M"
+    }
+  ],
+  "xl-toolbox:export-mindmap-svg": [
+    {
+      "modifiers": [
+        "Mod",
+        "Alt"
+      ],
+      "key": "S"
+    }
+  ]
+}

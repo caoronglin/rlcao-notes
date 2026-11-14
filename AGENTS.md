@@ -19,6 +19,9 @@
 | 动 `.obsidian/` 配置 | §6 | 先确认连锁影响 |
 | 新建笔记、项目、实验 | §2、§6 | 不预建空目录 |
 | 改 `_posts/` | §5 | 它只是暂存副本，不是 Hexo 源 |
+| 改工作台 / 首页样式 | §10 | Ant Design 令牌 + `antd-workbench` 片段 |
+| 改大纲→导图插件 | §10 | 纯逻辑有单测，改完必须跑 |
+| 改 `.gitignore` / 备份规则 | §11 | 跑 `vault_check.py` 验证白名单 |
 
 ---
 
@@ -179,7 +182,9 @@ git check-ignore -v notes/bio/生信学习/单细胞/笔记/my_data/covid_cite.h
 
 ### 4.2 应当排除的内容（勿放行）
 
-`.obsidian/`（含插件设置，避免密钥泄露）、`*.pdf`、`*.h5ad`、`*.zip`、`*.docx`、`*.fa`、`__pycache__/`、`.lamindb/`。
+`.obsidian/plugins/*/data.json` 等插件设置（可能含绝对路径与密钥）、`.obsidian/workspace*.json`（本机窗口状态）、`*.pdf`、`*.h5ad`、`*.zip`、`*.docx`、`*.fa`、`__pycache__/`、`.lamindb/`。
+
+**2026-11-14 改**：`.obsidian/` 不再是整目录排除，而是白名单——只放行「没它笔记就跑不起来」的 8 个 json、`snippets/` 与自研插件 `plugins/xl-toolbox/`。此前整目录排除的后果是：换机重克隆后主题、快捷键、片段、模板设置全部丢失，而 `vault backup:` 提交看起来一切正常。校验入口：`python3 scripts/ci/vault_check.py`（「配置已纳入版本控制」一项）。
 
 ### 4.3 破坏性操作前留回滚点
 
@@ -203,7 +208,7 @@ find . -type f -not -path './.git/*' > /tmp/files-before.txt
 
 ## 6. Obsidian 配置契约
 
-`.obsidian/` 被 gitignore，但这些设置是承重结构，改动会连锁：
+`.obsidian/` 只部分入库（见 §4.2 白名单），下列设置是承重结构，改动会连锁：
 
 | 配置项 | 值 | 影响面 |
 |---|---|---|
@@ -212,10 +217,16 @@ find . -type f -not -path './.git/*' > /tmp/files-before.txt
 | `daily-notes.json` → `template` | `muban/daily-note-template.md` | 日记模板 |
 | `app.json` → `attachmentFolderPath` | `assets` | 全部附件落盘 |
 | `app.json` → `newLinkFormat` | `absolute` | 见 §3.1 |
-| `Home.md` → `cssclasses` | `knowledge-home` | `.obsidian/snippets/workflow-workbench.css`，仅首页生效 |
-| `panel/hero.md` | 原生每日笔记、QuickAdd 入口与真实记录统计 | 依赖每日笔记命令、QuickAdd、Dataview；不再依赖背景图片 |
+| `Home.md` → `cssclasses` | `knowledge-home` | `.obsidian/snippets/antd-workbench.css`，仅首页生效 |
+| `appearance.json` → `accentColor` | `#1677ff` | Ant Design 主色，全库强调色 |
+| `appearance.json` → `baseFontSize` | `17` | 界面与正文基准字号 |
+| `hotkeys.json` | `Ctrl+Alt+M` 导图 / `Ctrl+Alt+S` 导出 SVG | 绑定自研插件 `xl-toolbox` |
+| `hotkeys.json` | `Ctrl+Alt+Z` 导入文献 / `Ctrl+Alt+C` 插入引用 | 绑定 Zotero Integration |
+| `panel/hero.md` | 顶栏 + 统计卡 + 近 7 天节奏 | 依赖每日笔记命令、QuickAdd、Dataview |
 
-`Home.md` 嵌入 4 个 panel（hero / 操作台 / 洞察镜 / 快捷入口），全部是 `dataviewjs`，依赖 dataview 插件与 `moment`。待办按今日日记、状态为 `进行中` 的项目/实验、历史清单分组；日记中的“明日计划”不提前计入今天。历史清单只在首页折叠，不修改原笔记或项目状态。首页使用阅读视图，停用重复的旧 `workbench` CSS。
+`Home.md` 只做 4 个嵌入，没有标题层级：`![[panel/hero]]`、`![[panel/操作台]]`、`![[panel/洞察镜]]`、`![[panel/快捷入口]]`，全部是 `dataviewjs`，依赖 dataview 插件与 `moment`。待办按今日日记、状态为 `进行中` 的项目/实验、历史清单分组；日记中的“明日计划”不提前计入今天。历史清单只在首页折叠，不修改原笔记或项目状态。
+
+视觉规范见 §10。启动行为由 Homepage 插件负责（打开 `Home.md`、阅读视图、固定标签），因此 `app.json` 里**不要**再设 `openBehavior`，否则两个入口会各开一个标签。
 
 ---
 
@@ -308,6 +319,10 @@ pdftotext -f N -l N -layout 报告.pdf - | tail -c 100   # 每页末句是否完
 10. 瘦身前不做物理备份、不用 `git mv` 逐文件恢复
 11. 为凑页数把报告字号调到 9 pt 以下或把插图压到看不清
 12. 手改导出的 PNG 而不改 `.svg` 源
+13. 在 Obsidian 运行时大改 `.obsidian/*.json` 就宣布完成 —— 不重启会被内存状态覆盖
+14. 把插件二进制包提交进仓库 —— 下架插件备份到 `/mnt/data/_backup/`，仓库只留文本
+15. 直接 `rm -rf` 插件目录 —— 先整包备份，再改 `community-plugins.json`
+16. 在 `app.json` 里同时设 `openBehavior` 与 Homepage 插件 —— 启动会开两个标签
 
 ---
 
@@ -325,7 +340,7 @@ pdftotext -f N -l N -layout 报告.pdf - | tail -c 100   # 每页末句是否完
 |---|---|---|
 | 1 | `muban/` 内 4 条模板占位链接**故意保留** | `[[status/to_read]]` ×3、`[[{{annotation.imageRelativePath}}]]` ×1（Templater 变量）。链接语法本身是模板目的。除此之外全库悬空链接为 0 |
 | 2 | lamindb 实例已失效 | `notes/bio/生信学习/单细胞/笔记/my_data/.lamindb/` 记录的是 Windows 路径 `D:/data/rlcao/...`，当前为 Linux |
-| 3 | Zotero 工作流已接通（2026-10-16） | Zotero Integration + Better BibTeX，模板 `muban/zotero-literature-template.md`，笔记在 `vault/文献笔记` |
+| 3 | Zotero 工作流已接通（2026-10-16，2026-11-14 复验） | Zotero Integration 3.2.1 + Better BibTeX 9.0.77；本地 API `localhost:23119/api` 与 BBT JSON-RPC 均已实测可用，批注解析器已装到 `~/.local/share/obsidian-tools/pdfannots2json-linux-x64`。模板 `muban/zotero-literature-template.md`，笔记在 `vault/文献笔记` |
 | 4 | `notes/class-notes/遗传学/` 命名不当 | 530 个文件中 526 个是 jpg、仅 2 个 md，实为扫描档案；第 2、4 章未转录 |
 | 5 | `wiki/c/chapter6.md` 有 20 处 C 宏被误转成 wikilink | 均在代码块内，渲染无害；标题行 2 处已修为行内代码 |
 | 6 | `_posts` 4 篇的 date 取自 git 首次提交日 | 未经作者确认真实发表日期 |
@@ -334,6 +349,15 @@ pdftotext -f N -l N -layout 报告.pdf - | tail -c 100   # 每页末句是否完
 
 ### 9.3 变更记录
 
+- **2026-11-14** 工作台、插件、配置、备份链路一次性收口：
+  - 工作台按 Ant Design 规范重写（`panel/` 四个组件 + `antd-workbench.css`），主色统一 `#1677ff`，基准字号 22 → 17。
+  - 社区插件 17 → 11：下架 Better Export PDF、Various Complements、Calendar、Advanced Tables、Image Toolkit、HTML Studio、Mindmap NextGen，整包备份到 `/mnt/data/_backup/obsidian-plugins-archive-2026-11-14/`；Duowei 因 `独立工作表.duowei` 里是真实实验记录而保留。
+  - 自研插件 `xl-toolbox` 落地，替代 Mindmap NextGen：标题/缩进列表 → 导图，节点跳原文、折叠、缩放、导出 SVG/PNG；纯逻辑 11 条单测（`node .obsidian/plugins/xl-toolbox/test/core.test.cjs`）。
+  - `.gitignore` 的 `.obsidian/` 由整目录排除改为白名单，配置与自研插件入库 —— 此前换机重克隆必然丢主题、快捷键、片段、模板。
+  - 新增 `scripts/ci/vault_check.py` 与 `.cnb.yml`：推送/PR 时跑链接、frontmatter、JSON、体积、配置入库五项检查；顺带修掉表格内 `[[目标\|别名]]` 被误判悬空的解析 bug（31 处误报 → 0）。
+  - Zotero 复验：本地 API 与 BBT JSON-RPC 可用，补装 `pdfannots2json-linux-x64`（批注转图依赖，此前目录不存在）。
+  - 新增 `.gitattributes` 钉死换行；git 本地配置补齐 `quotepath` / `push.default` / `rerere` / `remote.pushDefault`。
+
 - **2026-11-06（晚）** 实验二、三补入 NCBI 检索证据图：实验二新增 `fig_entrez_search.svg/.png`（E-utilities 的 esearch/elink/esummary 原始输出，由 `02/scripts/make_entrez_figure.py` 生成）；实验三新增 `03/shot-ncbi-blastn.png`（NCBI BLAST 网页版结果页截图，RID `EVDGFU20016`，blastn/megablast、`core_nt` 限 `Viridiplantae[Organism]`，52 条命中，前 5 条含 `AY195850.2`（标题含 type 2，不能仅凭此认定为 FIE2））。两份报告仍为 5 页；为此收紧段距（p 1.0→0.85 mm、表 1.8→1.5 mm、图 1.6→1.3 mm）并压缩若干段落。
   **踩坑**：本机无头 Chrome 访问 `www.ncbi.nlm.nih.gov/{nuccore,gene,assembly,books}` 一律返回 reCAPTCHA 挑战页（等待 45 s 后升级为图片验证码），拿不到 Entrez 网页截图；`blast.ncbi.nlm.nih.gov` 与 `www.ncbi.nlm.nih.gov/` 首页不受影响。该现象仅针对当时无头 Chrome；同日可见浏览器成功获取 Nucleotide 搜索页面截图。E-utilities 渲染图应标明是 API 记录，不能冒充网页截图。
 - **2026-11-06** 实验二、三的研究分子统一到玉米 `ZmFIE1`：实验二 1.3 改为 5 条 FIE1 直系 + 5 条 FIE2 并系（跨禾本科补齐），10 组 EMBOSS 比对；实验三重跑 BLASTN/BLASTP/PSI/DELTA/翻译搜索，核酸库改为 11 个植物物种 Ensembl Plants cDNA + FIE 家族（652,197 条），蛋白库 576,022 条；报告改为 WeasyPrint 排版，02、03 均为 5 页。
@@ -341,3 +365,110 @@ pdftotext -f N -l N -layout 报告.pdf - | tail -c 100   # 每页末句是否完
 - **2026-10-27** 生信实验入库方式定稿；记录 0-based/1-based、1787=1766+21、登录号复用三条事实。
 - **2026-10-16** `vault/` 下确立项目、实验记录、方法、文献、大纲、系统与工具的落盘位置。
 - **2026-10-05** 完成 PARA 整理、链接消歧与 `.gitignore` 修复。
+
+---
+
+## 10. 个人工作台与自研插件
+
+### 10.1 视觉规范（Ant Design）
+
+取值全部来自 ant.design 的 spec 页，改样式时照抄，不要自创：
+
+| 令牌 | 值 | 说明 |
+|---|---|---|
+| 主色 | `#1677ff` | 全库强调色（`appearance.json` 的 `accentColor`） |
+| 辅色 | `#52c41a` / `#fa8c16` / `#722ed1` | 分别用于实验、文献、大纲三张统计卡 |
+| 文字 | `--text-normal` / `--text-muted` / `--text-faint` | 一级 / 二级 / 三级，不在浅底上用 -6 字阶写小字 |
+| 圆角 | 8px（卡片）/ 6px（按钮、输入） | |
+| 间距 | 8 的倍数：8 / 16 / 24 | 卡片内边距 24，卡片间距 16–24 |
+| 字号 | 12 / 13 / 14 / 20 / 24 | 正文 13–14，卡片标题 14，问候语 24 |
+| 阴影 | `0 1px 2px rgba(0,0,0,.03), 0 2px 8px rgba(0,0,0,.04)` | 只在 hover 时加 |
+
+实现文件：`.obsidian/snippets/antd-workbench.css`（唯一首页样式，其余旧片段已归档到 `4-存档/2026-11-14/`）。
+
+### 10.2 首页结构
+
+```
+Home.md (cssclasses: knowledge-home)
+├── ![[panel/hero]]      顶栏（问候 + 6 个主操作）+ 4 张统计卡 + 最近 7 天节奏条
+├── ![[panel/操作台]]    今日计划（带完成度）/ 进行中项目与实验 / 历史折叠
+├── ![[panel/洞察镜]]    正在推进 / 最近实验 / 接着上次的记录 / 待确认状态折叠
+└── ![[panel/快捷入口]]  学习 · 科研 · 管理 三栏入口
+```
+
+约束：
+
+- 每个 panel 只有一个 `dataviewjs` 代码块，输出统一用 `wf-*` 类名；不要写内联 `style` 颜色，走 `--wf-accent` 变量。
+- 首页**不写 H1/H2**，卡片标题由 panel 自己渲染（`wf-section-title`），这样嵌入块不会多出一层标题。
+- 首页必须**阅读视图**打开（Homepage 插件负责）；`knowledge-home` 下的 embed 外壳在 CSS 里被完全去壳，改 CSS 时别把 `.markdown-embed` 的 padding 加回来。
+- 勾选任务会写回原笔记（Dataview 的 taskList），首页只读不改项目状态。**不要**在 panel 里自动把项目标成完成。
+
+### 10.3 自研插件 `xl-toolbox`
+
+用途：把大纲/标题笔记渲染成思维导图，替代已下架的 Mindmap NextGen。
+
+```
+.obsidian/plugins/xl-toolbox/
+├── manifest.json      id: xl-toolbox
+├── main.js            单文件 CJS，无构建步骤（Obsidian 直接 require）
+├── styles.css         视图样式，颜色取 --text-* 与 Ant Design 色板
+└── test/core.test.cjs 纯逻辑单测
+```
+
+代码分层：`main.js` 里 `pure-core-start` 与 `pure-core-end` 两个注释之间是**不依赖 Obsidian API** 的纯函数（解析、换行、布局、SVG 生成），单测用正则把这整段抠出来在 node 里跑。改逻辑时保持这条边界，否则单测失效。
+
+```bash
+node .obsidian/plugins/xl-toolbox/test/core.test.cjs   # 必须 11 passed
+```
+
+关键约束：
+
+- **布局与导出必须同一套字号**。`xlLayout` 把 `fontSize / lineH / padX / padY` 记进 `state.meta`，`xlBuildSvg` 从 meta 取；两边不一致会导致导出 SVG 文字溢出卡片（踩过一次）。
+- 文本宽度用 canvas `measureText` 实测，换行按字符贪心切分，最多 6 行，超出以 `…` 结尾。
+- 文首 H1 与根节点合并，避免「文件名 → 同名 H1」重复一层。
+- 列表缩进必须**先回退到正确父级再挂载**；顺序反了会把同级条目挂成上一条的子节点（踩过一次）。
+- 表格里的 wikilink 别名写成 `[[目标\|别名]]`，解析时要先把 `\|` 还原再切分。
+- 导图只读 Markdown，不回写笔记；节点点击只做 `editor.setCursor` + `scrollIntoView`。
+
+功能对照（相对 NextGen）：保留标题+列表解析、折叠、缩放、导出；新增节点跳原文、折到 N 层、导出 PNG；**不提供** 拖拽编辑导图（要自由布局用 Canvas）。
+
+### 10.4 调试
+
+桌面端 `Ctrl+Shift+I` 打开 DevTools。插件报错看 Console；改了 `main.js` 需要在「设置 → 第三方插件」里关掉再打开，或 `Ctrl+R` 重载界面。
+
+---
+
+## 11. CNB 仓库与自检
+
+### 11.1 远程与凭据
+
+| 远程 | 地址 | 角色 |
+|---|---|---|
+| `origin` | `https://cnb.cool/crl-code/obsidian-notes` | 主远程，推送目标 |
+| `github` | `https://github.com/caoronglin/rlcao-notes.git` | 镜像，手动推 |
+
+- CNB 凭据在 `~/.config/git/credentials-cnb`（`credential.https://cnb.cool.helper = store --file=...`），凭据文件不进仓库。
+- 本地 git 配置：`core.quotepath=false`（中文文件名可读）、`core.autocrlf=input`、`push.default=current`、`fetch.prune=true`、`rerere.enabled=true`、`merge.conflictstyle=zdiff3`、`remote.pushDefault=origin`。
+- 换行由 `.gitattributes` 钉死（`* text=auto eol=lf`，二进制显式 `binary`），避免 Linux/Windows 之间整库 diff 抖动。
+
+### 11.2 库结构自检
+
+```bash
+python3 scripts/ci/vault_check.py           # 本地全量
+python3 scripts/ci/vault_check.py --strict  # 悬空链接零容忍（CI 用）
+```
+
+检查四项 + 一项守卫：
+
+1. 悬空 wikilink（处理围栏代码块、行内代码、别名、标题锚点、路径尾部匹配、表格内 `\|` 转义）
+2. frontmatter 可解析（未闭合、Tab 缩进、无法解析的行）
+3. `.obsidian` 白名单里的 JSON 可解析
+4. **入库文件**体积阈值（md 5 MB / 其他 20 MB）——只看 `git ls-files`，被 gitignore 的大数据不算
+5. 守卫：白名单里的配置文件「在磁盘上但没进 git」直接判失败，专治 §4.1 的静默失效
+
+`.cnb.yml` 在 `push` 与 `pull_request` 上各跑一次，容器 `python:3.12`（带 git），与本地同一份脚本。
+
+### 11.3 已知坑
+
+- 无头 Chrome / Linux 端**看不到** Obsidian 进程，但文件确实在被它改：本库通过共享盘在 Windows 上的 Obsidian 里打开，obsidian-git 每 15 分钟自动提交一次 `vault backup:`。在 Linux 改 `.obsidian/*.json` 后，Obsidian 若不重启，其内存里的旧配置可能覆盖磁盘；**改完配置要重启 Obsidian 再验证**。
+- 插件包（`main.js` 动辄几 MB）不进仓库；下架插件时备份到库外 `/mnt/data/_backup/`。

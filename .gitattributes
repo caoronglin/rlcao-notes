@@ -1,0 +1,17 @@
+# 换行与二进制归属：库会在 Linux 与 Windows 间搬，先钉死，避免整库 diff 抖动
+* text=auto eol=lf
+*.md       text eol=lf
+*.yml      text eol=lf
+*.yaml     text eol=lf
+*.json     text eol=lf
+*.css      text eol=lf
+*.js       text eol=lf
+*.py       text eol=lf
+*.svg      text eol=lf
+*.png      binary
+*.jpg      binary
+*.jpeg     binary
+*.gif      binary
+*.pdf      binary
+*.xlsx     binary
+*.docx     binary

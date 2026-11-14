@@ -1,0 +1,10 @@
+{
+  "id": "xl-toolbox",
+  "name": "XL Toolbox",
+  "version": "1.0.0",
+  "minAppVersion": "1.4.0",
+  "description": "自研轻量工具箱：把大纲/标题笔记渲染成可折叠思维导图，支持 SVG/PNG 导出与节点跳转。",
+  "author": "rlcao",
+  "authorUrl": "https://github.com/caoronglin",
+  "isDesktopOnly": false
+}

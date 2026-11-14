@@ -48,7 +48,7 @@ notes/            课程与考试素材：讲义扫描、教材 OCR、文献、�
 wiki/             自撰知识库，章节化，每册带 index.md
 _posts/           Hexo 博客文章暂存副本
 vault/            项目、实验记录、方法、文献笔记、大纲笔记、系统与工具、日记
-muban/            模板与 dashboard.css
+muban/            模板（Templater / QuickAdd / Zotero 导入）
 panel/            首页组件（hero、操作台、洞察镜、快捷入口）
 assets/           全部附件落盘位置（gitignore）
 4-存档/YYYY-MM-DD/ 被取代的版本，按日期归档

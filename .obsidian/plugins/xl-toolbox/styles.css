@@ -127,3 +127,6 @@
   font-family: var(--font-text);
   pointer-events: none;
 }
+
+/* 缩放容器：stage 撑出滚动尺寸，canvas 保持自然尺寸只做 transform */
+.xl-mm-stage { position: relative; }

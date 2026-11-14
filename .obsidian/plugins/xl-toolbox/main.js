@@ -296,7 +296,6 @@ class XLMindMapView extends ItemView {
     this.meta = bar.createSpan({ cls: 'xl-mm-meta' });
 
     this.scrollEl = root.createDiv({ cls: 'xl-mm-scroll' });
-    this.canvasEl = this.scrollEl.createDiv({ cls: 'xl-mm-canvas' });
 
     this.registerEvent(this.app.vault.on('modify', f => {
       if (this.file && f.path === this.file.path) this.scheduleRender();
@@ -320,15 +319,15 @@ class XLMindMapView extends ItemView {
 
   useActiveFile() {
     const f = this.app.workspace.getActiveFile();
-    if (f && f.extension === 'md') { this.file = f; this.leaf.setViewState({ type: VIEW_TYPE, state: { file: f.path }, active: true }); }
+    if (f && f.extension === 'md') this.file = f;
   }
 
   async setFile(file) {
     if (!file) return;
     this.file = file;
     this.collapsed.clear();
-    this.leaf.setViewState({ type: VIEW_TYPE, state: { file: file.path } });
-    await this.render();
+    // setViewState 内部会回调 setState，由它触发重绘，这里不再重复渲染
+    await this.leaf.setViewState({ type: VIEW_TYPE, state: { file: file.path }, active: true });
   }
 
   async setState(state, result) {
@@ -364,8 +363,13 @@ class XLMindMapView extends ItemView {
   applyZoom() {
     if (!this.state) return;
     this.canvasEl.style.transform = `scale(${this.zoom})`;
-    this.canvasEl.style.width = (this.state.width * this.zoom) + 'px';
-    this.canvasEl.style.height = (this.state.height * this.zoom) + 'px';
+    this.canvasEl.style.transformOrigin = '0 0';
+    this.canvasEl.style.width = this.state.width + 'px';
+    this.canvasEl.style.height = this.state.height + 'px';
+    if (this.stageEl) {
+      this.stageEl.style.width = Math.ceil(this.state.width * this.zoom) + 'px';
+      this.stageEl.style.height = Math.ceil(this.state.height * this.zoom) + 'px';
+    }
   }
 
   fit() {
@@ -388,9 +392,10 @@ class XLMindMapView extends ItemView {
   async render(force) {
     if (!this.scrollEl) return;
     this.scrollEl.empty();
-    this.canvasEl = this.scrollEl.createDiv({ cls: 'xl-mm-canvas' });
+    this.stageEl = this.scrollEl.createDiv({ cls: 'xl-mm-stage' });
+    this.canvasEl = this.stageEl.createDiv({ cls: 'xl-mm-canvas' });
     if (!this.file) {
-      this.scrollEl.createEl('p', { text: '先打开一篇笔记，再运行「XL Toolbox: 打开大纲思维导图」。', cls: 'xl-mm-empty' });
+      this.stageEl.createEl('p', { text: '先打开一篇笔记，再运行「XL Toolbox: 打开大纲思维导图」。', cls: 'xl-mm-empty' });
       return;
     }
     const text = await this.app.vault.cachedRead(this.file);

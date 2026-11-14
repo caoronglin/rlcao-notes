@@ -29,7 +29,7 @@
   --ant-space: 8px;
   --ant-shadow: 0 1px 2px rgba(0, 0, 0, .03), 0 2px 8px rgba(0, 0, 0, .04);
 
-  --file-line-width: 1100px;
+  --file-line-width: 1200px;
 }
 
 /* ── 画布：去掉嵌入块的一切外壳，让卡片直接贴边 ───────────────── */
@@ -64,7 +64,7 @@
   font-size: 14px;
   font-weight: 600;
   line-height: 22px;
-  color: var(--ant-text);
+  color: var(--text-normal) !important;
 }
 .knowledge-home .wf-section-title::before {
   content: "";
@@ -90,7 +90,11 @@
   padding: 24px;
   border: 1px solid var(--ant-border);
   border-radius: var(--ant-radius);
-  background: linear-gradient(180deg, var(--ant-primary-bg) 0%, var(--ant-card) 100%);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--ant-primary) 12%, var(--background-primary)) 0%,
+    var(--background-primary) 100%
+  );
   margin-bottom: 16px;
 }
 .knowledge-home .wf-eyebrow {
@@ -100,12 +104,13 @@
   color: var(--ant-text-2);
   letter-spacing: .02em;
 }
-.knowledge-home .wf-greeting {
+.knowledge-home .wf-top .wf-greeting {
   margin: 0 0 8px;
   font-size: 24px;
   font-weight: 600;
   line-height: 1.4;
-  color: var(--ant-text);
+  /* Minimal 等主题会用 --h2-color 给标题上暖色，这里必须压回中性色 */
+  color: var(--text-normal) !important;
   border: 0;
 }
 .knowledge-home .wf-sub {
@@ -206,12 +211,14 @@
 
 /* ── 进度条 ───────────────────────────────────────────────────── */
 .knowledge-home .wf-progress {
+  display: none;
   height: 4px;
   border-radius: 2px;
   background: var(--ant-fill);
   overflow: hidden;
   margin: 0 0 16px;
 }
+.knowledge-home .wf-progress.is-active { display: block; }
 .knowledge-home .wf-progress > span {
   display: block;
   height: 100%;
@@ -270,7 +277,9 @@
 .knowledge-home details.wf-history[open] > summary::before { content: "▾ "; }
 
 /* ── 表格（Dataview table）───────────────────────────────────── */
-.knowledge-home table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 0 0 16px; }
+.knowledge-home table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 13px; margin: 0 0 16px; }
+.knowledge-home table td,
+.knowledge-home table th { overflow-wrap: anywhere; word-break: break-word; }
 .knowledge-home table th {
   text-align: left;
   font-weight: 600;
@@ -282,6 +291,9 @@
 .knowledge-home table td { padding: 10px 12px; border-bottom: 1px solid var(--ant-border); }
 .knowledge-home table tr:last-child td { border-bottom: 0; }
 .knowledge-home table tbody tr:hover td { background: var(--ant-fill); }
+.knowledge-home .wf-card table a.internal-link,
+.knowledge-home .wf-card table a.internal-link:hover { color: var(--ant-text); text-decoration: none; }
+.knowledge-home .wf-card table a.internal-link:hover { color: var(--ant-primary); }
 .knowledge-home .table-wrapper { overflow-x: auto; }
 
 /* ── 快捷入口 ─────────────────────────────────────────────────── */

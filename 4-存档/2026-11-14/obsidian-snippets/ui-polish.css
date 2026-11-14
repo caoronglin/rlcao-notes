@@ -1,0 +1,515 @@
+/* =========================================================
+   UI Polish — Obsidian 全局阅读与界面样式
+   全局排版 / 阅读元素 / 交互动效
+   ========================================================= */
+
+/* =========================================================
+   Avocado Polish — Obsidian 全局结构美化 + Canvas Dashboard
+   参考：macOS 同心圆角、按压回弹、hover 抬起、减少动效支持
+   ========================================================= */
+
+/* ───────────────── 设计令牌：森林绿主色 / 信号红状态色 ───────────────── */
+.theme-light {
+  --interactive-accent: #2b8a3e;
+  --interactive-accent-hover: #237032;
+  --text-accent: #1b5e2b;
+  --text-accent-hover: #174d23;
+  --text-selection: rgba(43, 138, 62, 0.16);
+  --ui-success: #2b8a3e;
+  --ui-success-soft: rgba(43, 138, 62, 0.10);
+  --ui-danger: #c92a2a;
+  --ui-danger-soft: rgba(201, 42, 42, 0.10);
+}
+
+.theme-dark {
+  --interactive-accent: #51cf66;
+  --interactive-accent-hover: #69db7c;
+  --text-accent: #69db7c;
+  --text-accent-hover: #8ce99a;
+  --text-selection: rgba(81, 207, 102, 0.22);
+  --ui-success: #51cf66;
+  --ui-success-soft: rgba(81, 207, 102, 0.14);
+  --ui-danger: #ff6b6b;
+  --ui-danger-soft: rgba(255, 107, 107, 0.14);
+}
+
+/* ───────────────── 全局 ───────────────── */
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ───────────────── 阅读节奏与标题层级 ───────────────── */
+.markdown-reading-view .markdown-preview-view,
+.markdown-source-view.mod-cm6 .cm-scroller {
+  line-height: 1.76;
+}
+.markdown-preview-view h1,
+.markdown-preview-view h2,
+.markdown-preview-view h3 {
+  scroll-margin-top: 3.5rem;
+}
+.markdown-preview-view h1 {
+  margin-top: 1.8em;
+  margin-bottom: 0.7em;
+  padding-bottom: 0.35em;
+  border-bottom: 2px solid color-mix(in srgb, var(--ui-success) 40%, var(--background-modifier-border));
+}
+.markdown-preview-view h2 {
+  margin-top: 1.65em;
+  margin-bottom: 0.6em;
+  padding-left: 0.55em;
+  border-left: 4px solid var(--ui-success);
+}
+.markdown-preview-view h3 { margin-top: 1.4em; margin-bottom: 0.45em; color: var(--text-accent); }
+.markdown-preview-view p { margin-block: 0.75em; }
+.markdown-preview-view > .el-p + .el-p { margin-top: 0.9em; }
+.markdown-preview-view .el-pre + .el-p,
+.markdown-preview-view .el-table + .el-p { margin-top: 1.1em; }
+
+/* ───────────────── 标题 ───────────────── */
+.markdown-preview-view h1, .HyperMD-header-1 { font-weight: 850 !important; letter-spacing: -0.03em; }
+.markdown-preview-view h2, .HyperMD-header-2 { font-weight: 800 !important; letter-spacing: -0.02em; }
+.markdown-preview-view h3, .HyperMD-header-3 { font-weight: 760 !important; letter-spacing: -0.01em; }
+.markdown-preview-view h4, .HyperMD-header-4 { font-weight: 720 !important; }
+
+/* ───────────────── 侧栏 ───────────────── */
+.nav-file-title,
+.nav-folder-title {
+  border-radius: 8px;
+  margin: 1px 6px;
+  transition: background 0.15s ease;
+}
+.nav-file-title.is-active,
+.nav-folder-title.is-active {
+  font-weight: 650;
+  color: var(--text-accent);
+  background: var(--ui-success-soft);
+}
+
+/* ───────────────── 标签：药丸 ───────────────── */
+.cm-s-obsidian span.cm-hashtag,
+a.tag {
+  padding: 2px 10px !important;
+  border: 1px solid color-mix(in srgb, var(--ui-success) 28%, transparent);
+  background: var(--ui-success-soft);
+  color: var(--text-accent) !important;
+  border-radius: 999px !important;
+  font-size: 0.82em !important;
+  font-weight: 650;
+  text-decoration: none !important;
+}
+
+/* ───────────────── 引用块 ───────────────── */
+.markdown-preview-view blockquote {
+  position: relative;
+  margin: 1.2em 0;
+  padding: 12px 18px 12px 20px;
+  border: none;
+  border-left: 4px solid var(--interactive-accent);
+  border-radius: 0 12px 12px 0;
+  background: color-mix(in srgb, var(--interactive-accent) 5%, var(--background-primary));
+  font-style: italic;
+  color: color-mix(in srgb, var(--text-normal) 85%, var(--interactive-accent));
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.markdown-preview-view blockquote:hover {
+  background: color-mix(in srgb, var(--interactive-accent) 9%, var(--background-primary));
+}
+/* 嵌套引用块：逐层内缩 + 浅色 */
+.markdown-preview-view blockquote blockquote {
+  margin: 0.6em 0;
+  border-left-color: color-mix(in srgb, var(--interactive-accent) 55%, transparent);
+  background: color-mix(in srgb, var(--interactive-accent) 3%, var(--background-secondary));
+}
+.markdown-preview-view blockquote blockquote blockquote {
+  border-left-color: color-mix(in srgb, var(--interactive-accent) 30%, transparent);
+  background: transparent;
+}
+/* 引用块内段落间距 */
+.markdown-preview-view blockquote p { margin-block: 0.4em; }
+.markdown-preview-view blockquote p:first-child { margin-top: 0; }
+.markdown-preview-view blockquote p:last-child { margin-bottom: 0; }
+
+/* 编辑模式引用块同步 */
+.HyperMD-quote {
+  border-left: 4px solid var(--interactive-accent) !important;
+  background: color-mix(in srgb, var(--interactive-accent) 4%, var(--background-primary));
+  border-radius: 0 8px 8px 0;
+}
+.HyperMD-quote.HyperMD-quote-2 { border-left-color: color-mix(in srgb, var(--interactive-accent) 55%, transparent) !important; }
+.HyperMD-quote.HyperMD-quote-3 { border-left-color: color-mix(in srgb, var(--interactive-accent) 30%, transparent) !important; }
+
+/* ───────────────── 代码块 ───────────────── */
+.markdown-preview-view code {
+  padding: 2px 7px;
+  border-radius: 6px;
+  font-size: 0.88em;
+}
+.markdown-preview-view pre {
+  border: 1px solid color-mix(in srgb, var(--ui-success) 14%, var(--background-modifier-border));
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: 0.88em;
+  line-height: 1.62;
+  position: relative;
+  max-height: 14.5em;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+.markdown-preview-view pre:not(.is-collapsed) { max-height: none; }
+.markdown-preview-view pre::after {
+  content: "";
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 4em;
+  border-radius: 0 0 12px 12px;
+  background: linear-gradient(transparent, var(--background-secondary-alt));
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.markdown-preview-view pre:not(.is-collapsed)::after { opacity: 0; }
+.markdown-source-view .cm-foldPlaceholder {
+  border-radius: 4px;
+  padding: 0 8px;
+  font-size: 0.85em;
+}
+
+/* ───────────────── 表格 ───────────────── */
+.markdown-preview-view table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  margin: 1.2em 0;
+}
+.markdown-preview-view thead tr > th {
+  font-weight: 720;
+  padding: 10px 14px;
+  text-align: left;
+  background: color-mix(in srgb, var(--interactive-accent) 8%, var(--background-secondary));
+  border-bottom: 2px solid color-mix(in srgb, var(--interactive-accent) 28%, var(--background-modifier-border));
+  font-size: 0.9em;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+/* 表头首尾圆角 */
+.markdown-preview-view thead tr:first-child th:first-child { border-radius: 12px 0 0 0; }
+.markdown-preview-view thead tr:first-child th:last-child  { border-radius: 0 12px 0 0; }
+
+.markdown-preview-view tbody tr > td {
+  padding: 8px 14px;
+  border-bottom: 1px solid color-mix(in srgb, var(--background-modifier-border) 55%, transparent);
+  font-size: 0.94em;
+  transition: background 0.15s ease;
+}
+/* 斑马纹 */
+.markdown-preview-view tbody tr:nth-child(even) > td {
+  background: color-mix(in srgb, var(--interactive-accent) 3%, var(--background-primary));
+}
+/* 行 hover */
+.markdown-preview-view tbody tr:hover > td {
+  background: color-mix(in srgb, var(--interactive-accent) 8%, var(--background-secondary));
+}
+.markdown-preview-view tbody tr:last-child > td { border-bottom: none; }
+/* 表尾行圆角 */
+.markdown-preview-view tbody tr:last-child td:first-child { border-radius: 0 0 0 12px; }
+.markdown-preview-view tbody tr:last-child td:last-child  { border-radius: 0 0 12px 0; }
+
+/* ───────────────── Checkbox ───────────────── */
+.task-list-item-checkbox {
+  border-radius: 5px !important;
+  accent-color: var(--ui-success);
+  transition: all 0.15s ease;
+}
+.task-list-item.is-checked .task-list-item-text {
+  color: var(--text-muted);
+  text-decoration: line-through;
+  text-decoration-color: var(--text-faint);
+}
+
+/* ───────────────── 滚动条 ───────────────── */
+::-webkit-scrollbar { width: 7px; height: 7px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { border-radius: 999px; }
+
+/* ───────────────── 链接与危险语义 ───────────────── */
+.markdown-preview-view .internal-link,
+.markdown-preview-view .external-link {
+  color: var(--text-accent);
+  text-decoration: none;
+  font-weight: 580;
+  border-bottom: 1px solid color-mix(in srgb, var(--ui-success) 32%, transparent);
+  transition: color 0.12s ease, border-color 0.12s ease;
+}
+.markdown-preview-view .internal-link:hover,
+.markdown-preview-view .external-link:hover {
+  color: var(--interactive-accent-hover);
+  border-bottom-color: var(--interactive-accent-hover);
+}
+.callout[data-callout="warning"],
+.callout[data-callout="failure"],
+.callout[data-callout="error"],
+.callout[data-callout="danger"] {
+  --callout-color: 201, 42, 42;
+  background: var(--ui-danger-soft);
+  border-color: color-mix(in srgb, var(--ui-danger) 35%, var(--background-modifier-border));
+}
+.theme-dark .callout[data-callout="warning"],
+.theme-dark .callout[data-callout="failure"],
+.theme-dark .callout[data-callout="error"],
+.theme-dark .callout[data-callout="danger"] { --callout-color: 255, 107, 107; }
+
+/* ───────────────── 分割线 ───────────────── */
+.markdown-preview-view hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--background-modifier-border), transparent);
+  margin: 2em 0;
+}
+
+/* ───────────────── 文件标签页 ───────────────── */
+.workspace-tab-header { border-radius: 8px 8px 0 0; transition: background 0.12s ease; }
+.workspace .mod-root .workspace-tabs .workspace-tab-header-inner::after { border-radius: 2px; }
+
+/* ───────────────── 开关 ───────────────── */
+.toggle-switch { border-radius: 999px; transition: background 0.15s ease; }
+
+/* ───────────────── 关系图 ───────────────── */
+.graph-controls { border-radius: 12px; border: 1px solid var(--background-modifier-border); }
+
+/* ═══════════════════════════════════════════════════════════
+   细节增强：按压回弹、同心圆角、入场动画、减少动效
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── 按钮 / 图标：按压回弹 (macOS 风格) ── */
+.clickable-icon {
+  border-radius: 8px;
+  transition: background 0.12s ease, color 0.12s ease, transform 0.10s ease;
+}
+.clickable-icon:active {
+  transform: scale(0.92);
+}
+.mod-left-split .workspace-tab-header,
+.mod-right-split .workspace-tab-header {
+  border-radius: 8px;
+}
+
+/* ── 菜单项：hover 微抬 + 按压 ── */
+.menu-item {
+  border-radius: 6px;
+  margin: 2px 4px;
+  transition: background 0.12s ease, transform 0.10s ease;
+}
+.menu-item:active { transform: scale(0.97); }
+
+/* ── 搜索框/命令面板 ── */
+.prompt {
+  border-radius: 16px;
+  box-shadow: 0 18px 55px rgba(0,0,0,0.12);
+  animation: dashFadeIn 0.15s ease;
+}
+.prompt-input { border-radius: 10px; }
+
+/* ── 模态框：入场动画 ── */
+.modal {
+  border-radius: 16px;
+  animation: dashModalIn 0.18s cubic-bezier(.22,.61,.36,1);
+}
+.modal.mod-settings { border-radius: 0; animation: none; }
+
+.setting-item-control input[type="text"],
+.setting-item-control input[type="search"],
+.setting-item-control textarea {
+  border-radius: 8px;
+}
+
+/* ── 通知 ── */
+.notice {
+  border-radius: 10px;
+  animation: dashFadeIn 0.2s ease;
+}
+
+/* ── 菜单 ── */
+.menu {
+  border-radius: 12px;
+  box-shadow: 0 12px 36px rgba(0,0,0,0.14);
+  animation: dashMenuIn 0.13s cubic-bezier(.22,.61,.36,1);
+}
+
+/* ── 工具提示 ── */
+.tooltip { border-radius: 8px; font-size: 0.82em; }
+
+/* ── 视图头部 ── */
+.workspace-leaf-content[data-mode="source"] .view-header,
+.workspace-leaf-content[data-mode="preview"] .view-header {
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+/* ── 属性面板：默认折叠，hover 展开 ── */
+.metadata-container {
+  max-height: 2.8em;
+  overflow: hidden;
+  opacity: 0.7;
+  transition: max-height 0.25s ease, opacity 0.2s ease;
+}
+.metadata-container:hover,
+.metadata-container:focus-within {
+  max-height: 60em;
+  opacity: 1;
+}
+
+/* ── 属性面板内输入框 ── */
+.metadata-property-key input,
+.metadata-property-value input {
+  border-radius: 6px;
+  transition: background 0.12s ease;
+}
+
+/* ── Callout：同心圆角 ── */
+.callout {
+  border-radius: 16px !important;
+  box-shadow: none !important;
+}
+.callout-title { font-weight: 720 !important; }
+/* 内嵌 callout 自动内缩 */
+.callout .callout { border-radius: calc(16px - 6px) !important; }
+
+/* ── 嵌入文件 / 预览块 ── */
+.markdown-embed, .internal-embed {
+  border: 1px solid color-mix(in srgb, var(--ui-success) 16%, var(--background-modifier-border));
+  border-radius: 12px;
+}
+.markdown-embed .markdown-embed-title {
+  font-weight: 650;
+}
+
+/* ── 图片 ── */
+.markdown-preview-view img {
+  border-radius: 10px;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.markdown-preview-view img:hover {
+  transform: scale(1.01);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+
+/* ── 列表样式 ── */
+
+/* 无序列表 marker 着色 + 层级渐变 */
+.markdown-preview-view ul > li::marker { color: var(--interactive-accent); }
+.markdown-preview-view ul ul > li::marker { color: color-mix(in srgb, var(--interactive-accent) 72%, var(--text-muted)); }
+.markdown-preview-view ul ul ul > li::marker { color: color-mix(in srgb, var(--interactive-accent) 48%, var(--text-muted)); }
+
+/* 嵌套层级垂直引导线 */
+.markdown-preview-view ul ul,
+.markdown-preview-view ol ol {
+  position: relative;
+}
+.markdown-preview-view ul ul::before,
+.markdown-preview-view ol ol::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: color-mix(in srgb, var(--interactive-accent) 16%, var(--background-modifier-border));
+  border-radius: 999px;
+}
+
+/* 有序列表自定义计数器 badge */
+.markdown-preview-view ol {
+  counter-reset: dash-ol;
+  padding-left: 0;
+  list-style: none;
+}
+.markdown-preview-view ol > li {
+  counter-increment: dash-ol;
+  position: relative;
+  padding-left: 2.2em;
+  margin-block: 0.3em;
+}
+.markdown-preview-view ol > li::before {
+  content: counter(dash-ol);
+  position: absolute;
+  left: 0;
+  top: 0.1em;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--interactive-accent) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--interactive-accent) 22%, transparent);
+  color: var(--interactive-accent);
+  font-size: 0.78em;
+  font-weight: 750;
+  text-align: center;
+  line-height: 1.5em;
+}
+/* 嵌套有序列表重置 + 字母 */
+.markdown-preview-view ol ol { counter-reset: dash-ol-sub; }
+.markdown-preview-view ol ol > li { counter-increment: dash-ol-sub; }
+.markdown-preview-view ol ol > li::before {
+  content: counter(dash-ol-sub, lower-alpha);
+  background: color-mix(in srgb, var(--interactive-accent) 8%, transparent);
+  border-color: color-mix(in srgb, var(--interactive-accent) 15%, transparent);
+  font-size: 0.74em;
+}
+
+/* 列表项间距 */
+.markdown-preview-view ul > li,
+.markdown-preview-view ol > li {
+  margin-block: 0.25em;
+  line-height: 1.55;
+}
+
+/* 编辑模式列表 marker */
+.cm-s-obsidian .cm-formatting-list-ul { color: var(--interactive-accent); }
+.cm-s-obsidian .HyperMD-list-line-1 .cm-formatting-list-ul { color: var(--interactive-accent); }
+.cm-s-obsidian .HyperMD-list-line-2 .cm-formatting-list-ul { color: color-mix(in srgb, var(--interactive-accent) 72%, var(--text-muted)); }
+.cm-s-obsidian .HyperMD-list-line-3 .cm-formatting-list-ul { color: color-mix(in srgb, var(--interactive-accent) 48%, var(--text-muted)); }
+
+/* 编辑模式有序列表 */
+.cm-s-obsidian .cm-formatting-list-ol { color: var(--interactive-accent); font-weight: 700; }
+
+/* ── 状态栏 ── */
+.status-bar { border-top: 1px solid var(--background-modifier-border); }
+.status-bar-item {
+  border-radius: 6px;
+  transition: background 0.12s ease;
+}
+
+/* ── 标题栏 ── */
+.titlebar { border-bottom: 1px solid var(--background-modifier-border); }
+
+/* ═══════════════════════════════════════════════════════════
+   动画关键帧
+   ═══════════════════════════════════════════════════════════ */
+
+@keyframes dashFadeIn {
+  from { opacity: 0; transform: translateY(6px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+@keyframes dashModalIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0)     scale(1); }
+}
+
+@keyframes dashMenuIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ── 减少动效：尊重系统偏好 ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .markdown-preview-view img:hover { transform: none; box-shadow: none; }
+  .clickable-icon:active { transform: none; }
+  .menu-item:active { transform: none; }
+}

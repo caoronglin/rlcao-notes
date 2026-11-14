@@ -1,0 +1,8 @@
+/* 更舒适的行宽（教程 4.3）*/
+.markdown-preview-view,
+.markdown-source-view {
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 20px 40px;
+}

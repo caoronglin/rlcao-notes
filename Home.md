@@ -5,11 +5,11 @@ cssclasses: knowledge-home
 
 ![[panel/hero]]
 
-## 今日计划与项目待办
+## 今天要推进的事
 ![[panel/操作台]]
 
-## 项目与实验
+## 项目与最近记录
 ![[panel/洞察镜]]
 
-## 工作入口
+## 按工作场景进入
 ![[panel/快捷入口]]

@@ -5,11 +5,16 @@
    - 间距一律 8 的倍数；圆角 8；阴影取 antd Card 双层投影
    - 字号阶梯 12 / 13 / 14 / 16 / 20 / 24；行高 1.6
    - 彩色只做强调：每张卡片一个主色，其余用中性色阶
-   作用域：frontmatter 带 cssclasses: knowledge-home 的页面（Home.md）
+
+   作用域说明（重要）：
+   组件样式全部挂在 .wf-root —— 这个 div 由 panel 的 dataviewjs 自己生成，
+   阅读视图、实时预览、嵌入块里都存在。不要再把组件规则挂到
+   `cssclasses: knowledge-home` 上：那层 class 只在阅读视图命中，
+   编辑模式下一失效，整个工作台就退化成竖排纯文本（2026-11-16 踩过）。
    ========================================================================= */
 
-.knowledge-home {
-  /* 中性色阶（浅色主题）；深色主题在下方覆盖 */
+.wf-root {
+  /* 中性色阶；深色主题靠 var() 自动跟随 */
   --ant-primary: #1677ff;
   --ant-primary-hover: #4096ff;
   --ant-primary-bg: #e6f4ff;
@@ -29,34 +34,56 @@
   --ant-space: 8px;
   --ant-shadow: 0 1px 2px rgba(0, 0, 0, .03), 0 2px 8px rgba(0, 0, 0, .04);
 
-  --file-line-width: 1200px;
+  display: block;
 }
 
-/* ── 画布：去掉嵌入块的一切外壳，让卡片直接贴边 ───────────────── */
-.knowledge-home .markdown-preview-sizer,
-.knowledge-home .markdown-preview-section { padding-bottom: 0 !important; }
-.knowledge-home .markdown-embed,
-.knowledge-home .internal-embed { border: 0 !important; padding: 0 !important; margin: 0 !important; background: none !important; }
-.knowledge-home .markdown-embed-title,
+/* ── 页面级：阅读视图 / 实时预览统一宽度，并去掉嵌入块外壳 ───────── */
+.knowledge-home,
+.markdown-source-view:has(.wf-root),
+.markdown-preview-view:has(.wf-root) { --file-line-width: 1200px; }
+
+.markdown-source-view:has(.wf-root) .cm-sizer { max-width: 1200px; }
+.markdown-preview-view:has(.wf-root) .markdown-preview-sizer { max-width: 1200px; }
+
+.markdown-embed:has(.wf-root),
+.internal-embed:has(.wf-root) {
+  border: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: none !important;
+}
+.markdown-embed:has(.wf-root) .markdown-embed-title,
+.markdown-embed:has(.wf-root) .markdown-embed-link,
+.markdown-embed:has(.wf-root) .markdown-embed-content .markdown-preview-sizer > div:first-child:empty,
 .knowledge-home .inline-title,
-.knowledge-home .metadata-container,
-.knowledge-home .markdown-embed-link { display: none !important; }
-.knowledge-home .markdown-embed-content { max-height: none; }
-.knowledge-home .markdown-preview-section > div:empty { display: none; }
-.knowledge-home .markdown-preview-section > .el-p,
-.knowledge-home .markdown-preview-section > .el-div { margin: 0 !important; }
+.knowledge-home .metadata-container { display: none !important; }
+.markdown-embed:has(.wf-root) .markdown-embed-content { max-height: none; padding: 0 !important; }
+.markdown-embed:has(.wf-root) .markdown-preview-section { padding: 0 !important; }
+.markdown-embed:has(.wf-root) .markdown-preview-section > div:empty { display: none; }
+.markdown-embed:has(.wf-root) .markdown-preview-section > .el-p,
+.markdown-embed:has(.wf-root) .markdown-preview-section > .el-div { margin: 0 !important; }
+
+/* 实时预览：嵌入块自身的边框、内边距与悬浮按钮全部让位 */
+.cm-embed-block:has(.wf-root) {
+  border: 0 !important;
+  padding: 0 !important;
+  margin: 0 0 24px !important;
+  background: none !important;
+}
+.cm-embed-block:has(.wf-root) .edit-block-button,
+.cm-embed-block:has(.wf-root) .cm-embed-block-indicators { display: none !important; }
 
 /* ── 通用卡片 ─────────────────────────────────────────────────── */
-.knowledge-home .wf-card {
+.wf-root .wf-card {
   background: var(--ant-card);
   border: 1px solid var(--ant-border);
   border-radius: var(--ant-radius);
   padding: 24px;
   margin: 0 0 24px;
 }
-.knowledge-home .wf-card:last-child { margin-bottom: 0; }
+.wf-root .wf-card:last-child { margin-bottom: 0; }
 
-.knowledge-home .wf-section-title {
+.wf-root .wf-section-title {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -66,14 +93,14 @@
   line-height: 22px;
   color: var(--text-normal) !important;
 }
-.knowledge-home .wf-section-title::before {
+.wf-root .wf-section-title::before {
   content: "";
   width: 3px;
   height: 14px;
   border-radius: 2px;
   background: var(--wf-accent, var(--ant-primary));
 }
-.knowledge-home .wf-section-title .wf-badge {
+.wf-root .wf-section-title .wf-badge {
   margin-left: auto;
   font-size: 12px;
   font-weight: 400;
@@ -82,7 +109,7 @@
 }
 
 /* ── 顶部条 ───────────────────────────────────────────────────── */
-.knowledge-home .wf-top {
+.wf-root .wf-top {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   gap: 24px;
@@ -97,14 +124,14 @@
   );
   margin-bottom: 16px;
 }
-.knowledge-home .wf-eyebrow {
+.wf-root .wf-eyebrow {
   margin: 0 0 8px;
   font-size: 12px;
   line-height: 20px;
   color: var(--ant-text-2);
   letter-spacing: .02em;
 }
-.knowledge-home .wf-top .wf-greeting {
+.wf-root .wf-top .wf-greeting {
   margin: 0 0 8px;
   font-size: 24px;
   font-weight: 600;
@@ -113,7 +140,7 @@
   color: var(--text-normal) !important;
   border: 0;
 }
-.knowledge-home .wf-sub {
+.wf-root .wf-sub {
   margin: 0;
   font-size: 13px;
   line-height: 1.6;
@@ -121,14 +148,14 @@
 }
 
 /* ── 按钮：antd default / primary ─────────────────────────────── */
-.knowledge-home .wf-actions {
+.wf-root .wf-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   justify-content: flex-end;
   max-width: 420px;
 }
-.knowledge-home .wf-btn {
+.wf-root .wf-btn {
   height: 32px;
   padding: 0 15px;
   border: 1px solid var(--ant-border);
@@ -141,29 +168,29 @@
   box-shadow: none;
   transition: color .15s, border-color .15s, background .15s;
 }
-.knowledge-home .wf-btn:hover { color: var(--ant-primary); border-color: var(--ant-primary); }
-.knowledge-home .wf-btn.primary {
+.wf-root .wf-btn:hover { color: var(--ant-primary); border-color: var(--ant-primary); }
+.wf-root .wf-btn.primary {
   background: var(--ant-primary);
   border-color: var(--ant-primary);
   color: #fff;
 }
-.knowledge-home .wf-btn.primary:hover { background: var(--ant-primary-hover); border-color: var(--ant-primary-hover); color: #fff; }
-.knowledge-home .wf-btn:disabled { opacity: .55; cursor: default; }
-.knowledge-home .wf-message {
-  margin-top: 8px;
+.wf-root .wf-btn.primary:hover { background: var(--ant-primary-hover); border-color: var(--ant-primary-hover); color: #fff; }
+.wf-root .wf-btn:disabled { opacity: .55; cursor: default; }
+.wf-root .wf-message {
+  margin: 8px 0 0;
   font-size: 12px;
   min-height: 18px;
   color: var(--text-error);
 }
 
 /* ── 统计卡 ───────────────────────────────────────────────────── */
-.knowledge-home .wf-stats {
+.wf-root .wf-stats {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
   margin: 0 0 24px;
 }
-.knowledge-home a.wf-stat {
+.wf-root a.wf-stat {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -175,19 +202,19 @@
   color: var(--ant-text);
   transition: border-color .15s, box-shadow .15s;
 }
-.knowledge-home a.wf-stat:hover { border-color: var(--ant-primary); box-shadow: var(--ant-shadow); }
-.knowledge-home .wf-stat-value {
+.wf-root a.wf-stat:hover { border-color: var(--ant-primary); box-shadow: var(--ant-shadow); }
+.wf-root .wf-stat-value {
   font-size: 24px;
   font-weight: 600;
   line-height: 1.3;
   font-variant-numeric: tabular-nums;
   color: var(--wf-accent, var(--ant-primary));
 }
-.knowledge-home .wf-stat-label { font-size: 12px; line-height: 20px; color: var(--ant-text-2); }
-.knowledge-home .wf-stat-hint { font-size: 12px; line-height: 18px; color: var(--ant-text-3); }
+.wf-root .wf-stat-label { font-size: 12px; line-height: 20px; color: var(--ant-text-2); }
+.wf-root .wf-stat-hint { font-size: 12px; line-height: 18px; color: var(--ant-text-3); }
 
 /* ── 今日 / 概览：两列 ────────────────────────────────────────── */
-.knowledge-home .wf-cols {
+.wf-root .wf-cols {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
   gap: 16px;
@@ -195,8 +222,8 @@
 }
 
 /* ── 任务列表（Dataview taskList 输出）────────────────────────── */
-.knowledge-home .wf-card ul.contains-task-list { margin: 0; padding-left: 0; }
-.knowledge-home .wf-card .task-list-item {
+.wf-root .wf-card ul.contains-task-list { margin: 0; padding-left: 0; }
+.wf-root .wf-card .task-list-item {
   list-style: none;
   margin: 0;
   padding: 6px 8px;
@@ -204,13 +231,13 @@
   font-size: 13px;
   line-height: 1.6;
 }
-.knowledge-home .wf-card .task-list-item:hover { background: var(--ant-fill); }
-.knowledge-home .wf-card .task-list-item input[type=checkbox] { margin-right: 8px; transform: translateY(1px); }
-.knowledge-home .wf-card .task-list-item a.internal-link { color: var(--ant-text-2); }
-.knowledge-home .wf-card .task-list-item .task-due { color: var(--ant-warning); font-size: 12px; }
+.wf-root .wf-card .task-list-item:hover { background: var(--ant-fill); }
+.wf-root .wf-card .task-list-item input[type=checkbox] { margin-right: 8px; transform: translateY(1px); }
+.wf-root .wf-card .task-list-item a.internal-link { color: var(--ant-text-2); }
+.wf-root .wf-card .task-list-item .task-due { color: var(--ant-warning); font-size: 12px; }
 
 /* ── 进度条 ───────────────────────────────────────────────────── */
-.knowledge-home .wf-progress {
+.wf-root .wf-progress {
   display: none;
   height: 4px;
   border-radius: 2px;
@@ -218,15 +245,15 @@
   overflow: hidden;
   margin: 0 0 16px;
 }
-.knowledge-home .wf-progress.is-active { display: block; }
-.knowledge-home .wf-progress > span {
+.wf-root .wf-progress.is-active { display: block; }
+.wf-root .wf-progress > span {
   display: block;
   height: 100%;
   border-radius: 2px;
   background: var(--ant-primary);
   transition: width .3s;
 }
-.knowledge-home .wf-progress-text {
+.wf-root .wf-progress-text {
   display: flex;
   justify-content: space-between;
   font-size: 12px;
@@ -236,8 +263,8 @@
 }
 
 /* ── 7 天记录条 ───────────────────────────────────────────────── */
-.knowledge-home .wf-week { display: flex; gap: 6px; align-items: flex-end; margin: 0 0 8px; }
-.knowledge-home .wf-week-day {
+.wf-root .wf-week { display: flex; gap: 6px; align-items: flex-end; margin: 0 0 8px; }
+.wf-root .wf-week-day {
   flex: 1 1 0;
   display: flex;
   flex-direction: column;
@@ -246,41 +273,41 @@
   font-size: 12px;
   color: var(--ant-text-3);
 }
-.knowledge-home .wf-week-dot {
+.wf-root .wf-week-dot {
   width: 100%;
   height: 24px;
   border-radius: var(--ant-radius-sm);
   background: var(--ant-fill);
   border: 1px solid var(--ant-border);
 }
-.knowledge-home .wf-week-day.has-note .wf-week-dot { background: var(--ant-primary); border-color: var(--ant-primary); opacity: .85; }
-.knowledge-home .wf-week-day.is-today .wf-week-dot { outline: 2px solid var(--ant-primary); outline-offset: 1px; }
-.knowledge-home .wf-week-day.is-today { color: var(--ant-text); font-weight: 600; }
+.wf-root .wf-week-day.has-note .wf-week-dot { background: var(--ant-primary); border-color: var(--ant-primary); opacity: .85; }
+.wf-root .wf-week-day.is-today .wf-week-dot { outline: 2px solid var(--ant-primary); outline-offset: 1px; }
+.wf-root .wf-week-day.is-today { color: var(--ant-text); font-weight: 600; }
 
 /* ── 折叠区 ───────────────────────────────────────────────────── */
-.knowledge-home details.wf-history {
+.wf-root details.wf-history {
   margin: 0 0 16px;
   border: 1px solid var(--ant-border);
   border-radius: var(--ant-radius);
   padding: 12px 16px;
   background: var(--ant-card);
 }
-.knowledge-home details.wf-history > summary {
+.wf-root details.wf-history > summary {
   cursor: pointer;
   font-size: 13px;
   color: var(--ant-text-2);
   list-style: none;
 }
-.knowledge-home details.wf-history > summary::-webkit-details-marker { display: none; }
-.knowledge-home details.wf-history > summary::before { content: "▸ "; color: var(--ant-text-3); }
-.knowledge-home details.wf-history[open] > summary { margin-bottom: 12px; color: var(--ant-text); }
-.knowledge-home details.wf-history[open] > summary::before { content: "▾ "; }
+.wf-root details.wf-history > summary::-webkit-details-marker { display: none; }
+.wf-root details.wf-history > summary::before { content: "▸ "; color: var(--ant-text-3); }
+.wf-root details.wf-history[open] > summary { margin-bottom: 12px; color: var(--ant-text); }
+.wf-root details.wf-history[open] > summary::before { content: "▾ "; }
 
 /* ── 表格（Dataview table）───────────────────────────────────── */
-.knowledge-home table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 13px; margin: 0 0 16px; }
-.knowledge-home table td,
-.knowledge-home table th { overflow-wrap: anywhere; word-break: break-word; }
-.knowledge-home table th {
+.wf-root table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 13px; margin: 0 0 16px; }
+.wf-root table td,
+.wf-root table th { overflow-wrap: anywhere; word-break: break-word; }
+.wf-root table th {
   text-align: left;
   font-weight: 600;
   color: var(--ant-text-2);
@@ -288,28 +315,28 @@
   padding: 10px 12px;
   border-bottom: 1px solid var(--ant-border);
 }
-.knowledge-home table td { padding: 10px 12px; border-bottom: 1px solid var(--ant-border); }
-.knowledge-home table tr:last-child td { border-bottom: 0; }
-.knowledge-home table tbody tr:hover td { background: var(--ant-fill); }
-.knowledge-home .wf-card table a.internal-link,
-.knowledge-home .wf-card table a.internal-link:hover { color: var(--ant-text); text-decoration: none; }
-.knowledge-home .wf-card table a.internal-link:hover { color: var(--ant-primary); }
-.knowledge-home .table-wrapper { overflow-x: auto; }
+.wf-root table td { padding: 10px 12px; border-bottom: 1px solid var(--ant-border); }
+.wf-root table tr:last-child td { border-bottom: 0; }
+.wf-root table tbody tr:hover td { background: var(--ant-fill); }
+.wf-root .wf-card table a.internal-link,
+.wf-root .wf-card table a.internal-link:hover { color: var(--ant-text); text-decoration: none; }
+.wf-root .wf-card table a.internal-link:hover { color: var(--ant-primary); }
+.wf-root .table-wrapper { overflow-x: auto; }
 
 /* ── 快捷入口 ─────────────────────────────────────────────────── */
-.knowledge-home .wf-entry-grid {
+.wf-root .wf-entry-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 16px;
 }
-.knowledge-home .wf-entry-group {
+.wf-root .wf-entry-group {
   min-width: 0;
   padding: 20px;
   border: 1px solid var(--ant-border);
   border-radius: var(--ant-radius);
   background: var(--ant-card);
 }
-.knowledge-home .wf-entry-group h3 {
+.wf-root .wf-entry-group h3 {
   margin: 0 0 12px;
   font-size: 13px;
   font-weight: 600;
@@ -317,7 +344,7 @@
   color: var(--ant-text);
   border: 0;
 }
-.knowledge-home a.wf-entry-link {
+.wf-root a.wf-entry-link {
   display: block;
   padding: 6px 0;
   font-size: 13px;
@@ -327,11 +354,11 @@
   overflow-wrap: anywhere;
   border-bottom: 1px dashed transparent;
 }
-.knowledge-home a.wf-entry-link:hover { color: var(--ant-primary); border-bottom-color: var(--ant-primary); }
-.knowledge-home a.wf-entry-link::before { content: "› "; color: var(--ant-text-3); }
+.wf-root a.wf-entry-link:hover { color: var(--ant-primary); border-bottom-color: var(--ant-primary); }
+.wf-root a.wf-entry-link::before { content: "› "; color: var(--ant-text-3); }
 
 /* ── 空状态 ───────────────────────────────────────────────────── */
-.knowledge-home .wf-empty {
+.wf-root .wf-empty {
   margin: 0;
   padding: 12px 0;
   font-size: 13px;
@@ -340,34 +367,34 @@
 }
 
 /* ── 焦点可见性（键盘可达）────────────────────────────────────── */
-.knowledge-home .wf-btn:focus-visible,
-.knowledge-home a.wf-stat:focus-visible,
-.knowledge-home a.wf-entry-link:focus-visible,
-.knowledge-home details.wf-history > summary:focus-visible {
+.wf-root .wf-btn:focus-visible,
+.wf-root a.wf-stat:focus-visible,
+.wf-root a.wf-entry-link:focus-visible,
+.wf-root details.wf-history > summary:focus-visible {
   outline: 2px solid var(--ant-primary);
   outline-offset: 2px;
 }
 
 /* ── 响应式：≤ 900px 收成一列 ─────────────────────────────────── */
 @media (max-width: 900px) {
-  .knowledge-home .wf-top { grid-template-columns: 1fr; }
-  .knowledge-home .wf-actions { justify-content: flex-start; max-width: none; }
-  .knowledge-home .wf-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .knowledge-home .wf-cols { grid-template-columns: 1fr; }
-  .knowledge-home .wf-entry-grid { grid-template-columns: 1fr; }
-  .knowledge-home .wf-card,
-  .knowledge-home .wf-top { padding: 16px; }
+  .wf-root .wf-top { grid-template-columns: 1fr; }
+  .wf-root .wf-actions { justify-content: flex-start; max-width: none; }
+  .wf-root .wf-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .wf-root .wf-cols { grid-template-columns: 1fr; }
+  .wf-root .wf-entry-grid { grid-template-columns: 1fr; }
+  .wf-root .wf-card,
+  .wf-root .wf-top { padding: 16px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .knowledge-home * { transition: none !important; }
+  .wf-root * { transition: none !important; }
 }
 
 /* ── 顶栏左侧块 ───────────────────────────────────────────────── */
-.knowledge-home .wf-top-main { min-width: 0; }
+.wf-root .wf-top-main { min-width: 0; }
 
 /* ── 最近记录列表 ─────────────────────────────────────────────── */
-.knowledge-home ul.wf-recent { margin: 0; padding: 0; list-style: none; }
-.knowledge-home ul.wf-recent li {
+.wf-root ul.wf-recent { margin: 0; padding: 0; list-style: none; }
+.wf-root ul.wf-recent li {
   display: flex;
   align-items: baseline;
   gap: 8px;
@@ -375,18 +402,18 @@
   border-bottom: 1px solid var(--ant-border);
   font-size: 13px;
 }
-.knowledge-home ul.wf-recent li:last-child { border-bottom: 0; }
-.knowledge-home ul.wf-recent a { color: var(--ant-text); text-decoration: none; }
-.knowledge-home ul.wf-recent a:hover { color: var(--ant-primary); }
-.knowledge-home .wf-recent-time { margin-left: auto; font-size: 12px; color: var(--ant-text-3); white-space: nowrap; }
+.wf-root ul.wf-recent li:last-child { border-bottom: 0; }
+.wf-root ul.wf-recent a { color: var(--ant-text); text-decoration: none; }
+.wf-root ul.wf-recent a:hover { color: var(--ant-primary); }
+.wf-root .wf-recent-time { margin-left: auto; font-size: 12px; color: var(--ant-text-3); white-space: nowrap; }
 
 /* ── 细节修正：入口组标题用与卡片标题一致的主色短竖线 ─────────── */
-.knowledge-home .wf-entry-group h3 {
+.wf-root .wf-entry-group h3 {
   display: flex;
   align-items: center;
   gap: 8px;
 }
-.knowledge-home .wf-entry-group h3::before {
+.wf-root .wf-entry-group h3::before {
   content: "";
   width: 3px;
   height: 12px;
@@ -395,4 +422,4 @@
 }
 
 /* ── 7 天条压扁一点，接近 antd Progress 的视觉重量 ─────────────── */
-.knowledge-home .wf-week-dot { height: 20px; }
+.wf-root .wf-week-dot { height: 20px; }

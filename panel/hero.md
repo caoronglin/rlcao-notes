@@ -4,7 +4,8 @@ const now = window.moment();
 const hour = now.hour();
 const greet = hour < 5 ? "夜还没完" : hour < 9 ? "早上好" : hour < 12 ? "上午好" : hour < 14 ? "中午好" : hour < 18 ? "下午好" : "晚上好";
 
-const top = dv.container.createDiv({ cls: "wf-top" });
+const root = dv.container.createDiv({ cls: "wf-root" });
+const top = root.createDiv({ cls: "wf-top" });
 const left = top.createDiv({ cls: "wf-top-main" });
 left.createEl("p", { text: now.format("YYYY 年 M 月 D 日 dddd"), cls: "wf-eyebrow" });
 left.createEl("h2", { text: `${greet}，麟`, cls: "wf-greeting" });
@@ -15,7 +16,7 @@ left.createEl("p", {
 
 // ---- 主操作：全部走已有命令与 QuickAdd，不新增依赖 ----
 const actions = top.createDiv({ cls: "wf-actions" });
-const msg = dv.container.createDiv({ cls: "wf-message", attr: { role: "status", "aria-live": "polite" } });
+const msg = root.createDiv({ cls: "wf-message", attr: { role: "status", "aria-live": "polite" } });
 const dailyPath = () => `vault/日记/${window.moment().format("YYYY-MM-DD")}.md`;
 
 async function openDaily(anchor = "") {
@@ -63,7 +64,7 @@ const stats = [
   ["文献笔记", dv.pages('"vault/文献笔记"').length, "vault/工作台/文献管理.md", "var(--ant-warning)"],
   ["大纲笔记", pages.where(p => p.type === "outline").length, "vault/大纲笔记/大纲笔记使用指南.md", "var(--ant-purple)"],
 ];
-const row = dv.container.createDiv({ cls: "wf-stats" });
+const row = root.createDiv({ cls: "wf-stats" });
 for (const [label, value, path, color] of stats) {
   const card = row.createEl("a", { cls: "wf-stat internal-link", href: path });
   card.setAttr("data-href", path);
@@ -73,7 +74,7 @@ for (const [label, value, path, color] of stats) {
 }
 
 // ---- 最近 7 天：有记录的日记点亮 ----
-const card = dv.container.createDiv({ cls: "wf-card" });
+const card = root.createDiv({ cls: "wf-card" });
 card.style.setProperty("--wf-accent", "var(--ant-primary)");
 const title = card.createDiv({ cls: "wf-section-title", text: "最近 7 天" });
 const days = [];

@@ -398,6 +398,8 @@ Home.md (cssclasses: knowledge-home)
 
 约束：
 
+- **组件样式只挂 `.wf-root`，不要挂 `cssclasses: knowledge-home`**。`knowledge-home` 在阅读视图才有；实时预览里外层没有这个 class，规则全部失效，工作台会退化成竖排纯文本（2026-11-16 踩过，需要用户截图才发现）。`.wf-root` 由 panel 的 dataviewjs 自己创建，三种场景都在。
+- 页面级规则（宽度、去嵌入外壳）用 `.markdown-embed:has(.wf-root)`、`.cm-embed-block:has(.wf-root)` 这类 `:has()` 选择器，不依赖视图模式。
 - 每个 panel 只有一个 `dataviewjs` 代码块，输出统一用 `wf-*` 类名；不要写内联 `style` 颜色，走 `--wf-accent` 变量。
 - 首页**不写 H1/H2**，卡片标题由 panel 自己渲染（`wf-section-title`），这样嵌入块不会多出一层标题。
 - 首页必须**阅读视图**打开（Homepage 插件负责）；`knowledge-home` 下的 embed 外壳在 CSS 里被完全去壳，改 CSS 时别把 `.markdown-embed` 的 padding 加回来。

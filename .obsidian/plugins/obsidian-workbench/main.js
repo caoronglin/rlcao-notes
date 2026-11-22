@@ -6436,6 +6436,52 @@ class WorkbenchSettingTab extends PluginSettingTab {
         .addButton((b) => b.setButtonText("打开附件管理器").onClick(() => this.plugin.openAttachmentModal()));
     }
 
+    // ── 十四点四、诗词与天气 ──
+    containerEl.createEl("h3", { text: "今日诗词与天气" });
+    new Setting(containerEl)
+      .setName("显示今日诗词")
+      .setDesc("数据源 jinrishici.com（无需 Key）")
+      .addToggle((t) =>
+        t.setValue(this.plugin.settings.showQuote !== false).onChange(async (v) => {
+          this.plugin.settings.showQuote = v;
+          await this.plugin.saveSettings();
+          this.plugin.refreshWorkbenchViews();
+        })
+      );
+    new Setting(containerEl)
+      .setName("显示天气")
+      .setDesc("OpenWeather 当前天气，需要免费 API Key")
+      .addToggle((t) =>
+        t.setValue(this.plugin.settings.showWeather !== false).onChange(async (v) => {
+          this.plugin.settings.showWeather = v;
+          await this.plugin.saveSettings();
+          this.plugin.refreshWorkbenchViews();
+          this.display();
+        })
+      );
+    if (this.plugin.settings.showWeather !== false) {
+      new Setting(containerEl)
+        .setName("OpenWeather API Key")
+        .setDesc("openweathermap.org 注册后获取，缓存 30 分钟")
+        .addText((t) =>
+          t.setPlaceholder("粘贴 Key").setValue(this.plugin.settings.weatherApiKey || "").onChange(async (v) => {
+            this.plugin.settings.weatherApiKey = v.trim();
+            await this.plugin.saveSettings();
+            this.plugin.refreshWorkbenchViews();
+          })
+        );
+      new Setting(containerEl)
+        .setName("城市")
+        .setDesc("OpenWeather 城市名，例如 Yangling,CN")
+        .addText((t) =>
+          t.setPlaceholder("Yangling,CN").setValue(this.plugin.settings.weatherCity || "").onChange(async (v) => {
+            this.plugin.settings.weatherCity = v.trim() || "Yangling,CN";
+            await this.plugin.saveSettings();
+            this.plugin.refreshWorkbenchViews();
+          })
+        );
+    }
+
     // ── 十四点五、文件浏览器整理（分栏/隐藏/分隔线）──
     containerEl.createEl("h3", { text: "文件浏览器整理" });
     containerEl.createDiv({
@@ -7788,7 +7834,7 @@ module.exports = { RagView };
   "./views/workbenchView.js": [function(require, module, exports) {
 "use strict";
 
-const { ItemView, Notice, normalizePath } = require("obsidian");
+const { ItemView, Notice, normalizePath, setIcon } = require("obsidian");
 const { VIEW_TYPE_WORKBENCH } = require("../constants");
 const { formatDate, getGreeting } = require("../utils");
 const { collectWorkbenchData, toggleTaskInFile } = require("../services/vaultStats");
@@ -8065,17 +8111,20 @@ class WorkbenchView extends ItemView {
     this.renderStats(hero, data, heat);
 
     const heroActions = hero.createDiv({ cls: "owb-hero-actions" });
-    const mkBtn = (label, primary, handler) => {
-      const b = heroActions.createEl("button", { cls: primary ? "mod-cta" : "", text: label });
+    const mkBtn = (label, icon, primary, handler) => {
+      const b = heroActions.createEl("button", { cls: primary ? "mod-cta owb-btn-icon" : "owb-btn-icon" });
+      if (icon) setIcon(b, icon);
+      b.createSpan({ text: label });
       b.addEventListener("click", handler);
     };
-    mkBtn("今日日记", true, () => this.openOrCreateDailyNote());
-    if (this.plugin.isFeatureEnabled("tasks")) mkBtn("任务", false, () => this.plugin.openTaskCenter());
-    if (this.plugin.isFeatureEnabled("quickCapture")) mkBtn("闪念", false, () => this.plugin.openQuickCapture());
-    if (this.plugin.isFeatureEnabled("attachments")) mkBtn("附件", false, () => this.plugin.openAttachmentModal());
-    if (this.plugin.isFeatureEnabled("imageTools")) mkBtn("图片", false, () => this.plugin.openImageToolsModal());
-    if (this.plugin.isFeatureEnabled("gitPanel")) mkBtn("Git", false, () => this.plugin.activateGitView());
-    if (this.plugin.isFeatureEnabled("vaultDoctor")) mkBtn("体检", false, () => this.plugin.openDoctorModal());
+    mkBtn("今日日记", "calendar-days", true, () => this.openOrCreateDailyNote());
+    if (this.plugin.isFeatureEnabled("tasks")) mkBtn("任务", "list-checks", false, () => this.plugin.openTaskCenter());
+    if (this.plugin.isFeatureEnabled("quickCapture")) mkBtn("闪念", "zap", false, () => this.plugin.openQuickCapture());
+    if (this.plugin.isFeatureEnabled("attachments")) mkBtn("附件", "paperclip", false, () => this.plugin.openAttachmentModal());
+    if (this.plugin.isFeatureEnabled("imageTools")) mkBtn("图片", "image", false, () => this.plugin.openImageToolsModal());
+    if (this.plugin.isFeatureEnabled("pomodoro")) mkBtn("全屏专注", "timer", false, () => this.plugin.openPomodoroFullscreen());
+    if (this.plugin.isFeatureEnabled("gitPanel")) mkBtn("Git", "git-branch", false, () => this.plugin.activateGitView());
+    if (this.plugin.isFeatureEnabled("vaultDoctor")) mkBtn("体检", "stethoscope", false, () => this.plugin.openDoctorModal());
 
     // ── 热力 ──
     this.renderHeatmap(root, heat);

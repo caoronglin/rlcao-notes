@@ -1,9 +1,9 @@
 {
   "id": "obsidian-workbench",
   "name": "Obsidian Workbench",
-  "version": "3.5.0",
+  "version": "3.6.0",
   "minAppVersion": "1.5.0",
-  "description": "一体化个人知识工作台：壁纸+毛玻璃、热力日历与标签统计、Git 面板、SM-2 自测、番茄钟（实时倒计时并写入日记）、闪念、日记/任务/项目联动、多维表格、隐私区、RAG 卡片与知识图谱、决策接口、附件预览（open-file-viewer/原生）、附件整理与自动归档、图片工具（默认 AVIF）、代码块执行。",
+  "description": "个人知识工作台：壁纸+毛玻璃、52周日历热力与标签统计、今日诗词与天气、全屏沉浸番茄钟（环形倒计时）、Git 面板、SM-2 自测、闪念、日记/任务/项目联动、多维表格、隐私区、RAG 卡片与知识图谱、附件预览/整理/自动归档、图片工具（AVIF）、代码块执行。",
   "author": "caoronglin",
   "isDesktopOnly": true
 }

@@ -534,6 +534,52 @@ class WorkbenchSettingTab extends PluginSettingTab {
         .addButton((b) => b.setButtonText("打开附件管理器").onClick(() => this.plugin.openAttachmentModal()));
     }
 
+    // ── 十四点四、诗词与天气 ──
+    containerEl.createEl("h3", { text: "今日诗词与天气" });
+    new Setting(containerEl)
+      .setName("显示今日诗词")
+      .setDesc("数据源 jinrishici.com（无需 Key）")
+      .addToggle((t) =>
+        t.setValue(this.plugin.settings.showQuote !== false).onChange(async (v) => {
+          this.plugin.settings.showQuote = v;
+          await this.plugin.saveSettings();
+          this.plugin.refreshWorkbenchViews();
+        })
+      );
+    new Setting(containerEl)
+      .setName("显示天气")
+      .setDesc("OpenWeather 当前天气，需要免费 API Key")
+      .addToggle((t) =>
+        t.setValue(this.plugin.settings.showWeather !== false).onChange(async (v) => {
+          this.plugin.settings.showWeather = v;
+          await this.plugin.saveSettings();
+          this.plugin.refreshWorkbenchViews();
+          this.display();
+        })
+      );
+    if (this.plugin.settings.showWeather !== false) {
+      new Setting(containerEl)
+        .setName("OpenWeather API Key")
+        .setDesc("openweathermap.org 注册后获取，缓存 30 分钟")
+        .addText((t) =>
+          t.setPlaceholder("粘贴 Key").setValue(this.plugin.settings.weatherApiKey || "").onChange(async (v) => {
+            this.plugin.settings.weatherApiKey = v.trim();
+            await this.plugin.saveSettings();
+            this.plugin.refreshWorkbenchViews();
+          })
+        );
+      new Setting(containerEl)
+        .setName("城市")
+        .setDesc("OpenWeather 城市名，例如 Yangling,CN")
+        .addText((t) =>
+          t.setPlaceholder("Yangling,CN").setValue(this.plugin.settings.weatherCity || "").onChange(async (v) => {
+            this.plugin.settings.weatherCity = v.trim() || "Yangling,CN";
+            await this.plugin.saveSettings();
+            this.plugin.refreshWorkbenchViews();
+          })
+        );
+    }
+
     // ── 十四点五、文件浏览器整理（分栏/隐藏/分隔线）──
     containerEl.createEl("h3", { text: "文件浏览器整理" });
     containerEl.createDiv({

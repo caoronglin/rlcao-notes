@@ -965,15 +965,15 @@
 .owb-heat-body {
   display: flex;
   flex-direction: column;
-  gap: 5px;
-  width: fit-content;
-  margin: 0 auto;
+  gap: 6px;
+  width: 100%;
 }
 
 .owb-heat-months {
   position: relative;
   height: 14px;
   margin-left: 20px;
+  margin-right: 2px;
 }
 
 .owb-heat-month {
@@ -1011,8 +1011,10 @@
 .owb-heat-col { display: flex; flex-direction: column; gap: 3px; }
 
 .owb-heat-cell {
-  width: 14px;
-  height: 14px;
+  /* 52 周时也要铺满：随视口放大，窄屏不溢出 */
+  width: clamp(10px, 1.15vw, 18px);
+  aspect-ratio: 1;
+  height: auto;
   border-radius: 4px;
   font-size: 0 !important;
   line-height: 0;
@@ -1417,3 +1419,167 @@
   color: var(--owb-accent);
   border-color: var(--owb-accent);
 }
+
+/* ================= v3.6 诗词 / 天气 / 全屏番茄钟 ================= */
+
+.owb-ambient {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 10px 0 4px;
+}
+
+.owb-quote {
+  font-size: 0.92em;
+  line-height: 1.5;
+  min-width: 0;
+}
+
+.owb-quote-text {
+  font-family: "HONOR Sans", "Noto Serif CJK SC", serif;
+  letter-spacing: 0.02em;
+}
+
+.owb-weather {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  border: 1px solid var(--owb-glass-border);
+  background: rgba(255, 255, 255, 0.05);
+  font-size: 0.84em;
+}
+
+.owb-weather-emoji { font-size: 1.15em; line-height: 1; }
+.owb-weather-temp { font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* ---- 全屏番茄钟 ---- */
+.owb-fs-container { align-items: center; justify-content: center; }
+
+.owb-fs-modal {
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: 100vw !important;
+  border-radius: 0 !important;
+  background: radial-gradient(120% 100% at 50% 0%, rgba(18, 20, 26, 0.94), rgba(8, 9, 12, 0.985)) !important;
+  backdrop-filter: blur(30px) saturate(140%);
+}
+
+.owb-fs-wrapper { padding: 0 !important; }
+
+.owb-fs-pomo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: #f4f6fa;
+}
+
+.owb-fs-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 26px;
+}
+
+.owb-fs-enter { animation: owb-fs-in 420ms cubic-bezier(0.2, 0.9, 0.2, 1) both; }
+
+@keyframes owb-fs-in {
+  from { opacity: 0; transform: scale(0.9) translateY(14px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.owb-fs-ring {
+  position: relative;
+  width: min(46vw, 380px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+}
+
+.owb-fs-ring.owb-fs-pulse { animation: owb-fs-pulse 520ms ease-out; }
+
+@keyframes owb-fs-pulse {
+  0% { transform: scale(1); }
+  38% { transform: scale(1.035); }
+  100% { transform: scale(1); }
+}
+
+.owb-fs-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.owb-fs-track {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.09);
+  stroke-width: 10;
+}
+
+.owb-fs-fill {
+  fill: none;
+  stroke: #1677ff;
+  stroke-width: 10;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.5s linear;
+  filter: drop-shadow(0 0 14px rgba(22, 119, 255, 0.55));
+}
+
+.owb-fs-center { text-align: center; }
+
+.owb-fs-clock {
+  font-family: "HONOR Sans", ui-monospace, monospace;
+  font-size: clamp(48px, 9vw, 96px);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.owb-fs-phase {
+  margin-top: 12px;
+  font-size: 0.95em;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.62;
+}
+
+.owb-fs-meta { font-size: 0.86em; opacity: 0.56; }
+
+.owb-fs-actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+
+.owb-fs-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 20px !important;
+  border-radius: 999px !important;
+  font-size: 0.92em !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  color: #f4f6fa !important;
+}
+
+.owb-fs-btn.mod-cta {
+  background: #1677ff !important;
+  border-color: #1677ff !important;
+}
+
+.owb-fs-btn:hover { background: rgba(255, 255, 255, 0.16) !important; }
+
+.owb-fs-quiet { opacity: 0.7; }
+
+.owb-fs-btn svg { width: 16px; height: 16px; }
+
+/* 带图标的按钮 */
+.owb-btn-icon {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 6px;
+}
+.owb-btn-icon svg { width: 15px; height: 15px; }

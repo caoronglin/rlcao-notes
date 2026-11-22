@@ -16,12 +16,12 @@ const { openDaily } = require("./services/dailyService");
 const { listProjects, createProject } = require("./services/projectService");
 const privacyService = require("./services/privacyService");
 const { setPluginDir } = require("./services/imageService");
+const decisionService = require("./services/decisionService");
+const graphService = require("./services/graphService");
 const { WorkbenchView } = require("./views/workbenchView");
 const { GitPanelView } = require("./views/gitView");
 const { QuizView } = require("./views/quizView");
-const { RagView } = require("./views/ragView");
 const { QuickCaptureModal } = require("./modals/quickCaptureModal");
-const { JevModal } = require("./modals/jevModal");
 const { TaskCenterModal } = require("./modals/taskModal");
 const { AttachmentModal } = require("./modals/attachmentModal");
 const { ImageToolsModal } = require("./modals/imageToolsModal");
@@ -61,20 +61,26 @@ class ObsidianWorkbenchPlugin extends Plugin {
     this.registerView(VIEW_TYPE_WORKBENCH, (leaf) => new WorkbenchView(leaf, this));
     this.registerView(VIEW_TYPE_GIT, (leaf) => new GitPanelView(leaf, this));
     this.registerView(VIEW_TYPE_QUIZ, (leaf) => new QuizView(leaf, this));
-    this.registerView(VIEW_TYPE_RAG, (leaf) => new RagView(leaf, this));
 
     // RAG 服务
     this.rag = new RagService(() => this.settings, this.app.vault.adapter);
 
-    // 图片工具：把插件绝对目录交给 sharp 加载器（支持本地 npm i sharp）
-    if (this.manifest && this.manifest.dir) setPluginDir(this.manifest.dir);
+    // 图片工具：把插件「绝对」目录交给 sharp 加载器。
+    // 注意：manifest.dir 是相对路径（.obsidian/plugins/obsidian-workbench），
+    // 直接传给 require 会被打包器当作相对模块去解析，报
+    // "OWB bundle: cannot resolve module .../node_modules/sharp from ./services"。
+    if (this.manifest && this.manifest.dir) {
+      const dir = this.manifest.dir;
+      const base = this.app && this.app.vault && this.app.vault.adapter ? this.app.vault.adapter.basePath : "";
+      const abs = dir.startsWith("/") ? dir : base ? `${base}/${dir}` : "";
+      if (abs) setPluginDir(abs);
+    }
 
     // Ribbon 图标（按模块开关动态显隐）
     this.ribbonEls = {
       workbench: this.addRibbonIcon("layout-dashboard", "打开知识工作台", () => this.activateWorkbenchView()),
       gitPanel: this.addRibbonIcon("git-branch", "打开 Git 管理面板", () => this.activateGitView()),
-      quickCapture: this.addRibbonIcon("zap", "快速闪念", () => this.openQuickCapture()),
-      ragSearch: this.addRibbonIcon("sparkles", "AI RAG 搜索", () => this.activateRagView())
+      quickCapture: this.addRibbonIcon("zap", "快速闪念", () => this.openQuickCapture())
     };
 
     // 命令面板（所有命令均检查对应功能开关）
@@ -161,19 +167,19 @@ class ObsidianWorkbenchPlugin extends Plugin {
       checkCallback: (checking) => this._guardCommand("privacy", checking, () => this.showPrivacyStatus())
     });
     this.addCommand({
-      id: "open-rag-search",
-      name: "AI RAG 搜索：语义检索全库",
-      checkCallback: (checking) => this._guardCommand("ragSearch", checking, () => this.activateRagView())
-    });
-    this.addCommand({
       id: "rag-build-index",
-      name: "AI RAG 搜索：构建/更新索引",
+      name: "RAG：构建/更新语义索引",
       checkCallback: (checking) => this._guardCommand("ragSearch", checking, () => this.buildRagIndex())
     });
     this.addCommand({
-      id: "jev-decide",
-      name: "Jev/Clef 决策：闪念归类 / 笔记评分 / 自定义",
-      checkCallback: (checking) => this._guardCommand("decision", checking, () => this.openJevModal())
+      id: "build-knowledge-graph",
+      name: "知识图谱：生成全库链接图谱笔记",
+      checkCallback: (checking) => this._guardCommand("ragSearch", checking, () => this.buildGraphNote())
+    });
+    this.addCommand({
+      id: "tidy-explorer",
+      name: "文件浏览器：生成整理样式（隐藏目录 + 分隔线）",
+      checkCallback: (checking) => this._guardCommand("workbench", checking, () => this.applyExplorerStyle())
     });
     this.addCommand({
       id: "open-attachment-manager",
@@ -437,9 +443,92 @@ class ObsidianWorkbenchPlugin extends Plugin {
     new TaskCenterModal(this.app, this).open();
   }
 
-  openJevModal() {
-    if (!this.isFeatureEnabled("decision")) return;
-    new JevModal(this.app, this).open();
+  /**
+   * 决策模型接口（内部）：不提供独立入口，供闪念归类等功能调用。
+   * 返回 { answers: { key: { type, value, confidence } } }
+   */
+  async decide(state, questions) {
+    if (!this.isFeatureEnabled("decision")) throw new Error("决策接口未启用");
+    const types = {};
+    for (const k of Object.keys(questions || {})) types[k] = questions[k].type || "choice";
+    return decisionService.ask(state, questions, this.settings, { questionTypes: types });
+  }
+
+  async buildGraphNote() {
+    try {
+      await graphService.writeGraphNote(this.app, { dir: "vault/系统与工具" });
+    } catch (err) {
+      new Notice("知识图谱生成失败：" + err.message, 8000);
+    }
+  }
+
+  /**
+   * 文件浏览器整理：按论坛方案（forum-zh/topic/44108）生成 CSS 片段——
+   * 用 .nav-folder:has([data-path=…]) 隐藏目录，用 ::after 画分隔线。
+   */
+  async applyExplorerStyle() {
+    const s = this.settings;
+    const hide = String(s.explorerHideList || "")
+      .split(",")
+      .map((x) => x.trim())
+      .filter(Boolean);
+    const seps = String(s.explorerSeparatorAfter || "")
+      .split(",")
+      .map((x) => x.trim())
+      .filter(Boolean);
+    const lines = [
+      "/* 由 Obsidian Workbench 生成：文件浏览器整理",
+      "   隐藏规则依据 data-path，分隔线用 ::after",
+      "   修改后重新生成即可覆盖本文件 */",
+      "",
+      ":root {",
+      "  --replete-custom-separators-vertical-padding: 6px;",
+      "  --replete-custom-separators-left-margin: -12px;",
+      "}",
+      ""
+    ];
+    if (hide.length) {
+      lines.push("/* 隐藏目录 */");
+      const sel = hide.map((h) => `.nav-folder:has([data-path="${h}"])`).join(", ");
+      lines.push(sel + " { display: none; }", "");
+    }
+    if (seps.length) {
+      lines.push("/* 分隔线 */");
+      const sel = seps
+        .map(
+          (x) =>
+            `.nav-folder:has([data-path="${x}"])::after`
+        )
+        .join(", ");
+      lines.push(
+        sel + " {",
+        "  content: '';",
+        "  display: block;",
+        "  margin: var(--replete-custom-separators-vertical-padding) 0 var(--replete-custom-separators-vertical-padding) var(--replete-custom-separators-left-margin);",
+        "  border-bottom: 1px solid var(--background-modifier-border);",
+        "  pointer-events: none;",
+        "}",
+        ""
+      );
+    }
+    const path = ".obsidian/snippets/workbench-explorer.css";
+    try {
+      await this.app.vault.adapter.write(path, lines.join("\n"));
+      const appJsonPath = ".obsidian/appearance.json";
+      let appJson = {};
+      try {
+        appJson = JSON.parse(await this.app.vault.adapter.read(appJsonPath));
+      } catch (e) {
+        appJson = {};
+      }
+      const list = Array.isArray(appJson.enabledCssSnippets) ? appJson.enabledCssSnippets : [];
+      if (!list.includes("workbench-explorer")) list.push("workbench-explorer");
+      appJson.enabledCssSnippets = list;
+      await this.app.vault.adapter.write(appJsonPath, JSON.stringify(appJson, null, 2));
+      new Notice("文件浏览器样式已生成并启用：.obsidian/snippets/workbench-explorer.css", 7000);
+    } catch (err) {
+      new Notice("生成失败：" + err.message, 8000);
+    }
   }
 
   openAttachmentModal() {

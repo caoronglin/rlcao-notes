@@ -423,3 +423,92 @@ test("v3.3 image: AVIF 为默认输出格式", async () => {
   assert.equal(img.DEFAULT_FORMAT, "avif");
   assert.equal(img.SUPPORTED_OUT[0], "avif");
 });
+
+test("v3.4 attachment: 裸 % 文件名不再抛 URI malformed", () => {
+  const { extractAttachmentRefs } = require(path.join(rootDir, "src/services/attachmentService.js"));
+  // 真实踩坑：文件名含裸 % 时 decodeURIComponent 抛 URI malformed，整个扫描崩溃
+  const text = [
+    "![](assets/100%完成.png)",
+    "![](assets/50%25done.png)",
+    "![](assets/a%20b.jpg)",
+    "![[裸%号.png]]"
+  ].join("\n");
+  const refs = extractAttachmentRefs(text);   // 不应抛异常
+  const targets = refs.map((r) => r.target).sort();
+  assert.deepEqual(targets, ["100%完成.png", "50%done.png", "a b.jpg", "裸%号.png"]);
+});
+
+test("v3.4 graph: 建图 / 社区检测 / Markdown 渲染", () => {
+  const { buildGraph, renderGraphMarkdown, detectCommunities, shortName } = require(path.join(rootDir, "src/services/graphService.js"));
+  const mk = (p) => ({ path: p, basename: p.split("/").pop().replace(/\.md$/, "") });
+  const files = [mk("a.md"), mk("b.md"), mk("c.md"), mk("d.md"), mk("isolated.md")];
+  const resolved = {
+    "a.md": { "b.md": 1, "c.md": 1 },
+    "b.md": { "a.md": 1, "c.md": 1 },
+    "c.md": { "a.md": 1, "b.md": 1, "d.md": 1 },
+    "d.md": { "c.md": 1 }
+  };
+  const app = {
+    vault: { getMarkdownFiles: () => files },
+    metadataCache: { resolvedLinks: resolved }
+  };
+  const g = buildGraph(app, {});
+  assert.equal(g.edgeCount, 4);            // a-b, a-c, b-c, c-d
+  assert.equal(g.orphans.length, 1);
+  assert.equal(g.orphans[0], "isolated.md");
+  assert.equal(g.nodes[0], "c.md");        // 度最高
+  assert.equal(g.degree.get("c.md"), 3);
+
+  // 社区：a/b/c 应聚成一簇（d 挂在 c 上）
+  const comms = detectCommunities(["a.md", "b.md", "c.md"], new Map([
+    ["a.md", new Set(["b.md", "c.md"])],
+    ["b.md", new Set(["a.md", "c.md"])],
+    ["c.md", new Set(["a.md", "b.md"])]
+  ]));
+  assert.equal(comms.length, 1);
+  assert.equal(comms[0].length, 3);
+
+  const md = renderGraphMarkdown(app, g, { mermaidMax: 10 });
+  assert.match(md, /```mermaid/);
+  assert.match(md, /graph LR/);
+  assert.match(md, /枢纽笔记/);
+  assert.match(md, /孤立笔记/);
+  assert.match(md, /isolated/);
+});
+
+test("v3.4 bases: 扫描 .duowei/.base 与模板合法性", () => {
+  const base = require(path.join(rootDir, "src/services/baseService.js"));
+  const f = (p, ext) => ({ path: p, extension: ext, basename: p.split("/").pop().replace(/\.[^.]+$/, "") });
+  const app = {
+    vault: {
+      getFiles: () => [
+        f("vault/工作台/a.duowei", "duowei"),
+        f("vault/工作台/b.base", "base"),
+        f("4-存档/old.duowei", "duowei"),
+        f("notes/x.md", "md")
+      ]
+    }
+  };
+  const list = base.listBases(app);
+  assert.equal(list.length, 2);            // 归档被排除、md 不算
+  assert.deepEqual(list.map((x) => x.kind).sort(), ["Bases", "Duowei"]);
+  const tpl = JSON.parse(base.duoweiTemplate("测试"));
+  assert.equal(tpl.name, "测试");
+  assert.ok(Array.isArray(tpl.fields) && tpl.fields.length >= 2);
+  assert.deepEqual(tpl.rows, []);
+});
+
+test("v3.4 sharp: 相对 manifest.dir 必须拼成绝对路径再 require", () => {
+  const img = require(path.join(rootDir, "src/services/imageService.js"));
+  // 直接给相对目录：不应尝试 require（否则打包器会当相对模块解析并抛错）
+  img.setPluginDir(".obsidian/plugins/obsidian-workbench");
+  const info = img.engineInfo();
+  assert.ok(["sharp", "canvas"].includes(info.engine));
+  // 绝对目录：本地已装 sharp 时应能加载
+  img.setPluginDir(rootDir);
+  const info2 = img.engineInfo();
+  if (info2.engine === "sharp") {
+    assert.ok(info2.libvips);
+  }
+  assert.equal(typeof img.engineInfo().error, "string");
+});

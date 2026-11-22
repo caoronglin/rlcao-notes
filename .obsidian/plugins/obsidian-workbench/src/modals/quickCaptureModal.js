@@ -97,6 +97,42 @@ class QuickCaptureModal extends Modal {
       );
     }
     this.plugin.refreshWorkbenchViews();
+
+    // 决策接口（内部）：判断这条闪念该归入哪个区，只做提示、不自动移动
+    if (this.plugin.settings.decisionAutoClassify !== false && this.plugin.isFeatureEnabled("decision")) {
+      this.classifyInBackground(text);
+    }
+  }
+
+  /** 后台调用决策模型，失败静默（不能因为模型挂了影响记笔记） */
+  async classifyInBackground(text) {
+    try {
+      const floor = this.plugin.settings.decisionConfidenceFloor == null
+        ? 0.6
+        : this.plugin.settings.decisionConfidenceFloor;
+      const { answers } = await this.plugin.decide(
+        { message: text },
+        {
+          area: {
+            type: "choice",
+            instructions: "这条闪念最该归入哪个知识区？",
+            criteria: {
+              study: "课程与学习笔记",
+              project: "某个项目或实验的一部分",
+              reference: "文献与参考资料",
+              life: "生活事务，与知识库无关",
+              inbox: "还没想清楚，先留在收件箱"
+            }
+          }
+        }
+      );
+      const a = answers && answers.area;
+      if (!a || a.confidence == null || a.confidence < floor) return;
+      new Notice(`决策建议：归入「${a.value}」（置信度 ${(a.confidence * 100).toFixed(0)}%）`, 6000);
+    } catch (e) {
+      // 静默：决策接口不可用不影响采集
+      console.debug("[workbench] 决策归类跳过:", e && e.message);
+    }
   }
 
   onClose() {

@@ -16,7 +16,8 @@ const FEATURE_META = [
   { key: "projects", name: "项目管理", desc: "工作台项目面板与模板化新建项目" },
   { key: "privacy", name: "隐私区（锁定后搜索/链接全隐身）", desc: "锁定：userIgnoreFilters 不索引 + Git 排除；解锁恢复。切换后需重载 Obsidian" },
   { key: "ragSearch", name: "AI RAG 搜索", desc: "SiliconFlow embeddings + rerank 全库语义检索（需 API Key）" },
-  { key: "decision", name: "Jev/Clef TypeSafe 决策", desc: "本机 magpie 网关 /v1/systemone：choice / noul / score + 置信度" },
+  { key: "decision", name: "决策模型接口（内部，无独立入口）", desc: "闪念归类等功能内部调用本机 magpie 网关 /v1/systemone，不提供单独弹窗" },
+  { key: "bases", name: "多维表格", desc: "工作台卡片列出 .duowei / .base，支持一键新建工作表" },
   { key: "attachments", name: "附件管理", desc: "孤儿附件、坏引用、体积榜，勾选批量归档到 4-存档" },
   { key: "imageTools", name: "图片工具", desc: "上传存档到 assets/<年-月>/，批量转 WebP/AVIF/JPEG 与压缩（sharp 优先，Canvas 兜底）" }
 ];
@@ -468,7 +469,8 @@ class WorkbenchSettingTab extends PluginSettingTab {
       new Setting(containerEl)
         .setName("索引管理")
         .addButton((b) => b.setButtonText("构建/更新索引").onClick(() => this.plugin.buildRagIndex()))
-        .addButton((b) => b.setButtonText("打开搜索").onClick(() => this.plugin.activateRagView()));
+        .addButton((b) => b.setButtonText("打开工作台卡片").onClick(() => this.plugin.activateWorkbenchView()))
+        .addButton((b) => b.setButtonText("生成知识图谱").onClick(() => this.plugin.buildGraphNote()));
     }
 
     // ── 十三、Jev/Clef 决策 ──
@@ -501,8 +503,26 @@ class WorkbenchSettingTab extends PluginSettingTab {
           })
         );
       new Setting(containerEl)
-        .setName("打开决策弹窗")
-        .addButton((b) => b.setButtonText("Jev 决策").onClick(() => this.plugin.openJevModal()));
+        .setName("闪念自动归类")
+        .setDesc("快速闪念写入后，内部调用决策接口判断应归入哪个区，结果只做提示不自动移动")
+        .addToggle((t) =>
+          t.setValue(this.plugin.settings.decisionAutoClassify !== false).onChange(async (v) => {
+            this.plugin.settings.decisionAutoClassify = v;
+            await this.plugin.saveSettings();
+          })
+        );
+      new Setting(containerEl)
+        .setName("归类置信度下限")
+        .setDesc("低于该值不提示（0-1）")
+        .addSlider((sl) =>
+          sl.setLimits(0, 1, 0.05)
+            .setValue(this.plugin.settings.decisionConfidenceFloor == null ? 0.6 : this.plugin.settings.decisionConfidenceFloor)
+            .setDynamicTooltip()
+            .onChange(async (v) => {
+              this.plugin.settings.decisionConfidenceFloor = v;
+              await this.plugin.saveSettings();
+            })
+        );
     }
 
     // ── 十四、附件管理 ──
@@ -513,6 +533,71 @@ class WorkbenchSettingTab extends PluginSettingTab {
         .setDesc("检测孤儿附件、坏引用与体积榜；归档是移动不是删除")
         .addButton((b) => b.setButtonText("打开附件管理器").onClick(() => this.plugin.openAttachmentModal()));
     }
+
+    // ── 十四点五、文件浏览器整理（分栏/隐藏/分隔线）──
+    containerEl.createEl("h3", { text: "文件浏览器整理" });
+    containerEl.createDiv({
+      cls: "setting-item-description",
+      text: "生成 CSS 片段隐藏指定目录并在指定目录后画分隔线，自动启用。原理见论坛 topic/44108：.nav-folder:has([data-path=…])"
+    });
+    new Setting(containerEl)
+      .setName("隐藏这些目录")
+      .setDesc("逗号分隔，例如 assets,scripts,panel")
+      .addText((t) =>
+        t.setValue(this.plugin.settings.explorerHideList || "").onChange(async (v) => {
+          this.plugin.settings.explorerHideList = v;
+          await this.plugin.saveSettings();
+        })
+      );
+    new Setting(containerEl)
+      .setName("在这些目录后加分隔线")
+      .setDesc("逗号分隔，例如 vault,notes,wiki")
+      .addText((t) =>
+        t.setValue(this.plugin.settings.explorerSeparatorAfter || "").onChange(async (v) => {
+          this.plugin.settings.explorerSeparatorAfter = v;
+          await this.plugin.saveSettings();
+        })
+      );
+    new Setting(containerEl)
+      .setName("应用到文件浏览器")
+      .addButton((b) => b.setButtonText("生成并启用样式").onClick(() => this.plugin.applyExplorerStyle()));
+
+    // ── 十四点六、多维表格 ──
+    if (this.plugin.isFeatureEnabled("bases")) {
+      containerEl.createEl("h3", { text: "多维表格" });
+      new Setting(containerEl)
+        .setName("新建工作表目录")
+        .addText((t) =>
+          t.setValue(this.plugin.settings.basesFolder || "vault/工作台").onChange(async (v) => {
+            this.plugin.settings.basesFolder = v.trim() || "vault/工作台";
+            await this.plugin.saveSettings();
+          })
+        );
+    }
+
+    // ── 十四点七、调试与性能 ──
+    containerEl.createEl("h3", { text: "调试与性能" });
+    new Setting(containerEl)
+      .setName("显示渲染耗时面板")
+      .setDesc("工作台底部输出 render/data/heat 各阶段耗时与缓存命中情况")
+      .addToggle((t) =>
+        t.setValue(Boolean(this.plugin.settings.debugPerf)).onChange(async (v) => {
+          this.plugin.settings.debugPerf = v;
+          await this.plugin.saveSettings();
+          this.plugin.refreshWorkbenchViews();
+        })
+      );
+    new Setting(containerEl)
+      .setName("清空热力缓存并重渲染")
+      .addButton((b) =>
+        b.setButtonText("立即重算").onClick(() => {
+          for (const leaf of this.app.workspace.getLeavesOfType("owb-workbench-view")) {
+            if (leaf.view && leaf.view.invalidateHeat) leaf.view.invalidateHeat();
+          }
+          this.plugin.refreshWorkbenchViews();
+          new Notice("缓存已清空");
+        })
+      );
 
     // ── 十五、图片工具 ──
     if (this.plugin.isFeatureEnabled("imageTools")) {

@@ -21,7 +21,8 @@ const DEFAULT_SETTINGS = {
     projects: true,       // 项目管理：活跃项目面板与模板化新建
     privacy: false,       // 隐私区：搜索/链接全隐身 + Git 排除一键切换
     ragSearch: true,      // AI RAG 搜索：SiliconFlow embeddings + rerank
-    decision: true,       // Jev/Clef TypeSafe 决策（choice / noul / score + 置信度）
+    decision: true,       // 决策模型接口（内部）：闪念归类等由它自动判断，无独立入口
+    bases: true,          // 多维表格：.duowei / .base 发现与新建
     attachments: true,    // 附件管理：孤儿/坏引用/体积榜 + 批量归档
     imageTools: true      // 图片工具：上传存档 + sharp/Canvas 格式转换与压缩
   },
@@ -47,6 +48,20 @@ const DEFAULT_SETTINGS = {
   glassEffect: true,                   // 毛玻璃
   glassBlur: 18,                       // 模糊半径 px
   heatmapWeeks: 26,                    // 热力日历跨度（周）
+
+  // 多维表格
+  basesFolder: "vault/工作台",
+
+  // 决策模型接口（供闪念归类等功能内部调用，不提供单独弹窗）
+  decisionAutoClassify: true,
+  decisionConfidenceFloor: 0.6,
+
+  // 调试与性能
+  debugPerf: false,
+
+  // 文件浏览器整理（分栏/隐藏/分隔线）
+  explorerHideList: "assets,scripts,panel,muban,4-存档",
+  explorerSeparatorAfter: "vault,notes,wiki,_posts",
 
   // 任务中心
   tasksPath: "vault/任务.md",

@@ -1209,3 +1209,45 @@
   font-size: 0.72em;
   color: var(--owb-text-dim);
 }
+
+/* ---- v3.4 RAG 卡片 ---- */
+.owb-rag-inline {
+  display: flex;
+  gap: 6px;
+  margin: 8px 0;
+}
+
+.owb-rag-inline input {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.82em;
+  padding: 5px 9px;
+  border-radius: 8px;
+  border: 1px solid var(--owb-glass-border);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--owb-text);
+}
+
+.owb-rag-hit {
+  padding: 7px 8px;
+  border-radius: 8px;
+  border-left: 2px solid var(--owb-accent);
+  margin-bottom: 6px;
+}
+
+.owb-rag-hit:hover { background: rgba(255, 255, 255, 0.05); }
+
+.owb-rag-hit-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 0.84em;
+}
+
+.owb-rag-snippet {
+  font-size: 0.76em;
+  color: var(--owb-text-dim);
+  line-height: 1.5;
+  margin-top: 3px;
+}

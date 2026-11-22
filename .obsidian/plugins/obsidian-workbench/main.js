@@ -26,7 +26,8 @@ const DEFAULT_SETTINGS = {
     projects: true,       // 项目管理：活跃项目面板与模板化新建
     privacy: false,       // 隐私区：搜索/链接全隐身 + Git 排除一键切换
     ragSearch: true,      // AI RAG 搜索：SiliconFlow embeddings + rerank
-    decision: true,       // Jev/Clef TypeSafe 决策（choice / noul / score + 置信度）
+    decision: true,       // 决策模型接口（内部）：闪念归类等由它自动判断，无独立入口
+    bases: true,          // 多维表格：.duowei / .base 发现与新建
     attachments: true,    // 附件管理：孤儿/坏引用/体积榜 + 批量归档
     imageTools: true      // 图片工具：上传存档 + sharp/Canvas 格式转换与压缩
   },
@@ -52,6 +53,20 @@ const DEFAULT_SETTINGS = {
   glassEffect: true,                   // 毛玻璃
   glassBlur: 18,                       // 模糊半径 px
   heatmapWeeks: 26,                    // 热力日历跨度（周）
+
+  // 多维表格
+  basesFolder: "vault/工作台",
+
+  // 决策模型接口（供闪念归类等功能内部调用，不提供单独弹窗）
+  decisionAutoClassify: true,
+  decisionConfidenceFloor: 0.6,
+
+  // 调试与性能
+  debugPerf: false,
+
+  // 文件浏览器整理（分栏/隐藏/分隔线）
+  explorerHideList: "assets,scripts,panel,muban,4-存档",
+  explorerSeparatorAfter: "vault,notes,wiki,_posts",
 
   // 任务中心
   tasksPath: "vault/任务.md",
@@ -141,12 +156,12 @@ const { openDaily } = require("./services/dailyService");
 const { listProjects, createProject } = require("./services/projectService");
 const privacyService = require("./services/privacyService");
 const { setPluginDir } = require("./services/imageService");
+const decisionService = require("./services/decisionService");
+const graphService = require("./services/graphService");
 const { WorkbenchView } = require("./views/workbenchView");
 const { GitPanelView } = require("./views/gitView");
 const { QuizView } = require("./views/quizView");
-const { RagView } = require("./views/ragView");
 const { QuickCaptureModal } = require("./modals/quickCaptureModal");
-const { JevModal } = require("./modals/jevModal");
 const { TaskCenterModal } = require("./modals/taskModal");
 const { AttachmentModal } = require("./modals/attachmentModal");
 const { ImageToolsModal } = require("./modals/imageToolsModal");
@@ -186,20 +201,26 @@ class ObsidianWorkbenchPlugin extends Plugin {
     this.registerView(VIEW_TYPE_WORKBENCH, (leaf) => new WorkbenchView(leaf, this));
     this.registerView(VIEW_TYPE_GIT, (leaf) => new GitPanelView(leaf, this));
     this.registerView(VIEW_TYPE_QUIZ, (leaf) => new QuizView(leaf, this));
-    this.registerView(VIEW_TYPE_RAG, (leaf) => new RagView(leaf, this));
 
     // RAG 服务
     this.rag = new RagService(() => this.settings, this.app.vault.adapter);
 
-    // 图片工具：把插件绝对目录交给 sharp 加载器（支持本地 npm i sharp）
-    if (this.manifest && this.manifest.dir) setPluginDir(this.manifest.dir);
+    // 图片工具：把插件「绝对」目录交给 sharp 加载器。
+    // 注意：manifest.dir 是相对路径（.obsidian/plugins/obsidian-workbench），
+    // 直接传给 require 会被打包器当作相对模块去解析，报
+    // "OWB bundle: cannot resolve module .../node_modules/sharp from ./services"。
+    if (this.manifest && this.manifest.dir) {
+      const dir = this.manifest.dir;
+      const base = this.app && this.app.vault && this.app.vault.adapter ? this.app.vault.adapter.basePath : "";
+      const abs = dir.startsWith("/") ? dir : base ? `${base}/${dir}` : "";
+      if (abs) setPluginDir(abs);
+    }
 
     // Ribbon 图标（按模块开关动态显隐）
     this.ribbonEls = {
       workbench: this.addRibbonIcon("layout-dashboard", "打开知识工作台", () => this.activateWorkbenchView()),
       gitPanel: this.addRibbonIcon("git-branch", "打开 Git 管理面板", () => this.activateGitView()),
-      quickCapture: this.addRibbonIcon("zap", "快速闪念", () => this.openQuickCapture()),
-      ragSearch: this.addRibbonIcon("sparkles", "AI RAG 搜索", () => this.activateRagView())
+      quickCapture: this.addRibbonIcon("zap", "快速闪念", () => this.openQuickCapture())
     };
 
     // 命令面板（所有命令均检查对应功能开关）
@@ -286,19 +307,19 @@ class ObsidianWorkbenchPlugin extends Plugin {
       checkCallback: (checking) => this._guardCommand("privacy", checking, () => this.showPrivacyStatus())
     });
     this.addCommand({
-      id: "open-rag-search",
-      name: "AI RAG 搜索：语义检索全库",
-      checkCallback: (checking) => this._guardCommand("ragSearch", checking, () => this.activateRagView())
-    });
-    this.addCommand({
       id: "rag-build-index",
-      name: "AI RAG 搜索：构建/更新索引",
+      name: "RAG：构建/更新语义索引",
       checkCallback: (checking) => this._guardCommand("ragSearch", checking, () => this.buildRagIndex())
     });
     this.addCommand({
-      id: "jev-decide",
-      name: "Jev/Clef 决策：闪念归类 / 笔记评分 / 自定义",
-      checkCallback: (checking) => this._guardCommand("decision", checking, () => this.openJevModal())
+      id: "build-knowledge-graph",
+      name: "知识图谱：生成全库链接图谱笔记",
+      checkCallback: (checking) => this._guardCommand("ragSearch", checking, () => this.buildGraphNote())
+    });
+    this.addCommand({
+      id: "tidy-explorer",
+      name: "文件浏览器：生成整理样式（隐藏目录 + 分隔线）",
+      checkCallback: (checking) => this._guardCommand("workbench", checking, () => this.applyExplorerStyle())
     });
     this.addCommand({
       id: "open-attachment-manager",
@@ -562,9 +583,92 @@ class ObsidianWorkbenchPlugin extends Plugin {
     new TaskCenterModal(this.app, this).open();
   }
 
-  openJevModal() {
-    if (!this.isFeatureEnabled("decision")) return;
-    new JevModal(this.app, this).open();
+  /**
+   * 决策模型接口（内部）：不提供独立入口，供闪念归类等功能调用。
+   * 返回 { answers: { key: { type, value, confidence } } }
+   */
+  async decide(state, questions) {
+    if (!this.isFeatureEnabled("decision")) throw new Error("决策接口未启用");
+    const types = {};
+    for (const k of Object.keys(questions || {})) types[k] = questions[k].type || "choice";
+    return decisionService.ask(state, questions, this.settings, { questionTypes: types });
+  }
+
+  async buildGraphNote() {
+    try {
+      await graphService.writeGraphNote(this.app, { dir: "vault/系统与工具" });
+    } catch (err) {
+      new Notice("知识图谱生成失败：" + err.message, 8000);
+    }
+  }
+
+  /**
+   * 文件浏览器整理：按论坛方案（forum-zh/topic/44108）生成 CSS 片段——
+   * 用 .nav-folder:has([data-path=…]) 隐藏目录，用 ::after 画分隔线。
+   */
+  async applyExplorerStyle() {
+    const s = this.settings;
+    const hide = String(s.explorerHideList || "")
+      .split(",")
+      .map((x) => x.trim())
+      .filter(Boolean);
+    const seps = String(s.explorerSeparatorAfter || "")
+      .split(",")
+      .map((x) => x.trim())
+      .filter(Boolean);
+    const lines = [
+      "/* 由 Obsidian Workbench 生成：文件浏览器整理",
+      "   隐藏规则依据 data-path，分隔线用 ::after",
+      "   修改后重新生成即可覆盖本文件 */",
+      "",
+      ":root {",
+      "  --replete-custom-separators-vertical-padding: 6px;",
+      "  --replete-custom-separators-left-margin: -12px;",
+      "}",
+      ""
+    ];
+    if (hide.length) {
+      lines.push("/* 隐藏目录 */");
+      const sel = hide.map((h) => `.nav-folder:has([data-path="${h}"])`).join(", ");
+      lines.push(sel + " { display: none; }", "");
+    }
+    if (seps.length) {
+      lines.push("/* 分隔线 */");
+      const sel = seps
+        .map(
+          (x) =>
+            `.nav-folder:has([data-path="${x}"])::after`
+        )
+        .join(", ");
+      lines.push(
+        sel + " {",
+        "  content: '';",
+        "  display: block;",
+        "  margin: var(--replete-custom-separators-vertical-padding) 0 var(--replete-custom-separators-vertical-padding) var(--replete-custom-separators-left-margin);",
+        "  border-bottom: 1px solid var(--background-modifier-border);",
+        "  pointer-events: none;",
+        "}",
+        ""
+      );
+    }
+    const path = ".obsidian/snippets/workbench-explorer.css";
+    try {
+      await this.app.vault.adapter.write(path, lines.join("\n"));
+      const appJsonPath = ".obsidian/appearance.json";
+      let appJson = {};
+      try {
+        appJson = JSON.parse(await this.app.vault.adapter.read(appJsonPath));
+      } catch (e) {
+        appJson = {};
+      }
+      const list = Array.isArray(appJson.enabledCssSnippets) ? appJson.enabledCssSnippets : [];
+      if (!list.includes("workbench-explorer")) list.push("workbench-explorer");
+      appJson.enabledCssSnippets = list;
+      await this.app.vault.adapter.write(appJsonPath, JSON.stringify(appJson, null, 2));
+      new Notice("文件浏览器样式已生成并启用：.obsidian/snippets/workbench-explorer.css", 7000);
+    } catch (err) {
+      new Notice("生成失败：" + err.message, 8000);
+    }
   }
 
   openAttachmentModal() {
@@ -1603,6 +1707,42 @@ class QuickCaptureModal extends Modal {
       );
     }
     this.plugin.refreshWorkbenchViews();
+
+    // 决策接口（内部）：判断这条闪念该归入哪个区，只做提示、不自动移动
+    if (this.plugin.settings.decisionAutoClassify !== false && this.plugin.isFeatureEnabled("decision")) {
+      this.classifyInBackground(text);
+    }
+  }
+
+  /** 后台调用决策模型，失败静默（不能因为模型挂了影响记笔记） */
+  async classifyInBackground(text) {
+    try {
+      const floor = this.plugin.settings.decisionConfidenceFloor == null
+        ? 0.6
+        : this.plugin.settings.decisionConfidenceFloor;
+      const { answers } = await this.plugin.decide(
+        { message: text },
+        {
+          area: {
+            type: "choice",
+            instructions: "这条闪念最该归入哪个知识区？",
+            criteria: {
+              study: "课程与学习笔记",
+              project: "某个项目或实验的一部分",
+              reference: "文献与参考资料",
+              life: "生活事务，与知识库无关",
+              inbox: "还没想清楚，先留在收件箱"
+            }
+          }
+        }
+      );
+      const a = answers && answers.area;
+      if (!a || a.confidence == null || a.confidence < floor) return;
+      new Notice(`决策建议：归入「${a.value}」（置信度 ${(a.confidence * 100).toFixed(0)}%）`, 6000);
+    } catch (e) {
+      // 静默：决策接口不可用不影响采集
+      console.debug("[workbench] 决策归类跳过:", e && e.message);
+    }
   }
 
   onClose() {
@@ -2040,6 +2180,15 @@ const { normalizePath } = require("obsidian");
  * vault 内全部附件扩展名文件，不假设附件只在 assets/。
  */
 
+/** 安全解码：文件名里的裸 % 会让 decodeURIComponent 抛 URI malformed */
+function safeDecode(s) {
+  try {
+    return decodeURIComponent(s);
+  } catch (e) {
+    return s;
+  }
+}
+
 const ATTACHMENT_EXTS = new Set([
   "png", "jpg", "jpeg", "gif", "webp", "svg", "bmp", "tiff", "tif",
   "pdf", "mp4", "mp3", "wav", "zip", "docx", "xlsx", "pptx"
@@ -2088,14 +2237,14 @@ function extractAttachmentRefs(text) {
   for (const m of body.matchAll(/!\[([^\]]*)\]\(([^)]+)\)/g)) {
     const p = m[2].trim().split(/\s+/)[0];
     if (/^(https?:|data:|mailto:|#)/i.test(p)) continue;
-    const base = decodeURIComponent(p.split("/").pop() || "");
+    const base = safeDecode(p.split("/").pop() || "");
     if (ATTACHMENT_EXTS.has(base.split(".").pop().toLowerCase())) push(m[0], base);
   }
   // HTML: <img src="…">
   for (const m of body.matchAll(/<img[^>]+src=["']([^"']+)["']/gi)) {
     const p = m[1].trim();
     if (/^(https?:|data:)/i.test(p)) continue;
-    const base = decodeURIComponent(p.split("/").pop() || "");
+    const base = safeDecode(p.split("/").pop() || "");
     if (ATTACHMENT_EXTS.has(base.split(".").pop().toLowerCase())) push(m[0], base);
   }
   return refs;
@@ -2214,6 +2363,92 @@ module.exports = {
   auditVault,
   archiveOrphans
 };
+
+  }, "./services"],
+  "./services/baseService.js": [function(require, module, exports) {
+"use strict";
+
+const { normalizePath, Notice } = require("obsidian");
+
+/**
+ * 多维表格（Bases / duowei-table）支持：
+ *   - 扫描库内 .base 与 .duowei 文件
+ *   - 新建 .duowei（duowei-table 插件识别的最小合法结构）
+ *
+ * 说明：.base 是 Obsidian 官方 Bases 的格式，本体由 Obsidian 渲染，
+ * 插件只负责发现/打开/归档；.duowei 由 duowei-table 插件渲染。
+ */
+
+const BASE_EXTS = ["base", "duowei"];
+
+const KIND_LABEL = {
+  base: "Bases",
+  duowei: "Duowei"
+};
+
+const DEFAULT_FOLDER = "vault/工作台";
+
+function listBases(app, folderPrefix) {
+  const prefix = String(folderPrefix || "").replace(/^\/+|\/+$/g, "");
+  let files = [];
+  try {
+    files = app.vault.getFiles();
+  } catch (e) {
+    return [];
+  }
+  return files
+    .filter((f) => BASE_EXTS.includes(String(f.extension || "").toLowerCase()))
+    .filter((f) => !prefix || f.path === prefix || f.path.startsWith(prefix + "/"))
+    .filter((f) => !f.path.startsWith("4-存档/"))
+    .map((f) => ({
+      file: f,
+      kind: KIND_LABEL[String(f.extension).toLowerCase()] || f.extension,
+      ext: String(f.extension).toLowerCase()
+    }))
+    .sort((a, b) => (a.file.path < b.file.path ? -1 : 1));
+}
+
+/** duowei-table 的最小可识别结构（空表：一行一列的表头） */
+function duoweiTemplate(title) {
+  return (
+    JSON.stringify(
+      {
+        version: 1,
+        name: title || "新建工作表",
+        views: [{ type: "table", name: "表格" }],
+        fields: [
+          { id: "title", name: "名称", type: "text" },
+          { id: "status", name: "状态", type: "select", options: ["待开始", "进行中", "已完成"] }
+        ],
+        rows: []
+      },
+      null,
+      2
+    ) + "\n"
+  );
+}
+
+async function createBase(app, name, folder) {
+  const title = String(name || "新建工作表").trim() || "新建工作表";
+  const dir = normalizePath(folder || DEFAULT_FOLDER);
+  if (!app.vault.getAbstractFileByPath(dir)) {
+    try {
+      await app.vault.createFolder(dir);
+    } catch (e) {
+      /* 已存在 */
+    }
+  }
+  let path = normalizePath(`${dir}/${title}.duowei`);
+  if (app.vault.getAbstractFileByPath(path)) {
+    path = normalizePath(`${dir}/${title}-${Date.now()}.duowei`);
+  }
+  const file = await app.vault.create(path, duoweiTemplate(title));
+  new Notice(`已创建多维表格：${path}`);
+  await app.workspace.getLeaf(false).openFile(file);
+  return file;
+}
+
+module.exports = { BASE_EXTS, listBases, createBase, duoweiTemplate, DEFAULT_FOLDER };
 
   }, "./services"],
   "./services/dailyService.js": [function(require, module, exports) {
@@ -2877,6 +3112,270 @@ class GitService {
 module.exports = { GitService };
 
   }, "./services"],
+  "./services/graphService.js": [function(require, module, exports) {
+"use strict";
+
+const { normalizePath, Notice } = require("obsidian");
+const { formatDate } = require("../utils");
+
+/**
+ * 知识图谱生成：从 Obsidian 的链接解析缓存（metadataCache.resolvedLinks）
+ * 构建笔记级图，产出：
+ *   - 枢纽笔记（度最高）与孤立笔记
+ *   - 社区聚类（标签传播，轻量、确定性）
+ *   - 一份可直接阅读的 Markdown（含 Mermaid 图）
+ *
+ * 只读 metadataCache，不重新解析文件，代价很低。
+ */
+
+function resolveLinks(app) {
+  const mc = app.metadataCache;
+  if (!mc || typeof mc.resolvedLinks !== "object") return null;
+  return mc.resolvedLinks; // { sourcePath: { targetPath: count } }
+}
+
+/**
+ * 标签传播聚类：每点初始独立社区，迭代把邻居最多的标签收为己用。
+ * 5 轮足够收敛，确定性（按路径排序）保证多次生成结果一致。
+ */
+function detectCommunities(nodes, adj, rounds) {
+  const label = new Map();
+  nodes.forEach((n, i) => label.set(n, i));
+  const order = nodes.slice().sort();
+  for (let r = 0; r < (rounds || 5); r++) {
+    let changed = false;
+    for (const n of order) {
+      const counts = new Map();
+      for (const m of adj.get(n) || []) {
+        const l = label.get(m);
+        counts.set(l, (counts.get(l) || 0) + 1);
+      }
+      if (!counts.size) continue;
+      let best = label.get(n);
+      let bestCount = -1;
+      for (const [l, c] of counts) {
+        if (c > bestCount || (c === bestCount && String(l) < String(best))) {
+          best = l;
+          bestCount = c;
+        }
+      }
+      // 平票时保持原标签，避免震荡
+      const ownCount = counts.get(label.get(n)) || 0;
+      if (best !== label.get(n) && bestCount > ownCount) {
+        label.set(n, best);
+        changed = true;
+      }
+    }
+    if (!changed) break;
+  }
+  const groups = new Map();
+  for (const n of nodes) {
+    const l = label.get(n);
+    if (!groups.has(l)) groups.set(l, []);
+    groups.get(l).push(n);
+  }
+  return [...groups.values()].sort((a, b) => b.length - a.length);
+}
+
+/**
+ * 构建图谱统计。opts: { limit: 节点上限（默认 600）, minDegree }
+ */
+function buildGraph(app, opts) {
+  const o = opts || {};
+  const resolved = resolveLinks(app);
+  const notes = app.vault.getMarkdownFiles().filter((f) => !f.path.startsWith("4-存档/"));
+
+  const byPath = new Map(notes.map((f) => [f.path, f]));
+  const adj = new Map();
+  const degree = new Map();
+  let edgeCount = 0;
+
+  const addEdge = (a, b) => {
+    if (a === b) return;
+    if (!adj.has(a)) adj.set(a, new Set());
+    if (!adj.has(b)) adj.set(b, new Set());
+    if (adj.get(a).has(b)) return;
+    adj.get(a).add(b);
+    adj.get(b).add(a);
+    degree.set(a, (degree.get(a) || 0) + 1);
+    degree.set(b, (degree.get(b) || 0) + 1);
+    edgeCount += 1;
+  };
+
+  if (resolved) {
+    for (const [src, targets] of Object.entries(resolved)) {
+      if (!byPath.has(src)) continue;
+      for (const tgt of Object.keys(targets || {})) {
+        if (!byPath.has(tgt)) continue; // 只统计库内笔记
+        addEdge(src, tgt);
+      }
+    }
+  }
+
+  // 按度排序取活跃子图
+  const all = [...byPath.keys()];
+  const ranked = all.slice().sort((a, b) => (degree.get(b) || 0) - (degree.get(a) || 0));
+  const limit = o.limit || 600;
+  const nodes = ranked.slice(0, limit).filter((p) => (degree.get(p) || 0) >= (o.minDegree || 0));
+  const nodeSet = new Set(nodes);
+
+  // 只保留两端都在节点集里的边
+  const subAdj = new Map();
+  for (const n of nodes) {
+    const keep = new Set();
+    for (const m of adj.get(n) || []) if (nodeSet.has(m)) keep.add(m);
+    subAdj.set(n, keep);
+  }
+
+  const communities = detectCommunities(nodes, subAdj);
+  const orphans = all.filter((p) => !degree.get(p));
+
+  return {
+    nodes,
+    nodeSet,
+    adj: subAdj,
+    degree,
+    edgeCount,
+    communities,
+    orphans,
+    totalNotes: all.length
+  };
+}
+
+/** 取节点短名（同名文件加父目录消歧） */
+function shortName(path, allPaths) {
+  const base = path.split("/").pop().replace(/\.md$/, "");
+  const same = allPaths.filter((p) => p.split("/").pop().replace(/\.md$/, "") === base);
+  if (same.length <= 1) return base;
+  const parent = path.split("/").slice(-2, -1)[0] || "";
+  return `${base}(${parent})`;
+}
+
+function mermaidId(i) {
+  return "n" + i;
+}
+
+/**
+ * 生成 Markdown 报告文本（不写盘，便于测试）。
+ * opts: { mermaidMax: 40, communityTop: 5, communitySize: 8 }
+ */
+function renderGraphMarkdown(app, graph, opts) {
+  const o = opts || {};
+  const date = formatDate(new Date(), "YYYY-MM-DD HH:mm");
+  const allPaths = graph.nodes;
+  const lines = [];
+
+  lines.push("---");
+  lines.push("tags: [knowledge-graph, generated]");
+  lines.push(`generated: ${date}`);
+  lines.push("---");
+  lines.push("");
+  lines.push(`# 知识图谱 · ${formatDate(new Date(), "YYYY-MM-DD")}`);
+  lines.push("");
+  lines.push(
+    `> 由 Workbench RAG 卡片生成。笔记 ${graph.totalNotes} 篇，连边 ${graph.edgeCount} 条，` +
+      `活跃节点 ${graph.nodes.length} 个，孤立笔记 ${graph.orphans.length} 篇。`
+  );
+  lines.push("");
+
+  // Mermaid 图：取度最高的 N 个，边只画子集内
+  const topN = graph.nodes.slice(0, o.mermaidMax || 40);
+  const topSet = new Set(topN);
+  const idOf = new Map(topN.map((p, i) => [p, mermaidId(i)]));
+  lines.push("## 结构图（度最高的 " + topN.length + " 个节点）");
+  lines.push("");
+  lines.push("```mermaid");
+  lines.push("graph LR");
+  topN.forEach((p) => {
+    const name = shortName(p, allPaths).replace(/"/g, "'");
+    const deg = graph.degree.get(p) || 0;
+    lines.push(`  ${idOf.get(p)}["${name}<br/>${deg}"]`);
+  });
+  const drawn = new Set();
+  for (const a of topN) {
+    for (const b of graph.adj.get(a) || []) {
+      if (!topSet.has(b)) continue;
+      const key = a < b ? a + "|" + b : b + "|" + a;
+      if (drawn.has(key)) continue;
+      drawn.add(key);
+      lines.push(`  ${idOf.get(a)} --- ${idOf.get(b)}`);
+    }
+  }
+  lines.push("```");
+  lines.push("");
+
+  // 枢纽
+  lines.push("## 枢纽笔记（连接数最多）");
+  lines.push("");
+  lines.push("| 笔记 | 连接数 |");
+  lines.push("|---|---|");
+  for (const p of graph.nodes.slice(0, 15)) {
+    const name = shortName(p, allPaths);
+    lines.push(`| [[${p.replace(/\.md$/, "")}\\|${name}]] | ${graph.degree.get(p) || 0} |`);
+  }
+  lines.push("");
+
+  // 社区
+  lines.push("## 主题聚类（标签传播）");
+  lines.push("");
+  const commCount = o.communityTop || 5;
+  const perComm = o.communitySize || 8;
+  graph.communities.slice(0, commCount).forEach((group, i) => {
+    const names = group
+      .slice(0, perComm)
+      .map((p) => shortName(p, allPaths))
+      .join("、");
+    lines.push(`- **簇 ${i + 1}**（${group.length} 篇）：${names}${group.length > perComm ? " 等" : ""}`);
+  });
+  lines.push("");
+
+  // 孤立
+  lines.push("## 孤立笔记（没有任何链接）");
+  lines.push("");
+  if (!graph.orphans.length) {
+    lines.push("无。所有笔记都在链接网络里。");
+  } else {
+    lines.push(`共 ${graph.orphans.length} 篇，前 20：`);
+    lines.push("");
+    for (const p of graph.orphans.slice(0, 20)) lines.push(`- [[${p.replace(/\.md$/, "")}]]`);
+  }
+  lines.push("");
+  return lines.join("\n");
+}
+
+/** 生成并写入库内（默认 vault/系统与工具/），返回文件 */
+async function writeGraphNote(app, opts) {
+  const o = opts || {};
+  const graph = buildGraph(app, o);
+  const md = renderGraphMarkdown(app, graph, o);
+  const dir = normalizePath(o.dir || "vault/系统与工具");
+  if (!app.vault.getAbstractFileByPath(dir)) {
+    try {
+      await app.vault.createFolder(dir);
+    } catch (e) {
+      /* 已存在 */
+    }
+  }
+  const path = normalizePath(`${dir}/知识图谱-${formatDate(new Date(), "YYYY-MM-DD")}.md`);
+  const existing = app.vault.getAbstractFileByPath(path);
+  let file;
+  if (existing) {
+    await app.vault.modify(existing, md);
+    file = existing;
+  } else {
+    file = await app.vault.create(path, md);
+  }
+  new Notice(
+    `知识图谱已生成：${graph.nodes.length} 活跃节点 / ${graph.edgeCount} 条连边 / ${graph.orphans.length} 篇孤立`,
+    7000
+  );
+  await app.workspace.getLeaf(false).openFile(file);
+  return { file, graph };
+}
+
+module.exports = { buildGraph, renderGraphMarkdown, writeGraphNote, detectCommunities, shortName };
+
+  }, "./services"],
   "./services/heatmapService.js": [function(require, module, exports) {
 "use strict";
 
@@ -3035,8 +3534,8 @@ function loadSharp() {
   const attempts = [];
   // 1) 常规解析（插件目录有 node_modules 时通常可命中）
   attempts.push(() => require("sharp"));
-  // 2) 绝对路径兜底
-  if (pluginDir) {
+  // 2) 绝对路径兜底（必须是绝对路径，否则打包器会当相对模块解析并抛错）
+  if (pluginDir && pluginDir.startsWith("/")) {
     attempts.push(() => {
       const nodePath = require("path");
       return require(nodePath.join(pluginDir, "node_modules", "sharp"));
@@ -4298,7 +4797,8 @@ const FEATURE_META = [
   { key: "projects", name: "项目管理", desc: "工作台项目面板与模板化新建项目" },
   { key: "privacy", name: "隐私区（锁定后搜索/链接全隐身）", desc: "锁定：userIgnoreFilters 不索引 + Git 排除；解锁恢复。切换后需重载 Obsidian" },
   { key: "ragSearch", name: "AI RAG 搜索", desc: "SiliconFlow embeddings + rerank 全库语义检索（需 API Key）" },
-  { key: "decision", name: "Jev/Clef TypeSafe 决策", desc: "本机 magpie 网关 /v1/systemone：choice / noul / score + 置信度" },
+  { key: "decision", name: "决策模型接口（内部，无独立入口）", desc: "闪念归类等功能内部调用本机 magpie 网关 /v1/systemone，不提供单独弹窗" },
+  { key: "bases", name: "多维表格", desc: "工作台卡片列出 .duowei / .base，支持一键新建工作表" },
   { key: "attachments", name: "附件管理", desc: "孤儿附件、坏引用、体积榜，勾选批量归档到 4-存档" },
   { key: "imageTools", name: "图片工具", desc: "上传存档到 assets/<年-月>/，批量转 WebP/AVIF/JPEG 与压缩（sharp 优先，Canvas 兜底）" }
 ];
@@ -4750,7 +5250,8 @@ class WorkbenchSettingTab extends PluginSettingTab {
       new Setting(containerEl)
         .setName("索引管理")
         .addButton((b) => b.setButtonText("构建/更新索引").onClick(() => this.plugin.buildRagIndex()))
-        .addButton((b) => b.setButtonText("打开搜索").onClick(() => this.plugin.activateRagView()));
+        .addButton((b) => b.setButtonText("打开工作台卡片").onClick(() => this.plugin.activateWorkbenchView()))
+        .addButton((b) => b.setButtonText("生成知识图谱").onClick(() => this.plugin.buildGraphNote()));
     }
 
     // ── 十三、Jev/Clef 决策 ──
@@ -4783,8 +5284,26 @@ class WorkbenchSettingTab extends PluginSettingTab {
           })
         );
       new Setting(containerEl)
-        .setName("打开决策弹窗")
-        .addButton((b) => b.setButtonText("Jev 决策").onClick(() => this.plugin.openJevModal()));
+        .setName("闪念自动归类")
+        .setDesc("快速闪念写入后，内部调用决策接口判断应归入哪个区，结果只做提示不自动移动")
+        .addToggle((t) =>
+          t.setValue(this.plugin.settings.decisionAutoClassify !== false).onChange(async (v) => {
+            this.plugin.settings.decisionAutoClassify = v;
+            await this.plugin.saveSettings();
+          })
+        );
+      new Setting(containerEl)
+        .setName("归类置信度下限")
+        .setDesc("低于该值不提示（0-1）")
+        .addSlider((sl) =>
+          sl.setLimits(0, 1, 0.05)
+            .setValue(this.plugin.settings.decisionConfidenceFloor == null ? 0.6 : this.plugin.settings.decisionConfidenceFloor)
+            .setDynamicTooltip()
+            .onChange(async (v) => {
+              this.plugin.settings.decisionConfidenceFloor = v;
+              await this.plugin.saveSettings();
+            })
+        );
     }
 
     // ── 十四、附件管理 ──
@@ -4795,6 +5314,71 @@ class WorkbenchSettingTab extends PluginSettingTab {
         .setDesc("检测孤儿附件、坏引用与体积榜；归档是移动不是删除")
         .addButton((b) => b.setButtonText("打开附件管理器").onClick(() => this.plugin.openAttachmentModal()));
     }
+
+    // ── 十四点五、文件浏览器整理（分栏/隐藏/分隔线）──
+    containerEl.createEl("h3", { text: "文件浏览器整理" });
+    containerEl.createDiv({
+      cls: "setting-item-description",
+      text: "生成 CSS 片段隐藏指定目录并在指定目录后画分隔线，自动启用。原理见论坛 topic/44108：.nav-folder:has([data-path=…])"
+    });
+    new Setting(containerEl)
+      .setName("隐藏这些目录")
+      .setDesc("逗号分隔，例如 assets,scripts,panel")
+      .addText((t) =>
+        t.setValue(this.plugin.settings.explorerHideList || "").onChange(async (v) => {
+          this.plugin.settings.explorerHideList = v;
+          await this.plugin.saveSettings();
+        })
+      );
+    new Setting(containerEl)
+      .setName("在这些目录后加分隔线")
+      .setDesc("逗号分隔，例如 vault,notes,wiki")
+      .addText((t) =>
+        t.setValue(this.plugin.settings.explorerSeparatorAfter || "").onChange(async (v) => {
+          this.plugin.settings.explorerSeparatorAfter = v;
+          await this.plugin.saveSettings();
+        })
+      );
+    new Setting(containerEl)
+      .setName("应用到文件浏览器")
+      .addButton((b) => b.setButtonText("生成并启用样式").onClick(() => this.plugin.applyExplorerStyle()));
+
+    // ── 十四点六、多维表格 ──
+    if (this.plugin.isFeatureEnabled("bases")) {
+      containerEl.createEl("h3", { text: "多维表格" });
+      new Setting(containerEl)
+        .setName("新建工作表目录")
+        .addText((t) =>
+          t.setValue(this.plugin.settings.basesFolder || "vault/工作台").onChange(async (v) => {
+            this.plugin.settings.basesFolder = v.trim() || "vault/工作台";
+            await this.plugin.saveSettings();
+          })
+        );
+    }
+
+    // ── 十四点七、调试与性能 ──
+    containerEl.createEl("h3", { text: "调试与性能" });
+    new Setting(containerEl)
+      .setName("显示渲染耗时面板")
+      .setDesc("工作台底部输出 render/data/heat 各阶段耗时与缓存命中情况")
+      .addToggle((t) =>
+        t.setValue(Boolean(this.plugin.settings.debugPerf)).onChange(async (v) => {
+          this.plugin.settings.debugPerf = v;
+          await this.plugin.saveSettings();
+          this.plugin.refreshWorkbenchViews();
+        })
+      );
+    new Setting(containerEl)
+      .setName("清空热力缓存并重渲染")
+      .addButton((b) =>
+        b.setButtonText("立即重算").onClick(() => {
+          for (const leaf of this.app.workspace.getLeavesOfType("owb-workbench-view")) {
+            if (leaf.view && leaf.view.invalidateHeat) leaf.view.invalidateHeat();
+          }
+          this.plugin.refreshWorkbenchViews();
+          new Notice("缓存已清空");
+        })
+      );
 
     // ── 十五、图片工具 ──
     if (this.plugin.isFeatureEnabled("imageTools")) {
@@ -5955,27 +6539,22 @@ const { listDailies, computeStreak, openDaily } = require("../services/dailyServ
 const { listProjects } = require("../services/projectService");
 const { buildHeatmap } = require("../services/heatmapService");
 const { wallpaperUrl } = require("../services/wallpaperService");
+const { listBases, createBase } = require("../services/baseService");
 
 /**
- * 个人知识工作台（v3.3 重排版）：
+ * 个人知识工作台（v3.4）：视觉重做 + 性能缓存 + 调试面板。
  *
- *  ┌──────────────────────────────────────────────┐
- *  │ 壁纸层（每日一图，毛玻璃卡片浮于其上）              │
- *  │  ┌── Hero ────────────────────────────────┐  │
- *  │  │ 问候 · 日期 · 四格统计（笔记/活跃/连击/番茄）│  │
- *  │  └────────────────────────────────────────┘  │
- *  │  ┌── 热力日历（26 周 × 7 天）────────────────┐  │
- *  │  └────────────────────────────────────────┘  │
- *  │  ┌ 番茄条 ─┐┌ 今日行动 ┐┌ 项目 ┐┌ 日记 ┐        │
- *  │  └─────────┘└──────────┘└──────┘└──────┘      │
- *  │  ┌ 今日输入 ┐┌ 今日输出 ┐┌ 沉睡笔记 ┐            │
- *  └──────────────────────────────────────────────┘
+ * 性能约定：
+ *   - 热力日历按「日期 + 笔记数」缓存，60s 内重复 render 直接复用
+ *   - 项目/日记/多维表在 render 内并行读取
+ *   - 调试开关打开时，底部输出各阶段耗时（排查卡顿用）
  */
 class WorkbenchView extends ItemView {
   constructor(leaf, plugin) {
     super(leaf);
     this.plugin = plugin;
     this._wallpaperUrl = "";
+    this._heatCache = null; // { key, data, at }
   }
 
   getViewType() {
@@ -6002,63 +6581,84 @@ class WorkbenchView extends ItemView {
     await openDaily(this.app, this.plugin.settings, 0);
   }
 
-  /** 壁纸层与毛玻璃开关 */
   applyChrome(root) {
     const s = this.plugin.settings;
-    const glass = s.glassEffect !== false;
-    root.classList.toggle("owb-glass", glass);
+    root.classList.toggle("owb-glass", s.glassEffect !== false);
     root.classList.toggle("owb-wallpaper-on", s.wallpaperEnabled !== false);
 
     if (s.wallpaperEnabled === false) {
       this._wallpaperUrl = "";
       return;
     }
-    const url = wallpaperUrl(s);
     const todayKey = formatDate(new Date(), "YYYY-MM-DD");
-    // 每日一图：同一天复用同 URL，避免每次 render 都重新下载
     if (!this._wallpaperUrl || this._wallpaperDayKey !== todayKey) {
-      this._wallpaperUrl = url;
+      this._wallpaperUrl = wallpaperUrl(s);
       this._wallpaperDayKey = todayKey;
     }
     root.style.setProperty("--owb-wallpaper", `url("${this._wallpaperUrl}")`);
-    const dim = typeof s.wallpaperDim === "number" ? s.wallpaperDim : 0.42;
-    root.style.setProperty("--owb-wallpaper-dim", `rgba(0,0,0,${dim})`);
-    const blur = typeof s.glassBlur === "number" ? s.glassBlur : 18;
+    const blur = typeof s.glassBlur === "number" ? s.glassBlur : 22;
     root.style.setProperty("--owb-glass-blur", `${blur}px`);
   }
 
-  /** 四格统计条 */
-  renderStats(container, data, heat, daily) {
+  /** 热力日历：按天+规模缓存，避免每次 render 全量遍历 550+ 文件 */
+  getHeat(perfOut) {
+    const weeks = this.plugin.settings.heatmapWeeks || 26;
+    const todayKey = formatDate(new Date(), "YYYY-MM-DD");
+    let count = 0;
+    try {
+      count = this.app.vault.getMarkdownFiles().length;
+    } catch (e) {
+      count = 0;
+    }
+    const key = `${todayKey}|${weeks}|${count}`;
+    const now = Date.now();
+    if (this._heatCache && this._heatCache.key === key && now - this._heatCache.at < 60000) {
+      if (perfOut) perfOut.heatCache = "hit";
+      return this._heatCache.data;
+    }
+    const t = Date.now();
+    const data = buildHeatmap(this.app, { weeks });
+    if (perfOut) {
+      perfOut.heatCache = this._heatCache ? "miss" : "cold";
+      perfOut.heatMs = Date.now() - t;
+    }
+    this._heatCache = { key, data, at: now };
+    return data;
+  }
+
+  invalidateHeat() {
+    this._heatCache = null;
+  }
+
+  renderStats(container, data, heat) {
     const strip = container.createDiv({ cls: "owb-stat-strip" });
     const pomo = this.plugin.pomodoro ? this.plugin.pomodoro.getTodayStats() : { sessions: 0, minutes: 0 };
     const items = [
-      { label: "知识库", value: String(data.totalNotes), unit: "篇" },
-      { label: `${heat.weeks} 周活跃`, value: String(heat.activeDays), unit: "天" },
-      { label: "连续更新", value: String(heat.streak), unit: "天" },
-      { label: "今日番茄", value: String(pomo.sessions), unit: "个" }
+      { label: "知识库笔记", value: String(data.totalNotes) },
+      { label: `${heat.weeks} 周内有产出`, value: String(heat.activeDays) + " 天" },
+      { label: "当前连续更新", value: String(heat.streak) + " 天" },
+      { label: "今日番茄", value: String(pomo.sessions) }
     ];
     for (const it of items) {
       const cell = strip.createDiv({ cls: "owb-stat" });
       cell.createDiv({ cls: "owb-stat-value", text: it.value });
-      cell.createDiv({ cls: "owb-stat-label", text: `${it.label} · ${it.unit}` });
+      cell.createDiv({ cls: "owb-stat-label", text: it.label });
     }
   }
 
-  /** 热力日历 */
   renderHeatmap(container, heat) {
     const card = container.createDiv({ cls: "owb-card owb-heat-card" });
     const head = card.createDiv({ cls: "owb-card-title-row" });
-    head.createDiv({ cls: "owb-card-title", text: "🔥 更新热力" });
+    head.createDiv({ cls: "owb-card-title", text: "更新热力" });
     head.createDiv({
       cls: "owb-muted owb-heat-summary",
-      text: `${heat.weeks} 周 · ${heat.activeDays} 天有产出 · 累计 ${heat.total} 次 · 单日峰值 ${heat.max}`
+      text: `${heat.activeDays}/${heat.weeks * 7} 天有产出 · 累计 ${heat.total} 次 · 峰值 ${heat.max}`
     });
 
     const body = card.createDiv({ cls: "owb-heat-body" });
 
-    // 月份刻度：绝对定位在列偏移处；相邻标签不小于 34px，避免互相压字
     const months = body.createDiv({ cls: "owb-heat-months" });
-    const COL = 16; // 13px 格子 + 3px 间距
+    const COL = 17;
     let lastMonth = -1;
     let lastLeft = -999;
     heat.grid.forEach((week, w) => {
@@ -6074,19 +6674,17 @@ class WorkbenchView extends ItemView {
     });
 
     const wrap = body.createDiv({ cls: "owb-heat-wrap" });
-    const grid = wrap.createDiv({ cls: "owb-heat-grid" });
-
-    const weekdayLabels = ["一", "", "三", "", "五", "", "日"];
     const labels = wrap.createDiv({ cls: "owb-heat-weekdays" });
-    for (const w of weekdayLabels) labels.createDiv({ cls: "owb-heat-wd", text: w });
+    for (const w of ["一", "", "三", "", "五", "", "日"]) labels.createDiv({ cls: "owb-heat-wd", text: w });
 
+    const grid = wrap.createDiv({ cls: "owb-heat-grid" });
     for (const week of heat.grid) {
       const col = grid.createDiv({ cls: "owb-heat-col" });
       for (const day of week) {
         const cell = col.createDiv({
           cls: `owb-heat-cell owb-heat-l${day.level}${day.inFuture ? " owb-heat-future" : ""}`
         });
-        const label = `${day.key} · ${day.count} 次`;
+        const label = `${day.key} · ${day.count} 次更新`;
         cell.setAttribute("aria-label", label);
         cell.setAttribute("title", label);
         cell.addEventListener("click", async () => {
@@ -6094,7 +6692,7 @@ class WorkbenchView extends ItemView {
             normalizePath(`${this.plugin.settings.dailyFolder}/${day.key}.md`)
           );
           if (target) await this.app.workspace.getLeaf(false).openFile(target);
-          else new Notice(`${day.key}：${day.count} 次更新（无当日日记）`);
+          else new Notice(`${day.key} · ${day.count} 次更新（当天没有日记）`);
         });
       }
     }
@@ -6105,61 +6703,69 @@ class WorkbenchView extends ItemView {
     legend.createSpan({ cls: "owb-muted", text: "多" });
   }
 
+  emptySlot(container, text) {
+    const slot = container.createDiv({ cls: "owb-empty-slot" });
+    slot.createSpan({ text: text });
+    return slot;
+  }
+
   async render() {
+    const perf = { start: Date.now() };
     const root = this.contentEl;
     root.empty();
     root.addClass("owb-workbench-view");
     this.applyChrome(root);
 
     if (!this.plugin.isFeatureEnabled("workbench")) {
-      root.createDiv({ cls: "owb-empty", text: "个人知识工作台已在插件设置中关闭。" });
+      this.emptySlot(root, "个人知识工作台已在插件设置中关闭");
       return;
     }
 
-    const [data, dailies] = await Promise.all([
+    // 并行读取三路数据
+    const tData = Date.now();
+    const [data, dailies, projects, bases] = await Promise.all([
       collectWorkbenchData(this.app, this.plugin.settings),
-      listDailies(this.app, this.plugin.settings)
+      listDailies(this.app, this.plugin.settings),
+      this.plugin.isFeatureEnabled("projects") ? listProjects(this.app, this.plugin.settings) : Promise.resolve([]),
+      this.plugin.isFeatureEnabled("bases") ? listBases(this.app) : Promise.resolve([])
     ]);
-    const heat = buildHeatmap(this.app, { weeks: this.plugin.settings.heatmapWeeks || 26 });
+    perf.dataMs = Date.now() - tData;
+
+    const heat = this.getHeat(perf);
     const daily = computeStreak(dailies, new Date());
     const todayStr = formatDate(new Date(), "YYYY-MM-DD");
 
     // ── Hero ──
-    const hero = root.createDiv({ cls: "owb-hero owb-glass-panel" });
-    const heroTop = hero.createDiv({ cls: "owb-hero-top" });
-    heroTop.createDiv({ cls: "owb-eyebrow", text: `${todayStr} · ${getGreeting()}` });
-    heroTop.createEl("h2", { cls: "owb-greeting", text: "麟，今天推进哪一件？" });
-
-    this.renderStats(hero, data, heat, daily);
+    const hero = root.createDiv({ cls: "owb-hero" });
+    hero.createDiv({ cls: "owb-eyebrow", text: `${todayStr} · ${getGreeting()}` });
+    hero.createEl("h2", { cls: "owb-greeting", text: "麟，今天推进哪一件？" });
+    this.renderStats(hero, data, heat);
 
     const heroActions = hero.createDiv({ cls: "owb-hero-actions" });
     const mkBtn = (label, primary, handler) => {
       const b = heroActions.createEl("button", { cls: primary ? "mod-cta" : "", text: label });
       b.addEventListener("click", handler);
     };
-    mkBtn("📅 今日日记", true, () => this.openOrCreateDailyNote());
-    if (this.plugin.isFeatureEnabled("tasks")) mkBtn("📋 任务", false, () => this.plugin.openTaskCenter());
-    if (this.plugin.isFeatureEnabled("quickCapture")) mkBtn("💡 闪念", false, () => this.plugin.openQuickCapture());
-    if (this.plugin.isFeatureEnabled("ragSearch")) mkBtn("🪄 AI 搜索", false, () => this.plugin.activateRagView());
-    if (this.plugin.isFeatureEnabled("decision")) mkBtn("⚖️ Jev", false, () => this.plugin.openJevModal());
-    if (this.plugin.isFeatureEnabled("attachments")) mkBtn("📎 附件", false, () => this.plugin.openAttachmentModal());
-    if (this.plugin.isFeatureEnabled("imageTools")) mkBtn("🖼️ 图片", false, () => this.plugin.openImageToolsModal());
-    if (this.plugin.isFeatureEnabled("gitPanel")) mkBtn("🌿 Git", false, () => this.plugin.activateGitView());
-    if (this.plugin.isFeatureEnabled("quizEngine")) mkBtn("🧪 自测", false, () => this.plugin.activateQuizView());
-    if (this.plugin.isFeatureEnabled("vaultDoctor")) mkBtn("🩺 体检", false, () => this.plugin.openDoctorModal());
+    mkBtn("今日日记", true, () => this.openOrCreateDailyNote());
+    if (this.plugin.isFeatureEnabled("tasks")) mkBtn("任务", false, () => this.plugin.openTaskCenter());
+    if (this.plugin.isFeatureEnabled("quickCapture")) mkBtn("闪念", false, () => this.plugin.openQuickCapture());
+    if (this.plugin.isFeatureEnabled("attachments")) mkBtn("附件", false, () => this.plugin.openAttachmentModal());
+    if (this.plugin.isFeatureEnabled("imageTools")) mkBtn("图片", false, () => this.plugin.openImageToolsModal());
+    if (this.plugin.isFeatureEnabled("gitPanel")) mkBtn("Git", false, () => this.plugin.activateGitView());
+    if (this.plugin.isFeatureEnabled("vaultDoctor")) mkBtn("体检", false, () => this.plugin.openDoctorModal());
 
-    // ── 热力日历 ──
+    // ── 热力 ──
     this.renderHeatmap(root, heat);
 
     // ── 番茄条 ──
     if (this.plugin.isFeatureEnabled("pomodoro") && this.plugin.pomodoro) {
       const pomo = this.plugin.pomodoro;
       const stats = pomo.getTodayStats();
-      const bar = root.createDiv({ cls: "owb-pomo-bar owb-glass-panel" });
+      const bar = root.createDiv({ cls: "owb-pomo-bar" });
       const left = bar.createDiv({ cls: "owb-pomo-info" });
       const phaseLabel = pomo.phase === "work" ? "专注中" : pomo.phase === "break" ? "休息中" : "准备专注";
-      left.createSpan({ cls: "owb-pomo-clock", text: `🍅 ${pomo.formatRemaining()}` });
-      left.createSpan({ cls: "owb-muted", text: `${phaseLabel} · 今日 ${stats.sessions} 个（${stats.minutes} 分钟）` });
+      left.createSpan({ cls: "owb-pomo-clock", text: pomo.formatRemaining() });
+      left.createSpan({ cls: "owb-muted", text: `${phaseLabel} · 今日 ${stats.sessions} 个 · ${stats.minutes} 分钟` });
       const right = bar.createDiv({ cls: "owb-pomo-actions" });
       right.createEl("button", {
         cls: pomo.phase === "work" && pomo.running ? "" : "mod-cta",
@@ -6181,101 +6787,51 @@ class WorkbenchView extends ItemView {
       });
     }
 
-    // ── 主区：今日行动（宽）+ 项目（窄） ──
+    // ── 主区 ──
     const mainGrid = root.createDiv({ cls: "owb-layout-main" });
-
     const leftCol = mainGrid.createDiv({ cls: "owb-layout-left" });
 
-    const taskCard = leftCol.createDiv({ cls: "owb-card owb-glass-panel" });
+    const taskCard = leftCol.createDiv({ cls: "owb-card" });
     const taskHead = taskCard.createDiv({ cls: "owb-card-title-row" });
-    taskHead.createDiv({ cls: "owb-card-title", text: `🎯 今日行动 · ${data.pendingTasks.length}` });
-    const moreBtn = taskHead.createEl("button", { cls: "owb-mini-btn", text: "全部" });
-    moreBtn.addEventListener("click", () => this.plugin.openTaskCenter());
-
+    taskHead.createDiv({ cls: "owb-card-title", text: `今日行动 · ${data.pendingTasks.length}` });
+    if (this.plugin.isFeatureEnabled("tasks")) {
+      taskHead.createEl("button", { cls: "owb-mini-btn", text: "全部" }).addEventListener("click", () =>
+        this.plugin.openTaskCenter()
+      );
+    }
     if (!data.pendingTasks.length) {
-      taskCard.createDiv({ cls: "owb-muted", text: "没有待办。享受这份安静。" });
+      this.emptySlot(taskCard, "没有待办。享受这份安静。");
     } else {
       const list = taskCard.createDiv({ cls: "owb-task-list" });
-      for (const t of data.pendingTasks.slice(0, 10)) {
+      for (const t of data.pendingTasks.slice(0, 12)) {
         const row = list.createDiv({ cls: "owb-task-row" });
         row.createEl("input", { attr: { type: "checkbox" } }).addEventListener("change", async () => {
           try {
             await toggleTaskInFile(this.app, t.file, t.line);
-            new Notice("任务状态已更新");
+            this.invalidateHeat();
+            new Notice("已完成");
             await this.render();
           } catch (err) {
             new Notice(`更新失败：${err.message}`);
           }
         });
-        row.createEl("a", { cls: "owb-link", text: t.text.slice(0, 72) }).addEventListener("click", () =>
-          this.app.workspace.getLeaf(false).openFile(t.file)
-        );
+        const a = row.createEl("a", { cls: "owb-link", text: t.text });
+        a.setAttribute("title", `${t.text}\n${t.file.path}`);
+        a.addEventListener("click", () => this.app.workspace.getLeaf(false).openFile(t.file));
       }
     }
 
-    const sideCol = mainGrid.createDiv({ cls: "owb-layout-side" });
-
-    if (this.plugin.isFeatureEnabled("projects")) {
-      const projCard = sideCol.createDiv({ cls: "owb-card owb-glass-panel" });
-      const ph = projCard.createDiv({ cls: "owb-card-title-row" });
-      ph.createDiv({ cls: "owb-card-title", text: "🗂️ 项目" });
-      const addBtn = ph.createEl("button", { cls: "owb-mini-btn", text: "+ 新建" });
-      addBtn.addEventListener("click", () => this.plugin.createProjectInteractive());
-
-      const projects = await listProjects(this.app, this.plugin.settings);
-      if (!projects.length) {
-        projCard.createDiv({ cls: "owb-muted", text: "项目目录为空" });
-      } else {
-        const ul = projCard.createEl("ul", { cls: "owb-list" });
-        for (const item of projects.slice(0, 7)) {
-          const li = ul.createEl("li");
-          const a = li.createEl("a", { cls: "owb-link", text: item.name + (item.kind === "dir" ? "/" : "") });
-          if (item.file) a.addEventListener("click", () => this.app.workspace.getLeaf(false).openFile(item.file));
-          const bits = [item.status, item.priority && "P:" + item.priority, item.due && "截止 " + item.due].filter(Boolean);
-          if (bits.length) li.createSpan({ cls: "owb-muted", text: " · " + bits.join(" · ") });
-        }
-      }
-    }
-
-    if (this.plugin.isFeatureEnabled("dailyJournal")) {
-      const dailyCard = sideCol.createDiv({ cls: "owb-card owb-glass-panel" });
-      const dh = dailyCard.createDiv({ cls: "owb-card-title-row" });
-      dh.createDiv({
-        cls: "owb-card-title",
-        text: `📅 日记 · 连续 ${daily.streak} 天${daily.includesToday ? " ✓" : ""}`
-      });
-      const acts = dh.createDiv({ cls: "owb-pomo-actions" });
-      acts.createEl("button", { cls: "owb-mini-btn", text: "今日" }).addEventListener("click", () => this.plugin.openDailyNote(0));
-      acts.createEl("button", { cls: "owb-mini-btn", text: "昨日" }).addEventListener("click", () => this.plugin.openDailyNote(-1));
-      if (!dailies.length) {
-        dailyCard.createDiv({ cls: "owb-muted", text: "还没有日记" });
-      } else {
-        const ul = dailyCard.createEl("ul", { cls: "owb-list" });
-        for (const d of dailies.slice(0, 5)) {
-          const li = ul.createEl("li");
-          li.createEl("a", { cls: "owb-link", text: d.key }).addEventListener("click", () =>
-            this.app.workspace.getLeaf(false).openFile(d.file)
-          );
-        }
-      }
-    }
-
-    // ── 次区：今日输入 / 输出 / 沉睡笔记 ──
-    const subGrid = root.createDiv({ cls: "owb-layout-sub" });
-    this.renderFileCard(subGrid, `📥 今日输入 · ${data.createdToday.length}`, data.createdToday, "今日暂无新建笔记");
-    this.renderFileCard(subGrid, `✍️ 今日输出 · ${data.modifiedToday.length}`, data.modifiedToday, "今日暂无更新");
-
-    // 必须挂进左列容器：直接挂 mainGrid 会成为 grid 第 3 个子项，掉到第二行并让右列留空
-    const forgotCard = leftCol.createDiv({ cls: "owb-card owb-glass-panel owb-forgot-card" });
+    // 沉睡笔记
+    const forgotCard = leftCol.createDiv({ cls: "owb-card" });
     forgotCard.createDiv({
       cls: "owb-card-title",
-      text: `🕸️ 沉睡 ${this.plugin.settings.forgottenDays || 30} 天+ · ${data.forgotten.length}`
+      text: `沉睡 ${this.plugin.settings.forgottenDays || 30} 天以上 · ${data.forgotten.length}`
     });
     if (!data.forgotten.length) {
-      forgotCard.createDiv({ cls: "owb-muted", text: "维护良好" });
+      this.emptySlot(forgotCard, "全部笔记都在活跃维护");
     } else {
       const ul = forgotCard.createEl("ul", { cls: "owb-list" });
-      for (const item of data.forgotten.slice(0, 6)) {
+      for (const item of data.forgotten.slice(0, 5)) {
         const li = ul.createEl("li");
         li.createEl("a", { cls: "owb-link", text: item.file.basename }).addEventListener("click", () =>
           this.app.workspace.getLeaf(false).openFile(item.file)
@@ -6283,6 +6839,91 @@ class WorkbenchView extends ItemView {
         li.createSpan({ cls: "owb-muted", text: ` · ${item.daysAgo} 天` });
       }
     }
+
+    // ── 右列 ──
+    const sideCol = mainGrid.createDiv({ cls: "owb-layout-side" });
+
+    if (this.plugin.isFeatureEnabled("projects")) {
+      const projCard = sideCol.createDiv({ cls: "owb-card" });
+      const ph = projCard.createDiv({ cls: "owb-card-title-row" });
+      ph.createDiv({ cls: "owb-card-title", text: `项目 · ${projects.length}` });
+      ph.createEl("button", { cls: "owb-mini-btn", text: "新建" }).addEventListener("click", () =>
+        this.plugin.createProjectInteractive()
+      );
+      if (!projects.length) {
+        this.emptySlot(projCard, `项目目录为空：${this.plugin.settings.projectFolder}`);
+      } else {
+        const ul = projCard.createEl("ul", { cls: "owb-list" });
+        for (const item of projects.slice(0, 6)) {
+          const li = ul.createEl("li");
+          const a = li.createEl("a", { cls: "owb-link", text: item.name + (item.kind === "dir" ? "/" : "") });
+          if (item.file) a.addEventListener("click", () => this.app.workspace.getLeaf(false).openFile(item.file));
+          const bits = [item.status, item.due && "截止 " + item.due].filter(Boolean);
+          if (bits.length) li.createSpan({ cls: "owb-muted", text: " · " + bits.join(" · ") });
+        }
+      }
+    }
+
+    if (this.plugin.isFeatureEnabled("dailyJournal")) {
+      const dailyCard = sideCol.createDiv({ cls: "owb-card" });
+      const dh = dailyCard.createDiv({ cls: "owb-card-title-row" });
+      dh.createDiv({
+        cls: "owb-card-title",
+        text: `日记 · 连续 ${daily.streak} 天${daily.includesToday ? "（今日已写）" : ""}`
+      });
+      const acts = dh.createDiv({ cls: "owb-pomo-actions" });
+      acts.createEl("button", { cls: "owb-mini-btn", text: "今日" }).addEventListener("click", () =>
+        this.plugin.openDailyNote(0)
+      );
+      acts.createEl("button", { cls: "owb-mini-btn", text: "昨日" }).addEventListener("click", () =>
+        this.plugin.openDailyNote(-1)
+      );
+      if (!dailies.length) {
+        this.emptySlot(dailyCard, `还没有日记：${this.plugin.settings.dailyFolder}`);
+      } else {
+        const ul = dailyCard.createEl("ul", { cls: "owb-list" });
+        for (const d of dailies.slice(0, 5)) {
+          ul.createEl("li").createEl("a", { cls: "owb-link", text: d.key }).addEventListener("click", () =>
+            this.app.workspace.getLeaf(false).openFile(d.file)
+          );
+        }
+      }
+    }
+
+    // 多维表格
+    if (this.plugin.isFeatureEnabled("bases")) {
+      const baseCard = sideCol.createDiv({ cls: "owb-card" });
+      const bh = baseCard.createDiv({ cls: "owb-card-title-row" });
+      bh.createDiv({ cls: "owb-card-title", text: `多维表格 · ${bases.length}` });
+      bh.createEl("button", { cls: "owb-mini-btn", text: "新建" }).addEventListener("click", async () => {
+        try {
+          await createBase(this.app, "新建工作表");
+          this.render();
+        } catch (e) {
+          new Notice("创建失败：" + e.message);
+        }
+      });
+      if (!bases.length) {
+        this.emptySlot(baseCard, "没有 .duowei / .base 文件");
+      } else {
+        for (const b of bases.slice(0, 6)) {
+          const row = baseCard.createDiv({ cls: "owb-base-row" });
+          const a = row.createEl("a", { cls: "owb-link", text: b.file.basename });
+          a.addEventListener("click", () => this.app.workspace.getLeaf(false).openFile(b.file));
+          row.createSpan({ cls: "owb-base-kind", text: b.kind });
+        }
+      }
+    }
+
+    // ── RAG 卡片（原独立视图收进工作台）──
+    if (this.plugin.isFeatureEnabled("ragSearch")) {
+      await this.renderRagCard(sideCol);
+    }
+
+    // ── 次区 ──
+    const subGrid = root.createDiv({ cls: "owb-layout-sub" });
+    this.renderFileCard(subGrid, `今日输入 · ${data.createdToday.length}`, data.createdToday, "今天还没有新建笔记");
+    this.renderFileCard(subGrid, `今日输出 · ${data.modifiedToday.length}`, data.modifiedToday, "今天还没有更新笔记");
 
     // ── 快捷入口 ──
     const links = this.plugin.settings.quickLinks || [];
@@ -6296,19 +6937,138 @@ class WorkbenchView extends ItemView {
         });
       }
     }
+
+    // ── 调试面板（设置里打开 debugPerf 才显示）──
+    if (this.plugin.settings.debugPerf) {
+      perf.totalMs = Date.now() - perf.start;
+      const bar = root.createDiv({ cls: "owb-debug-bar" });
+      bar.createSpan({ text: `render ${perf.totalMs}ms` });
+      bar.createSpan({ text: `data ${perf.dataMs}ms` });
+      bar.createSpan({ text: `heat ${perf.heatCache}${perf.heatMs != null ? " " + perf.heatMs + "ms" : ""}` });
+      bar.createSpan({ text: `notes ${data.totalNotes}` });
+      bar.createSpan({ text: `tasks ${data.pendingTasks.length}` });
+      bar.createSpan({ text: `bases ${bases.length}` });
+      if (this.plugin._migrationApplied) bar.createSpan({ text: "migrated settings" });
+      bar.createEl("button", { cls: "owb-mini-btn", text: "清缓存重渲染" }).addEventListener("click", () => {
+        this.invalidateHeat();
+        this.render();
+      });
+    }
+  }
+
+  /** RAG 卡片：索引状态 + 内联语义检索 + 知识图谱生成 */
+  async renderRagCard(container) {
+    const card = container.createDiv({ cls: "owb-card owb-rag-card" });
+    const head = card.createDiv({ cls: "owb-card-title-row" });
+    head.createDiv({ cls: "owb-card-title", text: "语义检索" });
+
+    let stat = { built: false, chunks: 0 };
+    try {
+      stat = this.plugin.rag.indexStat();
+    } catch (e) {
+      stat = { built: false, chunks: 0 };
+    }
+    head.createDiv({
+      cls: "owb-muted",
+      text: stat.built ? `${stat.files} 篇 / ${stat.chunks} 块` : "索引未构建"
+    });
+
+    const bar = card.createDiv({ cls: "owb-rag-inline" });
+    const input = bar.createEl("input", {
+      attr: { type: "text", placeholder: "问点什么，例如：BSA-seq 关联区间怎么筛" }
+    });
+    const go = async () => {
+      const q = input.value.trim();
+      if (!q) return;
+      this._ragQuery = q;
+      this._ragBusy = true;
+      this._ragResults = null;
+      this._ragError = "";
+      await this.render();
+      try {
+        this._ragResults = await this.plugin.rag.search(q, { topK: 30, topN: 5 });
+      } catch (err) {
+        this._ragError = err.message;
+      }
+      this._ragBusy = false;
+      await this.render();
+    };
+    input.addEventListener("keydown", (ev) => {
+      if (ev.key === "Enter") go();
+    });
+    bar.createEl("button", { cls: "mod-cta", text: "搜索" }).addEventListener("click", go);
+
+    const acts = card.createDiv({ cls: "owb-pomo-actions" });
+    acts.createEl("button", { cls: "owb-mini-btn", text: "构建索引" }).addEventListener("click", async () => {
+      this._ragBusy = true;
+      await this.render();
+      try {
+        await this.plugin.buildRagIndex();
+      } finally {
+        this._ragBusy = false;
+        await this.render();
+      }
+    });
+    acts.createEl("button", { cls: "owb-mini-btn", text: "生成知识图谱" }).addEventListener("click", async () => {
+      await this.plugin.buildGraphNote();
+      this.invalidateHeat();
+    });
+
+    if (this._ragBusy) {
+      this.emptySlot(card, "处理中…（构建索引会分批调用 embeddings）");
+      return;
+    }
+    if (this._ragError) {
+      this.emptySlot(card, this._ragError);
+      return;
+    }
+    if (!this._ragResults) {
+      if (stat.built) this.emptySlot(card, "输入问题回车，或先生成知识图谱看全库结构");
+      else this.emptySlot(card, "先在设置里填 SiliconFlow Key，然后点「构建索引」");
+      return;
+    }
+    if (!this._ragResults.length) {
+      this.emptySlot(card, "没有匹配内容");
+      return;
+    }
+    for (const r of this._ragResults) {
+      const hit = card.createDiv({ cls: "owb-rag-hit" });
+      const top = hit.createDiv({ cls: "owb-rag-hit-head" });
+      top.createEl("a", {
+        cls: "owb-link",
+        text: r.chunk.path.split("/").pop().replace(/\.md$/, "")
+      }).addEventListener("click", () => {
+        const f = this.app.vault.getAbstractFileByPath(r.chunk.path);
+        if (f) this.app.workspace.getLeaf(false).openFile(f);
+      });
+      top.createSpan({
+        cls: "owb-muted",
+        text: (r.chunk.heading ? " " + r.chunk.heading + " · " : " ") + Math.round(r.score * 100) + "%"
+      });
+      hit.createDiv({ cls: "owb-rag-snippet", text: r.chunk.text.slice(0, 160) + (r.chunk.text.length > 160 ? "…" : "") });
+    }
   }
 
   renderFileCard(container, title, list, emptyText) {
-    const card = container.createDiv({ cls: "owb-card owb-glass-panel" });
+    const card = container.createDiv({ cls: "owb-card" });
     card.createDiv({ cls: "owb-card-title", text: title });
-    if (!list.length) {
-      card.createDiv({ cls: "owb-muted", text: emptyText });
+    // 去掉 README 与重复项：它们只说明"文件被同步过"，不代表今天做了什么
+    const seen = new Set();
+    const items = [];
+    for (const item of list) {
+      const name = item.file.basename;
+      if (/^readme$/i.test(name) || /^index$/i.test(name)) continue;
+      if (seen.has(name)) continue;
+      seen.add(name);
+      items.push(item);
+    }
+    if (!items.length) {
+      this.emptySlot(card, emptyText);
       return;
     }
     const ul = card.createEl("ul", { cls: "owb-list" });
-    for (const item of list.slice(0, 6)) {
-      const li = ul.createEl("li");
-      li.createEl("a", { cls: "owb-link", text: item.file.basename }).addEventListener("click", () =>
+    for (const item of items.slice(0, 5)) {
+      ul.createEl("li").createEl("a", { cls: "owb-link", text: item.file.basename }).addEventListener("click", () =>
         this.app.workspace.getLeaf(false).openFile(item.file)
       );
     }

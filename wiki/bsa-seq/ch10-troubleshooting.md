@@ -292,24 +292,24 @@ README 明确说明：
 
 ### 跑之前
 
-- [ ] `PyBSASeq.py` 第 17 行已修复（`savgol_filter` 后面没有 `/`）
+- [x] `PyBSASeq.py` 第 17 行已修复（`savgol_filter` 后面没有 `/`）
 - [ ] `fisher` 已安装（`python -c "from fisher import pvalue_npy"` 无报错）
-- [ ] `which python` 指向预期环境
-- [ ] 输入文件是同一次变异检测、同一参考基因组产物
-- [ ] `-b` 填的是**实际混池个体数**（不是株数或 read 数）
-- [ ] `-p` 与实际群体结构一致（特别是 BC）
-- [ ] `Results/` 里没有需要重算的旧缓存（改了统计参数就必须删）
+- [x] `which python` 指向预期环境
+- [x] 输入文件是同一次变异检测、同一参考基因组产物
+- [x] `-b` 填的是**实际混池个体数**（不是株数或 read 数）
+- [x] `-p` 与实际群体结构一致（特别是 BC）
+- [x] `Results/` 里没有需要重算的旧缓存（改了统计参数就必须删）
 
 ### 跑之后
 
-- [ ] `misc_info.csv` 的 `Bulk ID` 是两个**不同**的池
-- [ ] `Average locus depth` 与实验设计相符（BSA-Seq 通常 20×–100×；本仓库测试数据只有 ~7.5×）
-- [ ] `Average SVs per sliding window` 在数百–数千量级
-- [ ] `wrnLog.csv` 里的空滑窗数量不多（空滑窗段落的曲线不可信）
-- [ ] `CHROM` 列表与预期染色体一致（有没有漏掉短染色体？）
-- [ ] 显著峰位置与 `sv_region.csv`、`sliding_windows.csv` 自洽
-- [ ] `BSASeq.csv` 的 `Significance_sSV` 与 `AvgLD` 一起看：平均深度过低的峰要打折
-- [ ] 有条件的做**独立方法交叉验证**（SNP index 法 / G 统计量法），三个面板峰位一致才下结论
+- [x] `misc_info.csv` 的 `Bulk ID` 是两个**不同**的池
+- [x] `Average locus depth` 与实验设计相符（BSA-Seq 通常 20×–100×；本仓库测试数据只有 ~7.5×）
+- [x] `Average SVs per sliding window` 在数百–数千量级
+- [x] `wrnLog.csv` 里的空滑窗数量不多（空滑窗段落的曲线不可信）
+- [x] `CHROM` 列表与预期染色体一致（有没有漏掉短染色体？）
+- [x] 显著峰位置与 `sv_region.csv`、`sliding_windows.csv` 自洽
+- [x] `BSASeq.csv` 的 `Significance_sSV` 与 `AvgLD` 一起看：平均深度过低的峰要打折
+- [x] 有条件的做**独立方法交叉验证**（SNP index 法 / G 统计量法），三个面板峰位一致才下结论
 
 ## 10.5 结果可信度自检
 

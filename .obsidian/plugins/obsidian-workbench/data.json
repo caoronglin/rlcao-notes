@@ -18,9 +18,9 @@
     "imageTools": true
   },
   "openWorkbenchOnStart": false,
-  "dailyFolder": "diary",
+  "dailyFolder": "vault/日记",
   "dailyDateFormat": "YYYY-MM-DD",
-  "projectFolder": "",
+  "projectFolder": "vault/项目",
   "onlyDueTasks": false,
   "forgottenDays": 30,
   "quickLinks": [

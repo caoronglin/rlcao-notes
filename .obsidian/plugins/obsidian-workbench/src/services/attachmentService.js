@@ -12,6 +12,15 @@ const { normalizePath } = require("obsidian");
  * vault 内全部附件扩展名文件，不假设附件只在 assets/。
  */
 
+/** 安全解码：文件名里的裸 % 会让 decodeURIComponent 抛 URI malformed */
+function safeDecode(s) {
+  try {
+    return decodeURIComponent(s);
+  } catch (e) {
+    return s;
+  }
+}
+
 const ATTACHMENT_EXTS = new Set([
   "png", "jpg", "jpeg", "gif", "webp", "svg", "bmp", "tiff", "tif",
   "pdf", "mp4", "mp3", "wav", "zip", "docx", "xlsx", "pptx"
@@ -60,14 +69,14 @@ function extractAttachmentRefs(text) {
   for (const m of body.matchAll(/!\[([^\]]*)\]\(([^)]+)\)/g)) {
     const p = m[2].trim().split(/\s+/)[0];
     if (/^(https?:|data:|mailto:|#)/i.test(p)) continue;
-    const base = decodeURIComponent(p.split("/").pop() || "");
+    const base = safeDecode(p.split("/").pop() || "");
     if (ATTACHMENT_EXTS.has(base.split(".").pop().toLowerCase())) push(m[0], base);
   }
   // HTML: <img src="…">
   for (const m of body.matchAll(/<img[^>]+src=["']([^"']+)["']/gi)) {
     const p = m[1].trim();
     if (/^(https?:|data:)/i.test(p)) continue;
-    const base = decodeURIComponent(p.split("/").pop() || "");
+    const base = safeDecode(p.split("/").pop() || "");
     if (ATTACHMENT_EXTS.has(base.split(".").pop().toLowerCase())) push(m[0], base);
   }
   return refs;

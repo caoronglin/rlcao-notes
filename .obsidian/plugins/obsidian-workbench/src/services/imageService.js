@@ -37,8 +37,8 @@ function loadSharp() {
   const attempts = [];
   // 1) 常规解析（插件目录有 node_modules 时通常可命中）
   attempts.push(() => require("sharp"));
-  // 2) 绝对路径兜底
-  if (pluginDir) {
+  // 2) 绝对路径兜底（必须是绝对路径，否则打包器会当相对模块解析并抛错）
+  if (pluginDir && pluginDir.startsWith("/")) {
     attempts.push(() => {
       const nodePath = require("path");
       return require(nodePath.join(pluginDir, "node_modules", "sharp"));

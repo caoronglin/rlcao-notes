@@ -18,6 +18,7 @@ const privacyService = require("./services/privacyService");
 const { setPluginDir } = require("./services/imageService");
 const decisionService = require("./services/decisionService");
 const graphService = require("./services/graphService");
+const { renderRunnableBlock, renderHtmlPreview } = require("./services/codeRunner");
 const { WorkbenchView } = require("./views/workbenchView");
 const { GitPanelView } = require("./views/gitView");
 const { QuizView } = require("./views/quizView");
@@ -190,6 +191,16 @@ class ObsidianWorkbenchPlugin extends Plugin {
       id: "open-image-tools",
       name: "图片工具：上传存档 / 格式转换 / 压缩",
       checkCallback: (checking) => this._guardCommand("imageTools", checking, () => this.openImageToolsModal())
+    });
+
+    // ── 代码块：执行与预览（精简版 execute-code）──
+    for (const lang of ["run-js", "run-python", "run-sh"]) {
+      this.registerMarkdownCodeBlockProcessor(lang, (source, el, ctx) => {
+        renderRunnableBlock(lang, source, el, { app: this.app, plugin: this });
+      });
+    }
+    this.registerMarkdownCodeBlockProcessor("preview-html", (source, el) => {
+      renderHtmlPreview(source, el);
     });
 
     // 状态栏项

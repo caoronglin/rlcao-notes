@@ -588,6 +588,38 @@ class WorkbenchSettingTab extends PluginSettingTab {
         })
       );
     new Setting(containerEl)
+      .setName("允许代码块执行")
+      .setDesc("run-js / run-python / run-sh 代码块的运行按钮。每次执行都会二次确认；默认关闭")
+      .addToggle((t) =>
+        t.setValue(Boolean(this.plugin.settings.codeExecEnabled)).onChange(async (v) => {
+          this.plugin.settings.codeExecEnabled = v;
+          await this.plugin.saveSettings();
+          this.display();
+        })
+      );
+    if (this.plugin.settings.codeExecEnabled) {
+      new Setting(containerEl)
+        .setName("执行超时（秒）")
+        .addSlider((sl) =>
+          sl.setLimits(5, 120, 5)
+            .setValue(this.plugin.settings.codeExecTimeoutSec || 20)
+            .setDynamicTooltip()
+            .onChange(async (v) => {
+              this.plugin.settings.codeExecTimeoutSec = v;
+              await this.plugin.saveSettings();
+            })
+        );
+      new Setting(containerEl)
+        .setName("Python 解释器")
+        .setDesc("留空默认 python3")
+        .addText((t) =>
+          t.setValue(this.plugin.settings.pythonPath || "python3").onChange(async (v) => {
+            this.plugin.settings.pythonPath = v.trim() || "python3";
+            await this.plugin.saveSettings();
+          })
+        );
+    }
+    new Setting(containerEl)
       .setName("清空热力缓存并重渲染")
       .addButton((b) =>
         b.setButtonText("立即重算").onClick(() => {

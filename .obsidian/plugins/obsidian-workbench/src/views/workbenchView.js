@@ -361,7 +361,7 @@ class WorkbenchView extends ItemView {
 
     // 多维表格
     if (this.plugin.isFeatureEnabled("bases")) {
-      const baseCard = sideCol.createDiv({ cls: "owb-card" });
+      const baseCard = leftCol.createDiv({ cls: "owb-card" });
       const bh = baseCard.createDiv({ cls: "owb-card-title-row" });
       bh.createDiv({ cls: "owb-card-title", text: `多维表格 · ${bases.length}` });
       bh.createEl("button", { cls: "owb-mini-btn", text: "新建" }).addEventListener("click", async () => {

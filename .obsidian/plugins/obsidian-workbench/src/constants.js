@@ -59,6 +59,11 @@ const DEFAULT_SETTINGS = {
   // 调试与性能
   debugPerf: false,
 
+  // 代码块执行（默认关闭，必须显式开启并二次确认）
+  codeExecEnabled: false,
+  codeExecTimeoutSec: 20,
+  pythonPath: "python3",
+
   // 文件浏览器整理（分栏/隐藏/分隔线）
   explorerHideList: "assets,scripts,panel,muban,4-存档",
   explorerSeparatorAfter: "vault,notes,wiki,_posts",

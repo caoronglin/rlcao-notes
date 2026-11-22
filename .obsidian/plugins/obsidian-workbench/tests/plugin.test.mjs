@@ -512,3 +512,19 @@ test("v3.4 sharp: 相对 manifest.dir 必须拼成绝对路径再 require", () =
   }
   assert.equal(typeof img.engineInfo().error, "string");
 });
+
+test("v3.4 codeRunner: JS 沙箱执行与错误捕获", () => {
+  const { runJs } = require(path.join(rootDir, "src/services/codeRunner.js"));
+  const ok = runJs("console.log('hello'); return 1 + 1;");
+  assert.equal(ok.ok, true);
+  assert.match(ok.output, /hello/);
+  assert.match(ok.output, /2/);
+
+  const bad = runJs("throw new Error('boom')");
+  assert.equal(bad.ok, false);
+  assert.match(bad.output, /boom/);
+
+  // 不暴露 require/fetch
+  const noReq = runJs("return typeof require");
+  assert.match(noReq.output, /undefined/);
+});

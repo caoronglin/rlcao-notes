@@ -1378,3 +1378,42 @@
   border-radius: 8px;
 }
 .owb-ofv-host { min-height: 400px; }
+
+/* ---- v3.5 番茄钟进度与项目标签 ---- */
+.owb-pomo-progress {
+  height: 4px;
+  width: 100%;
+  max-width: 320px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.owb-pomo-progress-fill {
+  height: 100%;
+  width: 0;
+  border-radius: 2px;
+  background: var(--owb-accent);
+  transition: width 1s linear;
+}
+
+.owb-pomo-progress-fill.owb-pomo-progress-idle { background: transparent; }
+
+.owb-pomo-info { flex-direction: column; align-items: flex-start; gap: 2px; }
+
+.owb-task-proj {
+  flex: none;
+  font-size: 0.68em;
+  padding: 1px 6px;
+  border-radius: 999px;
+  border: 1px solid var(--owb-glass-border);
+  color: var(--owb-text-dim);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.owb-task-proj:hover {
+  color: var(--owb-accent);
+  border-color: var(--owb-accent);
+}

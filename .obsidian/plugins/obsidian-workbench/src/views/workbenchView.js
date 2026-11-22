@@ -46,6 +46,10 @@ class WorkbenchView extends ItemView {
   }
 
   async onClose() {
+    if (this._pomoTimer) {
+      window.clearInterval(this._pomoTimer);
+      this._pomoTimer = null;
+    }
     this.contentEl.empty();
   }
 
@@ -209,6 +213,10 @@ class WorkbenchView extends ItemView {
 
   async render() {
     const perf = { start: Date.now() };
+    if (this._pomoTimer) {
+      window.clearInterval(this._pomoTimer);
+      this._pomoTimer = null;
+    }
     const root = this.contentEl;
     root.empty();
     root.addClass("owb-workbench-view");
@@ -255,15 +263,32 @@ class WorkbenchView extends ItemView {
     // ── 热力 ──
     this.renderHeatmap(root, heat);
 
-    // ── 番茄条 ──
+    // ── 番茄条（视图内每秒刷新：状态栏刷新不到这里，此前一直是静止的 25:00）──
     if (this.plugin.isFeatureEnabled("pomodoro") && this.plugin.pomodoro) {
       const pomo = this.plugin.pomodoro;
       const stats = pomo.getTodayStats();
       const bar = root.createDiv({ cls: "owb-pomo-bar" });
       const left = bar.createDiv({ cls: "owb-pomo-info" });
       const phaseLabel = pomo.phase === "work" ? "专注中" : pomo.phase === "break" ? "休息中" : "准备专注";
-      left.createSpan({ cls: "owb-pomo-clock", text: pomo.formatRemaining() });
-      left.createSpan({ cls: "owb-muted", text: `${phaseLabel} · 今日 ${stats.sessions} 个 · ${stats.minutes} 分钟` });
+      const clockEl = left.createSpan({ cls: "owb-pomo-clock", text: pomo.formatRemaining() });
+      const metaEl = left.createSpan({ cls: "owb-muted", text: `${phaseLabel} · 今日 ${stats.sessions} 个 · ${stats.minutes} 分钟` });
+      const progress = left.createDiv({ cls: "owb-pomo-progress" });
+      const fill = progress.createDiv({ cls: "owb-pomo-progress-fill" });
+
+      const totalSecs = () => {
+        const mins = pomo.phase === "break"
+          ? Number(this.plugin.settings.pomodoroBreakMinutes) || 5
+          : Number(this.plugin.settings.pomodoroWorkMinutes) || 25;
+        return Math.max(1, mins * 60);
+      };
+      const paint = () => {
+        clockEl.setText(pomo.formatRemaining());
+        const pct = pomo.phase === "idle" ? 0 : Math.round((1 - pomo.remainingSeconds / totalSecs()) * 100);
+        fill.style.width = Math.max(0, Math.min(100, pct)) + "%";
+        fill.classList.toggle("owb-pomo-progress-idle", pomo.phase === "idle");
+      };
+      paint();
+      this._pomoTimer = window.setInterval(paint, 1000);
       const right = bar.createDiv({ cls: "owb-pomo-actions" });
       right.createEl("button", {
         cls: pomo.phase === "work" && pomo.running ? "" : "mod-cta",
@@ -316,6 +341,19 @@ class WorkbenchView extends ItemView {
         const a = row.createEl("a", { cls: "owb-link", text: t.text });
         a.setAttribute("title", `${t.text}\n${t.file.path}`);
         a.addEventListener("click", () => this.app.workspace.getLeaf(false).openFile(t.file));
+        // 任务↔项目联动：任务位于 vault/项目/<项目>/ 下时显示项目标签，点击跳项目主文件
+        const projRoot = (this.plugin.settings.projectFolder || "").replace(/^\/+|\/+$/g, "");
+        if (projRoot && t.file.path.startsWith(projRoot + "/")) {
+          const seg = t.file.path.slice(projRoot.length + 1).split("/");
+          if (seg.length > 1) {
+            const chip = row.createSpan({ cls: "owb-task-proj", text: seg[0] });
+            chip.addEventListener("click", async (ev) => {
+              ev.stopPropagation();
+              const hit = (await listProjects(this.app, this.plugin.settings)).find((p) => p.name === seg[0]);
+              if (hit && hit.file) this.app.workspace.getLeaf(false).openFile(hit.file);
+            });
+          }
+        }
       }
     }
 

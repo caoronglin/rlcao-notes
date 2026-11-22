@@ -164,6 +164,9 @@ const { setPluginDir } = require("./services/imageService");
 const decisionService = require("./services/decisionService");
 const graphService = require("./services/graphService");
 const { renderRunnableBlock, renderHtmlPreview } = require("./services/codeRunner");
+const { AttachmentPreviewModal } = require("./modals/attachmentPreviewModal");
+const { saveAttachment, planOrganize, applyOrganize } = require("./services/attachmentService");
+const { BASE_STYLE_CSS } = require("./styles/basesStyle");
 const { WorkbenchView } = require("./views/workbenchView");
 const { GitPanelView } = require("./views/gitView");
 const { QuizView } = require("./views/quizView");
@@ -197,6 +200,7 @@ class ObsidianWorkbenchPlugin extends Plugin {
             : "☕ 休息结束，准备开启下一轮专注",
           6000
         );
+        if (finishedPhase === "work") await this.logPomodoroToDaily();
         this.updatePomodoroStatusBar();
         this.refreshWorkbenchViews();
       }
@@ -219,7 +223,14 @@ class ObsidianWorkbenchPlugin extends Plugin {
       const dir = this.manifest.dir;
       const base = this.app && this.app.vault && this.app.vault.adapter ? this.app.vault.adapter.basePath : "";
       const abs = dir.startsWith("/") ? dir : base ? `${base}/${dir}` : "";
-      if (abs) setPluginDir(abs);
+      if (abs) {
+        setPluginDir(abs);
+        try {
+          require("./modals/attachmentPreviewModal").setPluginDir(abs);
+        } catch (e) {
+          /* 忽略 */
+        }
+      }
     }
 
     // Ribbon 图标（按模块开关动态显隐）
@@ -321,6 +332,21 @@ class ObsidianWorkbenchPlugin extends Plugin {
       id: "build-knowledge-graph",
       name: "知识图谱：生成全库链接图谱笔记",
       checkCallback: (checking) => this._guardCommand("ragSearch", checking, () => this.buildGraphNote())
+    });
+    this.addCommand({
+      id: "organize-attachments",
+      name: "附件：整理散落附件到 assets/（先预览）",
+      checkCallback: (checking) => this._guardCommand("attachments", checking, () => this.organizeAttachments())
+    });
+    this.addCommand({
+      id: "add-attachment",
+      name: "附件：上传并自动归档",
+      checkCallback: (checking) => this._guardCommand("attachments", checking, () => this.addAttachmentInteractive())
+    });
+    this.addCommand({
+      id: "bases-style",
+      name: "多维表格：应用统一样式",
+      checkCallback: (checking) => this._guardCommand("bases", checking, () => this.applyBasesStyle())
     });
     this.addCommand({
       id: "tidy-explorer",
@@ -478,6 +504,30 @@ class ObsidianWorkbenchPlugin extends Plugin {
     }
   }
 
+  /** 番茄完成后把这次专注写进当天日记，形成可回溯的专注流水 */
+  async logPomodoroToDaily() {
+    if (!this.isFeatureEnabled("dailyJournal")) return;
+    try {
+      const mins = Number(this.settings.pomodoroWorkMinutes) || 25;
+      const file = await openDaily(this.app, this.settings, 0);
+      if (!file) return;
+      const stamp = formatDate(new Date(), "HH:mm");
+      const line = `- 🍅 ${stamp} 专注 ${mins} 分钟`;
+      await this.app.vault.process(file, (content) => {
+        if (content.includes(line)) return content;
+        // 优先追加到「## 📝 记录」小节，没有就追加到文末
+        const idx = content.indexOf("## 📝 记录");
+        if (idx >= 0) {
+          const insertAt = idx + "## 📝 记录".length;
+          return content.slice(0, insertAt) + "\n" + line + content.slice(insertAt);
+        }
+        return content.replace(/\s*$/, "") + "\n\n" + line + "\n";
+      });
+    } catch (e) {
+      console.debug("[workbench] 番茄记录写入日记失败:", e && e.message);
+    }
+  }
+
   updatePomodoroStatusBar() {
     if (!this.pomoStatusEl) return;
     if (!this.isFeatureEnabled("pomodoro") || !this.pomodoro) {
@@ -608,6 +658,96 @@ class ObsidianWorkbenchPlugin extends Plugin {
     const types = {};
     for (const k of Object.keys(questions || {})) types[k] = questions[k].type || "choice";
     return decisionService.ask(state, questions, this.settings, { questionTypes: types });
+  }
+
+  /** 附件预览（open-file-viewer 优先，原生回退） */
+  previewAttachment(file) {
+    if (!file) return;
+    new AttachmentPreviewModal(this.app, this, file).open();
+  }
+
+  /** 上传附件：自动归档到 assets/<年-月>/ 并插入链接 */
+  addAttachmentInteractive() {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.multiple = true;
+    input.addEventListener("change", async () => {
+      const files = Array.from(input.files || []);
+      if (!files.length) return;
+      try {
+        for (const f of files) {
+          const res = await saveAttachment(this.app, f, { name: f.name });
+          const leaf = this.app.workspace.getMostRecentLeaf();
+          if (leaf && leaf.view && leaf.view.editor) {
+            leaf.view.editor.replaceSelection(`![[${res.path}]]\n`);
+          }
+        }
+        new Notice(`已归档 ${files.length} 个附件到 assets/`);
+        this.refreshWorkbenchViews();
+      } catch (e) {
+        new Notice("上传失败：" + e.message, 7000);
+      }
+    });
+    input.click();
+  }
+
+  /** 整理附件：先 dry-run 预览，确认后移动并改写带路径引用 */
+  async organizeAttachments() {
+    const plan = planOrganize(this.app);
+    if (!plan.items.length) {
+      new Notice("没有需要整理的附件，全部已在 assets/ 或归档区");
+      return;
+    }
+    const { Modal } = require("obsidian");
+    const modal = new Modal(this.app);
+    modal.titleEl.setText("整理附件（预览，未改动任何文件）");
+    const body = modal.contentEl;
+    body.createEl("p", {
+      text: `将把 ${plan.items.length} 个附件（合计 ${(plan.bytes / 1024 / 1024).toFixed(1)} MB）收进 assets/<年-月>/，并改写带路径的引用。`
+    });
+    const list = body.createEl("div", { cls: "owb-att-list" });
+    for (const it of plan.items.slice(0, 40)) {
+      const row = list.createDiv({ cls: "owb-att-row" });
+      row.createSpan({ text: it.file.path });
+      row.createSpan({ cls: "owb-muted", text: " → " + it.dest });
+    }
+    if (plan.items.length > 40) {
+      list.createDiv({ cls: "owb-muted", text: `…还有 ${plan.items.length - 40} 个` });
+    }
+    const foot = body.createDiv({ cls: "owb-run-confirm" });
+    foot.createEl("button", { cls: "mod-warning", text: "确认整理" }).addEventListener("click", async () => {
+      modal.close();
+      const res = await applyOrganize(this.app, plan);
+      new Notice(
+        `整理完成：移动 ${res.moved.length} 个，改写 ${res.touched} 篇笔记${res.failed.length ? `，失败 ${res.failed.length}` : ""}`,
+        8000
+      );
+      this.refreshWorkbenchViews();
+    });
+    foot.createEl("button", { text: "取消" }).addEventListener("click", () => modal.close());
+    modal.open();
+  }
+
+  /** 生成多维表格样式片段（.mt-* 组件统一外观） */
+  async applyBasesStyle() {
+    const css = BASE_STYLE_CSS;
+    try {
+      await this.app.vault.adapter.write(".obsidian/snippets/workbench-bases.css", css);
+      const p = ".obsidian/appearance.json";
+      let appJson = {};
+      try {
+        appJson = JSON.parse(await this.app.vault.adapter.read(p));
+      } catch (e) {
+        appJson = {};
+      }
+      const list = Array.isArray(appJson.enabledCssSnippets) ? appJson.enabledCssSnippets : [];
+      if (!list.includes("workbench-bases")) list.push("workbench-bases");
+      appJson.enabledCssSnippets = list;
+      await this.app.vault.adapter.write(p, JSON.stringify(appJson, null, 2));
+      new Notice("多维表格样式已生成并启用：workbench-bases.css", 6000);
+    } catch (e) {
+      new Notice("生成失败：" + e.message, 7000);
+    }
   }
 
   async buildGraphNote() {
@@ -867,6 +1007,7 @@ module.exports = { AIQuizModal };
 
 const { Modal, Notice } = require("obsidian");
 const { auditVault, archiveOrphans } = require("../services/attachmentService");
+const { AttachmentPreviewModal } = require("./attachmentPreviewModal");
 
 function fmtSize(bytes) {
   const n = Number(bytes) || 0;
@@ -963,7 +1104,7 @@ class AttachmentModal extends Modal {
           this.updateArchiveBtn();
         });
         const a = row.createEl("a", { cls: "owb-link", text: f.name });
-        a.addEventListener("click", () => this.app.workspace.getLeaf(false).openFile(f));
+        a.addEventListener("click", () => new AttachmentPreviewModal(this.app, this.plugin, f).open());
         row.createSpan({ cls: "owb-muted", text: ` · ${f.parent ? f.parent.path : "/"} · ${fmtSize(f.stat && f.stat.size)}` });
       }
 
@@ -1001,7 +1142,7 @@ class AttachmentModal extends Modal {
     for (const s of r.sizeTop) {
       const row = list.createDiv({ cls: "owb-att-row" });
       const a = row.createEl("a", { cls: "owb-link", text: s.file.name });
-      a.addEventListener("click", () => this.app.workspace.getLeaf(false).openFile(s.file));
+      a.addEventListener("click", () => new AttachmentPreviewModal(this.app, this.plugin, s.file).open());
       row.createSpan({ cls: "owb-muted", text: ` · ${fmtSize(s.size)} · ${s.file.path}` });
     }
   }
@@ -6110,6 +6251,110 @@ class WorkbenchSettingTab extends PluginSettingTab {
 module.exports = { WorkbenchSettingTab };
 
   }, "."],
+  "./styles/basesStyle.js": [function(require, module, exports) {
+"use strict";
+
+/**
+ * 多维表格（duowei-table / Bases）统一样式。
+ * 目标：把 .mt-* 组件的默认外观对齐工作台的 Ant Design 风格——
+ * 更轻的分隔线、更稳定的行高、表头吸顶、按钮不抢戏。
+ * 由「多维表格：应用统一样式」命令写入 .obsidian/snippets/workbench-bases.css。
+ */
+const BASE_STYLE_CSS = `/* 由 Obsidian Workbench 生成：多维表格统一外观 */
+
+/* 命令栏：扁平化，去掉重阴影 */
+.mt-command-bar {
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  box-shadow: none;
+}
+
+.mt-command-button {
+  border-radius: 7px;
+  font-size: 0.82em;
+  padding: 3px 9px;
+  border: 1px solid transparent;
+  background: transparent;
+  box-shadow: none;
+}
+
+.mt-command-button:hover {
+  background: var(--background-modifier-hover);
+  border-color: var(--background-modifier-border);
+}
+
+/* 表头：吸顶 + 细分隔线 */
+.mt-table thead th,
+.mt-table__header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--background-secondary);
+  font-weight: 600;
+  font-size: 0.82em;
+  letter-spacing: 0.01em;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+/* 行：等距、hover 轻高亮，去掉斑马纹的脏感 */
+.mt-table tbody tr,
+.mt-row {
+  border-bottom: 1px solid color-mix(in srgb, var(--background-modifier-border) 60%, transparent);
+}
+
+.mt-table tbody tr:hover,
+.mt-row:hover {
+  background: var(--background-modifier-hover);
+}
+
+.mt-table td,
+.mt-cell {
+  padding: 6px 10px;
+  font-size: 0.86em;
+  vertical-align: middle;
+}
+
+/* 单元格编辑器 */
+.mt-cell-editor {
+  border-radius: 7px;
+  border: 1px solid var(--interactive-accent);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--interactive-accent) 22%, transparent);
+}
+
+/* 看板与画廊卡片：统一圆角 + 轻阴影 */
+.mt-kanban-card,
+.mt-gallery-card {
+  border-radius: 10px;
+  border: 1px solid var(--background-modifier-border);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
+  background: var(--background-primary);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.mt-kanban-card:hover,
+.mt-gallery-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px -8px rgba(0, 0, 0, 0.45);
+}
+
+.mt-gallery-card__cover { border-radius: 8px 8px 0 0; }
+
+/* 徽章与计数 */
+.mt-command-button__badge {
+  border-radius: 999px;
+  font-size: 0.68em;
+  padding: 0 5px;
+  background: color-mix(in srgb, var(--interactive-accent) 18%, transparent);
+  color: var(--text-normal);
+}
+`;
+
+module.exports = { BASE_STYLE_CSS };
+
+  }, "./styles"],
   "./utils.js": [function(require, module, exports) {
 "use strict";
 
@@ -7287,6 +7532,10 @@ class WorkbenchView extends ItemView {
   }
 
   async onClose() {
+    if (this._pomoTimer) {
+      window.clearInterval(this._pomoTimer);
+      this._pomoTimer = null;
+    }
     this.contentEl.empty();
   }
 
@@ -7450,6 +7699,10 @@ class WorkbenchView extends ItemView {
 
   async render() {
     const perf = { start: Date.now() };
+    if (this._pomoTimer) {
+      window.clearInterval(this._pomoTimer);
+      this._pomoTimer = null;
+    }
     const root = this.contentEl;
     root.empty();
     root.addClass("owb-workbench-view");
@@ -7496,15 +7749,32 @@ class WorkbenchView extends ItemView {
     // ── 热力 ──
     this.renderHeatmap(root, heat);
 
-    // ── 番茄条 ──
+    // ── 番茄条（视图内每秒刷新：状态栏刷新不到这里，此前一直是静止的 25:00）──
     if (this.plugin.isFeatureEnabled("pomodoro") && this.plugin.pomodoro) {
       const pomo = this.plugin.pomodoro;
       const stats = pomo.getTodayStats();
       const bar = root.createDiv({ cls: "owb-pomo-bar" });
       const left = bar.createDiv({ cls: "owb-pomo-info" });
       const phaseLabel = pomo.phase === "work" ? "专注中" : pomo.phase === "break" ? "休息中" : "准备专注";
-      left.createSpan({ cls: "owb-pomo-clock", text: pomo.formatRemaining() });
-      left.createSpan({ cls: "owb-muted", text: `${phaseLabel} · 今日 ${stats.sessions} 个 · ${stats.minutes} 分钟` });
+      const clockEl = left.createSpan({ cls: "owb-pomo-clock", text: pomo.formatRemaining() });
+      const metaEl = left.createSpan({ cls: "owb-muted", text: `${phaseLabel} · 今日 ${stats.sessions} 个 · ${stats.minutes} 分钟` });
+      const progress = left.createDiv({ cls: "owb-pomo-progress" });
+      const fill = progress.createDiv({ cls: "owb-pomo-progress-fill" });
+
+      const totalSecs = () => {
+        const mins = pomo.phase === "break"
+          ? Number(this.plugin.settings.pomodoroBreakMinutes) || 5
+          : Number(this.plugin.settings.pomodoroWorkMinutes) || 25;
+        return Math.max(1, mins * 60);
+      };
+      const paint = () => {
+        clockEl.setText(pomo.formatRemaining());
+        const pct = pomo.phase === "idle" ? 0 : Math.round((1 - pomo.remainingSeconds / totalSecs()) * 100);
+        fill.style.width = Math.max(0, Math.min(100, pct)) + "%";
+        fill.classList.toggle("owb-pomo-progress-idle", pomo.phase === "idle");
+      };
+      paint();
+      this._pomoTimer = window.setInterval(paint, 1000);
       const right = bar.createDiv({ cls: "owb-pomo-actions" });
       right.createEl("button", {
         cls: pomo.phase === "work" && pomo.running ? "" : "mod-cta",
@@ -7557,6 +7827,19 @@ class WorkbenchView extends ItemView {
         const a = row.createEl("a", { cls: "owb-link", text: t.text });
         a.setAttribute("title", `${t.text}\n${t.file.path}`);
         a.addEventListener("click", () => this.app.workspace.getLeaf(false).openFile(t.file));
+        // 任务↔项目联动：任务位于 vault/项目/<项目>/ 下时显示项目标签，点击跳项目主文件
+        const projRoot = (this.plugin.settings.projectFolder || "").replace(/^\/+|\/+$/g, "");
+        if (projRoot && t.file.path.startsWith(projRoot + "/")) {
+          const seg = t.file.path.slice(projRoot.length + 1).split("/");
+          if (seg.length > 1) {
+            const chip = row.createSpan({ cls: "owb-task-proj", text: seg[0] });
+            chip.addEventListener("click", async (ev) => {
+              ev.stopPropagation();
+              const hit = (await listProjects(this.app, this.plugin.settings)).find((p) => p.name === seg[0]);
+              if (hit && hit.file) this.app.workspace.getLeaf(false).openFile(hit.file);
+            });
+          }
+        }
       }
     }
 

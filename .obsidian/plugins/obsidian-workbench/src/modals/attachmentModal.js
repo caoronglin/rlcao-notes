@@ -2,6 +2,7 @@
 
 const { Modal, Notice } = require("obsidian");
 const { auditVault, archiveOrphans } = require("../services/attachmentService");
+const { AttachmentPreviewModal } = require("./attachmentPreviewModal");
 
 function fmtSize(bytes) {
   const n = Number(bytes) || 0;
@@ -98,7 +99,7 @@ class AttachmentModal extends Modal {
           this.updateArchiveBtn();
         });
         const a = row.createEl("a", { cls: "owb-link", text: f.name });
-        a.addEventListener("click", () => this.app.workspace.getLeaf(false).openFile(f));
+        a.addEventListener("click", () => new AttachmentPreviewModal(this.app, this.plugin, f).open());
         row.createSpan({ cls: "owb-muted", text: ` · ${f.parent ? f.parent.path : "/"} · ${fmtSize(f.stat && f.stat.size)}` });
       }
 
@@ -136,7 +137,7 @@ class AttachmentModal extends Modal {
     for (const s of r.sizeTop) {
       const row = list.createDiv({ cls: "owb-att-row" });
       const a = row.createEl("a", { cls: "owb-link", text: s.file.name });
-      a.addEventListener("click", () => this.app.workspace.getLeaf(false).openFile(s.file));
+      a.addEventListener("click", () => new AttachmentPreviewModal(this.app, this.plugin, s.file).open());
       row.createSpan({ cls: "owb-muted", text: ` · ${fmtSize(s.size)} · ${s.file.path}` });
     }
   }

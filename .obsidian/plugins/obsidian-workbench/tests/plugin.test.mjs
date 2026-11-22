@@ -528,3 +528,68 @@ test("v3.4 codeRunner: JS 沙箱执行与错误捕获", () => {
   const noReq = runJs("return typeof require");
   assert.match(noReq.output, /undefined/);
 });
+
+test("v3.5 pomodoro: tick 递减与完成回调", () => {
+  const { PomodoroService } = require(path.join(rootDir, "src/services/pomodoroService.js"));
+  const settings = { pomodoroWorkMinutes: 1, pomodoroBreakMinutes: 1, pomodoroStats: {} };
+  let completed = null;
+  const svc = new PomodoroService(() => settings, (p) => (completed = p));
+  svc.startWork();
+  assert.equal(svc.remainingSeconds, 60);
+  assert.equal(svc.running, true);
+  assert.equal(svc.formatRemaining(), "01:00");
+  for (let i = 0; i < 59; i++) svc.tick();
+  assert.equal(svc.formatRemaining(), "00:01");
+  svc.tick();
+  assert.equal(completed, "work");
+  assert.equal(svc.running, false);
+  const today = svc.getTodayStats();
+  assert.equal(today.sessions, 1);
+  assert.equal(today.minutes, 1);
+});
+
+test("v3.5 stats: 标签统计与附件聚合", () => {
+  const { tagStats, attachmentStats, attachmentLocations } = require(path.join(rootDir, "src/services/statsService.js"));
+  const app = {
+    metadataCache: { getTags: () => ({ "#project": 5, "#笔记/生信": 3, "#project": 5 }) },
+    vault: {
+      getFiles: () => [
+        { path: "a.png", extension: "png", stat: { size: 100 } },
+        { path: "assets/b.pdf", extension: "pdf", stat: { size: 300 } },
+        { path: "x.md", extension: "md", stat: { size: 10 } }
+      ]
+    }
+  };
+  const t = tagStats(app, { limit: 5 });
+  assert.equal(t.list[0].tag, "project");
+  assert.equal(t.list[0].count, 5);
+  assert.ok(t.distinct >= 2);
+
+  const exts = new Set(["png", "pdf"]);
+  const a = attachmentStats(app, exts);
+  assert.equal(a.count, 2);
+  assert.equal(a.totalBytes, 400);
+  const loc = attachmentLocations(app, exts);
+  assert.equal(loc.inAssets.length, 1);
+  assert.equal(loc.loose.length, 1);
+});
+
+test("v3.5 bases style: 片段包含关键选择器", () => {
+  const { BASE_STYLE_CSS } = require(path.join(rootDir, "src/styles/basesStyle.js"));
+  assert.match(BASE_STYLE_CSS, /\.mt-command-bar/);
+  assert.match(BASE_STYLE_CSS, /\.mt-gallery-card/);
+  assert.ok(BASE_STYLE_CSS.length > 300);
+});
+
+test("v3.5 preview: 扩展名分类与原生/OFV 选择", () => {
+  const m = require(path.join(rootDir, "src/modals/attachmentPreviewModal.js"));
+  assert.equal(m.kindOf("png"), "image");
+  assert.equal(m.kindOf("pdf"), "pdf");
+  assert.equal(m.kindOf("docx"), "office");
+  assert.equal(m.kindOf("py"), "code");
+  assert.equal(m.kindOf("weird"), "other");
+  // 未安装 open-file-viewer 时不应抛错
+  m.setPluginDir(rootDir);
+  const ofv = m.loadOpenFileViewer();
+  assert.ok(ofv === null || typeof ofv === "object");
+});

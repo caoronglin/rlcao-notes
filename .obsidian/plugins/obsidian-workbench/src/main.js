@@ -19,6 +19,9 @@ const { setPluginDir } = require("./services/imageService");
 const decisionService = require("./services/decisionService");
 const graphService = require("./services/graphService");
 const { renderRunnableBlock, renderHtmlPreview } = require("./services/codeRunner");
+const { AttachmentPreviewModal } = require("./modals/attachmentPreviewModal");
+const { saveAttachment, planOrganize, applyOrganize } = require("./services/attachmentService");
+const { BASE_STYLE_CSS } = require("./styles/basesStyle");
 const { WorkbenchView } = require("./views/workbenchView");
 const { GitPanelView } = require("./views/gitView");
 const { QuizView } = require("./views/quizView");
@@ -52,6 +55,7 @@ class ObsidianWorkbenchPlugin extends Plugin {
             : "☕ 休息结束，准备开启下一轮专注",
           6000
         );
+        if (finishedPhase === "work") await this.logPomodoroToDaily();
         this.updatePomodoroStatusBar();
         this.refreshWorkbenchViews();
       }
@@ -74,7 +78,14 @@ class ObsidianWorkbenchPlugin extends Plugin {
       const dir = this.manifest.dir;
       const base = this.app && this.app.vault && this.app.vault.adapter ? this.app.vault.adapter.basePath : "";
       const abs = dir.startsWith("/") ? dir : base ? `${base}/${dir}` : "";
-      if (abs) setPluginDir(abs);
+      if (abs) {
+        setPluginDir(abs);
+        try {
+          require("./modals/attachmentPreviewModal").setPluginDir(abs);
+        } catch (e) {
+          /* 忽略 */
+        }
+      }
     }
 
     // Ribbon 图标（按模块开关动态显隐）
@@ -176,6 +187,21 @@ class ObsidianWorkbenchPlugin extends Plugin {
       id: "build-knowledge-graph",
       name: "知识图谱：生成全库链接图谱笔记",
       checkCallback: (checking) => this._guardCommand("ragSearch", checking, () => this.buildGraphNote())
+    });
+    this.addCommand({
+      id: "organize-attachments",
+      name: "附件：整理散落附件到 assets/（先预览）",
+      checkCallback: (checking) => this._guardCommand("attachments", checking, () => this.organizeAttachments())
+    });
+    this.addCommand({
+      id: "add-attachment",
+      name: "附件：上传并自动归档",
+      checkCallback: (checking) => this._guardCommand("attachments", checking, () => this.addAttachmentInteractive())
+    });
+    this.addCommand({
+      id: "bases-style",
+      name: "多维表格：应用统一样式",
+      checkCallback: (checking) => this._guardCommand("bases", checking, () => this.applyBasesStyle())
     });
     this.addCommand({
       id: "tidy-explorer",
@@ -333,6 +359,30 @@ class ObsidianWorkbenchPlugin extends Plugin {
     }
   }
 
+  /** 番茄完成后把这次专注写进当天日记，形成可回溯的专注流水 */
+  async logPomodoroToDaily() {
+    if (!this.isFeatureEnabled("dailyJournal")) return;
+    try {
+      const mins = Number(this.settings.pomodoroWorkMinutes) || 25;
+      const file = await openDaily(this.app, this.settings, 0);
+      if (!file) return;
+      const stamp = formatDate(new Date(), "HH:mm");
+      const line = `- 🍅 ${stamp} 专注 ${mins} 分钟`;
+      await this.app.vault.process(file, (content) => {
+        if (content.includes(line)) return content;
+        // 优先追加到「## 📝 记录」小节，没有就追加到文末
+        const idx = content.indexOf("## 📝 记录");
+        if (idx >= 0) {
+          const insertAt = idx + "## 📝 记录".length;
+          return content.slice(0, insertAt) + "\n" + line + content.slice(insertAt);
+        }
+        return content.replace(/\s*$/, "") + "\n\n" + line + "\n";
+      });
+    } catch (e) {
+      console.debug("[workbench] 番茄记录写入日记失败:", e && e.message);
+    }
+  }
+
   updatePomodoroStatusBar() {
     if (!this.pomoStatusEl) return;
     if (!this.isFeatureEnabled("pomodoro") || !this.pomodoro) {
@@ -463,6 +513,96 @@ class ObsidianWorkbenchPlugin extends Plugin {
     const types = {};
     for (const k of Object.keys(questions || {})) types[k] = questions[k].type || "choice";
     return decisionService.ask(state, questions, this.settings, { questionTypes: types });
+  }
+
+  /** 附件预览（open-file-viewer 优先，原生回退） */
+  previewAttachment(file) {
+    if (!file) return;
+    new AttachmentPreviewModal(this.app, this, file).open();
+  }
+
+  /** 上传附件：自动归档到 assets/<年-月>/ 并插入链接 */
+  addAttachmentInteractive() {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.multiple = true;
+    input.addEventListener("change", async () => {
+      const files = Array.from(input.files || []);
+      if (!files.length) return;
+      try {
+        for (const f of files) {
+          const res = await saveAttachment(this.app, f, { name: f.name });
+          const leaf = this.app.workspace.getMostRecentLeaf();
+          if (leaf && leaf.view && leaf.view.editor) {
+            leaf.view.editor.replaceSelection(`![[${res.path}]]\n`);
+          }
+        }
+        new Notice(`已归档 ${files.length} 个附件到 assets/`);
+        this.refreshWorkbenchViews();
+      } catch (e) {
+        new Notice("上传失败：" + e.message, 7000);
+      }
+    });
+    input.click();
+  }
+
+  /** 整理附件：先 dry-run 预览，确认后移动并改写带路径引用 */
+  async organizeAttachments() {
+    const plan = planOrganize(this.app);
+    if (!plan.items.length) {
+      new Notice("没有需要整理的附件，全部已在 assets/ 或归档区");
+      return;
+    }
+    const { Modal } = require("obsidian");
+    const modal = new Modal(this.app);
+    modal.titleEl.setText("整理附件（预览，未改动任何文件）");
+    const body = modal.contentEl;
+    body.createEl("p", {
+      text: `将把 ${plan.items.length} 个附件（合计 ${(plan.bytes / 1024 / 1024).toFixed(1)} MB）收进 assets/<年-月>/，并改写带路径的引用。`
+    });
+    const list = body.createEl("div", { cls: "owb-att-list" });
+    for (const it of plan.items.slice(0, 40)) {
+      const row = list.createDiv({ cls: "owb-att-row" });
+      row.createSpan({ text: it.file.path });
+      row.createSpan({ cls: "owb-muted", text: " → " + it.dest });
+    }
+    if (plan.items.length > 40) {
+      list.createDiv({ cls: "owb-muted", text: `…还有 ${plan.items.length - 40} 个` });
+    }
+    const foot = body.createDiv({ cls: "owb-run-confirm" });
+    foot.createEl("button", { cls: "mod-warning", text: "确认整理" }).addEventListener("click", async () => {
+      modal.close();
+      const res = await applyOrganize(this.app, plan);
+      new Notice(
+        `整理完成：移动 ${res.moved.length} 个，改写 ${res.touched} 篇笔记${res.failed.length ? `，失败 ${res.failed.length}` : ""}`,
+        8000
+      );
+      this.refreshWorkbenchViews();
+    });
+    foot.createEl("button", { text: "取消" }).addEventListener("click", () => modal.close());
+    modal.open();
+  }
+
+  /** 生成多维表格样式片段（.mt-* 组件统一外观） */
+  async applyBasesStyle() {
+    const css = BASE_STYLE_CSS;
+    try {
+      await this.app.vault.adapter.write(".obsidian/snippets/workbench-bases.css", css);
+      const p = ".obsidian/appearance.json";
+      let appJson = {};
+      try {
+        appJson = JSON.parse(await this.app.vault.adapter.read(p));
+      } catch (e) {
+        appJson = {};
+      }
+      const list = Array.isArray(appJson.enabledCssSnippets) ? appJson.enabledCssSnippets : [];
+      if (!list.includes("workbench-bases")) list.push("workbench-bases");
+      appJson.enabledCssSnippets = list;
+      await this.app.vault.adapter.write(p, JSON.stringify(appJson, null, 2));
+      new Notice("多维表格样式已生成并启用：workbench-bases.css", 6000);
+    } catch (e) {
+      new Notice("生成失败：" + e.message, 7000);
+    }
   }
 
   async buildGraphNote() {

@@ -1,6 +1,6 @@
 {
   "name": "obsidian-workbench",
-  "version": "3.4.0",
+  "version": "3.5.0",
   "description": "All-in-one Obsidian Workbench plugin: Git Panel, Dashboard, SM-2 Quiz, Pomodoro, Quick Capture, Daily Journal, Task Center, Projects, Privacy Zone, SiliconFlow RAG Search, Jev/Clef Decision & AI Assist with modular toggles",
   "main": "main.js",
   "scripts": {

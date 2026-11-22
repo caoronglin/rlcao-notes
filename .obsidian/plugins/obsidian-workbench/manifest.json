@@ -1,0 +1,9 @@
+{
+  "id": "obsidian-workbench",
+  "name": "Obsidian Workbench",
+  "version": "3.0.0",
+  "minAppVersion": "1.5.0",
+  "description": "一体化个人知识工作台插件：Git 面板（含 Stash/远程配置/冲突解决）、原生工作台、SM-2 自测、番茄钟专注、快速闪念、健康体检与 AI 辅助，全模块独立开关。",
+  "author": "caoronglin",
+  "isDesktopOnly": true
+}

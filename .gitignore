@@ -15,6 +15,7 @@
 !.obsidian/types.json
 .obsidian/plugins/*
 !.obsidian/plugins/xl-toolbox/
+!.obsidian/plugins/obsidian-workbench/
 # 工作区布局属于本机状态，换机后按自己的窗口重新排
 .obsidian/workspace.json
 .obsidian/workspace-mobile.json

@@ -1,0 +1,15 @@
+{
+  "name": "obsidian-workbench",
+  "version": "3.0.0",
+  "description": "All-in-one Obsidian Workbench plugin: Git Panel (Stash/Remote/Conflicts), Dashboard, SM-2 Quiz, Pomodoro, Quick Capture, Vault Doctor & AI Assist with modular feature toggles",
+  "main": "main.js",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node scripts/build.mjs && node --test tests/plugin.test.mjs"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": ["obsidian", "obsidian-plugin", "git", "workbench", "pomodoro", "spaced-repetition", "ai"],
+  "license": "MIT"
+}

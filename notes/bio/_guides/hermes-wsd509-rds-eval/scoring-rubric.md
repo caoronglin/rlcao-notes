@@ -1,3 +1,10 @@
+---
+collection:
+  profile: notebook
+  id: bio
+title: scoring-rubric
+date: 2026-10-06
+---
 # Hermes 输出评分标准
 
 总分：100 分。

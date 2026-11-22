@@ -1,15 +1,19 @@
 ---
-title: "制作一个IP查询小接口"
+title: 制作一个IP查询小接口
 date: '2022-07-10T18:04:16+00:00'
 updated: '2022-07-21T06:24:38'
-categories: [源码]
-tags: [API, PHP, IP]
-cover: https://s2.loli.net/2022/07/21/7brtIHduqPQ5ieD.png
+categories: []
+tags:
+  - API
+  - PHP
+  - IP
+cover: 'https://s2.loli.net/2022/07/21/7brtIHduqPQ5ieD.png'
 active_menu: post
 article:
   style: tech
 footer:
   license: true
+abbrlink: 9aff0b88
 ---
 
 {% toc %}

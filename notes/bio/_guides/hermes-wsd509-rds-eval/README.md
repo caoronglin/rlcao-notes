@@ -1,3 +1,10 @@
+---
+collection:
+  profile: notebook
+  id: bio
+title: README
+date: 2026-10-06
+---
 # Hermes WSD509 RDS 方案生成评测包
 
 >用途：把 WSD509 多用户 RDS 服务器搭建/排障任务脱敏后，交给 Hermes 或其他模型生成完整运维方案，用于测试模型在 Windows Server / AD DS / RDS / PowerShell / GPO 领域的能力。

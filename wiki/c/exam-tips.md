@@ -1,6 +1,8 @@
 ---
+collection:
+  profile: wiki
+  id: c
 title: C语言期末考试易错知识点总结
-wiki: c
 abbrlink: 5cd36ab6
 date: 2026-02-01 13:00:55
 updated: 2026-02-01 13:00:55

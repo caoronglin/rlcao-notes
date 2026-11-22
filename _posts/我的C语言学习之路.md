@@ -1,13 +1,16 @@
 ---
-title: "我的C语言学习之路"
+title: 我的C语言学习之路
 date: '2022-01-17T14:35:43+00:00'
 updated: '2022-07-21T06:12:00'
-categories: [编程学习]
-tags: [学习, 编程]
-cover: https://s2.loli.net/2022/07/21/HXUjOeS27Wn3yYt.png
+categories: []
+tags:
+  - 学习
+  - 编程
+cover: 'https://s2.loli.net/2022/07/21/HXUjOeS27Wn3yYt.png'
 active_menu: post
 article:
   style: story
+abbrlink: 260de057
 ---
 
 在这里会记录我学习C语言的过程和一些经验，方便大家学习编程语言(此文不提供环境搭建教程)

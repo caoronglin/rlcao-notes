@@ -1,3 +1,10 @@
+---
+collection:
+  profile: notebook
+  id: bio
+title: recommended-skills
+date: 2026-10-06
+---
 # 推荐 Skills
 
 >这些能力不是完成方案的最低要求，但会显著提高 Hermes 输出质量。

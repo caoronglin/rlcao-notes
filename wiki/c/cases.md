@@ -1,6 +1,8 @@
 ---
+collection:
+  profile: wiki
+  id: c
 title: 经典案例与解析
-wiki: c
 abbrlink: ef581d5
 date: 2026-02-01 13:00:55
 updated: 2026-02-01 13:00:55

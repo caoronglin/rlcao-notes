@@ -1,6 +1,8 @@
 ---
+collection:
+  profile: wiki
+  id: c
 title: 第8章 文件操作
-wiki: c
 abbrlink: c9158f08
 date: 2026-02-01 13:00:55
 updated: 2026-02-01 13:00:55

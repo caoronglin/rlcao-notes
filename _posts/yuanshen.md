@@ -1,12 +1,15 @@
 ---
-title: "原神文案分享|第一弹"
+title: 原神文案分享|第一弹
 date: '2022-09-04T05:50:42+00:00'
 updated: '2024-01-01T07:55:19'
-abbrlink: "yuanshen"
-categories: [文案]
-tags: [原神, 文案]
-cover: https://img-source.cnortles.top/cover/%E7%BD%91%E9%A1%B5%E6%8D%95%E8%8E%B7_1-1-2024_154342_www.yuanshen.com.jpeg
-keywords: 原神,文案
+abbrlink: yuanshen
+categories: []
+tags:
+  - 原神
+  - 文案
+cover: >-
+  https://img-source.cnortles.top/cover/%E7%BD%91%E9%A1%B5%E6%8D%95%E8%8E%B7_1-1-2024_154342_www.yuanshen.com.jpeg
+keywords: '原神,文案'
 active_menu: post
 article:
   style: story

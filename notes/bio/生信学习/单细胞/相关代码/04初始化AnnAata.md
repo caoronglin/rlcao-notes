@@ -1,3 +1,10 @@
+---
+collection:
+  profile: notebook
+  id: bio
+title: 04初始化AnnAata
+date: 2026-10-06
+---
 # 04初始化AnnAata
 
 ```Python

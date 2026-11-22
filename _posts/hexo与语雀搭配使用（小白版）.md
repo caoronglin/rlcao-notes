@@ -1,13 +1,15 @@
 ---
-title: "hexo与语雀搭配使用（小白版）"
+title: hexo与语雀搭配使用（小白版）
 date: '2022-01-09T09:28:02+00:00'
 updated: '2022-07-21T06:29:50'
-categories: [笔记]
-tags: [hexo]
-cover: https://s2.loli.net/2022/07/21/Rluc5qjZTxkzGsy.png
+categories: []
+tags:
+  - hexo
+cover: 'https://s2.loli.net/2022/07/21/Rluc5qjZTxkzGsy.png'
 active_menu: post
 article:
   style: tech
+abbrlink: '60002e75'
 ---
 
 {% toc %}

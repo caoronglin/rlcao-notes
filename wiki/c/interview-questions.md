@@ -1,6 +1,8 @@
 ---
+collection:
+  profile: wiki
+  id: c
 title: C语言面试常见题
-wiki: c
 abbrlink: 4645c949
 date: 2026-02-01 13:00:55
 updated: 2026-02-01 13:00:55

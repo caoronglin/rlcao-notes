@@ -1,13 +1,15 @@
 ---
-title: "网盘本地化（支持docker）"
+title: 网盘本地化（支持docker）
 date: '2022-07-21T06:45:33+00:00'
 updated: '2022-07-21T06:56:26'
-categories: [资源]
-tags: [资源]
-cover: https://s2.loli.net/2022/07/21/yH6Dr3SaPXEt9qA.png
+categories: []
+tags:
+  - 资源
+cover: 'https://s2.loli.net/2022/07/21/yH6Dr3SaPXEt9qA.png'
 active_menu: post
 article:
   style: tech
+abbrlink: 2fd44f51
 ---
 
 {% toc %}

@@ -1,3 +1,10 @@
+---
+collection:
+  profile: notebook
+  id: bio
+title: wsd509-rds-setup
+date: 2026-10-06
+---
 # WSD509 远程桌面服务器运维手册
 
 >Windows Server 2025 | 单机域 `wsad.local` | RDS 多用户办公环境 | Tesla P100 GPU

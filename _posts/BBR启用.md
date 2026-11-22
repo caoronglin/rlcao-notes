@@ -1,9 +1,11 @@
 ---
 title: BBR启用
 date: '2026-04-25T00:00:00+08:00'
-categories:
-- - Linux
-tags: [linux, 网络优化]
+categories: []
+tags:
+  - linux
+  - 网络优化
+abbrlink: 2a9504b2
 ---
 
 # BBR启用

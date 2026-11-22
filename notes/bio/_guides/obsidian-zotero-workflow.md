@@ -1,3 +1,10 @@
+---
+collection:
+  profile: notebook
+  id: bio
+title: obsidian-zotero-workflow
+date: 2026-10-06
+---
 # Obsidian + Zotero 科研工作台完整配置指南
 
 >综合三篇知乎文章的最佳实践：

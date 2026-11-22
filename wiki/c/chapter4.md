@@ -1,6 +1,8 @@
 ---
+collection:
+  profile: wiki
+  id: c
 title: 第4章 数组
-wiki: c
 abbrlink: 84c699f1
 date: 2026-02-01 13:00:55
 updated: 2026-02-01 13:00:55

@@ -4,7 +4,6 @@ date: 2025-08-01
 updated: 2025-08-01
 tags: [生信, bio/启航计划, bio/RNA-seq, bio/alignment]
 status: completed
-notebook: bio
 abbrlink: 34fab8c5
 categories:
   - - 启航计划

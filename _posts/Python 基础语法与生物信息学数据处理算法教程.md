@@ -1,9 +1,11 @@
 ---
 title: Python 基础语法与生物信息学数据处理算法教程
 date: '2026-04-25T00:00:00+08:00'
-categories:
-- - 生信
-tags: [python, 生信]
+categories: []
+tags:
+  - python
+  - 生信
+abbrlink: c607963
 ---
 
 # Python 基础语法与生物信息学数据处理算法教程

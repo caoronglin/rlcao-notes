@@ -1,11 +1,14 @@
 ---
-title: "浅淡宇宙的多元（科创小论文）"
+title: 浅淡宇宙的多元（科创小论文）
 date: '2022-01-25T06:37:57+00:00'
 updated: '2022-07-21T06:20:07'
-abbrlink: "gzwlnasa"
-categories: [文案]
-tags: [学习, 文章, 物理]
-cover: https://s2.loli.net/2022/07/21/U7OBaXWycTmJZCb.png
+abbrlink: gzwlnasa
+categories: []
+tags:
+  - 学习
+  - 文章
+  - 物理
+cover: 'https://s2.loli.net/2022/07/21/U7OBaXWycTmJZCb.png'
 active_menu: post
 article:
   style: story

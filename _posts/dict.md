@@ -1,9 +1,11 @@
 ---
 title: Dict
 date: '2026-04-25T00:00:00+08:00'
-categories:
-- - 工具
-tags: [工具, obsidian]
+categories: []
+tags:
+  - 工具
+  - obsidian
+abbrlink: 6b8c6d98
 ---
 
 # Dict

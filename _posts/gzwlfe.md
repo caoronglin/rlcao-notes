@@ -1,11 +1,14 @@
 ---
-title: "铁磁性的秘密（科创小论文）"
+title: 铁磁性的秘密（科创小论文）
 date: '2022-01-25T06:15:28+00:00'
 updated: '2022-07-21T06:21:11'
-abbrlink: "gzwlfe"
-categories: [文案]
-tags: [学习, 文章, 物理]
-cover: https://s2.loli.net/2022/07/21/HcU7o3jCnZi4YbM.png
+abbrlink: gzwlfe
+categories: []
+tags:
+  - 学习
+  - 文章
+  - 物理
+cover: 'https://s2.loli.net/2022/07/21/HcU7o3jCnZi4YbM.png'
 active_menu: post
 article:
   style: story

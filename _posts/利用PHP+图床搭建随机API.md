@@ -1,15 +1,18 @@
 ---
-title: "利用PHP+图床搭建随机API"
+title: 利用PHP+图床搭建随机API
 date: '2022-01-31T04:17:27+00:00'
 updated: '2022-07-21T06:15:15'
-categories: [源码]
-tags: [PHP, API]
-cover: https://s2.loli.net/2022/07/21/ZUoiAgRMwP7Tmqk.png
+categories: []
+tags:
+  - PHP
+  - API
+cover: 'https://s2.loli.net/2022/07/21/ZUoiAgRMwP7Tmqk.png'
 active_menu: post
 article:
   style: tech
 footer:
   license: true
+abbrlink: 762d4b0f
 ---
 
 {% toc %}

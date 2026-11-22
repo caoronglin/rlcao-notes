@@ -1,3 +1,10 @@
+---
+collection:
+  profile: notebook
+  id: bio
+title: required-skills
+date: 2026-10-06
+---
 # 必需 Skills
 
 >这些能力是 Hermes 完成 `prompt.md` 中方案生成任务所必需的。这里的 skills 是"能力说明"，不是让模型直接执行危险操作。

@@ -114,6 +114,11 @@ def check_links(root, mds, stems, paths, paths_nomd, dirs):
             base = split_alias(raw).partition("#")[0].strip()
             if not base or base.startswith("<%") or base.startswith("http"):
                 continue
+            # 参看文档教材正文裸代码（R 的 x[[3]]、numpy 的 a[[-0.32]]、scanpy 签名
+            # 残片 [[  [ ]]）会拼出数字/括号型假 wikilink；教材声明保留原始形式，
+            # 此类 target 直接跳过（真笔记名不会是纯数字/括号组合）。
+            if re.fullmatch(r"[-\d., \[\]]+", base):
+                continue
             if f"[[{bare(raw)}]]" in LINK_ALLOWLIST:
                 continue
             if not link_ok(base, src_dir, stems, paths, paths_nomd, dirs):

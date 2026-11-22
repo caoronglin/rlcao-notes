@@ -1,3 +1,10 @@
+---
+collection:
+  profile: notebook
+  id: bio
+title: _index
+date: 2026-10-06
+---
 # 🧬 生物信息学笔记
 
 >从启航计划到单细胞、工具链的系统性笔记

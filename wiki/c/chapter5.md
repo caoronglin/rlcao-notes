@@ -1,6 +1,8 @@
 ---
+collection:
+  profile: wiki
+  id: c
 title: 第5章 指针
-wiki: c
 abbrlink: 22a8d10
 date: 2026-02-01 13:00:55
 updated: 2026-02-01 13:00:55

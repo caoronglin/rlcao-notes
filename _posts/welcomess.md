@@ -1,10 +1,11 @@
 ---
-title: "为你的网站添加欢迎提示"
+title: 为你的网站添加欢迎提示
 date: '2022-07-26T07:48:07+00:00'
 updated: '2022-08-26T06:14:42'
-abbrlink: "welcomess"
-categories: [源码]
-tags: [源码]
+abbrlink: welcomess
+categories: []
+tags:
+  - 源码
 active_menu: post
 article:
   style: tech

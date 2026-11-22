@@ -1,6 +1,8 @@
 ---
+collection:
+  profile: wiki
+  id: c
 title: 第3章 程序设计基本结构
-wiki: c
 abbrlink: f0f06f97
 date: 2026-02-01 13:00:55
 updated: 2026-02-01 13:00:55

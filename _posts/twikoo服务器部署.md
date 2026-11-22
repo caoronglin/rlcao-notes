@@ -1,15 +1,17 @@
 ---
-title: "twikoo服务器部署"
+title: twikoo服务器部署
 date: '2022-08-27T11:34:30+00:00'
 updated: '2022-08-27T12:40:42'
-categories: [笔记]
-tags: [笔记]
-cover: https://twikoo.js.org/assets/logo.5707582f.png
+categories: []
+tags:
+  - 笔记
+cover: 'https://twikoo.js.org/assets/logo.5707582f.png'
 active_menu: post
 article:
   style: story
 footer:
   license: true
+abbrlink: 5e2be96e
 ---
 
 {% toc %}

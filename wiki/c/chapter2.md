@@ -1,6 +1,8 @@
 ---
+collection:
+  profile: wiki
+  id: c
 title: 第2章 C语言基础
-wiki: c
 abbrlink: 935f6f7e
 date: 2026-02-01 13:00:55
 updated: 2026-02-01 13:00:55

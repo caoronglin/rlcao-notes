@@ -1,3 +1,10 @@
+---
+collection:
+  profile: notebook
+  id: bio
+title: high-risk-skills
+date: 2026-10-06
+---
 # 高风险 Skills / 禁止自动执行项
 
 >这些能力或操作不应让模型自动执行。模型可以解释、设计、提示风险，但不能在没有明确人工确认和备份的情况下直接执行。

@@ -1,5 +1,7 @@
 ---
-wiki: Linux
+collection:
+  profile: wiki
+  id: Linux
 title: 第四章、首次登陆与线上求助
 date: 2024-01-01
 updated: 2024-01-01

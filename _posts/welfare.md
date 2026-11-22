@@ -1,11 +1,12 @@
 ---
-title: "公益项目"
+title: 公益项目
 date: '2022-08-04T09:38:32+00:00'
 updated: '2022-08-26T06:14:06'
-abbrlink: "welfare"
-categories: [资源]
-tags: [公益]
-cover: https://api.cnortles.top/img/?type=wallpaper
+abbrlink: welfare
+categories: []
+tags:
+  - 公益
+cover: 'https://api.cnortles.top/img/?type=wallpaper'
 active_menu: post
 article:
   style: tech

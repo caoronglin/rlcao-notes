@@ -1,11 +1,13 @@
 ---
-title: "腾讯文档基础使用"
+title: 腾讯文档基础使用
 date: '2022-10-06T14:26:43+00:00'
 updated: '2024-01-01T07:42:34'
-abbrlink: "txwdbase"
-categories: [学习笔记]
-tags: [笔记]
-cover: https://img-source.cnortles.top/cover/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-01-01%20154129.png
+abbrlink: txwdbase
+categories: []
+tags:
+  - 笔记
+cover: >-
+  https://img-source.cnortles.top/cover/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202024-01-01%20154129.png
 active_menu: post
 article:
   style: story

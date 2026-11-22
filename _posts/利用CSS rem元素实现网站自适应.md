@@ -1,12 +1,15 @@
 ---
-title: "利用CSS rem元素实现网站自适应"
+title: 利用CSS rem元素实现网站自适应
 date: '2022-07-23T10:37:12+00:00'
 updated: '2022-07-23T10:53:07'
-categories: [转载]
-tags: [css, html]
+categories: []
+tags:
+  - css
+  - html
 active_menu: post
 article:
   style: tech
+abbrlink: a889f9e9
 ---
 
 {% toc %}

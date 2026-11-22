@@ -1,11 +1,12 @@
 ---
-title: "AI总结卷"
+title: AI总结卷
 date: '2025-08-11T05:43:09+00:00'
 updated: '2025-11-27T13:54:04'
 categories: []
 active_menu: post
 article:
   style: tech
+abbrlink: 9129b35f
 ---
 
 {% toc %}

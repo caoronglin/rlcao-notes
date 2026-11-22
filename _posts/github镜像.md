@@ -1,13 +1,15 @@
 ---
-title: "github镜像"
+title: github镜像
 date: '2024-01-01T08:43:57+00:00'
 updated: '2024-01-01T08:48:23'
-categories: [分享]
-tags: [建站]
-cover: https://img-source.cnortles.top/cover/screenshot20240101.png
+categories: []
+tags:
+  - 建站
+cover: 'https://img-source.cnortles.top/cover/screenshot20240101.png'
 active_menu: post
 article:
   style: tech
+abbrlink: f1bdd477
 ---
 
 | **GitHub** | **状态** |

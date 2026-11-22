@@ -1,5 +1,7 @@
 ---
-wiki: Linux
+collection:
+  profile: wiki
+  id: Linux
 title: 第十章、认识与学习BASH
 date: 2024-01-01
 updated: 2024-01-01

@@ -1,10 +1,12 @@
 ---
-title: "为你的网站增加网盘下载"
+title: 为你的网站增加网盘下载
 date: '2022-07-27T14:57:37+00:00'
 updated: '2022-08-26T06:15:10'
-abbrlink: "pandownjs"
-categories: [资源]
-tags: [资源, js]
+abbrlink: pandownjs
+categories: []
+tags:
+  - 资源
+  - js
 active_menu: post
 article:
   style: tech

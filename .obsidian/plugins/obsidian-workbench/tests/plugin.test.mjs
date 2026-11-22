@@ -357,3 +357,69 @@ test("v3.2 images: engine detect + canvas fallback contract", async () => {
     /不支持的目标格式/
   );
 });
+
+test("v3.3 heatmap: 日期网格对齐 / 分级 / streak / 排除规则", () => {
+  const { buildHeatmap } = require(path.join(rootDir, "src/services/heatmapService.js"));
+  const now = new Date();
+  const dayMs = 86400000;
+  const files = [
+    // 今天改过
+    { path: "notes/a.md", name: "a.md", stat: { ctime: now.getTime() - 30 * dayMs, mtime: now.getTime() } },
+    // 昨天新建
+    { path: "notes/b.md", name: "b.md", stat: { ctime: now.getTime() - dayMs, mtime: now.getTime() - dayMs } },
+    // 应被排除
+    { path: "4-存档/2026-01-01/x.md", name: "x.md", stat: { ctime: now.getTime(), mtime: now.getTime() } },
+    { path: ".obsidian/plugins/p/README.md", name: "README.md", stat: { ctime: now.getTime(), mtime: now.getTime() } }
+  ];
+  const app = { vault: { getMarkdownFiles: () => files } };
+  const heat = buildHeatmap(app, { weeks: 13 });
+
+  assert.equal(heat.weeks, 13);
+  assert.equal(heat.grid.length, 13);
+  assert.ok(heat.grid.every((col) => col.length === 7), "每列必须 7 天");
+  assert.equal(heat.days.length, 91);
+
+  // 口径：新建(ctime) 与 更新(mtime 且不同天) 各计 1
+  // a.md = 30 天前创建(1) + 今天更新(1)，b.md = 昨天创建(1) => 3
+  // 排除生效：4-存档/ 与 .obsidian/README.md 不计入
+  assert.equal(heat.total, 3);
+  assert.ok(heat.max >= 1);
+  assert.ok(heat.streak >= 1);
+
+  // 网格最后一天应是「本周周日」或之后，且未来日标记正确
+  const lastDay = heat.grid[12][6];
+  assert.ok(lastDay.date.getTime() >= now.getTime() - 8 * dayMs);
+  const futureCells = heat.days.filter((d) => d.inFuture);
+  assert.ok(futureCells.every((d) => d.date.getTime() > now.getTime()));
+
+  // 分级不超过 4
+  assert.ok(heat.days.every((d) => d.level >= 0 && d.level <= 4));
+});
+
+test("v3.3 wallpaper: bing.cnortles.top URL 构造与自定义覆盖", () => {
+  const wp = require(path.join(rootDir, "src/services/wallpaperService.js"));
+  assert.equal(wp.wallpaperUrl({}), "https://bing.cnortles.top/api/daily");
+  assert.equal(
+    wp.wallpaperUrl({ wallpaperMode: "random" }),
+    "https://bing.cnortles.top/api/random"
+  );
+  assert.equal(
+    wp.wallpaperUrl({ wallpaperMode: "daily", wallpaperFormat: "jpeg" }),
+    "https://bing.cnortles.top/api/daily?format=jpeg"
+  );
+  // 自定义直链完全覆盖
+  assert.equal(
+    wp.wallpaperUrl({ wallpaperCustomUrl: "https://e.com/a.avif" }),
+    "https://e.com/a.avif"
+  );
+  // bust 附加时间戳
+  assert.match(wp.wallpaperUrl({}, { bust: true }), /^https:\/\/bing\.cnortles\.top\/api\/daily\?t=\d+$/);
+  assert.equal(wp.shouldRefresh("2026-11-21", "2026-11-22"), true);
+  assert.equal(wp.shouldRefresh("2026-11-22", "2026-11-22"), false);
+});
+
+test("v3.3 image: AVIF 为默认输出格式", async () => {
+  const img = require(path.join(rootDir, "src/services/imageService.js"));
+  assert.equal(img.DEFAULT_FORMAT, "avif");
+  assert.equal(img.SUPPORTED_OUT[0], "avif");
+});

@@ -38,6 +38,16 @@ const DEFAULT_SETTINGS = {
     { label: "生信自测题库", target: "notes/bio/生信学习/生信自测题库.md" }
   ],
 
+  // 工作台外观：每日壁纸 + 毛玻璃 + 热力日历
+  wallpaperEnabled: true,
+  wallpaperMode: "daily",              // daily | random
+  wallpaperFormat: "webp",             // webp | jpeg | original
+  wallpaperCustomUrl: "",              // 留空用 bing.cnortles.top
+  wallpaperDim: 0.42,                  // 壁纸压暗程度 0-1
+  glassEffect: true,                   // 毛玻璃
+  glassBlur: 18,                       // 模糊半径 px
+  heatmapWeeks: 26,                    // 热力日历跨度（周）
+
   // 任务中心
   tasksPath: "vault/任务.md",
   tasksScanLimit: 200,

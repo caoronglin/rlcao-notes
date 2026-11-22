@@ -76,6 +76,112 @@ class WorkbenchSettingTab extends PluginSettingTab {
             await this.plugin.saveSettings();
           })
         );
+      // ── 外观：壁纸 / 毛玻璃 / 热力 ──
+      containerEl.createEl("h4", { text: "外观：每日壁纸与毛玻璃" });
+
+      new Setting(containerEl)
+        .setName("启用每日壁纸")
+        .setDesc("来源 https://bing.cnortles.top/api/daily（每日一图）")
+        .addToggle((t) =>
+          t.setValue(this.plugin.settings.wallpaperEnabled !== false).onChange(async (v) => {
+            this.plugin.settings.wallpaperEnabled = v;
+            await this.plugin.saveSettings();
+            this.plugin.refreshWorkbenchViews();
+            this.display();
+          })
+        );
+
+      if (this.plugin.settings.wallpaperEnabled !== false) {
+        new Setting(containerEl)
+          .setName("壁纸取图模式")
+          .addDropdown((d) => {
+            d.addOption("daily", "每日一图（/api/daily）");
+            d.addOption("random", "随机图（/api/random）");
+            d.setValue(this.plugin.settings.wallpaperMode || "daily");
+            d.onChange(async (v) => {
+              this.plugin.settings.wallpaperMode = v;
+              await this.plugin.saveSettings();
+              this.plugin.refreshWorkbenchViews();
+            });
+          });
+
+        new Setting(containerEl)
+          .setName("壁纸格式")
+          .setDesc("daily 模式支持 webp / jpeg / original（原始 JPEG 体积大）")
+          .addDropdown((d) => {
+            for (const f of ["webp", "jpeg", "original"]) d.addOption(f, f);
+            d.setValue(this.plugin.settings.wallpaperFormat || "webp");
+            d.onChange(async (v) => {
+              this.plugin.settings.wallpaperFormat = v;
+              await this.plugin.saveSettings();
+              this.plugin.refreshWorkbenchViews();
+            });
+          });
+
+        new Setting(containerEl)
+          .setName("自定义壁纸 URL")
+          .setDesc("留空使用 bing.cnortles.top；填任意图片直链可覆盖")
+          .addText((t) =>
+            t.setPlaceholder("https://…/image.webp").setValue(this.plugin.settings.wallpaperCustomUrl || "").onChange(async (v) => {
+              this.plugin.settings.wallpaperCustomUrl = v.trim();
+              await this.plugin.saveSettings();
+              this.plugin.refreshWorkbenchViews();
+            })
+          );
+
+        new Setting(containerEl)
+          .setName("壁纸压暗程度")
+          .setDesc("0 = 原图，1 = 全黑。默认 0.42，保证毛玻璃上的文字可读")
+          .addSlider((sl) =>
+            sl.setLimits(0, 0.9, 0.02)
+              .setValue(this.plugin.settings.wallpaperDim == null ? 0.42 : this.plugin.settings.wallpaperDim)
+              .setDynamicTooltip()
+              .onChange(async (v) => {
+                this.plugin.settings.wallpaperDim = v;
+                await this.plugin.saveSettings();
+                this.plugin.refreshWorkbenchViews();
+              })
+          );
+      }
+
+      new Setting(containerEl)
+        .setName("毛玻璃效果")
+        .setDesc("卡片使用 backdrop-filter 模糊背景")
+        .addToggle((t) =>
+          t.setValue(this.plugin.settings.glassEffect !== false).onChange(async (v) => {
+            this.plugin.settings.glassEffect = v;
+            await this.plugin.saveSettings();
+            this.plugin.refreshWorkbenchViews();
+          })
+        );
+
+      if (this.plugin.settings.glassEffect !== false) {
+        new Setting(containerEl)
+          .setName("模糊半径")
+          .addSlider((sl) =>
+            sl.setLimits(4, 40, 2)
+              .setValue(this.plugin.settings.glassBlur || 18)
+              .setDynamicTooltip()
+              .onChange(async (v) => {
+                this.plugin.settings.glassBlur = v;
+                await this.plugin.saveSettings();
+                this.plugin.refreshWorkbenchViews();
+              })
+          );
+      }
+
+      new Setting(containerEl)
+        .setName("热力日历跨度")
+        .addDropdown((d) => {
+          for (const w of [13, 26, 52]) d.addOption(String(w), w + " 周");
+          d.setValue(String(this.plugin.settings.heatmapWeeks || 26));
+          d.onChange(async (v) => {
+            this.plugin.settings.heatmapWeeks = Number(v);
+            await this.plugin.saveSettings();
+            this.plugin.refreshWorkbenchViews();
+          });
+        });
+
       new Setting(containerEl)
         .setName("仅显示今日到期任务")
         .addToggle((t) =>

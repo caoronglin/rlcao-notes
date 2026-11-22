@@ -15,7 +15,9 @@ const { normalizePath, Notice } = require("obsidian");
  * 设计原则：没装 sharp 也必须能用；装了 sharp 自动启用全部能力。
  */
 
-const SUPPORTED_OUT = ["webp", "avif", "jpeg", "jpg", "png"];
+// AVIF 为默认输出格式（体积最小、Obsidian/Chromium 原生支持）
+const DEFAULT_FORMAT = "avif";
+const SUPPORTED_OUT = ["avif", "webp", "jpeg", "jpg", "png"];
 
 let sharpModule; // undefined = 未探测, null = 不可用
 let sharpError = "";
@@ -117,7 +119,8 @@ async function ensureFolder(app, path) {
 async function saveImage(app, input, opts) {
   const o = opts || {};
   const name = o.name || `pasted-${Date.now()}.png`;
-  const targetExt = (o.format || extOf(name) || "png").toLowerCase();
+  // 默认一律转 AVIF（o.format 显式传入其他格式时才例外）
+  const targetExt = String(o.format || DEFAULT_FORMAT).toLowerCase();
   const dir = o.dir || assetDirFor(o.date);
   await ensureFolder(app, dir);
 
@@ -143,7 +146,7 @@ async function saveImage(app, input, opts) {
   let outExt = extOf(name) || "png";
   let engine = "none";
 
-  const needConvert = o.format && o.format !== extOf(name);
+  const needConvert = targetExt !== extOf(name);
   const needResize = o.maxWidth && o.maxWidth > 0;
   const needQuality = typeof o.quality === "number";
   if (needConvert || needResize || needQuality) {
@@ -190,7 +193,11 @@ async function convertBuffer(bytes, srcExt, opts) {
 
   // Canvas 兜底（仅渲染进程可用）
   if (typeof document === "undefined") throw new Error("当前环境无 Canvas，也无法加载 sharp");
-  if (format === "avif") throw new Error("AVIF 需要安装 sharp（canvas 不支持编码 AVIF）");
+  if (format === "avif") {
+    throw new Error(
+      "AVIF 需要 sharp（Canvas 无法编码 AVIF）。请执行：cd .obsidian/plugins/obsidian-workbench && npm i sharp，然后重启 Obsidian"
+    );
+  }
   const blob = new Blob([bytes], { type: MIME[srcExt] || "image/png" });
   const bitmap = await createImageBitmap(blob);
   const scale = o.maxWidth && bitmap.width > o.maxWidth ? o.maxWidth / bitmap.width : 1;
@@ -270,6 +277,7 @@ function collectImages(app, folderPrefix) {
 }
 
 module.exports = {
+  DEFAULT_FORMAT,
   SUPPORTED_OUT,
   setPluginDir,
   loadSharp,

@@ -7,7 +7,8 @@ const {
   convertFiles,
   saveImage,
   assetDirFor,
-  SUPPORTED_OUT
+  SUPPORTED_OUT,
+  DEFAULT_FORMAT
 } = require("../services/imageService");
 const { fmtSize } = require("./attachmentModal");
 
@@ -18,8 +19,8 @@ class ImageToolsModal extends Modal {
   constructor(app, plugin) {
     super(app, plugin);
     this.plugin = plugin;
-    this.format = "webp";
-    this.quality = 82;
+    this.format = DEFAULT_FORMAT; // avif
+    this.quality = 60;            // AVIF 60 ≈ WebP 82 的观感
     this.maxWidth = 1600;
     this.scope = "";
     this.progress = "";
@@ -47,10 +48,14 @@ class ImageToolsModal extends Modal {
       });
     } else {
       engineBox.createDiv({
-        cls: "owb-muted",
+        cls: "owb-muted owb-img-err",
         text:
-          "转换引擎：Canvas 兜底（webp / jpeg / png，无 AVIF）。" +
-          "要启用 sharp 全部能力：在插件目录执行 npm i sharp 后重启 Obsidian。"
+          "⚠️ 当前默认格式为 AVIF，但未加载 sharp，AVIF 转换将失败。" +
+          "请在插件目录执行：npm i sharp，然后重启 Obsidian。"
+      });
+      engineBox.createDiv({
+        cls: "owb-muted",
+        text: "临时替代：把下方「目标格式」改为 webp 或 jpeg（Canvas 兜底可用）。"
       });
       if (info.error) {
         engineBox.createDiv({ cls: "owb-muted owb-img-err", text: "sharp 未加载：" + info.error.slice(0, 120) });

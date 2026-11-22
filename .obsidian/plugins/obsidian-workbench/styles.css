@@ -750,3 +750,361 @@
   outline-offset: -6px;
   border-radius: 8px;
 }
+
+/* ===================================================================
+   v3.3 工作台重排版：每日壁纸 + 毛玻璃 + 热力日历
+   =================================================================== */
+
+.owb-workbench-view {
+  --owb-glass-bg: rgba(255, 255, 255, 0.12);
+  --owb-glass-border: rgba(255, 255, 255, 0.22);
+  --owb-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  --owb-glass-blur: 18px;
+  --owb-wallpaper-dim: rgba(0, 0, 0, 0.42);
+  position: relative;
+  /* 覆盖 v3.0 的 max-width:1120px / margin:auto（宽屏会白掉两侧） */
+  max-width: none;
+  margin: 0;
+  padding: 20px 22px 28px;
+  min-height: 100%;
+  overflow-y: auto;
+  background-color: var(--background-primary);
+}
+
+/* ---- 壁纸层 ---- */
+.owb-wallpaper-on {
+  background-image:
+    linear-gradient(var(--owb-wallpaper-dim), var(--owb-wallpaper-dim)),
+    var(--owb-wallpaper);
+  background-size: cover, cover;
+  background-position: center, center;
+  background-attachment: fixed, fixed;
+  background-repeat: no-repeat, no-repeat;
+}
+
+/* 深色主题下壁纸压得更暗，保证文字对比度 */
+.theme-dark .owb-wallpaper-on {
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0.62)),
+    var(--owb-wallpaper);
+}
+
+/* ---- 毛玻璃面板 ---- */
+.owb-glass .owb-glass-panel,
+.owb-glass .owb-card,
+.owb-glass .owb-hero,
+.owb-glass .owb-pomo-bar {
+  background: var(--owb-glass-bg) !important;
+  border: 1px solid var(--owb-glass-border) !important;
+  border-radius: 14px !important;
+  box-shadow: var(--owb-glass-shadow) !important;
+  backdrop-filter: blur(var(--owb-glass-blur)) saturate(1.7);
+  -webkit-backdrop-filter: blur(var(--owb-glass-blur)) saturate(1.7);
+  color: #fff;
+}
+
+.theme-light .owb-glass .owb-glass-panel,
+.theme-light .owb-glass .owb-card,
+.theme-light .owb-glass .owb-hero,
+.theme-light .owb-glass .owb-pomo-bar {
+  background: rgba(255, 255, 255, 0.28) !important;
+  border-color: rgba(255, 255, 255, 0.42) !important;
+  color: var(--text-normal);
+}
+
+/* 无壁纸时退回主题色，避免半透明糊在纯色上显得脏 */
+.owb-workbench-view:not(.owb-wallpaper-on) .owb-glass-panel,
+.owb-workbench-view:not(.owb-wallpaper-on) .owb-card,
+.owb-workbench-view:not(.owb-wallpaper-on) .owb-hero {
+  background: var(--background-secondary) !important;
+  border: 1px solid var(--background-modifier-border) !important;
+  backdrop-filter: none;
+}
+
+/* ---- Hero ---- */
+.owb-hero {
+  padding: 20px 22px;
+  margin-bottom: 16px;
+}
+
+.owb-hero-top {
+  margin-bottom: 14px;
+}
+
+.owb-eyebrow {
+  font-size: 0.78em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.72;
+  margin-bottom: 6px;
+}
+
+.owb-greeting {
+  margin: 0;
+  font-size: 1.6em;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.owb-glass .owb-greeting { color: #fff; }
+.theme-light .owb-glass .owb-greeting { color: var(--text-normal); }
+
+/* ---- 四格统计 ---- */
+.owb-stat-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  gap: 10px;
+  margin: 16px 0 14px;
+}
+
+.owb-stat {
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.owb-workbench-view:not(.owb-wallpaper-on) .owb-stat {
+  background: var(--background-primary);
+  border-color: var(--background-modifier-border);
+}
+
+.owb-stat-value {
+  font-size: 1.55em;
+  font-weight: 700;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+
+.owb-stat-label {
+  font-size: 0.74em;
+  opacity: 0.72;
+  margin-top: 2px;
+}
+
+/* ---- 按钮组 ---- */
+.owb-hero-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.owb-mini-btn {
+  padding: 2px 8px !important;
+  font-size: 0.76em !important;
+  height: auto !important;
+  box-shadow: none !important;
+}
+
+/* ---- 热力日历 ---- */
+.owb-heat-card { margin-bottom: 16px; padding: 16px 18px; }
+
+.owb-card-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.owb-heat-summary { font-size: 0.78em; }
+
+.owb-heat-wrap {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.owb-heat-weekdays {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-top: 1px;
+}
+
+.owb-heat-wd {
+  width: 12px;
+  height: 13px;
+  font-size: 0.62em;
+  line-height: 13px;
+  opacity: 0.6;
+  text-align: center;
+}
+
+.owb-heat-grid {
+  display: flex;
+  gap: 3px;
+}
+
+.owb-heat-col {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.owb-heat-cell {
+  width: 13px;
+  height: 13px;
+  border-radius: 3px;
+  /* 纯色块：不显示数字（会撑破格子），数值走 title 悬浮提示 */
+  font-size: 0;
+  overflow: hidden;
+  flex: none;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  cursor: pointer;
+}
+
+.owb-heat-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: fit-content;
+  margin: 0 auto; /* 网格居中，宽屏下不左挤 */
+}
+
+.owb-heat-months {
+  position: relative;
+  height: 14px;
+  margin-left: 18px; /* 对齐到格子起始（避开周几标签） */
+}
+
+.owb-heat-month {
+  position: absolute;
+  top: 0;
+  font-size: 0.64em;
+  line-height: 14px;
+  opacity: 0.62;
+  white-space: nowrap;
+}
+
+.owb-heat-cell:hover {
+  transform: scale(1.28);
+  box-shadow: 0 0 0 1px var(--interactive-accent);
+  z-index: 2;
+}
+
+/* 五级色阶（蓝主色，逐级加深） */
+.owb-heat-l0 { background: rgba(255, 255, 255, 0.10); }
+.owb-heat-l1 { background: rgba(22, 119, 255, 0.28); }
+.owb-heat-l2 { background: rgba(22, 119, 255, 0.48); }
+.owb-heat-l3 { background: rgba(22, 119, 255, 0.72); }
+.owb-heat-l4 { background: rgba(22, 119, 255, 0.95); }
+
+.owb-workbench-view:not(.owb-wallpaper-on) .owb-heat-l0 {
+  background: var(--background-modifier-border);
+}
+
+.owb-heat-future { opacity: 0.28; }
+
+.owb-heat-legend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 10px;
+  font-size: 0.72em;
+}
+
+.owb-heat-legend .owb-heat-cell { cursor: default; }
+
+/* ---- 主/次布局 ---- */
+.owb-layout-main {
+  display: grid;
+  grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr);
+  gap: 14px;
+  margin-bottom: 14px;
+  /* 两列等高，避免左侧卡片下方留一大块空壁纸 */
+  align-items: stretch;
+}
+
+.owb-layout-left {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.owb-heat-cell {
+  width: 13px;
+  height: 13px;
+}
+
+.owb-layout-side {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.owb-layout-sub {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+@media (max-width: 720px) {
+  .owb-layout-main { grid-template-columns: 1fr; }
+  .owb-hero { padding: 16px; }
+}
+
+/* ---- 卡片内部 ---- */
+.owb-card { padding: 14px 16px; }
+
+.owb-card-title {
+  font-weight: 650;
+  font-size: 0.95em;
+  margin-bottom: 8px;
+}
+
+.owb-task-list { display: flex; flex-direction: column; gap: 4px; }
+
+.owb-task-row {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 3px 4px;
+  border-radius: 6px;
+}
+
+.owb-task-row:hover { background: rgba(255, 255, 255, 0.08); }
+
+.owb-workbench-view:not(.owb-wallpaper-on) .owb-task-row:hover {
+  background: var(--background-modifier-hover);
+}
+
+.owb-list { margin: 0; padding-left: 18px; }
+
+.owb-link { cursor: pointer; text-decoration: none; }
+.owb-link:hover { text-decoration: underline; }
+
+.owb-pomo-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+}
+
+.owb-pomo-clock {
+  font-family: var(--font-monospace);
+  font-size: 1.1em;
+  margin-right: 10px;
+}
+
+.owb-quick-links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-top: 4px;
+}
+
+.owb-chip {
+  font-size: 0.8em;
+  padding: 4px 12px !important;
+  border-radius: 999px !important;
+}
+
+.owb-muted { opacity: 0.72; font-size: 0.86em; }

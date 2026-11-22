@@ -42,3 +42,25 @@ npm i sharp
 |---|---|---|
 | 附件管理 | `附件管理：孤儿 / 坏引用 / 体积榜` | 扫描全库附件引用，孤儿可勾选批量归档到 `4-存档/<日期>_孤儿附件/`（移动而非删除，附 README 清单） |
 | 图片工具 | `图片工具：上传存档 / 格式转换 / 压缩` | 拖拽或选择图片 → 存 `assets/<YYYY-MM>/` 并在光标处插入嵌入；批量转 WebP/AVIF/JPEG + 限宽 + 质量 |
+
+## v3.3 UI 重排版：每日壁纸 + 毛玻璃 + 热力日历
+
+- **每日壁纸**：来源 `https://bing.cnortles.top/api/daily`（该站提供 `/api/daily`、`/api/random`，
+  支持 `?format=webp|jpeg|original`，CORS 全开）。可在设置里改模式、格式、压暗程度，
+  或填自定义图片直链覆盖。
+- **毛玻璃**：卡片 `backdrop-filter: blur() saturate()`，模糊半径可调（4–40px）；
+  关掉壁纸时自动退回实色，避免半透明糊在纯色底上显脏。
+- **热力日历**：26 周 × 7 天（可切 13/52 周），按天聚合「新建 + 更新」次数，五级色阶，
+  带月份刻度与悬浮提示；点击有日记的日期直接打开当天日记。
+- **重新布局**：Hero（问候 + 四格统计 + 12 个动作按钮）→ 热力日历 → 番茄条 →
+  [今日行动 + 沉睡笔记 | 项目 + 日记] → 今日输入/输出 → 快捷入口。
+  解除旧版 `max-width:1120px` 限制，宽屏铺满。
+
+### UI 验证方式
+
+用 headless Chrome 加载同款 DOM + 真实 `styles.css` + 真实壁纸渲染截图核对，
+不依赖启动 Obsidian：
+
+```bash
+google-chrome --headless --window-size=1440,1060 --screenshot=preview.png preview.html
+```

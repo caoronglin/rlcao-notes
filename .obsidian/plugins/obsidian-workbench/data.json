@@ -1,0 +1,57 @@
+{
+  "features": {
+    "workbench": true,
+    "gitPanel": true,
+    "gitAdvanced": true,
+    "quickCapture": true,
+    "quizEngine": true,
+    "pomodoro": true,
+    "vaultDoctor": true,
+    "aiAssist": true
+  },
+  "openWorkbenchOnStart": false,
+  "dailyFolder": "diary",
+  "dailyDateFormat": "YYYY-MM-DD",
+  "projectFolder": "",
+  "onlyDueTasks": false,
+  "forgottenDays": 30,
+  "quickLinks": [
+    {
+      "label": "闪念收件箱",
+      "target": "inbox.md"
+    },
+    {
+      "label": "生信自测题库",
+      "target": "notes/bio/生信学习/生信自测题库.md"
+    }
+  ],
+  "inboxPath": "inbox.md",
+  "captureInsertMode": "top",
+  "captureTimeFormat": "HH:mm",
+  "gitBinary": "git",
+  "gitCommitTemplate": "vault backup: {{date}}",
+  "gitAutoSyncMinutes": 0,
+  "gitAutoPullOnStart": false,
+  "gitTimeoutMs": 30000,
+  "pomodoroWorkMinutes": 25,
+  "pomodoroBreakMinutes": 5,
+  "pomodoroStats": {},
+  "aiBaseUrl": "https://api.openai.com/v1",
+  "aiApiKey": "",
+  "aiModel": "gpt-4o-mini",
+  "aiQuizCount": 5,
+  "quizFolder": "notes",
+  "quizShuffleQuestions": false,
+  "quizShuffleOptions": false,
+  "quizWrongExportPath": "notes/bio/生信学习/错题复盘.md",
+  "quizStore": {
+    "version": 2,
+    "times": 0,
+    "best": null,
+    "totalScore": 0,
+    "totalCorrect": 0,
+    "totalQuestions": 0,
+    "history": [],
+    "mastery": {}
+  }
+}

@@ -91,3 +91,9 @@ notes/生信实验/03/db/
 notes/生信实验/03/tools/
 notes/生信实验/03/downloads/
 notes/生信实验/03/results/
+
+# Obsidian Workbench 安全忽略规则（避免泄露同步插件凭证与缓存）
+.obsidian/plugins/nutstore-sync/data.json
+.obsidian/plugins/remotely-save/data.json
+.owb-backups/
+*.tar.gz

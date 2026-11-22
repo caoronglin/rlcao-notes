@@ -15,6 +15,7 @@ const { RagService } = require("./services/ragService");
 const { openDaily } = require("./services/dailyService");
 const { listProjects, createProject } = require("./services/projectService");
 const privacyService = require("./services/privacyService");
+const { setPluginDir } = require("./services/imageService");
 const { WorkbenchView } = require("./views/workbenchView");
 const { GitPanelView } = require("./views/gitView");
 const { QuizView } = require("./views/quizView");
@@ -22,6 +23,8 @@ const { RagView } = require("./views/ragView");
 const { QuickCaptureModal } = require("./modals/quickCaptureModal");
 const { JevModal } = require("./modals/jevModal");
 const { TaskCenterModal } = require("./modals/taskModal");
+const { AttachmentModal } = require("./modals/attachmentModal");
+const { ImageToolsModal } = require("./modals/imageToolsModal");
 const { DoctorModal } = require("./modals/doctorModal");
 const { AIQuizModal } = require("./modals/aiQuizModal");
 const { WorkbenchSettingTab } = require("./settings");
@@ -62,6 +65,9 @@ class ObsidianWorkbenchPlugin extends Plugin {
 
     // RAG 服务
     this.rag = new RagService(() => this.settings, this.app.vault.adapter);
+
+    // 图片工具：把插件绝对目录交给 sharp 加载器（支持本地 npm i sharp）
+    if (this.manifest && this.manifest.dir) setPluginDir(this.manifest.dir);
 
     // Ribbon 图标（按模块开关动态显隐）
     this.ribbonEls = {
@@ -168,6 +174,16 @@ class ObsidianWorkbenchPlugin extends Plugin {
       id: "jev-decide",
       name: "Jev/Clef 决策：闪念归类 / 笔记评分 / 自定义",
       checkCallback: (checking) => this._guardCommand("decision", checking, () => this.openJevModal())
+    });
+    this.addCommand({
+      id: "open-attachment-manager",
+      name: "附件管理：孤儿 / 坏引用 / 体积榜",
+      checkCallback: (checking) => this._guardCommand("attachments", checking, () => this.openAttachmentModal())
+    });
+    this.addCommand({
+      id: "open-image-tools",
+      name: "图片工具：上传存档 / 格式转换 / 压缩",
+      checkCallback: (checking) => this._guardCommand("imageTools", checking, () => this.openImageToolsModal())
     });
 
     // 状态栏项
@@ -416,6 +432,16 @@ class ObsidianWorkbenchPlugin extends Plugin {
   openJevModal() {
     if (!this.isFeatureEnabled("decision")) return;
     new JevModal(this.app, this).open();
+  }
+
+  openAttachmentModal() {
+    if (!this.isFeatureEnabled("attachments")) return;
+    new AttachmentModal(this.app, this).open();
+  }
+
+  openImageToolsModal() {
+    if (!this.isFeatureEnabled("imageTools")) return;
+    new ImageToolsModal(this.app, this).open();
   }
 
   createProjectInteractive() {

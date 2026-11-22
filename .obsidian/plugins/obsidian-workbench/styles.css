@@ -721,3 +721,32 @@
   margin: 8px 0 4px;
   color: var(--text-muted);
 }
+
+/* ===== v3.2: 附件管理器 ===== */
+.owb-att-modal { max-width: 720px; width: 92vw; }
+.owb-att-head { margin-bottom: 10px; }
+.owb-att-toolbar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+.owb-att-body { max-height: 56vh; overflow: auto; }
+.owb-att-list { margin-top: 8px; }
+.owb-att-row {
+  display: flex; align-items: center; gap: 6px; padding: 4px 6px;
+  border-radius: 6px; font-size: 0.9em;
+}
+.owb-att-row:hover { background: var(--background-secondary); }
+.owb-att-foot { display: flex; gap: 8px; margin-top: 12px; }
+
+/* ===== v3.2: 图片工具 ===== */
+.owb-img-modal { max-width: 680px; width: 90vw; }
+.owb-img-engine {
+  background: var(--background-secondary); border-radius: 8px;
+  padding: 10px 12px; margin-bottom: 12px;
+}
+.owb-img-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 8px 0; }
+.owb-img-progress { margin: 10px 0; }
+.owb-img-results { margin-top: 12px; max-height: 30vh; overflow: auto; }
+.owb-img-err { color: var(--text-error); }
+.owb-img-drop {
+  outline: 2px dashed var(--interactive-accent);
+  outline-offset: -6px;
+  border-radius: 8px;
+}

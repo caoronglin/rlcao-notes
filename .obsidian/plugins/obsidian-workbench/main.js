@@ -26,7 +26,9 @@ const DEFAULT_SETTINGS = {
     projects: true,       // 项目管理：活跃项目面板与模板化新建
     privacy: false,       // 隐私区：搜索/链接全隐身 + Git 排除一键切换
     ragSearch: true,      // AI RAG 搜索：SiliconFlow embeddings + rerank
-    decision: true        // Jev/Clef TypeSafe 决策（choice / noul / score + 置信度）
+    decision: true,       // Jev/Clef TypeSafe 决策（choice / noul / score + 置信度）
+    attachments: true,    // 附件管理：孤儿/坏引用/体积榜 + 批量归档
+    imageTools: true      // 图片工具：上传存档 + sharp/Canvas 格式转换与压缩
   },
 
   // 工作台仪表盘
@@ -128,6 +130,7 @@ const { RagService } = require("./services/ragService");
 const { openDaily } = require("./services/dailyService");
 const { listProjects, createProject } = require("./services/projectService");
 const privacyService = require("./services/privacyService");
+const { setPluginDir } = require("./services/imageService");
 const { WorkbenchView } = require("./views/workbenchView");
 const { GitPanelView } = require("./views/gitView");
 const { QuizView } = require("./views/quizView");
@@ -135,6 +138,8 @@ const { RagView } = require("./views/ragView");
 const { QuickCaptureModal } = require("./modals/quickCaptureModal");
 const { JevModal } = require("./modals/jevModal");
 const { TaskCenterModal } = require("./modals/taskModal");
+const { AttachmentModal } = require("./modals/attachmentModal");
+const { ImageToolsModal } = require("./modals/imageToolsModal");
 const { DoctorModal } = require("./modals/doctorModal");
 const { AIQuizModal } = require("./modals/aiQuizModal");
 const { WorkbenchSettingTab } = require("./settings");
@@ -175,6 +180,9 @@ class ObsidianWorkbenchPlugin extends Plugin {
 
     // RAG 服务
     this.rag = new RagService(() => this.settings, this.app.vault.adapter);
+
+    // 图片工具：把插件绝对目录交给 sharp 加载器（支持本地 npm i sharp）
+    if (this.manifest && this.manifest.dir) setPluginDir(this.manifest.dir);
 
     // Ribbon 图标（按模块开关动态显隐）
     this.ribbonEls = {
@@ -281,6 +289,16 @@ class ObsidianWorkbenchPlugin extends Plugin {
       id: "jev-decide",
       name: "Jev/Clef 决策：闪念归类 / 笔记评分 / 自定义",
       checkCallback: (checking) => this._guardCommand("decision", checking, () => this.openJevModal())
+    });
+    this.addCommand({
+      id: "open-attachment-manager",
+      name: "附件管理：孤儿 / 坏引用 / 体积榜",
+      checkCallback: (checking) => this._guardCommand("attachments", checking, () => this.openAttachmentModal())
+    });
+    this.addCommand({
+      id: "open-image-tools",
+      name: "图片工具：上传存档 / 格式转换 / 压缩",
+      checkCallback: (checking) => this._guardCommand("imageTools", checking, () => this.openImageToolsModal())
     });
 
     // 状态栏项
@@ -531,6 +549,16 @@ class ObsidianWorkbenchPlugin extends Plugin {
     new JevModal(this.app, this).open();
   }
 
+  openAttachmentModal() {
+    if (!this.isFeatureEnabled("attachments")) return;
+    new AttachmentModal(this.app, this).open();
+  }
+
+  openImageToolsModal() {
+    if (!this.isFeatureEnabled("imageTools")) return;
+    new ImageToolsModal(this.app, this).open();
+  }
+
   createProjectInteractive() {
     if (!this.isFeatureEnabled("projects")) return;
     const name = window.prompt("项目名称（将在项目目录下创建 <名称>.md）：", "");
@@ -696,6 +724,174 @@ class AIQuizModal extends Modal {
 module.exports = { AIQuizModal };
 
   }, "./modals"],
+  "./modals/attachmentModal.js": [function(require, module, exports) {
+"use strict";
+
+const { Modal, Notice } = require("obsidian");
+const { auditVault, archiveOrphans } = require("../services/attachmentService");
+
+function fmtSize(bytes) {
+  const n = Number(bytes) || 0;
+  if (n < 1024) return n + " B";
+  if (n < 1024 * 1024) return (n / 1024).toFixed(1) + " KB";
+  if (n < 1024 * 1024 * 1024) return (n / 1024 / 1024).toFixed(1) + " MB";
+  return (n / 1024 / 1024 / 1024).toFixed(2) + " GB";
+}
+
+/**
+ * 附件管理器：孤儿附件 / 坏引用 / 体积榜，支持勾选批量归档。
+ */
+class AttachmentModal extends Modal {
+  constructor(app, plugin) {
+    super(app, plugin);
+    this.plugin = plugin;
+    this.report = null;
+    this.selected = new Set();
+    this.tab = "orphans"; // orphans | missing | size
+  }
+
+  async onOpen() {
+    await this.render();
+    await this.audit();
+  }
+
+  async audit() {
+    const { contentEl } = this;
+    const status = contentEl.querySelector(".owb-att-status");
+    if (status) status.setText("扫描中…");
+    try {
+      this.report = await auditVault(this.app);
+      this.selected.clear();
+    } catch (e) {
+      new Notice("附件扫描失败：" + e.message, 8000);
+      this.report = null;
+    }
+    this.render();
+  }
+
+  render() {
+    const { contentEl } = this;
+    contentEl.empty();
+    contentEl.addClass("owb-att-modal");
+
+    contentEl.createEl("h2", { text: "📎 附件管理器" });
+
+    const r = this.report;
+    const head = contentEl.createDiv({ cls: "owb-att-head" });
+    if (!r) {
+      head.createDiv({ cls: "owb-muted owb-att-status", text: "尚未扫描" });
+      head.createEl("button", { text: "重新扫描" }).addEventListener("click", () => this.audit());
+      return;
+    }
+    head.createDiv({
+      cls: "owb-muted owb-att-status",
+      text:
+        `附件 ${r.attachments.length} 个（${fmtSize(r.totalBytes)}） · 被 ${r.mdCount} 篇笔记引用 · ` +
+        `孤儿 ${r.orphans.length}（${fmtSize(r.orphanBytes)}） · 坏引用 ${r.missingRefs.length}`
+    });
+
+    const toolbar = contentEl.createDiv({ cls: "owb-att-toolbar" });
+    const mkTab = (key, label) => {
+      const b = toolbar.createEl("button", { cls: this.tab === key ? "mod-cta" : "", text: label });
+      b.addEventListener("click", () => {
+        this.tab = key;
+        this.render();
+      });
+    };
+    mkTab("orphans", `孤儿 (${r.orphans.length})`);
+    mkTab("missing", `坏引用 (${r.missingRefs.length})`);
+    mkTab("size", "体积榜");
+    toolbar.createEl("button", { text: "重新扫描" }).addEventListener("click", () => this.audit());
+
+    const body = contentEl.createDiv({ cls: "owb-att-body" });
+
+    if (this.tab === "orphans") {
+      if (!r.orphans.length) {
+        body.createDiv({ cls: "owb-muted", text: "🎉 没有孤儿附件，全部被引用。" });
+        return;
+      }
+      body.createDiv({
+        cls: "owb-muted",
+        text: "未被任何笔记引用的附件。勾选后归档到 4-存档/<日期>_孤儿附件/（不删除）。"
+      });
+      const list = body.createDiv({ cls: "owb-att-list" });
+      for (const f of r.orphans) {
+        const row = list.createDiv({ cls: "owb-att-row" });
+        const cb = row.createEl("input", { attr: { type: "checkbox" } });
+        cb.checked = this.selected.has(f.path);
+        cb.addEventListener("change", () => {
+          if (cb.checked) this.selected.add(f.path);
+          else this.selected.delete(f.path);
+          this.updateArchiveBtn();
+        });
+        const a = row.createEl("a", { cls: "owb-link", text: f.name });
+        a.addEventListener("click", () => this.app.workspace.getLeaf(false).openFile(f));
+        row.createSpan({ cls: "owb-muted", text: ` · ${f.parent ? f.parent.path : "/"} · ${fmtSize(f.stat && f.stat.size)}` });
+      }
+
+      const foot = body.createDiv({ cls: "owb-att-foot" });
+      const allBtn = foot.createEl("button", { text: "全选" });
+      allBtn.addEventListener("click", () => {
+        for (const f of r.orphans) this.selected.add(f.path);
+        this.render();
+      });
+      this.archiveBtn = foot.createEl("button", { cls: "mod-warning", text: `归档所选 (0)` });
+      this.archiveBtn.addEventListener("click", () => this.doArchive());
+      this.updateArchiveBtn();
+      return;
+    }
+
+    if (this.tab === "missing") {
+      if (!r.missingRefs.length) {
+        body.createDiv({ cls: "owb-muted", text: "🎉 没有坏引用。" });
+        return;
+      }
+      body.createDiv({ cls: "owb-muted", text: "笔记里引用了但磁盘上找不到的附件（改名/删除/同步缺失）。" });
+      const list = body.createDiv({ cls: "owb-att-list" });
+      for (const m of r.missingRefs.slice(0, 200)) {
+        const row = list.createDiv({ cls: "owb-att-row" });
+        const a = row.createEl("a", { cls: "owb-link", text: m.target });
+        a.addEventListener("click", () => this.app.workspace.getLeaf(false).openFile(m.file));
+        row.createSpan({ cls: "owb-muted", text: ` ← ${m.file.path}` });
+      }
+      return;
+    }
+
+    // 体积榜
+    body.createDiv({ cls: "owb-muted", text: "体积最大的 15 个附件。" });
+    const list = body.createDiv({ cls: "owb-att-list" });
+    for (const s of r.sizeTop) {
+      const row = list.createDiv({ cls: "owb-att-row" });
+      const a = row.createEl("a", { cls: "owb-link", text: s.file.name });
+      a.addEventListener("click", () => this.app.workspace.getLeaf(false).openFile(s.file));
+      row.createSpan({ cls: "owb-muted", text: ` · ${fmtSize(s.size)} · ${s.file.path}` });
+    }
+  }
+
+  updateArchiveBtn() {
+    if (!this.archiveBtn) return;
+    this.archiveBtn.setText(`归档所选 (${this.selected.size})`);
+    this.archiveBtn.disabled = this.selected.size === 0;
+  }
+
+  async doArchive() {
+    const r = this.report;
+    if (!r) return;
+    const files = r.orphans.filter((f) => this.selected.has(f.path));
+    if (!files.length) return;
+    try {
+      const res = await archiveOrphans(this.app, files, "附件管理器");
+      new Notice(`已归档 ${res.moved.length} 个附件 → ${res.destDir}${res.failed.length ? `，失败 ${res.failed.length}` : ""}`, 7000);
+      await this.audit();
+    } catch (e) {
+      new Notice("归档失败：" + e.message, 8000);
+    }
+  }
+}
+
+module.exports = { AttachmentModal, fmtSize };
+
+  }, "./modals"],
   "./modals/branchModal.js": [function(require, module, exports) {
 "use strict";
 
@@ -854,6 +1050,239 @@ class DoctorModal extends Modal {
 }
 
 module.exports = { DoctorModal };
+
+  }, "./modals"],
+  "./modals/imageToolsModal.js": [function(require, module, exports) {
+"use strict";
+
+const { Modal, Notice, Setting } = require("obsidian");
+const {
+  engineInfo,
+  collectImages,
+  convertFiles,
+  saveImage,
+  assetDirFor,
+  SUPPORTED_OUT
+} = require("../services/imageService");
+const { fmtSize } = require("./attachmentModal");
+
+/**
+ * 图片工具：引擎状态 + 粘贴/选择上传存档 + 批量格式转换与压缩。
+ */
+class ImageToolsModal extends Modal {
+  constructor(app, plugin) {
+    super(app, plugin);
+    this.plugin = plugin;
+    this.format = "webp";
+    this.quality = 82;
+    this.maxWidth = 1600;
+    this.scope = "";
+    this.progress = "";
+    this.lastResults = null;
+  }
+
+  async onOpen() {
+    this.render();
+  }
+
+  render() {
+    const { contentEl } = this;
+    contentEl.empty();
+    contentEl.addClass("owb-img-modal");
+
+    contentEl.createEl("h2", { text: "🖼️ 图片工具" });
+
+    // ── 引擎状态 ──
+    const info = engineInfo();
+    const engineBox = contentEl.createDiv({ cls: "owb-img-engine" });
+    if (info.engine === "sharp") {
+      engineBox.createDiv({
+        cls: "owb-muted",
+        text: `转换引擎：sharp（libvips ${info.libvips || "?"}）· 支持 ${info.formats.join(" / ")}`
+      });
+    } else {
+      engineBox.createDiv({
+        cls: "owb-muted",
+        text:
+          "转换引擎：Canvas 兜底（webp / jpeg / png，无 AVIF）。" +
+          "要启用 sharp 全部能力：在插件目录执行 npm i sharp 后重启 Obsidian。"
+      });
+      if (info.error) {
+        engineBox.createDiv({ cls: "owb-muted owb-img-err", text: "sharp 未加载：" + info.error.slice(0, 120) });
+      }
+    }
+
+    // ── 上传存档 ──
+    contentEl.createEl("h3", { text: "上传与存档" });
+    const upRow = contentEl.createDiv({ cls: "owb-img-row" });
+    const fileInput = upRow.createEl("input", {
+      attr: { type: "file", accept: "image/*", multiple: "true" }
+    });
+    fileInput.style.display = "none";
+    const pickBtn = upRow.createEl("button", { cls: "mod-cta", text: "选择图片存档" });
+    pickBtn.addEventListener("click", () => fileInput.click());
+    fileInput.addEventListener("change", async () => {
+      const files = Array.from(fileInput.files || []);
+      if (!files.length) return;
+      await this.uploadFiles(files);
+      fileInput.value = "";
+    });
+    upRow.createDiv({
+      cls: "owb-muted",
+      text: `落盘目录 ${assetDirFor()} · 可直接把图片拖进此弹窗`
+    });
+
+    // 拖放
+    contentEl.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      contentEl.addClass("owb-img-drop");
+    });
+    contentEl.addEventListener("dragleave", () => contentEl.removeClass("owb-img-drop"));
+    contentEl.addEventListener("drop", async (e) => {
+      e.preventDefault();
+      contentEl.removeClass("owb-img-drop");
+      const files = Array.from((e.dataTransfer && e.dataTransfer.files) || []).filter((f) =>
+        String(f.type).startsWith("image/")
+      );
+      if (files.length) await this.uploadFiles(files);
+    });
+
+    // ── 批量转换 ──
+    contentEl.createEl("h3", { text: "批量格式转换与压缩" });
+
+    new Setting(contentEl)
+      .setName("目标格式")
+      .addDropdown((d) => {
+        for (const f of SUPPORTED_OUT) d.addOption(f, f.toUpperCase());
+        d.setValue(this.format);
+        d.onChange((v) => (this.format = v));
+      })
+      .addText((t) => {
+        t.setPlaceholder("质量 1-100").setValue(String(this.quality));
+        t.onChange((v) => (this.quality = Math.max(1, Math.min(100, Number(v) || 82))));
+        t.inputEl.type = "number";
+        t.inputEl.style.width = "80px";
+      });
+
+    new Setting(contentEl)
+      .setName("最大宽度（像素，0 = 不缩放）")
+      .addText((t) => {
+        t.setValue(String(this.maxWidth));
+        t.onChange((v) => (this.maxWidth = Math.max(0, Number(v) || 0)));
+        t.inputEl.type = "number";
+      });
+
+    new Setting(contentEl)
+      .setName("扫描范围")
+      .setDesc("留空 = 全库；或填 assets / notes/生信实验 等目录前缀")
+      .addText((t) => {
+        t.setPlaceholder("assets");
+        t.onChange((v) => (this.scope = v.trim()));
+      });
+
+    const runRow = contentEl.createDiv({ cls: "owb-img-row" });
+    const preview = runRow.createEl("button", { text: "统计可转换图片" });
+    const runBtn = runRow.createEl("button", { cls: "mod-cta", text: "开始转换" });
+    preview.addEventListener("click", () => this.preview());
+    runBtn.addEventListener("click", () => this.run());
+
+    if (this.progress) {
+      contentEl.createDiv({ cls: "owb-muted owb-img-progress", text: this.progress });
+    }
+    if (this.lastResults) this.renderResults(contentEl, this.lastResults);
+  }
+
+  async uploadFiles(files) {
+    const out = [];
+    try {
+      for (const f of files) {
+        const res = await saveImage(this.app, f, {
+          name: f.name || `pasted-${Date.now()}.png`,
+          format: this.format,
+          quality: this.quality,
+          maxWidth: this.maxWidth
+        });
+        out.push(res);
+      }
+      new Notice(
+        `已存档 ${out.length} 张 → ${assetDirFor()}（引擎 ${out[0] ? out[0].engine : "-"}）`,
+        6000
+      );
+      // 在当前笔记光标处插入嵌入
+      const leaf = this.app.workspace.getMostRecentLeaf();
+      if (leaf && leaf.view && typeof leaf.view.editor !== "undefined" && leaf.view.editor) {
+        const link = out.map((r) => `![[${r.path}]]`).join("\n");
+        leaf.view.editor.replaceSelection(link);
+      }
+    } catch (e) {
+      new Notice("上传失败：" + e.message, 8000);
+    }
+  }
+
+  preview() {
+    const imgs = collectImages(this.app, this.scope);
+    const total = imgs.reduce((s, f) => s + (f.stat ? f.stat.size : 0), 0);
+    this.progress = `范围内可转换图片 ${imgs.length} 个，合计 ${fmtSize(total)}`;
+    this.render();
+  }
+
+  async run() {
+    const imgs = collectImages(this.app, this.scope);
+    if (!imgs.length) {
+      new Notice("该范围内没有可转换的图片");
+      return;
+    }
+    this.progress = `转换中 0/${imgs.length}`;
+    this.render();
+    const results = await convertFiles(
+      this.app,
+      imgs,
+      {
+        format: this.format,
+        quality: this.quality,
+        maxWidth: this.maxWidth,
+        skipSameFormat: true
+      },
+      (done, total, path) => {
+        this.progress = `转换中 ${done}/${total} · ${path}`;
+        const el = this.contentEl.querySelector(".owb-img-progress");
+        if (el) el.setText(this.progress);
+      }
+    );
+    this.lastResults = results;
+    const ok = results.filter((r) => !r.error && !r.skipped);
+    const saved = ok.reduce((s, r) => s + (r.saved || 0), 0);
+    this.progress = `完成：转换 ${ok.length} 个，节省 ${fmtSize(saved)}`;
+    new Notice(this.progress, 8000);
+    this.render();
+  }
+
+  renderResults(container, results) {
+    const ok = results.filter((r) => !r.error && !r.skipped);
+    const skipped = results.filter((r) => r.skipped);
+    const failed = results.filter((r) => r.error);
+    const box = container.createDiv({ cls: "owb-img-results" });
+    box.createDiv({
+      cls: "owb-muted",
+      text: `成功 ${ok.length} · 跳过 ${skipped.length} · 失败 ${failed.length}`
+    });
+    const list = box.createDiv({ cls: "owb-att-list" });
+    for (const r of ok.slice(0, 40)) {
+      const row = list.createDiv({ cls: "owb-att-row" });
+      row.createSpan({ text: r.file.name + " → " + (r.created ? r.created.name : "") });
+      row.createSpan({
+        cls: "owb-muted",
+        text: ` · ${fmtSize(r.from)} → ${fmtSize(r.to)}（省 ${fmtSize(r.saved)}）· ${r.engine}`
+      });
+    }
+    for (const r of failed.slice(0, 10)) {
+      const row = list.createDiv({ cls: "owb-att-row" });
+      row.createSpan({ cls: "owb-img-err", text: `${r.file.name}：${r.error}` });
+    }
+  }
+}
+
+module.exports = { ImageToolsModal };
 
   }, "./modals"],
   "./modals/jevModal.js": [function(require, module, exports) {
@@ -1573,6 +2002,197 @@ module.exports = {
 };
 
   }, "./services"],
+  "./services/attachmentService.js": [function(require, module, exports) {
+"use strict";
+
+const { normalizePath } = require("obsidian");
+
+/**
+ * 附件管理服务：
+ *  - 全库收集附件引用（![[…]] / [[…]] 嵌入与链接、![](...)、HTML <img>）
+ *  - 与磁盘上的附件文件做差集 → 孤儿附件 / 坏引用 / 体积榜
+ *  - 孤儿批量归档（git mv 语义：vault rename，目录按日期）
+ *
+ * 约定（AGENTS.md §2）：assets/ 是全库附件落盘位置；本服务扫描
+ * vault 内全部附件扩展名文件，不假设附件只在 assets/。
+ */
+
+const ATTACHMENT_EXTS = new Set([
+  "png", "jpg", "jpeg", "gif", "webp", "svg", "bmp", "tiff", "tif",
+  "pdf", "mp4", "mp3", "wav", "zip", "docx", "xlsx", "pptx"
+]);
+
+// 引用提取时的行内代码/围栏剥离
+function stripCode(text) {
+  const out = [];
+  let inFence = false;
+  for (const line of text.split("\n")) {
+    if (line.trim().startsWith("```")) {
+      inFence = !inFence;
+      out.push("");
+      continue;
+    }
+    out.push(inFence ? "" : line);
+  }
+  return out.join("\n").replace(/`[^`\n]*`/g, "");
+}
+
+/**
+ * 从一篇 md 的文本提取它引用的全部附件目标。
+ * 返回 [{ raw, target }]，target 统一为不含路径的 basename（Obsidian 唯一解析语义）。
+ */
+function extractAttachmentRefs(text) {
+  const body = stripCode(text);
+  const refs = [];
+  const seen = new Set();
+  const push = (raw, target) => {
+    const t = String(target || "").trim();
+    if (!t) return;
+    if (seen.has(t + "|" + raw)) return;
+    seen.add(t + "|" + raw);
+    refs.push({ raw, target: t });
+  };
+
+  // Obsidian: ![[img.png]] / [[img.png]]（含别名、锚点，含子路径）
+  for (const m of body.matchAll(/\[\[([^\]]+)\]\]/g)) {
+    const inner = m[1].replace(/\\\|/g, "|").split("|")[0];
+    const head = inner.split("#")[0].trim();
+    if (!head) continue;
+    const base = head.split("/").pop();
+    if (ATTACHMENT_EXTS.has(base.split(".").pop().toLowerCase())) push(m[0], base);
+  }
+  // Markdown: ![alt](path) —— 不含 http(s) 与 data:
+  for (const m of body.matchAll(/!\[([^\]]*)\]\(([^)]+)\)/g)) {
+    const p = m[2].trim().split(/\s+/)[0];
+    if (/^(https?:|data:|mailto:|#)/i.test(p)) continue;
+    const base = decodeURIComponent(p.split("/").pop() || "");
+    if (ATTACHMENT_EXTS.has(base.split(".").pop().toLowerCase())) push(m[0], base);
+  }
+  // HTML: <img src="…">
+  for (const m of body.matchAll(/<img[^>]+src=["']([^"']+)["']/gi)) {
+    const p = m[1].trim();
+    if (/^(https?:|data:)/i.test(p)) continue;
+    const base = decodeURIComponent(p.split("/").pop() || "");
+    if (ATTACHMENT_EXTS.has(base.split(".").pop().toLowerCase())) push(m[0], base);
+  }
+  return refs;
+}
+
+/**
+ * 全库体检：孤儿附件 / 坏引用 / 体积榜。
+ * opts.progress 可选回调。
+ */
+async function auditVault(app, opts) {
+  const allFiles = app.vault.getFiles();
+  const mdFiles = allFiles.filter((f) => f.extension === "md");
+  const attachments = allFiles.filter((f) => ATTACHMENT_EXTS.has(f.extension));
+
+  // basename → 附件文件（同名冲突记 ambiguous）
+  const byName = new Map();
+  const ambiguous = new Set();
+  for (const a of attachments) {
+    if (byName.has(a.name)) ambiguous.add(a.name);
+    byName.set(a.name, a.name);
+  }
+
+  const referencedNames = new Set();
+  const missingRefs = []; // { file, raw, target }
+  for (const md of mdFiles) {
+    if (md.path.startsWith(".obsidian/")) continue;
+    let text = "";
+    try {
+      text = await app.vault.cachedRead(md);
+    } catch (e) {
+      continue;
+    }
+    for (const r of extractAttachmentRefs(text)) {
+      referencedNames.add(r.target);
+      if (!byName.has(r.target)) {
+        missingRefs.push({ file: md, raw: r.raw, target: r.target });
+      }
+    }
+  }
+
+  const orphans = attachments.filter((a) => !referencedNames.has(a.name));
+  const orphansAmbiguous = attachments.filter(
+    (a) => referencedNames.has(a.name) && ambiguous.has(a.name)
+  );
+
+  const sizeTop = attachments
+    .map((a) => ({ file: a, size: a.stat ? a.stat.size : 0 }))
+    .sort((x, y) => y.size - x.size)
+    .slice(0, 15);
+
+  const totalBytes = attachments.reduce((s, a) => s + (a.stat ? a.stat.size : 0), 0);
+  const orphanBytes = orphans.reduce((s, a) => s + (a.stat ? a.stat.size : 0), 0);
+
+  return {
+    attachments,
+    orphans,
+    orphansAmbiguous,
+    missingRefs,
+    sizeTop,
+    totalBytes,
+    orphanBytes,
+    mdCount: mdFiles.length
+  };
+}
+
+/**
+ * 孤儿批量归档：移动到 4-存档/<日期>_孤儿附件/，并写 README。
+ * files: TFile[]（由 UI 勾选）。返回移动成功的清单。
+ */
+async function archiveOrphans(app, files, note) {
+  if (!files || !files.length) return { moved: [], failed: [] };
+  const stamp = new Date();
+  const pad = (n) => String(n).padStart(2, "0");
+  const day = `${stamp.getFullYear()}-${pad(stamp.getMonth() + 1)}-${pad(stamp.getDate())}`;
+  const destDir = `4-存档/${day}_孤儿附件`;
+  const moved = [];
+  const failed = [];
+  for (const f of files) {
+    try {
+      const dest = normalizePath(`${destDir}/${f.name}`);
+      const target = app.vault.getAbstractFileByPath(dest);
+      const finalPath = target ? normalizePath(`${destDir}/${stamp.getTime()}_${f.name}`) : dest;
+      await app.vault.rename(f, finalPath);
+      moved.push({ from: f.path, to: finalPath });
+    } catch (e) {
+      failed.push({ file: f, error: String(e && e.message) });
+    }
+  }
+  if (moved.length) {
+    const readmePath = normalizePath(`${destDir}/README.md`);
+    const lines = [
+      `# ${day} 孤儿附件归档`,
+      "",
+      `来源：附件管理器检测为未被任何笔记引用的附件（${note || "手动触发"}）。`,
+      `数量：${moved.length}${failed.length ? `，失败 ${failed.length}` : ""}`,
+      "",
+      "| 原位置 | 归档位置 |",
+      "|---|---|"
+    ];
+    for (const m of moved) lines.push(`| ${m.from} | ${m.to} |`);
+    const existed = app.vault.getAbstractFileByPath(readmePath);
+    const content = lines.join("\n") + "\n";
+    if (existed) {
+      const old = await app.vault.read(existed);
+      await app.vault.modify(existed, old + "\n\n---\n\n" + content);
+    } else {
+      await app.vault.create(readmePath, content);
+    }
+  }
+  return { moved, failed, destDir };
+}
+
+module.exports = {
+  ATTACHMENT_EXTS,
+  extractAttachmentRefs,
+  auditVault,
+  archiveOrphans
+};
+
+  }, "./services"],
   "./services/dailyService.js": [function(require, module, exports) {
 "use strict";
 
@@ -2232,6 +2852,293 @@ class GitService {
 }
 
 module.exports = { GitService };
+
+  }, "./services"],
+  "./services/imageService.js": [function(require, module, exports) {
+"use strict";
+
+const { normalizePath, Notice } = require("obsidian");
+
+/**
+ * 图片服务：上传存档 + 格式转换 + 压缩。
+ *
+ * 转换引擎双轨（按可用性自动降级）：
+ *   1. sharp（首选）：sharp.nodejs.cn —— 基于 libvips，支持 webp/avif/jpeg/png 与
+ *      质量、尺寸、metadata。sharp 走 Node-API（ABI 稳定），Electron 下可加载，
+ *      但需在插件目录本地安装：cd .obsidian/plugins/obsidian-workbench && npm i sharp
+ *   2. Canvas（兜底）：浏览器 createImageBitmap + canvas.toBlob，支持 webp/jpeg/png，
+ *      无原生依赖、零安装，但不支持 avif 与高质量重采样。
+ *
+ * 设计原则：没装 sharp 也必须能用；装了 sharp 自动启用全部能力。
+ */
+
+const SUPPORTED_OUT = ["webp", "avif", "jpeg", "jpg", "png"];
+
+let sharpModule; // undefined = 未探测, null = 不可用
+let sharpError = "";
+let pluginDir = ""; // 由 main.js 用 manifest.dir 注入（绝对路径）
+
+/**
+ * 注入插件绝对目录。Obsidian 的 require 解析基址不一定是插件目录，
+ * 因此除常规 require 外，再用绝对路径兜底定位本地安装的 sharp。
+ */
+function setPluginDir(dir) {
+  pluginDir = String(dir || "");
+  sharpModule = undefined; // 允许重探
+}
+
+function loadSharp() {
+  if (sharpModule !== undefined) return sharpModule;
+  const attempts = [];
+  // 1) 常规解析（插件目录有 node_modules 时通常可命中）
+  attempts.push(() => require("sharp"));
+  // 2) 绝对路径兜底
+  if (pluginDir) {
+    attempts.push(() => {
+      const nodePath = require("path");
+      return require(nodePath.join(pluginDir, "node_modules", "sharp"));
+    });
+  }
+  for (const attempt of attempts) {
+    try {
+      sharpModule = attempt();
+      sharpError = "";
+      return sharpModule;
+    } catch (e) {
+      sharpError = String((e && e.message) || e);
+    }
+  }
+  sharpModule = null;
+  return sharpModule;
+}
+
+function engineInfo() {
+  const sharp = loadSharp();
+  return {
+    engine: sharp ? "sharp" : "canvas",
+    sharpVersion: sharp ? (sharp.versions ? sharp.versions.sharp : "unknown") : null,
+    libvips: sharp && sharp.versions ? sharp.versions.vips : null,
+    formats: sharp
+      ? Object.keys(sharp.format || {}).filter((k) => sharp.format[k].output && sharp.format[k].output.buffer)
+      : ["webp", "jpeg", "png"],
+    error: sharpError
+  };
+}
+
+const MIME = {
+  png: "image/png",
+  jpg: "image/jpeg",
+  jpeg: "image/jpeg",
+  webp: "image/webp",
+  avif: "image/avif",
+  gif: "image/gif",
+  bmp: "image/bmp",
+  svg: "image/svg+xml"
+};
+
+function extOf(name) {
+  const i = String(name).lastIndexOf(".");
+  return i < 0 ? "" : name.slice(i + 1).toLowerCase();
+}
+
+function baseOf(name) {
+  const i = String(name).lastIndexOf(".");
+  return i < 0 ? name : name.slice(0, i);
+}
+
+/**
+ * 归档目录：assets/<YYYY-MM>/（对齐 AGENTS.md「assets 是全库附件落盘位置」）
+ */
+function assetDirFor(date) {
+  const d = date || new Date();
+  const pad = (n) => String(n).padStart(2, "0");
+  return `assets/${d.getFullYear()}-${pad(d.getMonth() + 1)}`;
+}
+
+async function ensureFolder(app, path) {
+  const abs = app.vault.getAbstractFileByPath(normalizePath(path));
+  if (abs) return abs;
+  try {
+    return await app.vault.createFolder(normalizePath(path));
+  } catch (e) {
+    // 并发创建冲突：再查一次
+    return app.vault.getAbstractFileByPath(normalizePath(path));
+  }
+}
+
+/**
+ * 上传/粘贴的图片存档：写入 assets/<YYYY-MM>/，可选转格式与重命名。
+ * 入参：ArrayBuffer / Uint8Array / Blob / base64 dataURL 字符串。
+ * 返回 { file, path, engine }
+ */
+async function saveImage(app, input, opts) {
+  const o = opts || {};
+  const name = o.name || `pasted-${Date.now()}.png`;
+  const targetExt = (o.format || extOf(name) || "png").toLowerCase();
+  const dir = o.dir || assetDirFor(o.date);
+  await ensureFolder(app, dir);
+
+  let bytes;
+  if (typeof input === "string") {
+    // dataURL 或 base64
+    const comma = input.indexOf(",");
+    const b64 = comma >= 0 ? input.slice(comma + 1) : input;
+    const bin = atob(b64);
+    bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  } else if (input instanceof ArrayBuffer) {
+    bytes = new Uint8Array(input);
+  } else if (input && input.buffer instanceof ArrayBuffer) {
+    bytes = new Uint8Array(input.buffer);
+  } else if (input && typeof input.arrayBuffer === "function") {
+    bytes = new Uint8Array(await input.arrayBuffer());
+  } else {
+    throw new Error("无法识别的图片输入类型");
+  }
+
+  let outBytes = bytes;
+  let outExt = extOf(name) || "png";
+  let engine = "none";
+
+  const needConvert = o.format && o.format !== extOf(name);
+  const needResize = o.maxWidth && o.maxWidth > 0;
+  const needQuality = typeof o.quality === "number";
+  if (needConvert || needResize || needQuality) {
+    const conv = await convertBuffer(bytes, outExt, {
+      format: targetExt,
+      quality: o.quality,
+      maxWidth: o.maxWidth
+    });
+    outBytes = conv.bytes;
+    outExt = conv.ext;
+    engine = conv.engine;
+  }
+
+  const finalName = `${baseOf(name)}.${outExt}`;
+  let path = normalizePath(`${dir}/${finalName}`);
+  if (app.vault.getAbstractFileByPath(path)) {
+    path = normalizePath(`${dir}/${baseOf(name)}-${Date.now()}.${outExt}`);
+  }
+  const file = await app.vault.createBinary(path, outBytes.buffer ? outBytes.buffer : outBytes);
+  return { file, path, engine, bytes: outBytes.length };
+}
+
+/**
+ * 单缓冲转换：sharp 可用走 sharp，否则 canvas。
+ * 返回 { bytes: Uint8Array, ext, engine }
+ */
+async function convertBuffer(bytes, srcExt, opts) {
+  const o = opts || {};
+  const format = String(o.format || srcExt || "png").toLowerCase();
+  if (!SUPPORTED_OUT.includes(format)) throw new Error(`不支持的目标格式：${format}`);
+  const ext = format === "jpg" ? "jpeg" : format;
+  const sharp = loadSharp();
+
+  if (sharp) {
+    let pipe = sharp(Buffer.from(bytes), { failOn: "none" });
+    if (o.maxWidth) pipe = pipe.resize({ width: o.maxWidth, withoutEnlargement: true });
+    if (format === "webp") pipe = pipe.webp({ quality: o.quality == null ? 82 : o.quality });
+    else if (format === "avif") pipe = pipe.avif({ quality: o.quality == null ? 60 : o.quality });
+    else if (ext === "jpeg") pipe = pipe.jpeg({ quality: o.quality == null ? 85 : o.quality, mozjpeg: true });
+    else if (format === "png") pipe = pipe.png({ compressionLevel: 9 });
+    const buf = await pipe.toBuffer();
+    return { bytes: new Uint8Array(buf), ext: format === "jpeg" ? "jpg" : format, engine: "sharp" };
+  }
+
+  // Canvas 兜底（仅渲染进程可用）
+  if (typeof document === "undefined") throw new Error("当前环境无 Canvas，也无法加载 sharp");
+  if (format === "avif") throw new Error("AVIF 需要安装 sharp（canvas 不支持编码 AVIF）");
+  const blob = new Blob([bytes], { type: MIME[srcExt] || "image/png" });
+  const bitmap = await createImageBitmap(blob);
+  const scale = o.maxWidth && bitmap.width > o.maxWidth ? o.maxWidth / bitmap.width : 1;
+  const w = Math.max(1, Math.round(bitmap.width * scale));
+  const h = Math.max(1, Math.round(bitmap.height * scale));
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d");
+  ctx.imageSmoothingQuality = "high";
+  ctx.drawImage(bitmap, 0, 0, w, h);
+  if (bitmap.close) bitmap.close();
+  const mime = format === "webp" ? "image/webp" : format === "png" ? "image/png" : "image/jpeg";
+  const outBlob = await new Promise((resolve, reject) =>
+    canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("canvas.toBlob 失败"))), mime, o.quality == null ? 0.85 : o.quality)
+  );
+  const arr = new Uint8Array(await outBlob.arrayBuffer());
+  return { bytes: arr, engine: "canvas", ext: format === "jpeg" ? "jpg" : format };
+}
+
+/**
+ * 批量转换库内图片。files: TFile[]；opts: { format, quality, maxWidth, replace }
+ * replace=true 时：新文件写入同目录，并把引用改指新文件（保守：仅改同名前缀的 wiki 嵌入）。
+ */
+async function convertFiles(app, files, opts, onProgress) {
+  const o = opts || {};
+  const results = [];
+  let done = 0;
+  for (const f of files) {
+    done += 1;
+    if (onProgress) onProgress(done, files.length, f.path);
+    try {
+      const srcExt = extOf(f.name);
+      if (o.skipSameFormat && srcExt === (o.format || "").toLowerCase()) {
+        results.push({ file: f, skipped: true, reason: "已是目标格式" });
+        continue;
+      }
+      if (srcExt === "svg" || srcExt === "gif") {
+        results.push({ file: f, skipped: true, reason: "矢量/动图不转换" });
+        continue;
+      }
+      const buf = await app.vault.readBinary(f);
+      const conv = await convertBuffer(new Uint8Array(buf), srcExt, o);
+      const dir = f.parent ? f.parent.path : "";
+      const outName = `${baseOf(f.name)}.${conv.ext}`;
+      let outPath = normalizePath(dir ? `${dir}/${outName}` : outName);
+      if (app.vault.getAbstractFileByPath(outPath) && outPath !== f.path) {
+        outPath = normalizePath(dir ? `${dir}/${baseOf(f.name)}-${Date.now()}.${conv.ext}` : `${baseOf(f.name)}-${Date.now()}.${conv.ext}`);
+      }
+      const created = await app.vault.createBinary(outPath, conv.bytes.buffer);
+      results.push({
+        file: f,
+        created,
+        engine: conv.engine,
+        from: buf.byteLength,
+        to: conv.bytes.length,
+        saved: buf.byteLength - conv.bytes.length
+      });
+    } catch (e) {
+      results.push({ file: f, error: String((e && e.message) || e) });
+    }
+  }
+  return results;
+}
+
+/**
+ * 收集库内可转换的图片文件。
+ */
+function collectImages(app, folderPrefix) {
+  const prefix = (folderPrefix || "").replace(/^\/+|\/+$/g, "");
+  return app.vault.getFiles().filter((f) => {
+    const e = f.extension.toLowerCase();
+    if (!["png", "jpg", "jpeg", "webp", "bmp"].includes(e)) return false;
+    if (prefix && !(f.path === prefix || f.path.startsWith(prefix + "/"))) return false;
+    return true;
+  });
+}
+
+module.exports = {
+  SUPPORTED_OUT,
+  setPluginDir,
+  loadSharp,
+  engineInfo,
+  assetDirFor,
+  saveImage,
+  convertBuffer,
+  convertFiles,
+  collectImages,
+  extOf,
+  baseOf
+};
 
   }, "./services"],
   "./services/pomodoroService.js": [function(require, module, exports) {
@@ -3191,7 +4098,9 @@ const FEATURE_META = [
   { key: "projects", name: "项目管理", desc: "工作台项目面板与模板化新建项目" },
   { key: "privacy", name: "隐私区（锁定后搜索/链接全隐身）", desc: "锁定：userIgnoreFilters 不索引 + Git 排除；解锁恢复。切换后需重载 Obsidian" },
   { key: "ragSearch", name: "AI RAG 搜索", desc: "SiliconFlow embeddings + rerank 全库语义检索（需 API Key）" },
-  { key: "decision", name: "Jev/Clef TypeSafe 决策", desc: "本机 magpie 网关 /v1/systemone：choice / noul / score + 置信度" }
+  { key: "decision", name: "Jev/Clef TypeSafe 决策", desc: "本机 magpie 网关 /v1/systemone：choice / noul / score + 置信度" },
+  { key: "attachments", name: "附件管理", desc: "孤儿附件、坏引用、体积榜，勾选批量归档到 4-存档" },
+  { key: "imageTools", name: "图片工具", desc: "上传存档到 assets/<年-月>/，批量转 WebP/AVIF/JPEG 与压缩（sharp 优先，Canvas 兜底）" }
 ];
 
 class WorkbenchSettingTab extends PluginSettingTab {
@@ -3570,6 +4479,30 @@ class WorkbenchSettingTab extends PluginSettingTab {
       new Setting(containerEl)
         .setName("打开决策弹窗")
         .addButton((b) => b.setButtonText("Jev 决策").onClick(() => this.plugin.openJevModal()));
+    }
+
+    // ── 十四、附件管理 ──
+    if (this.plugin.isFeatureEnabled("attachments")) {
+      containerEl.createEl("h3", { text: "附件管理" });
+      new Setting(containerEl)
+        .setName("扫描全库附件")
+        .setDesc("检测孤儿附件、坏引用与体积榜；归档是移动不是删除")
+        .addButton((b) => b.setButtonText("打开附件管理器").onClick(() => this.plugin.openAttachmentModal()));
+    }
+
+    // ── 十五、图片工具 ──
+    if (this.plugin.isFeatureEnabled("imageTools")) {
+      containerEl.createEl("h3", { text: "图片工具" });
+      const info = require("./services/imageService").engineInfo();
+      new Setting(containerEl)
+        .setName("转换引擎")
+        .setDesc(
+          info.engine === "sharp"
+            ? "sharp（libvips " + (info.libvips || "?") + "）· 支持 AVIF 与高质量重采样"
+            : "Canvas 兜底（webp/jpeg/png）。要启用 AVIF 与更快转换：在插件目录执行 npm i sharp 后重启 Obsidian" +
+              (info.error ? " · 原因：" + String(info.error).slice(0, 100) : "")
+        )
+        .addButton((b) => b.setButtonText("打开图片工具").onClick(() => this.plugin.openImageToolsModal()));
     }
   }
 }

@@ -1,9 +1,9 @@
 {
   "id": "obsidian-workbench",
   "name": "Obsidian Workbench",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "minAppVersion": "1.5.0",
-  "description": "一体化个人知识工作台插件：Git 面板、原生工作台、SM-2 自测、番茄钟、快速闪念、日记中心、任务中心、项目管理、隐私区、SiliconFlow RAG 搜索、Jev/Clef 决策与 AI 辅助，全模块独立开关。",
+  "description": "一体化个人知识工作台插件：Git 面板、原生工作台、SM-2 自测、番茄钟、快速闪念、日记中心、任务中心、项目管理、隐私区、SiliconFlow RAG 搜索、Jev/Clef 决策、附件管理与图片工具（sharp/Canvas 格式转换），全模块独立开关。",
   "author": "caoronglin",
   "isDesktopOnly": true
 }

@@ -16,7 +16,9 @@ const FEATURE_META = [
   { key: "projects", name: "项目管理", desc: "工作台项目面板与模板化新建项目" },
   { key: "privacy", name: "隐私区（锁定后搜索/链接全隐身）", desc: "锁定：userIgnoreFilters 不索引 + Git 排除；解锁恢复。切换后需重载 Obsidian" },
   { key: "ragSearch", name: "AI RAG 搜索", desc: "SiliconFlow embeddings + rerank 全库语义检索（需 API Key）" },
-  { key: "decision", name: "Jev/Clef TypeSafe 决策", desc: "本机 magpie 网关 /v1/systemone：choice / noul / score + 置信度" }
+  { key: "decision", name: "Jev/Clef TypeSafe 决策", desc: "本机 magpie 网关 /v1/systemone：choice / noul / score + 置信度" },
+  { key: "attachments", name: "附件管理", desc: "孤儿附件、坏引用、体积榜，勾选批量归档到 4-存档" },
+  { key: "imageTools", name: "图片工具", desc: "上传存档到 assets/<年-月>/，批量转 WebP/AVIF/JPEG 与压缩（sharp 优先，Canvas 兜底）" }
 ];
 
 class WorkbenchSettingTab extends PluginSettingTab {
@@ -395,6 +397,30 @@ class WorkbenchSettingTab extends PluginSettingTab {
       new Setting(containerEl)
         .setName("打开决策弹窗")
         .addButton((b) => b.setButtonText("Jev 决策").onClick(() => this.plugin.openJevModal()));
+    }
+
+    // ── 十四、附件管理 ──
+    if (this.plugin.isFeatureEnabled("attachments")) {
+      containerEl.createEl("h3", { text: "附件管理" });
+      new Setting(containerEl)
+        .setName("扫描全库附件")
+        .setDesc("检测孤儿附件、坏引用与体积榜；归档是移动不是删除")
+        .addButton((b) => b.setButtonText("打开附件管理器").onClick(() => this.plugin.openAttachmentModal()));
+    }
+
+    // ── 十五、图片工具 ──
+    if (this.plugin.isFeatureEnabled("imageTools")) {
+      containerEl.createEl("h3", { text: "图片工具" });
+      const info = require("./services/imageService").engineInfo();
+      new Setting(containerEl)
+        .setName("转换引擎")
+        .setDesc(
+          info.engine === "sharp"
+            ? "sharp（libvips " + (info.libvips || "?") + "）· 支持 AVIF 与高质量重采样"
+            : "Canvas 兜底（webp/jpeg/png）。要启用 AVIF 与更快转换：在插件目录执行 npm i sharp 后重启 Obsidian" +
+              (info.error ? " · 原因：" + String(info.error).slice(0, 100) : "")
+        )
+        .addButton((b) => b.setButtonText("打开图片工具").onClick(() => this.plugin.openImageToolsModal()));
     }
   }
 }

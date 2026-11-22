@@ -100,3 +100,8 @@ notes/生信实验/03/results/
 
 # RAG 向量索引（体积大且可重建，不入库）
 .obsidian/plugins/obsidian-workbench/.rag-index.json
+
+# 插件本地原生依赖（sharp 预编译 ~20MB，按平台安装，不入库）
+# 启用方式：cd .obsidian/plugins/obsidian-workbench && npm i sharp
+.obsidian/plugins/obsidian-workbench/node_modules/
+.obsidian/plugins/obsidian-workbench/package-lock.json

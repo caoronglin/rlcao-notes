@@ -21,7 +21,9 @@ const DEFAULT_SETTINGS = {
     projects: true,       // 项目管理：活跃项目面板与模板化新建
     privacy: false,       // 隐私区：搜索/链接全隐身 + Git 排除一键切换
     ragSearch: true,      // AI RAG 搜索：SiliconFlow embeddings + rerank
-    decision: true        // Jev/Clef TypeSafe 决策（choice / noul / score + 置信度）
+    decision: true,       // Jev/Clef TypeSafe 决策（choice / noul / score + 置信度）
+    attachments: true,    // 附件管理：孤儿/坏引用/体积榜 + 批量归档
+    imageTools: true      // 图片工具：上传存档 + sharp/Canvas 格式转换与压缩
   },
 
   // 工作台仪表盘

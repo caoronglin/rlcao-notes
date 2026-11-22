@@ -23,3 +23,22 @@
 npm run build   # 零依赖重新打包 src/ -> main.js
 npm test        # 运行全量测试（含真实 Git 冲突/Stash/Remote、SM-2、番茄钟与 AI 校验）
 ```
+
+## 图片工具：启用 sharp（可选但推荐）
+
+插件自带 Canvas 兜底（webp / jpeg / png），装上 sharp 后解锁 AVIF、高质量重采样与更快批量转换：
+
+```bash
+cd .obsidian/plugins/obsidian-workbench
+npm i sharp
+```
+
+重启 Obsidian，在「设置 → 图片工具」查看引擎状态应显示 `sharp (libvips x.y.z)`。
+`node_modules/` 已在库 `.gitignore` 中排除，不会进入版本历史。
+
+## v3.2 新增模块
+
+| 模块 | 命令 | 说明 |
+|---|---|---|
+| 附件管理 | `附件管理：孤儿 / 坏引用 / 体积榜` | 扫描全库附件引用，孤儿可勾选批量归档到 `4-存档/<日期>_孤儿附件/`（移动而非删除，附 README 清单） |
+| 图片工具 | `图片工具：上传存档 / 格式转换 / 压缩` | 拖拽或选择图片 → 存 `assets/<YYYY-MM>/` 并在光标处插入嵌入；批量转 WebP/AVIF/JPEG + 限宽 + 质量 |

@@ -285,3 +285,75 @@ test("v3.1 modules: export contract + cosine/streak sanity", () => {
   assert.equal(chunks[0].heading, "A");
   assert.ok(!chunks.some((c) => c.heading === "fake"));
 });
+
+test("v3.2 attachments: ref extraction + orphan/坏引用 detection", async () => {
+  const { extractAttachmentRefs, auditVault } = require(path.join(rootDir, "src/services/attachmentService.js"));
+
+  // 四种引用形式
+  const text = [
+    "![[pic.png]]",
+    "![[assets/2026-11/photo.webp|300]]",
+    "![](../assets/old.jpg)",
+    '<img src="assets/x.svg" width="40">',
+    "![[notes/a.md]]",            // 非附件，忽略
+    "![ext](https://e.com/a.png)", // 外链，忽略
+    "```md",
+    "![[inside-fence.png]]",       // 围栏内，忽略
+    "```",
+    "行内 `![[inline-code.png]]` 不算"
+  ].join("\n");
+  const refs = extractAttachmentRefs(text);
+  const targets = refs.map((r) => r.target).sort();
+  assert.deepEqual(targets, ["old.jpg", "photo.webp", "pic.png", "x.svg"]);
+
+  // 全库审计：构造假 vault
+  const files = [
+    { path: "notes/a.md", extension: "md", name: "a.md", stat: { size: 10 } },
+    { path: "assets/used.png", extension: "png", name: "used.png", stat: { size: 100 } },
+    { path: "assets/orphan.png", extension: "png", name: "orphan.png", stat: { size: 900 } }
+  ];
+  const app = {
+    vault: {
+      getFiles: () => files,
+      cachedRead: async (f) => (f.path === "notes/a.md" ? "![[used.png]]\n![[gone.png]]" : "")
+    }
+  };
+  const report = await auditVault(app);
+  assert.equal(report.attachments.length, 2);
+  assert.equal(report.orphans.length, 1);
+  assert.equal(report.orphans[0].name, "orphan.png");
+  assert.equal(report.missingRefs.length, 1);
+  assert.equal(report.missingRefs[0].target, "gone.png");
+  assert.equal(report.orphanBytes, 900);
+});
+
+test("v3.2 images: engine detect + canvas fallback contract", async () => {
+  const img = require(path.join(rootDir, "src/services/imageService.js"));
+  const info = img.engineInfo();
+  assert.ok(["sharp", "canvas"].includes(info.engine));
+  assert.equal(typeof img.saveImage, "function");
+  assert.equal(typeof img.convertBuffer, "function");
+  assert.equal(typeof img.assetDirFor, "function");
+
+  // assets/<YYYY-MM> 命名
+  const d = img.assetDirFor(new Date(2026, 10, 22));
+  assert.equal(d, "assets/2026-11");
+
+  // 无 sharp、无 document → 明确报错而不是静默失败
+  if (info.engine === "canvas") {
+    await assert.rejects(
+      () => img.convertBuffer(new Uint8Array([1, 2, 3]), "png", { format: "webp" }),
+      /Canvas|sharp/
+    );
+    // AVIF 在 canvas 下必须明确拒绝
+    await assert.rejects(
+      () => img.convertBuffer(new Uint8Array([1]), "png", { format: "avif" }),
+      /AVIF|sharp|Canvas/
+    );
+  }
+  // 不支持的目标格式一律拒绝
+  await assert.rejects(
+    () => img.convertBuffer(new Uint8Array([1]), "png", { format: "tiff" }),
+    /不支持的目标格式/
+  );
+});

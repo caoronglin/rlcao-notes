@@ -619,3 +619,105 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* ===== v3.1: AI RAG 搜索视图 ===== */
+.owb-rag-view {
+  padding: 14px 16px;
+}
+
+.owb-rag-title {
+  font-size: 1.25em;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.owb-rag-bar {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0 8px;
+}
+
+.owb-rag-input {
+  flex: 1;
+}
+
+.owb-rag-manage {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.owb-rag-progress {
+  margin-bottom: 8px;
+}
+
+.owb-rag-hit {
+  margin-bottom: 10px;
+}
+
+.owb-rag-hit-head {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.owb-rag-hit-body {
+  font-size: 0.88em;
+  line-height: 1.55;
+  color: var(--text-muted);
+  border-left: 2px solid var(--background-modifier-border);
+  padding-left: 10px;
+  white-space: pre-wrap;
+}
+
+/* ===== v3.1: Jev / Clef 决策弹窗 ===== */
+.owb-jev-modal {
+  max-width: 640px;
+  width: 90vw;
+}
+
+.owb-jev-footer {
+  margin-top: 12px;
+}
+
+.owb-jev-answer {
+  margin: 6px 0;
+}
+
+.owb-jev-raw {
+  max-height: 240px;
+  overflow: auto;
+  font-size: 0.8em;
+  background: var(--background-secondary);
+  border-radius: 6px;
+  padding: 10px;
+}
+
+/* ===== v3.1: 任务中心弹窗 ===== */
+.owb-task-modal {
+  max-width: 560px;
+  width: 88vw;
+}
+
+.owb-task-add {
+  display: flex;
+  gap: 8px;
+  margin: 10px 0 6px;
+}
+
+.owb-task-add input {
+  flex: 1;
+}
+
+.owb-task-group {
+  margin-bottom: 12px;
+}
+
+.owb-task-folder {
+  font-weight: 600;
+  font-size: 0.85em;
+  margin: 8px 0 4px;
+  color: var(--text-muted);
+}

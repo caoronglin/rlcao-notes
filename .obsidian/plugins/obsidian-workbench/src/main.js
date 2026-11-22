@@ -5,15 +5,23 @@ const {
   VIEW_TYPE_WORKBENCH,
   VIEW_TYPE_GIT,
   VIEW_TYPE_QUIZ,
+  VIEW_TYPE_RAG,
   DEFAULT_SETTINGS
 } = require("./constants");
 const { deepMergeDefaults, formatDate } = require("./utils");
 const { GitService } = require("./services/gitService");
 const { PomodoroService } = require("./services/pomodoroService");
+const { RagService } = require("./services/ragService");
+const { openDaily } = require("./services/dailyService");
+const { listProjects, createProject } = require("./services/projectService");
+const privacyService = require("./services/privacyService");
 const { WorkbenchView } = require("./views/workbenchView");
 const { GitPanelView } = require("./views/gitView");
 const { QuizView } = require("./views/quizView");
+const { RagView } = require("./views/ragView");
 const { QuickCaptureModal } = require("./modals/quickCaptureModal");
+const { JevModal } = require("./modals/jevModal");
+const { TaskCenterModal } = require("./modals/taskModal");
 const { DoctorModal } = require("./modals/doctorModal");
 const { AIQuizModal } = require("./modals/aiQuizModal");
 const { WorkbenchSettingTab } = require("./settings");
@@ -50,12 +58,17 @@ class ObsidianWorkbenchPlugin extends Plugin {
     this.registerView(VIEW_TYPE_WORKBENCH, (leaf) => new WorkbenchView(leaf, this));
     this.registerView(VIEW_TYPE_GIT, (leaf) => new GitPanelView(leaf, this));
     this.registerView(VIEW_TYPE_QUIZ, (leaf) => new QuizView(leaf, this));
+    this.registerView(VIEW_TYPE_RAG, (leaf) => new RagView(leaf, this));
+
+    // RAG 服务
+    this.rag = new RagService(() => this.settings, this.app.vault.adapter);
 
     // Ribbon 图标（按模块开关动态显隐）
     this.ribbonEls = {
       workbench: this.addRibbonIcon("layout-dashboard", "打开知识工作台", () => this.activateWorkbenchView()),
       gitPanel: this.addRibbonIcon("git-branch", "打开 Git 管理面板", () => this.activateGitView()),
-      quickCapture: this.addRibbonIcon("zap", "快速闪念", () => this.openQuickCapture())
+      quickCapture: this.addRibbonIcon("zap", "快速闪念", () => this.openQuickCapture()),
+      ragSearch: this.addRibbonIcon("sparkles", "AI RAG 搜索", () => this.activateRagView())
     };
 
     // 命令面板（所有命令均检查对应功能开关）
@@ -103,6 +116,58 @@ class ObsidianWorkbenchPlugin extends Plugin {
       id: "ai-generate-quiz",
       name: "AI：从当前笔记自动生成自测题库",
       checkCallback: (checking) => this._guardCommand("aiAssist", checking, () => this.openAIQuizModal())
+    });
+
+    // ── v3.1 新模块命令 ──
+    this.addCommand({
+      id: "daily-today",
+      name: "日记：打开今日日记",
+      checkCallback: (checking) => this._guardCommand("dailyJournal", checking, () => this.openDailyNote(0))
+    });
+    this.addCommand({
+      id: "daily-yesterday",
+      name: "日记：打开昨日日记",
+      checkCallback: (checking) => this._guardCommand("dailyJournal", checking, () => this.openDailyNote(-1))
+    });
+    this.addCommand({
+      id: "open-task-center",
+      name: "任务中心：查看全库待办",
+      checkCallback: (checking) => this._guardCommand("tasks", checking, () => this.openTaskCenter())
+    });
+    this.addCommand({
+      id: "create-project",
+      name: "项目：新建项目（模板化）",
+      checkCallback: (checking) => this._guardCommand("projects", checking, () => this.createProjectInteractive())
+    });
+    this.addCommand({
+      id: "privacy-lock",
+      name: "隐私区：锁定（搜索与链接全隐身 + Git 排除）",
+      checkCallback: (checking) => this._guardCommand("privacy", checking, () => this.setPrivacy(true))
+    });
+    this.addCommand({
+      id: "privacy-unlock",
+      name: "隐私区：解锁（恢复索引与收录）",
+      checkCallback: (checking) => this._guardCommand("privacy", checking, () => this.setPrivacy(false))
+    });
+    this.addCommand({
+      id: "privacy-status",
+      name: "隐私区：查看当前状态",
+      checkCallback: (checking) => this._guardCommand("privacy", checking, () => this.showPrivacyStatus())
+    });
+    this.addCommand({
+      id: "open-rag-search",
+      name: "AI RAG 搜索：语义检索全库",
+      checkCallback: (checking) => this._guardCommand("ragSearch", checking, () => this.activateRagView())
+    });
+    this.addCommand({
+      id: "rag-build-index",
+      name: "AI RAG 搜索：构建/更新索引",
+      checkCallback: (checking) => this._guardCommand("ragSearch", checking, () => this.buildRagIndex())
+    });
+    this.addCommand({
+      id: "jev-decide",
+      name: "Jev/Clef 决策：闪念归类 / 笔记评分 / 自定义",
+      checkCallback: (checking) => this._guardCommand("decision", checking, () => this.openJevModal())
     });
 
     // 状态栏项
@@ -333,6 +398,75 @@ class ObsidianWorkbenchPlugin extends Plugin {
   openAIQuizModal() {
     if (!this.isFeatureEnabled("aiAssist")) return;
     new AIQuizModal(this.app, this).open();
+  }
+
+  // ── v3.1 新模块方法 ──
+  openDailyNote(offsetDays) {
+    if (!this.isFeatureEnabled("dailyJournal")) return;
+    openDaily(this.app, this.settings, offsetDays).catch((err) =>
+      new Notice("日记打开失败：" + err.message, 5000)
+    );
+  }
+
+  openTaskCenter() {
+    if (!this.isFeatureEnabled("tasks")) return;
+    new TaskCenterModal(this.app, this).open();
+  }
+
+  openJevModal() {
+    if (!this.isFeatureEnabled("decision")) return;
+    new JevModal(this.app, this).open();
+  }
+
+  createProjectInteractive() {
+    if (!this.isFeatureEnabled("projects")) return;
+    const name = window.prompt("项目名称（将在项目目录下创建 <名称>.md）：", "");
+    if (!name || !name.trim()) return;
+    createProject(this.app, this.settings, name).catch((err) =>
+      new Notice("项目创建失败：" + err.message, 6000)
+    );
+  }
+
+  async setPrivacy(hidden) {
+    if (!this.isFeatureEnabled("privacy")) return;
+    try {
+      if (hidden) await privacyService.ensureFolder(this.app, this.settings);
+      await privacyService.setHidden(this.app, this.settings, hidden);
+    } catch (err) {
+      new Notice("隐私区切换失败：" + err.message, 6000);
+    }
+  }
+
+  async showPrivacyStatus() {
+    if (!this.isFeatureEnabled("privacy")) return;
+    try {
+      const st = await privacyService.status(this.app, this.settings);
+      new Notice(
+        "隐私区 " + st.folder + "：" + (st.hidden ? "🔒 已锁定（搜索/链接不索引，Git 排除）" : "🔓 未锁定") +
+          " · " + st.fileCount + " 个文件 · Git 排除：" + (st.gitExcluded ? "是" : "否"),
+        8000
+      );
+    } catch (err) {
+      new Notice("状态读取失败：" + err.message, 6000);
+    }
+  }
+
+  async activateRagView() {
+    if (!this.isFeatureEnabled("ragSearch")) return;
+    const existing = this.app.workspace.getLeavesOfType(VIEW_TYPE_RAG);
+    const leaf = existing.length ? existing[0] : this.app.workspace.getLeaf("tab");
+    await leaf.setViewState({ type: VIEW_TYPE_RAG, active: true });
+    this.app.workspace.revealLeaf(leaf);
+  }
+
+  async buildRagIndex() {
+    if (!this.isFeatureEnabled("ragSearch")) return;
+    try {
+      const stat = await this.rag.buildIndex(this.app, null);
+      new Notice("RAG 索引完成：" + stat.files + " 篇 / " + stat.chunks + " 块", 6000);
+    } catch (err) {
+      new Notice("索引构建失败：" + err.message, 8000);
+    }
   }
 
   refreshWorkbenchViews() {

@@ -4,6 +4,8 @@ const { ItemView, Notice, normalizePath } = require("obsidian");
 const { VIEW_TYPE_WORKBENCH } = require("../constants");
 const { formatDate, getGreeting } = require("../utils");
 const { collectWorkbenchData, toggleTaskInFile } = require("../services/vaultStats");
+const { listDailies, computeStreak, openDaily } = require("../services/dailyService");
+const { listProjects } = require("../services/projectService");
 
 /**
  * 个人知识工作台主视图（v3.0）：按模块开关动态装配按钮与番茄钟专注卡片。
@@ -35,20 +37,7 @@ class WorkbenchView extends ItemView {
   }
 
   async openOrCreateDailyNote() {
-    const { dailyFolder, dailyDateFormat } = this.plugin.settings;
-    const todayName = formatDate(new Date(), dailyDateFormat || "YYYY-MM-DD");
-    const folder = (dailyFolder || "").replace(/^\/+|\/+$/g, "");
-    const targetPath = normalizePath(folder ? `${folder}/${todayName}.md` : `${todayName}.md`);
-
-    let file = this.app.vault.getAbstractFileByPath(targetPath);
-    if (!file) {
-      if (folder && !this.app.vault.getAbstractFileByPath(folder)) {
-        await this.app.vault.createFolder(folder);
-      }
-      const initial = `---\ntags: [periodic/daily]\ncreated: ${todayName}\n---\n\n# ${todayName}\n\n## 🎯 今日重点\n- [ ] \n\n## 📝 记录\n`;
-      file = await this.app.vault.create(targetPath, initial);
-    }
-    await this.app.workspace.getLeaf(false).openFile(file);
+    await openDaily(this.app, this.plugin.settings, 0);
   }
 
   async render() {
@@ -89,6 +78,18 @@ class WorkbenchView extends ItemView {
     }
     if (this.plugin.isFeatureEnabled("vaultDoctor")) {
       mkBtn("🩺 健康体检", false, () => this.plugin.openDoctorModal());
+    }
+    if (this.plugin.isFeatureEnabled("tasks")) {
+      mkBtn("📋 任务中心", false, () => this.plugin.openTaskCenter());
+    }
+    if (this.plugin.isFeatureEnabled("projects")) {
+      mkBtn("🗂️ 新建项目", false, () => this.plugin.createProjectInteractive());
+    }
+    if (this.plugin.isFeatureEnabled("ragSearch")) {
+      mkBtn("🪄 AI 搜索", false, () => this.plugin.activateRagView());
+    }
+    if (this.plugin.isFeatureEnabled("decision")) {
+      mkBtn("⚖️ Jev 决策", false, () => this.plugin.openJevModal());
     }
 
     // 1.5 番茄钟专注卡片（受 pomodoro 开关控制）
@@ -159,6 +160,60 @@ class WorkbenchView extends ItemView {
 
     this.renderFileCard(opsGrid, `📥 今日输入 (${data.createdToday.length})`, data.createdToday, "今日暂无新建笔记");
     this.renderFileCard(opsGrid, `✍️ 今日输出 (${data.modifiedToday.length})`, data.modifiedToday, "今日暂无更新记录");
+
+    // 2.5 项目与日记（v3.1）
+    const projGrid = root.createDiv({ cls: "owb-grid-2" });
+
+    if (this.plugin.isFeatureEnabled("projects")) {
+      const projCard = projGrid.createDiv({ cls: "owb-card" });
+      projCard.createDiv({ cls: "owb-card-title", text: "🗂️ 项目" });
+      const projects = await listProjects(this.app, this.plugin.settings);
+      if (!projects.length) {
+        projCard.createDiv({ cls: "owb-muted", text: "项目目录为空（设置里的 projectFolder）" });
+      } else {
+        const ul = projCard.createEl("ul", { cls: "owb-list" });
+        for (const item of projects.slice(0, 8)) {
+          const li = ul.createEl("li");
+          const a = li.createEl("a", {
+            cls: "owb-link",
+            text: item.name + (item.kind === "dir" ? "/" : "")
+          });
+          if (item.file) {
+            a.addEventListener("click", () => this.app.workspace.getLeaf(false).openFile(item.file));
+          }
+          const bits = [];
+          if (item.status) bits.push(item.status);
+          if (item.priority) bits.push("优先级 " + item.priority);
+          if (item.due) bits.push("截止 " + item.due);
+          if (bits.length) li.createSpan({ cls: "owb-muted", text: " · " + bits.join(" · ") });
+        }
+      }
+    }
+
+    if (this.plugin.isFeatureEnabled("dailyJournal")) {
+      const dailyCard = projGrid.createDiv({ cls: "owb-card" });
+      const dailies = await listDailies(this.app, this.plugin.settings);
+      const { streak, includesToday } = computeStreak(dailies, new Date());
+      dailyCard.createDiv({
+        cls: "owb-card-title",
+        text: `📅 日记 · 连续 ${streak} 天${includesToday ? "（今日已写 ✓）" : "（今日未写）"}`
+      });
+      const actions = dailyCard.createDiv({ cls: "owb-pomo-actions" });
+      const todayBtn = actions.createEl("button", { cls: "mod-cta", text: "今日" });
+      todayBtn.addEventListener("click", () => this.plugin.openDailyNote(0));
+      const yBtn = actions.createEl("button", { text: "昨日" });
+      yBtn.addEventListener("click", () => this.plugin.openDailyNote(-1));
+      if (!dailies.length) {
+        dailyCard.createDiv({ cls: "owb-muted", text: "还没有日记（dailyFolder 下 YYYY-MM-DD.md）" });
+      } else {
+        const ul = dailyCard.createEl("ul", { cls: "owb-list" });
+        for (const d of dailies.slice(0, 6)) {
+          const li = ul.createEl("li");
+          const a = li.createEl("a", { cls: "owb-link", text: d.key });
+          a.addEventListener("click", () => this.app.workspace.getLeaf(false).openFile(d.file));
+        }
+      }
+    }
 
     // 3. 洞察镜
     const insightGrid = root.createDiv({ cls: "owb-grid-2" });

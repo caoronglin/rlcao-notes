@@ -8,6 +8,7 @@ const __owb_modules = {
 const VIEW_TYPE_WORKBENCH = "owb-workbench-view";
 const VIEW_TYPE_GIT = "owb-git-view";
 const VIEW_TYPE_QUIZ = "owb-quiz-view";
+const VIEW_TYPE_RAG = "owb-rag-view";
 
 const DEFAULT_SETTINGS = {
   // ── 全模块功能开关（可按需随时启停，实时生效） ──
@@ -19,20 +20,46 @@ const DEFAULT_SETTINGS = {
     quizEngine: true,     // SM-2 互动自测视图
     pomodoro: true,       // 番茄钟计时器与每日专注统计
     vaultDoctor: true,    // Vault 健康体检
-    aiAssist: false       // AI 辅助（生成 Commit Message / 从笔记自动出题，配好接口后开启）
+    aiAssist: false,      // AI 辅助（生成 Commit Message / 从笔记自动出题，配好接口后开启）
+    dailyJournal: true,   // 日记中心：今日/昨日快捷、连续天数与历史列表
+    tasks: true,          // 任务中心：全库任务聚合、新建与勾选
+    projects: true,       // 项目管理：活跃项目面板与模板化新建
+    privacy: false,       // 隐私区：搜索/链接全隐身 + Git 排除一键切换
+    ragSearch: true,      // AI RAG 搜索：SiliconFlow embeddings + rerank
+    decision: true        // Jev/Clef TypeSafe 决策（choice / noul / score + 置信度）
   },
 
   // 工作台仪表盘
   openWorkbenchOnStart: false,
-  dailyFolder: "diary",
+  dailyFolder: "vault/日记",
   dailyDateFormat: "YYYY-MM-DD",
-  projectFolder: "",
+  projectFolder: "vault/项目",
   onlyDueTasks: false,
   forgottenDays: 30,
   quickLinks: [
     { label: "闪念收件箱", target: "inbox.md" },
-    { label: "示例题库", target: "notes/sample-quiz-bank.md" }
+    { label: "生信自测题库", target: "notes/bio/生信学习/生信自测题库.md" }
   ],
+
+  // 任务中心
+  tasksPath: "vault/任务.md",
+  tasksScanLimit: 200,
+
+  // 隐私区
+  privacyFolder: "vault/隐私",
+
+  // AI RAG 搜索（SiliconFlow）
+  ragApiKey: "",
+  ragBaseUrl: "https://api.siliconflow.cn",
+  ragEmbedModel: "BAAI/bge-m3",
+  ragRerankModel: "BAAI/bge-reranker-v2-m3",
+  ragFolders: "notes,vault,wiki,_posts",
+  ragChunkChars: 600,
+
+  // Jev / Clef TypeSafe 决策（magpie 本机网关）
+  decisionEndpoint: "http://127.0.0.1:3425/v1/systemone",
+  decisionToken: "magpie",
+  decisionModel: "vercel-jev/typesafe-ai/jev",
 
   // 快速闪念
   inboxPath: "inbox.md",
@@ -61,7 +88,7 @@ const DEFAULT_SETTINGS = {
   quizFolder: "notes",
   quizShuffleQuestions: false,
   quizShuffleOptions: false,
-  quizWrongExportPath: "notes/错题复盘.md",
+  quizWrongExportPath: "notes/bio/生信学习/错题复盘.md",
   quizStore: {
     version: 2,
     times: 0,
@@ -78,6 +105,7 @@ module.exports = {
   VIEW_TYPE_WORKBENCH,
   VIEW_TYPE_GIT,
   VIEW_TYPE_QUIZ,
+  VIEW_TYPE_RAG,
   DEFAULT_SETTINGS
 };
 
@@ -90,15 +118,23 @@ const {
   VIEW_TYPE_WORKBENCH,
   VIEW_TYPE_GIT,
   VIEW_TYPE_QUIZ,
+  VIEW_TYPE_RAG,
   DEFAULT_SETTINGS
 } = require("./constants");
 const { deepMergeDefaults, formatDate } = require("./utils");
 const { GitService } = require("./services/gitService");
 const { PomodoroService } = require("./services/pomodoroService");
+const { RagService } = require("./services/ragService");
+const { openDaily } = require("./services/dailyService");
+const { listProjects, createProject } = require("./services/projectService");
+const privacyService = require("./services/privacyService");
 const { WorkbenchView } = require("./views/workbenchView");
 const { GitPanelView } = require("./views/gitView");
 const { QuizView } = require("./views/quizView");
+const { RagView } = require("./views/ragView");
 const { QuickCaptureModal } = require("./modals/quickCaptureModal");
+const { JevModal } = require("./modals/jevModal");
+const { TaskCenterModal } = require("./modals/taskModal");
 const { DoctorModal } = require("./modals/doctorModal");
 const { AIQuizModal } = require("./modals/aiQuizModal");
 const { WorkbenchSettingTab } = require("./settings");
@@ -135,12 +171,17 @@ class ObsidianWorkbenchPlugin extends Plugin {
     this.registerView(VIEW_TYPE_WORKBENCH, (leaf) => new WorkbenchView(leaf, this));
     this.registerView(VIEW_TYPE_GIT, (leaf) => new GitPanelView(leaf, this));
     this.registerView(VIEW_TYPE_QUIZ, (leaf) => new QuizView(leaf, this));
+    this.registerView(VIEW_TYPE_RAG, (leaf) => new RagView(leaf, this));
+
+    // RAG 服务
+    this.rag = new RagService(() => this.settings, this.app.vault.adapter);
 
     // Ribbon 图标（按模块开关动态显隐）
     this.ribbonEls = {
       workbench: this.addRibbonIcon("layout-dashboard", "打开知识工作台", () => this.activateWorkbenchView()),
       gitPanel: this.addRibbonIcon("git-branch", "打开 Git 管理面板", () => this.activateGitView()),
-      quickCapture: this.addRibbonIcon("zap", "快速闪念", () => this.openQuickCapture())
+      quickCapture: this.addRibbonIcon("zap", "快速闪念", () => this.openQuickCapture()),
+      ragSearch: this.addRibbonIcon("sparkles", "AI RAG 搜索", () => this.activateRagView())
     };
 
     // 命令面板（所有命令均检查对应功能开关）
@@ -188,6 +229,58 @@ class ObsidianWorkbenchPlugin extends Plugin {
       id: "ai-generate-quiz",
       name: "AI：从当前笔记自动生成自测题库",
       checkCallback: (checking) => this._guardCommand("aiAssist", checking, () => this.openAIQuizModal())
+    });
+
+    // ── v3.1 新模块命令 ──
+    this.addCommand({
+      id: "daily-today",
+      name: "日记：打开今日日记",
+      checkCallback: (checking) => this._guardCommand("dailyJournal", checking, () => this.openDailyNote(0))
+    });
+    this.addCommand({
+      id: "daily-yesterday",
+      name: "日记：打开昨日日记",
+      checkCallback: (checking) => this._guardCommand("dailyJournal", checking, () => this.openDailyNote(-1))
+    });
+    this.addCommand({
+      id: "open-task-center",
+      name: "任务中心：查看全库待办",
+      checkCallback: (checking) => this._guardCommand("tasks", checking, () => this.openTaskCenter())
+    });
+    this.addCommand({
+      id: "create-project",
+      name: "项目：新建项目（模板化）",
+      checkCallback: (checking) => this._guardCommand("projects", checking, () => this.createProjectInteractive())
+    });
+    this.addCommand({
+      id: "privacy-lock",
+      name: "隐私区：锁定（搜索与链接全隐身 + Git 排除）",
+      checkCallback: (checking) => this._guardCommand("privacy", checking, () => this.setPrivacy(true))
+    });
+    this.addCommand({
+      id: "privacy-unlock",
+      name: "隐私区：解锁（恢复索引与收录）",
+      checkCallback: (checking) => this._guardCommand("privacy", checking, () => this.setPrivacy(false))
+    });
+    this.addCommand({
+      id: "privacy-status",
+      name: "隐私区：查看当前状态",
+      checkCallback: (checking) => this._guardCommand("privacy", checking, () => this.showPrivacyStatus())
+    });
+    this.addCommand({
+      id: "open-rag-search",
+      name: "AI RAG 搜索：语义检索全库",
+      checkCallback: (checking) => this._guardCommand("ragSearch", checking, () => this.activateRagView())
+    });
+    this.addCommand({
+      id: "rag-build-index",
+      name: "AI RAG 搜索：构建/更新索引",
+      checkCallback: (checking) => this._guardCommand("ragSearch", checking, () => this.buildRagIndex())
+    });
+    this.addCommand({
+      id: "jev-decide",
+      name: "Jev/Clef 决策：闪念归类 / 笔记评分 / 自定义",
+      checkCallback: (checking) => this._guardCommand("decision", checking, () => this.openJevModal())
     });
 
     // 状态栏项
@@ -418,6 +511,75 @@ class ObsidianWorkbenchPlugin extends Plugin {
   openAIQuizModal() {
     if (!this.isFeatureEnabled("aiAssist")) return;
     new AIQuizModal(this.app, this).open();
+  }
+
+  // ── v3.1 新模块方法 ──
+  openDailyNote(offsetDays) {
+    if (!this.isFeatureEnabled("dailyJournal")) return;
+    openDaily(this.app, this.settings, offsetDays).catch((err) =>
+      new Notice("日记打开失败：" + err.message, 5000)
+    );
+  }
+
+  openTaskCenter() {
+    if (!this.isFeatureEnabled("tasks")) return;
+    new TaskCenterModal(this.app, this).open();
+  }
+
+  openJevModal() {
+    if (!this.isFeatureEnabled("decision")) return;
+    new JevModal(this.app, this).open();
+  }
+
+  createProjectInteractive() {
+    if (!this.isFeatureEnabled("projects")) return;
+    const name = window.prompt("项目名称（将在项目目录下创建 <名称>.md）：", "");
+    if (!name || !name.trim()) return;
+    createProject(this.app, this.settings, name).catch((err) =>
+      new Notice("项目创建失败：" + err.message, 6000)
+    );
+  }
+
+  async setPrivacy(hidden) {
+    if (!this.isFeatureEnabled("privacy")) return;
+    try {
+      if (hidden) await privacyService.ensureFolder(this.app, this.settings);
+      await privacyService.setHidden(this.app, this.settings, hidden);
+    } catch (err) {
+      new Notice("隐私区切换失败：" + err.message, 6000);
+    }
+  }
+
+  async showPrivacyStatus() {
+    if (!this.isFeatureEnabled("privacy")) return;
+    try {
+      const st = await privacyService.status(this.app, this.settings);
+      new Notice(
+        "隐私区 " + st.folder + "：" + (st.hidden ? "🔒 已锁定（搜索/链接不索引，Git 排除）" : "🔓 未锁定") +
+          " · " + st.fileCount + " 个文件 · Git 排除：" + (st.gitExcluded ? "是" : "否"),
+        8000
+      );
+    } catch (err) {
+      new Notice("状态读取失败：" + err.message, 6000);
+    }
+  }
+
+  async activateRagView() {
+    if (!this.isFeatureEnabled("ragSearch")) return;
+    const existing = this.app.workspace.getLeavesOfType(VIEW_TYPE_RAG);
+    const leaf = existing.length ? existing[0] : this.app.workspace.getLeaf("tab");
+    await leaf.setViewState({ type: VIEW_TYPE_RAG, active: true });
+    this.app.workspace.revealLeaf(leaf);
+  }
+
+  async buildRagIndex() {
+    if (!this.isFeatureEnabled("ragSearch")) return;
+    try {
+      const stat = await this.rag.buildIndex(this.app, null);
+      new Notice("RAG 索引完成：" + stat.files + " 篇 / " + stat.chunks + " 块", 6000);
+    } catch (err) {
+      new Notice("索引构建失败：" + err.message, 8000);
+    }
   }
 
   refreshWorkbenchViews() {
@@ -694,6 +856,201 @@ class DoctorModal extends Modal {
 module.exports = { DoctorModal };
 
   }, "./modals"],
+  "./modals/jevModal.js": [function(require, module, exports) {
+"use strict";
+
+const { Modal, Notice, Setting } = require("obsidian");
+const { ask } = require("../services/decisionService");
+
+/**
+ * Jev / Clef 决策弹窗。
+ * 场景（内置 + 自定义 JSON）：
+ *  1. 闪念归类   choice：这条内容该进哪个知识区
+ *  2. 笔记评分   score ：信息密度 1-10
+ *  3. 自由判断   noul ：是否需要今天处理
+ *  4. 自定义     直接编辑 questions JSON（choice/noul/score 任意组合）
+ */
+
+const SCENARIOS = {
+  classify: {
+    label: "闪念/笔记归类（choice）",
+    buildQuestions: () => ({
+      area: {
+        type: "choice",
+        instructions: "这条内容最应该归入哪个知识区？",
+        criteria: {
+          inbox: "尚未成型，先进收件箱",
+          study: "学习笔记与课程相关",
+          project: "某个具体项目或实验的一部分",
+          reference: "参考资料/文献，暂不加工",
+          life: "生活、健康或与知识库无关"
+        }
+      }
+    })
+  },
+  score: {
+    label: "信息密度评分（score 1-10）",
+    buildQuestions: () => ({
+      quality: {
+        type: "score",
+        instructions: "评估这段笔记的信息密度与结构质量",
+        criteria: [
+          { value: 1, description: "空洞，几乎无可复用信息" },
+          { value: 5, description: "中等，有信息但结构松散" },
+          { value: 10, description: "密度极高，结构清晰可复用" }
+        ]
+      }
+    })
+  },
+  today: {
+    label: "今日是否处理（noul）",
+    buildQuestions: () => ({
+      needAttention: {
+        type: "noul",
+        instructions: "这条内容今天需要被处理吗？只有有时效或有明确下一步时才为真。"
+      }
+    })
+  }
+};
+
+class JevModal extends Modal {
+  constructor(app, plugin) {
+    super(app, plugin);
+    this.plugin = plugin;
+    this.scenario = "classify";
+    this.stateText = "";
+    this.result = null;
+  }
+
+  async onOpen() {
+    // 默认带当前笔记内容
+    const active = this.app.workspace.getActiveFile();
+    if (active && active.extension === "md") {
+      try {
+        const content = await this.app.vault.cachedRead(active);
+        this.stateText = content.slice(0, 4000);
+        this.activePath = active.path;
+      } catch (e) {
+        /* ignore */
+      }
+    }
+    this.render();
+  }
+
+  render() {
+    const { contentEl } = this;
+    contentEl.empty();
+    contentEl.addClass("owb-jev-modal");
+
+    contentEl.createEl("h2", { text: "⚖️ Jev / Clef 决策" });
+    contentEl.createDiv({
+      cls: "owb-muted",
+      text: `网关：${this.plugin.settings.decisionEndpoint} · 模型：${this.plugin.settings.decisionModel}`
+    });
+
+    new Setting(contentEl)
+      .setName("决策场景")
+      .addDropdown((d) => {
+        for (const [k, v] of Object.entries(SCENARIOS)) {
+          d.addOption(k, v.label);
+        }
+        d.addOption("custom", "自定义 questions JSON");
+        d.setValue(this.scenario);
+        d.onChange(async (v) => {
+          this.scenario = v;
+          this.result = null;
+          this.render();
+        });
+      });
+
+    new Setting(contentEl)
+      .setName("State（决策依据）")
+      .setDesc(
+        this.activePath
+          ? "已带入当前笔记前 4000 字：" + this.activePath
+          : "无打开的笔记，请手动粘贴内容"
+      )
+      .addTextArea((t) => {
+        t.setValue(this.stateText).onChange((v) => (this.stateText = v));
+        t.inputEl.rows = 6;
+        t.inputEl.style.width = "100%";
+      });
+
+    if (this.scenario === "custom") {
+      new Setting(contentEl)
+        .setName("questions JSON")
+        .setDesc('形如 {"area":{"type":"choice","instructions":"…","criteria":{"a":"…"}}}')
+        .addTextArea((t) => {
+          t.setValue(this.customJson || '{\n  "key": {\n    "type": "choice",\n    "instructions": "问题说明",\n    "criteria": { "yes": "……", "no": "……" }\n  }\n}');
+          t.inputEl.rows = 8;
+          t.inputEl.style.width = "100%";
+          t.inputEl.style.fontFamily = "monospace";
+          t.onChange((v) => (this.customJson = v));
+        });
+    }
+
+    const footer = contentEl.createDiv({ cls: "owb-jev-footer" });
+    const sendBtn = footer.createEl("button", { cls: "mod-cta", text: "发起决策" });
+    sendBtn.addEventListener("click", () => this.decide());
+
+    if (this.result) {
+      const box = contentEl.createDiv({ cls: "owb-jev-result" });
+      for (const [key, a] of Object.entries(this.result.answers)) {
+        const row = box.createDiv({ cls: "owb-jev-answer" });
+        row.createSpan({ text: key + " → " });
+        row.createEl("strong", { text: String(a.value) });
+        row.createSpan({
+          cls: "owb-muted",
+          text: ` · 置信度 ${a.confidence !== null ? (a.confidence * 100).toFixed(0) + "%" : "—"} · 类型 ${a.type}`
+        });
+      }
+      const raw = box.createEl("pre", { cls: "owb-jev-raw" });
+      raw.setText(JSON.stringify(this.result.raw, null, 2));
+    }
+  }
+
+  async decide() {
+    if (!String(this.stateText || "").trim()) {
+      new Notice("请先填入 State 内容");
+      return;
+    }
+    let questions;
+    const types = {};
+    if (this.scenario === "custom") {
+      try {
+        questions = JSON.parse(this.customJson || "{}");
+        for (const k of Object.keys(questions)) types[k] = questions[k].type || "choice";
+      } catch (e) {
+        new Notice("questions JSON 解析失败：" + e.message);
+        return;
+      }
+    } else {
+      questions = SCENARIOS[this.scenario].buildQuestions();
+      for (const k of Object.keys(questions)) types[k] = questions[k].type;
+    }
+    if (!Object.keys(questions).length) {
+      new Notice("questions 不能为空");
+      return;
+    }
+
+    new Notice("决策中…（本机网关）");
+    try {
+      const state = { message: this.stateText };
+      this.result = await ask(state, questions, this.plugin.settings, { questionTypes: types });
+      if (!Object.keys(this.result.answers).length) {
+        new Notice("网关没有返回 answers，原始结果见弹窗", 6000);
+      }
+    } catch (err) {
+      this.result = null;
+      new Notice("决策失败：" + err.message, 8000);
+    }
+    this.render();
+  }
+}
+
+module.exports = { JevModal };
+
+  }, "./modals"],
   "./modals/quickCaptureModal.js": [function(require, module, exports) {
 "use strict";
 
@@ -910,6 +1267,174 @@ class RemoteModal extends Modal {
 module.exports = { RemoteModal };
 
   }, "./modals"],
+  "./modals/taskModal.js": [function(require, module, exports) {
+"use strict";
+
+const { Modal, Notice, normalizePath } = require("obsidian");
+const { formatDate } = require("../utils");
+const { toggleTaskInFile } = require("../services/vaultStats");
+
+/**
+ * 任务中心：全库未完成任务聚合 + 新建 + 勾选完成。
+ * 勾选复用 vaultStats 的 toggleTaskInFile（原地改行，保持 frontmatter/列表上下文）。
+ */
+
+const MAX_SCAN = 300;
+
+async function scanAllTasks(app, settings) {
+  const tasks = [];
+  const files = app.vault.getMarkdownFiles();
+  const folders = String(settings.tasksScanFolders || "").trim();
+
+  for (const file of files) {
+    const path = file.path;
+    if (path.startsWith(".obsidian/") || path.startsWith(".trash/")) continue;
+    if (folders) {
+      const roots = folders.split(",").map((x) => x.trim()).filter(Boolean);
+      if (roots.length && !roots.some((r) => path === r || path.startsWith(r + "/"))) continue;
+    }
+    let content;
+    try {
+      content = await app.vault.cachedRead(file);
+    } catch (e) {
+      continue;
+    }
+    let inFence = false;
+    const lines = content.split("\n");
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      if (line.trim().startsWith("```")) {
+        inFence = !inFence;
+        continue;
+      }
+      if (inFence) continue;
+      const m = line.match(/^(\s*)- \[ \] (.*)$/);
+      if (m) {
+        tasks.push({ file, line: i, text: m[2].trim(), indent: m[1].length });
+        if (tasks.length >= MAX_SCAN) return tasks;
+      }
+    }
+  }
+  return tasks;
+}
+
+class TaskCenterModal extends Modal {
+  constructor(app, plugin) {
+    super(app, plugin);
+    this.plugin = plugin;
+  }
+
+  async onOpen() {
+    await this.render();
+  }
+
+  async render() {
+    const { contentEl } = this;
+    contentEl.empty();
+    contentEl.addClass("owb-task-modal");
+
+    contentEl.createEl("h2", { text: "📋 任务中心" });
+
+    // 新建行
+    const addRow = contentEl.createDiv({ cls: "owb-task-add" });
+    const input = addRow.createEl("input", {
+      cls: "owb-rag-input",
+      attr: { type: "text", placeholder: "新任务，回车保存到 " + this.plugin.settings.tasksPath }
+    });
+    input.addEventListener("keydown", async (ev) => {
+      if (ev.key !== "Enter") return;
+      const text = input.value.trim();
+      if (!text) return;
+      try {
+        await this.addTask(text);
+        input.value = "";
+        await this.render();
+      } catch (err) {
+        new Notice("写入失败：" + err.message);
+      }
+    });
+
+    const tasks = await scanAllTasks(this.app, this.plugin.settings);
+    const count = contentEl.createDiv({
+      cls: "owb-muted",
+      text: tasks.length >= MAX_SCAN ? `仅显示前 ${MAX_SCAN} 条（全库更多）` : `全库未完成 ${tasks.length} 条`
+    });
+
+    if (!tasks.length) {
+      contentEl.createDiv({ cls: "owb-muted", text: "🎉 没有待办任务" });
+      return;
+    }
+
+    // 按文件分组
+    const groups = new Map();
+    for (const t of tasks) {
+      const g = t.file.parent ? t.file.parent.path || "(根目录)" : "(根目录)";
+      if (!groups.has(g)) groups.set(g, []);
+      groups.get(g).push(t);
+    }
+
+    for (const [folder, list] of groups) {
+      const section = contentEl.createDiv({ cls: "owb-task-group" });
+      section.createDiv({
+        cls: "owb-task-folder",
+        text: `${folder} (${list.length})`
+      });
+      for (const t of list) {
+        const row = section.createDiv({ cls: "owb-task-row" });
+        row.style.paddingLeft = String(4 + Math.min(t.indent, 8) * 6) + "px";
+        const cb = row.createEl("input", { attr: { type: "checkbox" } });
+        cb.addEventListener("change", async () => {
+          try {
+            await toggleTaskInFile(this.app, t.file, t.line);
+            new Notice("✓ 已完成：" + t.text.slice(0, 30));
+            await this.render();
+          } catch (err) {
+            new Notice("更新失败：" + err.message);
+            await this.render();
+          }
+        });
+        const link = row.createEl("a", { cls: "owb-link", text: t.text.slice(0, 64) });
+        link.addEventListener("click", () => this.app.workspace.getLeaf(false).openFile(t.file));
+      }
+    }
+  }
+
+  async addTask(text) {
+    const { tasksPath } = this.plugin.settings;
+    const target = normalizePath(tasksPath || "vault/任务.md");
+    let file = this.app.vault.getAbstractFileByPath(target);
+    const line = `- [ ] ${text}`;
+    if (!file) {
+      const folder = target.slice(0, target.lastIndexOf("/"));
+      if (folder && !this.app.vault.getAbstractFileByPath(normalizePath(folder))) {
+        await this.app.vault.createFolder(normalizePath(folder));
+      }
+      const today = formatDate(new Date(), "YYYY-MM-DD");
+      file = await this.app.vault.create(
+        target,
+        `---\ntags: [tasks]\ncreated: ${today}\n---\n\n# 任务\n\n${line}\n`
+      );
+    } else {
+      const content = await this.app.vault.read(file);
+      await this.app.vault.process(file, (old) => {
+        // 插在 frontmatter 之后 / 标题之后，无则置顶
+        const lines = old.split("\n");
+        let at = 0;
+        if (lines[0] === "---") {
+          const end = lines.indexOf("---", 1);
+          if (end > 0) at = end + 1;
+        }
+        lines.splice(at, 0, line);
+        return lines.join("\n");
+      });
+    }
+    new Notice("已记录：" + text.slice(0, 30));
+  }
+}
+
+module.exports = { TaskCenterModal, scanAllTasks };
+
+  }, "./modals"],
   "./services/aiService.js": [function(require, module, exports) {
 "use strict";
 
@@ -1046,6 +1571,168 @@ module.exports = {
   generateCommitMessage,
   generateQuizMarkdownFromNote
 };
+
+  }, "./services"],
+  "./services/dailyService.js": [function(require, module, exports) {
+"use strict";
+
+const { normalizePath } = require("obsidian");
+const { formatDate } = require("../utils");
+
+/**
+ * 日记中心服务：按 dailyFolder + dailyDateFormat 定位日记文件，
+ * 提供连续写作天数（streak）与历史列表。
+ */
+
+function dailyPathFor(settings, date) {
+  const folder = (settings.dailyFolder || "").replace(/^\/+|\/+$/g, "");
+  const name = formatDate(date, settings.dailyDateFormat || "YYYY-MM-DD");
+  return normalizePath(folder ? `${folder}/${name}.md` : `${name}.md`);
+}
+
+/**
+ * 列出日记文件（按文件名日期降序）。
+ * 只匹配能被 dailyDateFormat 模板生成的 YYYY-MM-DD 风格文件名。
+ */
+async function listDailies(app, settings) {
+  const folder = (settings.dailyFolder || "").replace(/^\/+|\/+$/g, "");
+  if (!folder) return [];
+  const abs = app.vault.getAbstractFileByPath(normalizePath(folder));
+  if (!abs || !abs.children) return [];
+  const out = [];
+  for (const child of abs.children) {
+    if (child.extension !== "md") continue;
+    const m = child.basename.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!m) continue;
+    const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+    if (Number.isNaN(d.getTime())) continue;
+    out.push({ file: child, date: d, key: child.basename });
+  }
+  out.sort((a, b) => (a.key < b.key ? 1 : -1));
+  return out;
+}
+
+/**
+ * 连续写作天数：从今天往回数；今天还没写则从昨天起算（显示 "昨天止 N 天"）。
+ */
+function computeStreak(dailies, now) {
+  const keys = new Set(dailies.map((d) => d.key));
+  const fmt = (d) => formatDate(d, "YYYY-MM-DD");
+  const cursor = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const todayKey = fmt(cursor);
+  if (!keys.has(todayKey)) cursor.setDate(cursor.getDate() - 1); // 今天未写不打破连击
+  let streak = 0;
+  while (keys.has(fmt(cursor))) {
+    streak += 1;
+    cursor.setDate(cursor.getDate() - 1);
+  }
+  return { streak, includesToday: keys.has(todayKey) };
+}
+
+async function openDaily(app, settings, offsetDays) {
+  const now = new Date();
+  const target = new Date(now.getFullYear(), now.getMonth(), now.getDate() + offsetDays);
+  const targetPath = dailyPathFor(settings, target);
+  const folder = (settings.dailyFolder || "").replace(/^\/+|\/+$/g, "");
+  let file = app.vault.getAbstractFileByPath(targetPath);
+  if (!file) {
+    if (folder && !app.vault.getAbstractFileByPath(normalizePath(folder))) {
+      await app.vault.createFolder(normalizePath(folder));
+    }
+    const label = formatDate(target, "YYYY-MM-DD");
+    const initial =
+      "---\ntags: [periodic/daily]\ncreated: " +
+      label +
+      "\n---\n\n# " +
+      label +
+      "\n\n## 🎯 今日重点\n- [ ] \n\n## 📝 记录\n";
+    file = await app.vault.create(targetPath, initial);
+  }
+  await app.workspace.getLeaf(false).openFile(file);
+  return file;
+}
+
+module.exports = { dailyPathFor, listDailies, computeStreak, openDaily };
+
+  }, "./services"],
+  "./services/decisionService.js": [function(require, module, exports) {
+"use strict";
+
+/**
+ * Jev / Clef TypeSafe 决策服务（magpie 本机网关）。
+ *
+ * 协议（2026-11-22 实测校验通过）：
+ *   POST {endpoint}
+ *   Authorization: Bearer {token}   （网关信任本机回环，可填任意值）
+ *   { model, state: {...任意 JSON...}, questions: { <key>: {type,instructions,criteria} } }
+ *
+ *   questions.<key>.type:
+ *     - "choice": criteria 是对象 { 选项: "描述" }     → answers.<key>.choice + confidence
+ *     - "score":  criteria 是数组 [{value,description}] → answers.<key>.score + confidence
+ *     - "noul":  无 criteria                            → answers.<key> 布尔/自由判定 + confidence
+ *
+ *   model: "vercel-jev/typesafe-ai/jev"（决策）；"vercel-jev/typesafe-ai/clef"（可读图，
+ *          state 内放 "images": ["data:image/png;base64,..."]）
+ */
+
+async function ask(state, questions, settings, opts) {
+  const endpoint = String((settings && settings.decisionEndpoint) || "http://127.0.0.1:3425/v1/systemone");
+  const token = String((settings && settings.decisionToken) || "magpie");
+  const model = String((settings && settings.decisionModel) || "vercel-jev/typesafe-ai/jev");
+  const res = await fetch(endpoint, {
+    method: "POST",
+    headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" },
+    body: JSON.stringify({ model, state, questions })
+  });
+  const text = await res.text();
+  let json = null;
+  try {
+    json = JSON.parse(text);
+  } catch (e) {
+    throw new Error("网关返回非 JSON：" + text.slice(0, 200));
+  }
+  if (!res.ok) {
+    const msg =
+      (json && ((json.error && json.error.message) || json.message)) ||
+      "HTTP " + res.status;
+    throw new Error(msg);
+  }
+  return normalizeAnswers(json, opts && opts.questionTypes ? opts.questionTypes : {});
+}
+
+/**
+ * 归一化响应：{ answers: { team: { choice, confidence } }, ... } →
+ * { key: { type, value, confidence, raw } }，三种类型统一为 value 字段。
+ */
+function normalizeAnswers(json, questionTypes) {
+  const answers = (json && json.answers) || {};
+  const out = {};
+  for (const key of Object.keys(answers)) {
+    const a = answers[key] || {};
+    const type = questionTypes[key] || "choice";
+    let value = null;
+    if (type === "score") value = typeof a.score === "number" ? a.score : null;
+    else if (type === "noul") value = "noul" in a ? a.noul : a.value !== undefined ? a.value : null;
+    else value = a.choice !== undefined ? a.choice : a.value !== undefined ? a.value : null;
+    out[key] = {
+      type,
+      value,
+      confidence: typeof a.confidence === "number" ? a.confidence : null,
+      raw: a
+    };
+  }
+  return { answers: out, raw: json };
+}
+
+/** 读取当前笔记正文作为 state 主体（截断到 maxChars）。 */
+function noteToState(file, content, maxChars) {
+  const limit = maxChars || 4000;
+  const trimmed = content.length > limit ? content.slice(0, limit) + "\n…(截断)" : content;
+  const state = { path: file ? file.path : "", content: trimmed };
+  return state;
+}
+
+module.exports = { ask, normalizeAnswers, noteToState };
 
   }, "./services"],
   "./services/doctorService.js": [function(require, module, exports) {
@@ -1650,6 +2337,293 @@ class PomodoroService {
 module.exports = { PomodoroService };
 
   }, "./services"],
+  "./services/privacyService.js": [function(require, module, exports) {
+"use strict";
+
+const { normalizePath, Notice } = require("obsidian");
+
+/**
+ * 隐私区服务：
+ *  - 锁定 = 写入 .obsidian/app.json 的 userIgnoreFilters（搜索/链接/图谱完全不索引该目录）
+ *          + 在 .gitignore 追加该目录（可选，防止隐私内容进入版本历史）
+ *  - 解锁 = 移除以上两者
+ * Obsidian 的 userIgnoreFilters 支持正则；变更后需重载（提示用户）。
+ */
+
+const APP_JSON = ".obsidian/app.json";
+
+async function readJson(adapter, path, fallback) {
+  try {
+    const raw = await adapter.read(path);
+    return raw ? JSON.parse(raw) : { ...fallback };
+  } catch (e) {
+    return { ...fallback };
+  }
+}
+
+async function writeJson(adapter, path, obj) {
+  await adapter.write(path, JSON.stringify(obj, null, 2));
+}
+
+function filterPatternFor(folder) {
+  // userIgnoreFilters 是正则；对 vault/隐私 匹配目录本身与其下一切
+  return "^" + folder.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "(/|$)";
+}
+
+/**
+ * 当前锁定状态。
+ */
+async function status(app, settings) {
+  const folder = (settings.privacyFolder || "").replace(/^\/+|\/+$/g, "");
+  const adapter = app.vault.adapter;
+  const appJson = await readJson(adapter, APP_JSON, {});
+  const pattern = folder ? filterPatternFor(folder) : "";
+  const filters = Array.isArray(appJson.userIgnoreFilters) ? appJson.userIgnoreFilters : [];
+  const hidden = Boolean(pattern) && filters.some((f) => String(f).trim() === pattern);
+  let gitExcluded = false;
+  try {
+    const gi = await adapter.read(".gitignore");
+    gitExcluded = Boolean(folder) && new RegExp("^" + folder.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "/?$", "m").test(gi);
+  } catch (e) {
+    /* no .gitignore */
+  }
+  const abs = folder ? app.vault.getAbstractFileByPath(normalizePath(folder)) : null;
+  const fileCount = abs && abs.children ? abs.children.length : 0;
+  return { folder, hidden, gitExcluded, fileCount, pattern };
+}
+
+/**
+ * 一键锁定/解锁。返回操作后的状态说明文本。
+ */
+async function setHidden(app, settings, hidden) {
+  const folder = (settings.privacyFolder || "").replace(/^\/+|\/+$/g, "");
+  if (!folder) throw new Error("请先在设置中填写隐私区目录");
+  const adapter = app.vault.adapter;
+  const pattern = filterPatternFor(folder);
+
+  // 1) Obsidian 索引隐身
+  const appJson = await readJson(adapter, APP_JSON, {});
+  const filters = Array.isArray(appJson.userIgnoreFilters) ? appJson.userIgnoreFilters.slice() : [];
+  const idx = filters.findIndex((f) => String(f).trim() === pattern);
+  if (hidden && idx < 0) filters.push(pattern);
+  if (!hidden && idx >= 0) filters.splice(idx, 1);
+  appJson.userIgnoreFilters = filters;
+  await writeJson(adapter, APP_JSON, appJson);
+
+  // 2) Git 排除（同步管理，避免隐私内容进入版本历史）
+  let gi = "";
+  try {
+    gi = await adapter.read(".gitignore");
+  } catch (e) {
+    gi = "";
+  }
+  const lineRe = new RegExp("^" + folder.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "/?\\s*$", "m");
+  if (hidden && !lineRe.test(gi)) {
+    gi = (gi.endsWith("\n") || !gi ? gi : gi + "\n") +
+      "\n# ===== Obsidian Workbench 隐私区（勿提交，解锁后可移除）=====\n" + folder + "/\n";
+    await adapter.write(".gitignore", gi);
+  }
+  if (!hidden && lineRe.test(gi)) {
+    const lines = gi.split("\n").filter((l) => !lineRe.test(l + "\n") && !(l.trim() === folder || l.trim() === folder + "/"));
+    await adapter.write(".gitignore", lines.join("\n"));
+  }
+
+  const st = await status(app, settings);
+  const verb = hidden ? "已锁定" : "已解锁";
+  new Notice(
+    `隐私区 ${verb}（${folder}，${st.fileCount} 个文件）。搜索与链接索引${hidden ? "不再收录该区" : "已恢复"}，需重载 Obsidian 生效。`,
+    8000
+  );
+  return st;
+}
+
+/**
+ * 确保隐私区目录存在（首次使用时创建，并放一份说明文件）。
+ */
+async function ensureFolder(app, settings) {
+  const folder = (settings.privacyFolder || "").replace(/^\/+|\/+$/g, "");
+  if (!folder) throw new Error("请先在设置中填写隐私区目录");
+  const abs = app.vault.getAbstractFileByPath(normalizePath(folder));
+  if (!abs) {
+    await app.vault.createFolder(normalizePath(folder));
+    await app.vault.create(
+      normalizePath(folder + "/说明.md"),
+      "---\ntags: [privacy]\n---\n\n# 隐私区\n\n本目录由 Obsidian Workbench 隐私模块管理。\n\n- 锁定后：搜索、反向链接、图谱完全不收录本目录，且被 Git 排除。\n- 解锁后：恢复正常索引。\n- 切换后需重载 Obsidian（Ctrl/Cmd+P → Reload app without saving）。\n"
+    );
+    new Notice("隐私区目录已创建：" + folder);
+  }
+  return abs;
+}
+
+module.exports = { status, setHidden, ensureFolder };
+
+  }, "./services"],
+  "./services/projectService.js": [function(require, module, exports) {
+"use strict";
+
+const { normalizePath, Notice } = require("obsidian");
+const { formatDate } = require("../utils");
+
+/**
+ * 项目管理服务：扫描 projectFolder 的一级实体（目录项目或单文件项目），
+ * 读取 frontmatter 状态；支持基于模板的新建。
+ */
+
+function parseFrontmatter(text) {
+  const out = {};
+  if (!text || !text.startsWith("---")) return out;
+  const end = text.indexOf("\n---", 3);
+  if (end < 0) return out;
+  const block = text.slice(4, end);
+  for (const line of block.split("\n")) {
+    const idx = line.indexOf(":");
+    if (idx <= 0) continue;
+    const key = line.slice(0, idx).trim();
+    let val = line.slice(idx + 1).trim();
+    if (!key || !val) continue;
+    if (val.startsWith('"') && val.endsWith('"')) val = val.slice(1, -1);
+    out[key] = val;
+  }
+  return out;
+}
+
+const MAIN_FILE_NAMES = ["index.md", "README.md"];
+
+/**
+ * 目录项目的「主文件」：同名 .md → index.md → README.md → 第一个带 type:project 的 md。
+ */
+function pickMainFile(dirAbs) {
+  const sameName = dirAbs.children.find(
+    (c) => c.extension === "md" && c.basename === dirAbs.name
+  );
+  if (sameName) return sameName;
+  for (const name of MAIN_FILE_NAMES) {
+    const hit = dirAbs.children.find((c) => c.name === name);
+    if (hit) return hit;
+  }
+  return dirAbs.children.find((c) => c.extension === "md") || null;
+}
+
+/**
+ * 列出项目：projectFolder 下的一级目录与 .md 文件。
+ * 返回 [{ name, kind, file, status, due, priority, noteCount }]
+ */
+async function listProjects(app, settings) {
+  const folder = (settings.projectFolder || "").replace(/^\/+|\/+$/g, "");
+  if (!folder) return [];
+  const abs = app.vault.getAbstractFileByPath(normalizePath(folder));
+  if (!abs || !abs.children) return [];
+  const out = [];
+  for (const child of abs.children) {
+    if (child.extension === "md") {
+      let meta = {};
+      try {
+        meta = parseFrontmatter(await app.vault.cachedRead(child));
+      } catch (e) {
+        /* ignore */
+      }
+      out.push({
+        name: child.basename,
+        kind: "file",
+        file: child,
+        status: meta.status || "",
+        due: meta.due || "",
+        priority: meta.priority || "",
+        noteCount: 1
+      });
+    } else if (child.children) {
+      const main = pickMainFile(child);
+      let meta = {};
+      if (main) {
+        try {
+          meta = parseFrontmatter(await app.vault.cachedRead(main));
+        } catch (e) {
+          /* ignore */
+        }
+      }
+      out.push({
+        name: child.name,
+        kind: "dir",
+        file: main,
+        status: meta.status || "",
+        due: meta.due || "",
+        priority: meta.priority || "",
+        noteCount: child.children.length
+      });
+    }
+  }
+  out.sort((a, b) => (a.name < b.name ? -1 : 1));
+  return out;
+}
+
+const PROJECT_TEMPLATE = [
+  "---",
+  'type: project',
+  'status: 进行中',
+  'created: {DATE}',
+  'due: ""',
+  'priority: 普通',
+  'tags: [project]',
+  "---",
+  "# {TITLE}",
+  "",
+  "## 目标与完成标准",
+  "",
+  "## 里程碑",
+  "- [ ] 确认目标与范围",
+  "- [ ] 完成关键工作",
+  "- [ ] 整理结果与交付物",
+  "",
+  "## 下一步行动",
+  "- [ ] ",
+  "",
+  "## 关联实验、笔记与附件",
+  "",
+  "## 决策与进展日志",
+  "",
+  "## 风险与待确认",
+  ""
+].join("\n");
+
+/**
+ * 新建项目：在 projectFolder 下创建 <name>.md（若模板存在则优先用库内模板）。
+ */
+async function createProject(app, settings, name) {
+  const clean = (name || "").trim();
+  if (!clean) throw new Error("项目名不能为空");
+  const folder = (settings.projectFolder || "").replace(/^\/+|\/+$/g, "");
+  if (!folder) throw new Error("请先在设置中填写项目目录");
+  if (!app.vault.getAbstractFileByPath(normalizePath(folder))) {
+    await app.vault.createFolder(normalizePath(folder));
+  }
+  const target = normalizePath(`${folder}/${clean}.md`);
+  if (app.vault.getAbstractFileByPath(target)) {
+    throw new Error(`已存在同名项目：${clean}.md`);
+  }
+  // 库内 Templater 模板优先
+  let content = null;
+  const tplPath = normalizePath("muban/project-dashboard-template.md");
+  const tplFile = app.vault.getAbstractFileByPath(tplPath);
+  if (tplFile) {
+    content = await app.vault.cachedRead(tplFile);
+    content = content
+      .replace(/\{\{VALUE:[^}]*\}\}/g, clean)
+      .replace(/\{\{DATE:YYYY-MM-DD\}\}/g, formatDate(new Date(), "YYYY-MM-DD"))
+      .replace(/\{\{DATE\}\}/g, formatDate(new Date(), "YYYY-MM-DD"));
+  } else {
+    content = PROJECT_TEMPLATE.replace(/\{DATE\}/g, formatDate(new Date(), "YYYY-MM-DD"))
+      .replace(/\{TITLE\}/g, clean)
+      .replace(/\{DATE\}/g, formatDate(new Date(), "YYYY-MM-DD"));
+  }
+  const file = await app.vault.create(target, content);
+  new Notice(`项目已创建：${clean}`);
+  await app.workspace.getLeaf(false).openFile(file);
+  return file;
+}
+
+module.exports = { listProjects, createProject, parseFrontmatter };
+
+  }, "./services"],
   "./services/quizEngine.js": [function(require, module, exports) {
 "use strict";
 
@@ -1819,6 +2793,265 @@ module.exports = {
 };
 
   }, "./services"],
+  "./services/ragService.js": [function(require, module, exports) {
+"use strict";
+
+/**
+ * AI RAG 搜索服务（SiliconFlow）：
+ *   - embeddings: POST {base}/v1/embeddings  { model, input: [text...] }
+ *     文档: https://api-docs.siliconflow.cn/docs/api/embeddings-post
+ *   - rerank:     POST {base}/v1/rerank       { model, query, documents: [text...] }
+ *     文档: https://api-docs.siliconflow.cn/docs/api/rerank-post
+ *
+ * 索引保存在插件目录 .rag-index.json（.gitignore 已排除，不入库）：
+ *   { version: 1, model, dim, builtAt, chunks: [{ path, heading, text, vec }] }
+ */
+
+const INDEX_FILE = ".rag-index.json";
+const SKIP_DIR_NAMES = new Set([
+  ".obsidian", ".trash", ".trash-1000", "node_modules", "__pycache__",
+  "4-存档", "muban", "panel"
+]);
+
+function cosine(a, b) {
+  let dot = 0, na = 0, nb = 0;
+  const n = Math.min(a.length, b.length);
+  for (let i = 0; i < n; i++) {
+    dot += a[i] * b[i];
+    na += a[i] * a[i];
+    nb += b[i] * b[i];
+  }
+  if (!na || !nb) return 0;
+  return dot / (Math.sqrt(na) * Math.sqrt(nb));
+}
+
+class RagService {
+  constructor(getSettings, adapter) {
+    this.getSettings = getSettings; // () => plugin.settings
+    this.adapter = adapter;         // app.vault.adapter
+    this.index = null;
+  }
+
+  base() {
+    const s = this.getSettings();
+    return String(s.ragBaseUrl || "https://api.siliconflow.cn").replace(/\/+$/, "");
+  }
+
+  authHeaders() {
+    const key = String(this.getSettings().ragApiKey || "").trim();
+    if (!key) throw new Error("请先在插件设置中填写 SiliconFlow API Key");
+    return { Authorization: "Bearer " + key, "Content-Type": "application/json" };
+  }
+
+  async embed(texts) {
+    const s = this.getSettings();
+    const res = await fetch(this.base() + "/v1/embeddings", {
+      method: "POST",
+      headers: this.authHeaders(),
+      body: JSON.stringify({ model: s.ragEmbedModel || "BAAI/bge-m3", input: texts })
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error("embeddings 失败：" + ((data && (data.message || data.error)) || res.status));
+    }
+    const rows = (data.data || []).slice().sort((a, b) => a.index - b.index);
+    return rows.map((r) => r.embedding);
+  }
+
+  async rerank(query, documents) {
+    const s = this.getSettings();
+    const res = await fetch(this.base() + "/v1/rerank", {
+      method: "POST",
+      headers: this.authHeaders(),
+      body: JSON.stringify({
+        model: s.ragRerankModel || "BAAI/bge-reranker-v2-m3",
+        query,
+        documents,
+        top_n: documents.length,
+        return_documents: false
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error("rerank 失败：" + ((data && (data.message || data.error)) || res.status));
+    }
+    // results: [{ index, relevance_score }]
+    return (data.results || []).map((r) => ({ index: r.index, score: r.relevance_score }));
+  }
+
+  /**
+   * 把一篇笔记切成带标题语境的块。
+   */
+  chunkText(text, maxChars) {
+    const limit = maxChars || 600;
+    const lines = text.split("\n");
+    const chunks = [];
+    let heading = "";
+    let buf = [];
+
+    const flush = () => {
+      const joined = buf.join("\n").trim();
+      if (joined.length >= 12) chunks.push({ heading, text: joined });
+      buf = [];
+    };
+
+    let inFence = false;
+    for (const line of lines) {
+      if (line.trim().startsWith("```")) inFence = !inFence;
+      const stripped = line.trim();
+      if (!inFence && /^#{1,4}\s+/.test(line)) {
+        flush();
+        heading = stripped.replace(/^#{1,4}\s+/, "");
+        buf.push(line);
+        continue;
+      }
+      buf.push(line);
+      if (buf.join("\n").length >= limit) flush();
+    }
+    flush();
+    return chunks;
+  }
+
+  scanRoots(app, settings) {
+    const raw = String(settings.ragFolders || "notes,vault,wiki,_posts");
+    return raw.split(",").map((x) => x.trim()).filter(Boolean);
+  }
+
+  shouldIndex(path, roots, privacyFolder) {
+    if (privacyFolder && (path + "/").startsWith(privacyFolder + "/")) return false;
+    if (path.startsWith(".obsidian/") || path.startsWith(".trash/")) return false;
+    for (const d of SKIP_DIR_NAMES) {
+      if (path === d || path.startsWith(d + "/")) return false;
+    }
+    if (!roots.length) return true;
+    return roots.some((r) => path === r || path.startsWith(r + "/"));
+  }
+
+  async loadIndex() {
+    if (this.index) return this.index;
+    try {
+      const raw = await this.adapter.read(".obsidian/plugins/obsidian-workbench/" + INDEX_FILE);
+      this.index = JSON.parse(raw);
+    } catch (e) {
+      this.index = null;
+    }
+    return this.index;
+  }
+
+  indexStat() {
+    const s = this.getSettings();
+    if (!this.index) return { built: false, chunks: 0 };
+    return {
+      built: true,
+      chunks: this.index.chunks.length,
+      model: this.index.model,
+      files: new Set(this.index.chunks.map((c) => c.path)).size,
+      stale: this.index.model !== (s.ragEmbedModel || "BAAI/bge-m3")
+    };
+  }
+
+  /**
+   * 构建全库索引。onProgress(done, total, message?) 用于 UI 回显。
+   */
+  async buildIndex(app, onProgress) {
+    const s = this.getSettings();
+    if (!String(s.ragApiKey || "").trim()) throw new Error("请先在插件设置中填写 SiliconFlow API Key");
+    const roots = this.scanRoots(app, s);
+    const privacyFolder = (s.privacyFolder || "").replace(/^\/+|\/+$/g, "");
+    const files = app.vault.getMarkdownFiles().filter((f) => this.shouldIndex(f.path, roots, privacyFolder));
+
+    const report = (done, total, msg) => {
+      if (onProgress) onProgress(done, total, msg);
+    };
+    report(0, files.length, "扫描到 " + files.length + " 篇笔记");
+
+    const chunks = [];
+    let processed = 0;
+    const BATCH = 16;
+    for (const file of files) {
+      let content = "";
+      try {
+        content = await app.vault.cachedRead(file);
+      } catch (e) {
+        processed += 1;
+        continue;
+      }
+      for (const c of this.chunkText(content, s.ragChunkChars || 600)) {
+        chunks.push({ path: file.path, heading: c.heading, text: c.text });
+      }
+      processed += 1;
+      if (processed % 40 === 0) report(processed, files.length, "已读取 " + processed + "/" + files.length);
+    }
+    report(files.length, files.length, "开始向量化（共 " + chunks.length + " 块）…");
+
+    const vectors = [];
+    for (let i = 0; i < chunks.length; i += BATCH) {
+      const part = chunks.slice(i, i + BATCH);
+      const vecs = await this.embed(part.map((c) => (c.heading ? "【" + c.heading + "】\n" : "") + c.text));
+      for (let j = 0; j < part.length; j++) {
+        vectors.push({ path: part[j].path, heading: part[j].heading, text: part[j].text, vec: vecs[j] });
+      }
+      report(i + part.length, chunks.length, "向量化 " + Math.min(i + part.length, chunks.length) + "/" + chunks.length);
+    }
+
+    this.index = {
+      version: 1,
+      model: s.ragEmbedModel || "BAAI/bge-m3",
+      dim: vectors.length ? vectors[0].vec.length : 0,
+      builtAt: new Date().toISOString(),
+      chunks: vectors
+    };
+    await this.adapter.write(
+      ".obsidian/plugins/obsidian-workbench/" + INDEX_FILE,
+      JSON.stringify(this.index)
+    );
+    return this.indexStat();
+  }
+
+  /**
+   * 查询：embed 问题 → cosine Top-K → rerank 精排 → Top-N。
+   */
+  async search(query, opts) {
+    const s = this.getSettings();
+    const index = await this.loadIndex();
+    if (!index || !index.chunks.length) throw new Error("索引为空，请先构建 RAG 索引");
+    if (index.model !== (s.ragEmbedModel || "BAAI/bge-m3")) {
+      throw new Error("索引与当前嵌入模型不一致，请重建索引");
+    }
+    const topK = (opts && opts.topK) || 30;
+    const topN = (opts && opts.topN) || 8;
+    const qvec = (await this.embed([query]))[0];
+
+    const scored = index.chunks.map((c) => ({ c, score: cosine(qvec, c.vec) }));
+    scored.sort((a, b) => b.score - a.score);
+    const candidates = scored.slice(0, topK);
+
+    // 无 rerank key 时退化为纯向量序
+    if (!String(s.ragApiKey || "").trim()) throw new Error("请先在插件设置中填写 SiliconFlow API Key");
+    let order;
+    try {
+      const rr = await this.rerank(query, candidates.map((x) => (x.c.heading ? "【" + x.c.heading + "】" : "") + x.c.text.slice(0, 1000)));
+      order = rr.map((r) => ({ chunk: candidates[r.index].c, score: r.score, cosine: candidates[r.index].score }));
+    } catch (e) {
+      order = candidates.slice(0, topN).map((x) => ({ chunk: x.c, score: x.score, cosine: x.score }));
+    }
+    return order.slice(0, topN);
+  }
+
+  async clearIndex() {
+    this.index = null;
+    try {
+      await this.adapter.remove(".obsidian/plugins/obsidian-workbench/" + INDEX_FILE);
+    } catch (e) {
+      /* absent is fine */
+    }
+    return true;
+  }
+}
+
+module.exports = { RagService, cosine };
+
+  }, "./services"],
   "./services/vaultStats.js": [function(require, module, exports) {
 "use strict";
 
@@ -1952,7 +3185,13 @@ const FEATURE_META = [
   { key: "quizEngine", name: "SM-2 互动自测引擎", desc: "直接读取 Markdown 题库进行单选/多选/判断与间隔重复错题复习" },
   { key: "pomodoro", name: "番茄钟与每日专注统计", desc: "在状态栏与工作台显示番茄钟倒计时并统计每日完成番茄数" },
   { key: "vaultDoctor", name: "Vault 健康体检", desc: "巡检悬空 CSS、旧版错误快捷键与 Git 敏感凭证追踪风险" },
-  { key: "aiAssist", name: "AI 辅助（提交摘要与自动出题）", desc: "调用 OpenAI 兼容接口（OpenAI / DeepSeek / Ollama）生成 Commit Message 与自测题库" }
+  { key: "aiAssist", name: "AI 辅助（提交摘要与自动出题）", desc: "调用 OpenAI 兼容接口（OpenAI / DeepSeek / Ollama）生成 Commit Message 与自测题库" },
+  { key: "dailyJournal", name: "日记中心", desc: "今日/昨日日记快捷打开、连续天数统计与历史列表" },
+  { key: "tasks", name: "任务中心", desc: "全库待办聚合、一键新建与勾选完成" },
+  { key: "projects", name: "项目管理", desc: "工作台项目面板与模板化新建项目" },
+  { key: "privacy", name: "隐私区（锁定后搜索/链接全隐身）", desc: "锁定：userIgnoreFilters 不索引 + Git 排除；解锁恢复。切换后需重载 Obsidian" },
+  { key: "ragSearch", name: "AI RAG 搜索", desc: "SiliconFlow embeddings + rerank 全库语义检索（需 API Key）" },
+  { key: "decision", name: "Jev/Clef TypeSafe 决策", desc: "本机 magpie 网关 /v1/systemone：choice / noul / score + 置信度" }
 ];
 
 class WorkbenchSettingTab extends PluginSettingTab {
@@ -1964,7 +3203,7 @@ class WorkbenchSettingTab extends PluginSettingTab {
   display() {
     const { containerEl } = this;
     containerEl.empty();
-    containerEl.createEl("h2", { text: "Obsidian Workbench v3.0 设置" });
+    containerEl.createEl("h2", { text: "Obsidian Workbench v3.1 设置" });
 
     // ── 一、全模块功能开关 ──
     containerEl.createEl("h3", { text: "功能模块开关" });
@@ -2198,6 +3437,139 @@ class WorkbenchSettingTab extends PluginSettingTab {
       new Setting(containerEl)
         .setName("立即运行健康体检")
         .addButton((b) => b.setButtonText("运行体检").onClick(() => this.plugin.openDoctorModal()));
+    }
+
+    // ── 八、日记中心 ──
+    if (this.plugin.isFeatureEnabled("dailyJournal")) {
+      containerEl.createEl("h3", { text: "日记中心" });
+      new Setting(containerEl)
+        .setName("日期格式")
+        .addText((t) =>
+          t.setPlaceholder("YYYY-MM-DD").setValue(this.plugin.settings.dailyDateFormat).onChange(async (v) => {
+            this.plugin.settings.dailyDateFormat = v.trim() || "YYYY-MM-DD";
+            await this.plugin.saveSettings();
+          })
+        );
+      new Setting(containerEl)
+        .setName("立即打开")
+        .addButton((b) => b.setButtonText("今日日记").onClick(() => this.plugin.openDailyNote(0)));
+    }
+
+    // ── 九、任务中心 ──
+    if (this.plugin.isFeatureEnabled("tasks")) {
+      containerEl.createEl("h3", { text: "任务中心" });
+      new Setting(containerEl)
+        .setName("新任务落盘文件")
+        .addText((t) =>
+          t.setPlaceholder("vault/任务.md").setValue(this.plugin.settings.tasksPath).onChange(async (v) => {
+            this.plugin.settings.tasksPath = v.trim() || "vault/任务.md";
+            await this.plugin.saveSettings();
+          })
+        );
+      new Setting(containerEl)
+        .setName("打开任务中心")
+        .addButton((b) => b.setButtonText("查看全库待办").onClick(() => this.plugin.openTaskCenter()));
+    }
+
+    // ── 十、项目管理 ──
+    if (this.plugin.isFeatureEnabled("projects")) {
+      containerEl.createEl("h3", { text: "项目管理" });
+      new Setting(containerEl)
+        .setName("新建项目")
+        .addButton((b) => b.setButtonText("模板化创建").onClick(() => this.plugin.createProjectInteractive()));
+    }
+
+    // ── 十一、隐私区 ──
+    if (this.plugin.isFeatureEnabled("privacy")) {
+      containerEl.createEl("h3", { text: "隐私区" });
+      new Setting(containerEl)
+        .setName("隐私区目录")
+        .setDesc("锁定后该目录不进搜索/反向链接/图谱，且被 Git 排除；需重载 Obsidian 生效")
+        .addText((t) =>
+          t.setPlaceholder("vault/隐私").setValue(this.plugin.settings.privacyFolder).onChange(async (v) => {
+            this.plugin.settings.privacyFolder = v.trim();
+            await this.plugin.saveSettings();
+          })
+        );
+      new Setting(containerEl)
+        .setName("一键切换")
+        .addButton((b) => b.setButtonText("🔒 锁定").onClick(() => this.plugin.setPrivacy(true)))
+        .addButton((b) => b.setButtonText("🔓 解锁").onClick(() => this.plugin.setPrivacy(false)));
+    }
+
+    // ── 十二、AI RAG 搜索 ──
+    if (this.plugin.isFeatureEnabled("ragSearch")) {
+      containerEl.createEl("h3", { text: "AI RAG 搜索（SiliconFlow）" });
+      new Setting(containerEl)
+        .setName("API Key")
+        .setDesc("https://siliconflow.cn 控制台获取")
+        .addText((t) =>
+          t.setPlaceholder("sk-…").setValue(this.plugin.settings.ragApiKey).onChange(async (v) => {
+            this.plugin.settings.ragApiKey = v.trim();
+            await this.plugin.saveSettings();
+          })
+        );
+      new Setting(containerEl)
+        .setName("嵌入模型 / 重排模型")
+        .addText((t) =>
+          t.setPlaceholder("BAAI/bge-m3").setValue(this.plugin.settings.ragEmbedModel).onChange(async (v) => {
+            this.plugin.settings.ragEmbedModel = v.trim() || "BAAI/bge-m3";
+            await this.plugin.saveSettings();
+          })
+        )
+        .addText((t) =>
+          t.setPlaceholder("BAAI/bge-reranker-v2-m3").setValue(this.plugin.settings.ragRerankModel).onChange(async (v) => {
+            this.plugin.settings.ragRerankModel = v.trim() || "BAAI/bge-reranker-v2-m3";
+            await this.plugin.saveSettings();
+          })
+        );
+      new Setting(containerEl)
+        .setName("扫描范围（逗号分隔）")
+        .setDesc("留空扫全库（自动排除 .obsidian/.trash/4-存档/隐私区）")
+        .addText((t) =>
+          t.setPlaceholder("notes,vault,wiki,_posts").setValue(this.plugin.settings.ragFolders).onChange(async (v) => {
+            this.plugin.settings.ragFolders = v.trim();
+            await this.plugin.saveSettings();
+          })
+        );
+      new Setting(containerEl)
+        .setName("索引管理")
+        .addButton((b) => b.setButtonText("构建/更新索引").onClick(() => this.plugin.buildRagIndex()))
+        .addButton((b) => b.setButtonText("打开搜索").onClick(() => this.plugin.activateRagView()));
+    }
+
+    // ── 十三、Jev/Clef 决策 ──
+    if (this.plugin.isFeatureEnabled("decision")) {
+      containerEl.createEl("h3", { text: "Jev / Clef TypeSafe 决策" });
+      new Setting(containerEl)
+        .setName("网关端点")
+        .addText((t) =>
+          t.setPlaceholder("http://127.0.0.1:3425/v1/systemone").setValue(this.plugin.settings.decisionEndpoint).onChange(async (v) => {
+            this.plugin.settings.decisionEndpoint = v.trim();
+            await this.plugin.saveSettings();
+          })
+        );
+      new Setting(containerEl)
+        .setName("模型")
+        .setDesc("Jev：vercel-jev/typesafe-ai/jev · Clef（可读图）：vercel-jev/typesafe-ai/clef")
+        .addText((t) =>
+          t.setValue(this.plugin.settings.decisionModel).onChange(async (v) => {
+            this.plugin.settings.decisionModel = v.trim() || "vercel-jev/typesafe-ai/jev";
+            await this.plugin.saveSettings();
+          })
+        );
+      new Setting(containerEl)
+        .setName("令牌")
+        .setDesc("网关信任本机回环，可保留默认")
+        .addText((t) =>
+          t.setValue(this.plugin.settings.decisionToken).onChange(async (v) => {
+            this.plugin.settings.decisionToken = v.trim() || "magpie";
+            await this.plugin.saveSettings();
+          })
+        );
+      new Setting(containerEl)
+        .setName("打开决策弹窗")
+        .addButton((b) => b.setButtonText("Jev 决策").onClick(() => this.plugin.openJevModal()));
     }
   }
 }
@@ -3145,6 +4517,152 @@ class QuizView extends ItemView {
 module.exports = { QuizView };
 
   }, "./views"],
+  "./views/ragView.js": [function(require, module, exports) {
+"use strict";
+
+const { ItemView, Notice } = require("obsidian");
+const { VIEW_TYPE_RAG } = require("../constants");
+
+/**
+ * AI RAG 搜索视图：输入框 + 索引管理 + 结果列表。
+ */
+class RagView extends ItemView {
+  constructor(leaf, plugin) {
+    super(leaf);
+    this.plugin = plugin;
+    this.results = null;
+    this.progressText = "";
+  }
+
+  getViewType() {
+    return VIEW_TYPE_RAG;
+  }
+
+  getDisplayText() {
+    return "AI RAG 搜索";
+  }
+
+  getIcon() {
+    return "sparkles";
+  }
+
+  async onOpen() {
+    await this.render();
+  }
+
+  async onClose() {
+    this.contentEl.empty();
+  }
+
+  async render() {
+    const root = this.contentEl;
+    root.empty();
+    root.addClass("owb-rag-view");
+
+    const head = root.createDiv({ cls: "owb-rag-head" });
+    head.createDiv({ cls: "owb-rag-title", text: "🪄 AI RAG 搜索" });
+
+    const stat = this.plugin.rag.indexStat();
+    const statText = stat.built
+      ? `索引：${stat.files} 篇笔记 / ${stat.chunks} 块 · ${stat.model || ""}${stat.stale ? " · 模型已变，建议重建" : ""}`
+      : "索引未构建";
+    head.createDiv({ cls: "owb-muted", text: statText });
+
+    const bar = root.createDiv({ cls: "owb-rag-bar" });
+    const input = bar.createEl("input", {
+      cls: "owb-rag-input",
+      attr: { type: "text", placeholder: "用自然语言搜索全库笔记…" }
+    });
+    input.addEventListener("keydown", async (ev) => {
+      if (ev.key === "Enter") await this.doSearch(input.value);
+    });
+    const searchBtn = bar.createEl("button", { cls: "mod-cta", text: "搜索" });
+    searchBtn.addEventListener("click", () => this.doSearch(input.value));
+
+    const manage = root.createDiv({ cls: "owb-rag-manage" });
+    const buildBtn = manage.createEl("button", { text: "构建/更新索引" });
+    buildBtn.addEventListener("click", () => this.buildIndex());
+    const clearBtn = manage.createEl("button", { text: "清空索引" });
+    clearBtn.addEventListener("click", async () => {
+      await this.plugin.rag.clearIndex();
+      this.results = null;
+      new Notice("RAG 索引已清空");
+      this.render();
+    });
+
+    if (this.progressText) {
+      root.createDiv({ cls: "owb-muted owb-rag-progress", text: this.progressText });
+    }
+
+    const out = root.createDiv({ cls: "owb-rag-results" });
+    if (!this.results) {
+      out.createDiv({
+        cls: "owb-muted",
+        text: "输入问题回车搜索。首次使用请先构建索引（需要 SiliconFlow API Key）。"
+      });
+      return;
+    }
+    if (!this.results.length) {
+      out.createDiv({ cls: "owb-muted", text: "没有找到相关内容。" });
+      return;
+    }
+    for (const r of this.results) {
+      const card = out.createDiv({ cls: "owb-card owb-rag-hit" });
+      const top = card.createDiv({ cls: "owb-rag-hit-head" });
+      const a = top.createEl("a", { cls: "owb-link", text: r.chunk.path.split("/").pop() });
+      a.addEventListener("click", () => {
+        const f = this.app.vault.getAbstractFileByPath(r.chunk.path);
+        if (f) this.app.workspace.getLeaf(false).openFile(f);
+      });
+      top.createSpan({
+        cls: "owb-muted",
+        text: (r.chunk.heading ? " § " + r.chunk.heading : "") +
+          ` · 相关度 ${(r.score * 100).toFixed(0)}% · 向量 ${(r.cosine * 100).toFixed(0)}%`
+      });
+      const body = card.createDiv({ cls: "owb-rag-hit-body" });
+      body.setText(r.chunk.text.slice(0, 320) + (r.chunk.text.length > 320 ? "…" : ""));
+    }
+  }
+
+  async doSearch(q) {
+    const query = (q || "").trim();
+    if (!query) return;
+    const out = this.contentEl.querySelector(".owb-rag-results");
+    if (out) out.setText("搜索中…");
+    try {
+      this.results = await this.plugin.rag.search(query);
+    } catch (err) {
+      this.results = null;
+      new Notice(err.message, 6000);
+    }
+    this.render();
+  }
+
+  async buildIndex() {
+    const btnState = (t) => {
+      this.progressText = t;
+      this.render();
+    };
+    try {
+      const stat = await this.plugin.rag.buildIndex(this.app, (done, total, msg) => {
+        this.progressText = msg || `${done}/${total}`;
+        const el = this.contentEl.querySelector(".owb-rag-progress");
+        if (el) el.setText(this.progressText);
+      });
+      this.progressText = "";
+      new Notice(`RAG 索引完成：${stat.files} 篇 / ${stat.chunks} 块`, 6000);
+      btnState("");
+    } catch (err) {
+      this.progressText = "";
+      new Notice("索引构建失败：" + err.message, 8000);
+      this.render();
+    }
+  }
+}
+
+module.exports = { RagView };
+
+  }, "./views"],
   "./views/workbenchView.js": [function(require, module, exports) {
 "use strict";
 
@@ -3152,6 +4670,8 @@ const { ItemView, Notice, normalizePath } = require("obsidian");
 const { VIEW_TYPE_WORKBENCH } = require("../constants");
 const { formatDate, getGreeting } = require("../utils");
 const { collectWorkbenchData, toggleTaskInFile } = require("../services/vaultStats");
+const { listDailies, computeStreak, openDaily } = require("../services/dailyService");
+const { listProjects } = require("../services/projectService");
 
 /**
  * 个人知识工作台主视图（v3.0）：按模块开关动态装配按钮与番茄钟专注卡片。
@@ -3183,20 +4703,7 @@ class WorkbenchView extends ItemView {
   }
 
   async openOrCreateDailyNote() {
-    const { dailyFolder, dailyDateFormat } = this.plugin.settings;
-    const todayName = formatDate(new Date(), dailyDateFormat || "YYYY-MM-DD");
-    const folder = (dailyFolder || "").replace(/^\/+|\/+$/g, "");
-    const targetPath = normalizePath(folder ? `${folder}/${todayName}.md` : `${todayName}.md`);
-
-    let file = this.app.vault.getAbstractFileByPath(targetPath);
-    if (!file) {
-      if (folder && !this.app.vault.getAbstractFileByPath(folder)) {
-        await this.app.vault.createFolder(folder);
-      }
-      const initial = `---\ntags: [periodic/daily]\ncreated: ${todayName}\n---\n\n# ${todayName}\n\n## 🎯 今日重点\n- [ ] \n\n## 📝 记录\n`;
-      file = await this.app.vault.create(targetPath, initial);
-    }
-    await this.app.workspace.getLeaf(false).openFile(file);
+    await openDaily(this.app, this.plugin.settings, 0);
   }
 
   async render() {
@@ -3237,6 +4744,18 @@ class WorkbenchView extends ItemView {
     }
     if (this.plugin.isFeatureEnabled("vaultDoctor")) {
       mkBtn("🩺 健康体检", false, () => this.plugin.openDoctorModal());
+    }
+    if (this.plugin.isFeatureEnabled("tasks")) {
+      mkBtn("📋 任务中心", false, () => this.plugin.openTaskCenter());
+    }
+    if (this.plugin.isFeatureEnabled("projects")) {
+      mkBtn("🗂️ 新建项目", false, () => this.plugin.createProjectInteractive());
+    }
+    if (this.plugin.isFeatureEnabled("ragSearch")) {
+      mkBtn("🪄 AI 搜索", false, () => this.plugin.activateRagView());
+    }
+    if (this.plugin.isFeatureEnabled("decision")) {
+      mkBtn("⚖️ Jev 决策", false, () => this.plugin.openJevModal());
     }
 
     // 1.5 番茄钟专注卡片（受 pomodoro 开关控制）
@@ -3307,6 +4826,60 @@ class WorkbenchView extends ItemView {
 
     this.renderFileCard(opsGrid, `📥 今日输入 (${data.createdToday.length})`, data.createdToday, "今日暂无新建笔记");
     this.renderFileCard(opsGrid, `✍️ 今日输出 (${data.modifiedToday.length})`, data.modifiedToday, "今日暂无更新记录");
+
+    // 2.5 项目与日记（v3.1）
+    const projGrid = root.createDiv({ cls: "owb-grid-2" });
+
+    if (this.plugin.isFeatureEnabled("projects")) {
+      const projCard = projGrid.createDiv({ cls: "owb-card" });
+      projCard.createDiv({ cls: "owb-card-title", text: "🗂️ 项目" });
+      const projects = await listProjects(this.app, this.plugin.settings);
+      if (!projects.length) {
+        projCard.createDiv({ cls: "owb-muted", text: "项目目录为空（设置里的 projectFolder）" });
+      } else {
+        const ul = projCard.createEl("ul", { cls: "owb-list" });
+        for (const item of projects.slice(0, 8)) {
+          const li = ul.createEl("li");
+          const a = li.createEl("a", {
+            cls: "owb-link",
+            text: item.name + (item.kind === "dir" ? "/" : "")
+          });
+          if (item.file) {
+            a.addEventListener("click", () => this.app.workspace.getLeaf(false).openFile(item.file));
+          }
+          const bits = [];
+          if (item.status) bits.push(item.status);
+          if (item.priority) bits.push("优先级 " + item.priority);
+          if (item.due) bits.push("截止 " + item.due);
+          if (bits.length) li.createSpan({ cls: "owb-muted", text: " · " + bits.join(" · ") });
+        }
+      }
+    }
+
+    if (this.plugin.isFeatureEnabled("dailyJournal")) {
+      const dailyCard = projGrid.createDiv({ cls: "owb-card" });
+      const dailies = await listDailies(this.app, this.plugin.settings);
+      const { streak, includesToday } = computeStreak(dailies, new Date());
+      dailyCard.createDiv({
+        cls: "owb-card-title",
+        text: `📅 日记 · 连续 ${streak} 天${includesToday ? "（今日已写 ✓）" : "（今日未写）"}`
+      });
+      const actions = dailyCard.createDiv({ cls: "owb-pomo-actions" });
+      const todayBtn = actions.createEl("button", { cls: "mod-cta", text: "今日" });
+      todayBtn.addEventListener("click", () => this.plugin.openDailyNote(0));
+      const yBtn = actions.createEl("button", { text: "昨日" });
+      yBtn.addEventListener("click", () => this.plugin.openDailyNote(-1));
+      if (!dailies.length) {
+        dailyCard.createDiv({ cls: "owb-muted", text: "还没有日记（dailyFolder 下 YYYY-MM-DD.md）" });
+      } else {
+        const ul = dailyCard.createEl("ul", { cls: "owb-list" });
+        for (const d of dailies.slice(0, 6)) {
+          const li = ul.createEl("li");
+          const a = li.createEl("a", { cls: "owb-link", text: d.key });
+          a.addEventListener("click", () => this.app.workspace.getLeaf(false).openFile(d.file));
+        }
+      }
+    }
 
     // 3. 洞察镜
     const insightGrid = root.createDiv({ cls: "owb-grid-2" });

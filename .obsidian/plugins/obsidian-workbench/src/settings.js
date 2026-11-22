@@ -10,7 +10,13 @@ const FEATURE_META = [
   { key: "quizEngine", name: "SM-2 互动自测引擎", desc: "直接读取 Markdown 题库进行单选/多选/判断与间隔重复错题复习" },
   { key: "pomodoro", name: "番茄钟与每日专注统计", desc: "在状态栏与工作台显示番茄钟倒计时并统计每日完成番茄数" },
   { key: "vaultDoctor", name: "Vault 健康体检", desc: "巡检悬空 CSS、旧版错误快捷键与 Git 敏感凭证追踪风险" },
-  { key: "aiAssist", name: "AI 辅助（提交摘要与自动出题）", desc: "调用 OpenAI 兼容接口（OpenAI / DeepSeek / Ollama）生成 Commit Message 与自测题库" }
+  { key: "aiAssist", name: "AI 辅助（提交摘要与自动出题）", desc: "调用 OpenAI 兼容接口（OpenAI / DeepSeek / Ollama）生成 Commit Message 与自测题库" },
+  { key: "dailyJournal", name: "日记中心", desc: "今日/昨日日记快捷打开、连续天数统计与历史列表" },
+  { key: "tasks", name: "任务中心", desc: "全库待办聚合、一键新建与勾选完成" },
+  { key: "projects", name: "项目管理", desc: "工作台项目面板与模板化新建项目" },
+  { key: "privacy", name: "隐私区（锁定后搜索/链接全隐身）", desc: "锁定：userIgnoreFilters 不索引 + Git 排除；解锁恢复。切换后需重载 Obsidian" },
+  { key: "ragSearch", name: "AI RAG 搜索", desc: "SiliconFlow embeddings + rerank 全库语义检索（需 API Key）" },
+  { key: "decision", name: "Jev/Clef TypeSafe 决策", desc: "本机 magpie 网关 /v1/systemone：choice / noul / score + 置信度" }
 ];
 
 class WorkbenchSettingTab extends PluginSettingTab {
@@ -22,7 +28,7 @@ class WorkbenchSettingTab extends PluginSettingTab {
   display() {
     const { containerEl } = this;
     containerEl.empty();
-    containerEl.createEl("h2", { text: "Obsidian Workbench v3.0 设置" });
+    containerEl.createEl("h2", { text: "Obsidian Workbench v3.1 设置" });
 
     // ── 一、全模块功能开关 ──
     containerEl.createEl("h3", { text: "功能模块开关" });
@@ -256,6 +262,139 @@ class WorkbenchSettingTab extends PluginSettingTab {
       new Setting(containerEl)
         .setName("立即运行健康体检")
         .addButton((b) => b.setButtonText("运行体检").onClick(() => this.plugin.openDoctorModal()));
+    }
+
+    // ── 八、日记中心 ──
+    if (this.plugin.isFeatureEnabled("dailyJournal")) {
+      containerEl.createEl("h3", { text: "日记中心" });
+      new Setting(containerEl)
+        .setName("日期格式")
+        .addText((t) =>
+          t.setPlaceholder("YYYY-MM-DD").setValue(this.plugin.settings.dailyDateFormat).onChange(async (v) => {
+            this.plugin.settings.dailyDateFormat = v.trim() || "YYYY-MM-DD";
+            await this.plugin.saveSettings();
+          })
+        );
+      new Setting(containerEl)
+        .setName("立即打开")
+        .addButton((b) => b.setButtonText("今日日记").onClick(() => this.plugin.openDailyNote(0)));
+    }
+
+    // ── 九、任务中心 ──
+    if (this.plugin.isFeatureEnabled("tasks")) {
+      containerEl.createEl("h3", { text: "任务中心" });
+      new Setting(containerEl)
+        .setName("新任务落盘文件")
+        .addText((t) =>
+          t.setPlaceholder("vault/任务.md").setValue(this.plugin.settings.tasksPath).onChange(async (v) => {
+            this.plugin.settings.tasksPath = v.trim() || "vault/任务.md";
+            await this.plugin.saveSettings();
+          })
+        );
+      new Setting(containerEl)
+        .setName("打开任务中心")
+        .addButton((b) => b.setButtonText("查看全库待办").onClick(() => this.plugin.openTaskCenter()));
+    }
+
+    // ── 十、项目管理 ──
+    if (this.plugin.isFeatureEnabled("projects")) {
+      containerEl.createEl("h3", { text: "项目管理" });
+      new Setting(containerEl)
+        .setName("新建项目")
+        .addButton((b) => b.setButtonText("模板化创建").onClick(() => this.plugin.createProjectInteractive()));
+    }
+
+    // ── 十一、隐私区 ──
+    if (this.plugin.isFeatureEnabled("privacy")) {
+      containerEl.createEl("h3", { text: "隐私区" });
+      new Setting(containerEl)
+        .setName("隐私区目录")
+        .setDesc("锁定后该目录不进搜索/反向链接/图谱，且被 Git 排除；需重载 Obsidian 生效")
+        .addText((t) =>
+          t.setPlaceholder("vault/隐私").setValue(this.plugin.settings.privacyFolder).onChange(async (v) => {
+            this.plugin.settings.privacyFolder = v.trim();
+            await this.plugin.saveSettings();
+          })
+        );
+      new Setting(containerEl)
+        .setName("一键切换")
+        .addButton((b) => b.setButtonText("🔒 锁定").onClick(() => this.plugin.setPrivacy(true)))
+        .addButton((b) => b.setButtonText("🔓 解锁").onClick(() => this.plugin.setPrivacy(false)));
+    }
+
+    // ── 十二、AI RAG 搜索 ──
+    if (this.plugin.isFeatureEnabled("ragSearch")) {
+      containerEl.createEl("h3", { text: "AI RAG 搜索（SiliconFlow）" });
+      new Setting(containerEl)
+        .setName("API Key")
+        .setDesc("https://siliconflow.cn 控制台获取")
+        .addText((t) =>
+          t.setPlaceholder("sk-…").setValue(this.plugin.settings.ragApiKey).onChange(async (v) => {
+            this.plugin.settings.ragApiKey = v.trim();
+            await this.plugin.saveSettings();
+          })
+        );
+      new Setting(containerEl)
+        .setName("嵌入模型 / 重排模型")
+        .addText((t) =>
+          t.setPlaceholder("BAAI/bge-m3").setValue(this.plugin.settings.ragEmbedModel).onChange(async (v) => {
+            this.plugin.settings.ragEmbedModel = v.trim() || "BAAI/bge-m3";
+            await this.plugin.saveSettings();
+          })
+        )
+        .addText((t) =>
+          t.setPlaceholder("BAAI/bge-reranker-v2-m3").setValue(this.plugin.settings.ragRerankModel).onChange(async (v) => {
+            this.plugin.settings.ragRerankModel = v.trim() || "BAAI/bge-reranker-v2-m3";
+            await this.plugin.saveSettings();
+          })
+        );
+      new Setting(containerEl)
+        .setName("扫描范围（逗号分隔）")
+        .setDesc("留空扫全库（自动排除 .obsidian/.trash/4-存档/隐私区）")
+        .addText((t) =>
+          t.setPlaceholder("notes,vault,wiki,_posts").setValue(this.plugin.settings.ragFolders).onChange(async (v) => {
+            this.plugin.settings.ragFolders = v.trim();
+            await this.plugin.saveSettings();
+          })
+        );
+      new Setting(containerEl)
+        .setName("索引管理")
+        .addButton((b) => b.setButtonText("构建/更新索引").onClick(() => this.plugin.buildRagIndex()))
+        .addButton((b) => b.setButtonText("打开搜索").onClick(() => this.plugin.activateRagView()));
+    }
+
+    // ── 十三、Jev/Clef 决策 ──
+    if (this.plugin.isFeatureEnabled("decision")) {
+      containerEl.createEl("h3", { text: "Jev / Clef TypeSafe 决策" });
+      new Setting(containerEl)
+        .setName("网关端点")
+        .addText((t) =>
+          t.setPlaceholder("http://127.0.0.1:3425/v1/systemone").setValue(this.plugin.settings.decisionEndpoint).onChange(async (v) => {
+            this.plugin.settings.decisionEndpoint = v.trim();
+            await this.plugin.saveSettings();
+          })
+        );
+      new Setting(containerEl)
+        .setName("模型")
+        .setDesc("Jev：vercel-jev/typesafe-ai/jev · Clef（可读图）：vercel-jev/typesafe-ai/clef")
+        .addText((t) =>
+          t.setValue(this.plugin.settings.decisionModel).onChange(async (v) => {
+            this.plugin.settings.decisionModel = v.trim() || "vercel-jev/typesafe-ai/jev";
+            await this.plugin.saveSettings();
+          })
+        );
+      new Setting(containerEl)
+        .setName("令牌")
+        .setDesc("网关信任本机回环，可保留默认")
+        .addText((t) =>
+          t.setValue(this.plugin.settings.decisionToken).onChange(async (v) => {
+            this.plugin.settings.decisionToken = v.trim() || "magpie";
+            await this.plugin.saveSettings();
+          })
+        );
+      new Setting(containerEl)
+        .setName("打开决策弹窗")
+        .addButton((b) => b.setButtonText("Jev 决策").onClick(() => this.plugin.openJevModal()));
     }
   }
 }

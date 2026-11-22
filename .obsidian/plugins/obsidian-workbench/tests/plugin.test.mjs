@@ -11,6 +11,20 @@ const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, "..");
 
+// Obsidian runtime absent under Node: route require("obsidian") to a stub.
+Module.registerHooks({
+  resolve(specifier, context, nextResolve) {
+    if (specifier === "obsidian") {
+      return {
+        url: "file://" + path.join(rootDir, "tests/stubs/obsidian.js"),
+        shortCircuit: true,
+        format: "commonjs"
+      };
+    }
+    return nextResolve(specifier, context);
+  }
+});
+
 const { GitService } = require(path.join(rootDir, "src/services/gitService.js"));
 const {
   parseMarkdownQuiz,
@@ -214,4 +228,60 @@ test("Bundled v3.0 main.js loads cleanly and exposes feature toggle APIs", () =>
   } finally {
     Module._load = origLoad;
   }
+});
+
+test("v3.1 modules: export contract + cosine/streak sanity", () => {
+  const { RagService, cosine } = require(path.join(rootDir, "src/services/ragService.js"));
+  const decision = require(path.join(rootDir, "src/services/decisionService.js"));
+  const daily = require(path.join(rootDir, "src/services/dailyService.js"));
+  const { listProjects, createProject, parseFrontmatter } = require(path.join(rootDir, "src/services/projectService.js"));
+  const privacy = require(path.join(rootDir, "src/services/privacyService.js"));
+
+  assert.equal(typeof RagService, "function");
+  assert.equal(typeof cosine, "function");
+  assert.equal(typeof decision.ask, "function");
+  assert.equal(typeof decision.noteToState, "function");
+  assert.equal(typeof daily.computeStreak, "function");
+  assert.equal(typeof daily.openDaily, "function");
+  assert.equal(typeof listProjects, "function");
+  assert.equal(typeof createProject, "function");
+  assert.equal(typeof privacy.setHidden, "function");
+  assert.equal(typeof privacy.ensureFolder, "function");
+
+  // cosine: 平行=1, 正交=0
+  assert.ok(Math.abs(cosine([1, 0], [2, 0]) - 1) < 1e-9);
+  assert.ok(Math.abs(cosine([1, 0], [0, 1])) < 1e-9);
+
+  // normalizeAnswers: choice / score / noul 三形态归一
+  const norm = decision.normalizeAnswers(
+    { answers: { team: { choice: "billing", confidence: 0.9 }, q: { score: 7, confidence: 0.8 }, n: { noul: true, confidence: 0.7 } } },
+    { team: "choice", q: "score", n: "noul" }
+  );
+  assert.equal(norm.answers.team.value, "billing");
+  assert.equal(norm.answers.q.value, 7);
+  assert.equal(norm.answers.n.value, true);
+  assert.equal(norm.answers.team.confidence, 0.9);
+
+  // streak: 昨日+今日=2, 今日缺失不打破昨日连击
+  const now = new Date(2026, 10, 22);
+  const s1 = daily.computeStreak([{ key: "2026-11-22" }, { key: "2026-11-21" }], now);
+  assert.equal(s1.streak, 2);
+  assert.equal(s1.includesToday, true);
+  const s2 = daily.computeStreak([{ key: "2026-11-21" }], now);
+  assert.equal(s2.streak, 1);
+  assert.equal(s2.includesToday, false);
+
+  // parseFrontmatter 容错
+  const fm = parseFrontmatter('---\ntype: project\nstatus: "进行中"\ndue: 2026-12-01\n---\n# t');
+  assert.equal(fm.type, "project");
+  assert.equal(fm.status, "进行中");
+  assert.equal(fm.due, "2026-12-01");
+
+  // RagService: chunkText 切块含标题语境、围栏代码不切块标题
+  const svc = new RagService(() => ({ ragBaseUrl: "https://api.siliconflow.cn" }), null);
+  const sample = "# A\n\n" + "x".repeat(700) + "\n\n## B\n\n```md\n# fake\n```\n\ntail text here";
+  const chunks = svc.chunkText(sample, 600);
+  assert.ok(chunks.length >= 2);
+  assert.equal(chunks[0].heading, "A");
+  assert.ok(!chunks.some((c) => c.heading === "fake"));
 });

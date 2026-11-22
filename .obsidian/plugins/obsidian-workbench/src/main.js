@@ -22,6 +22,7 @@ const { renderRunnableBlock, renderHtmlPreview } = require("./services/codeRunne
 const { AttachmentPreviewModal } = require("./modals/attachmentPreviewModal");
 const { saveAttachment, planOrganize, applyOrganize } = require("./services/attachmentService");
 const { BASE_STYLE_CSS } = require("./styles/basesStyle");
+const { PomodoroFullscreen } = require("./modals/pomodoroFullscreen");
 const { WorkbenchView } = require("./views/workbenchView");
 const { GitPanelView } = require("./views/gitView");
 const { QuizView } = require("./views/quizView");
@@ -152,6 +153,11 @@ class ObsidianWorkbenchPlugin extends Plugin {
       id: "daily-yesterday",
       name: "日记：打开昨日日记",
       checkCallback: (checking) => this._guardCommand("dailyJournal", checking, () => this.openDailyNote(-1))
+    });
+    this.addCommand({
+      id: "pomodoro-fullscreen",
+      name: "番茄钟：全屏沉浸倒计时",
+      checkCallback: (checking) => this._guardCommand("pomodoro", checking, () => this.openPomodoroFullscreen())
     });
     this.addCommand({
       id: "open-task-center",
@@ -497,6 +503,11 @@ class ObsidianWorkbenchPlugin extends Plugin {
     openDaily(this.app, this.settings, offsetDays).catch((err) =>
       new Notice("日记打开失败：" + err.message, 5000)
     );
+  }
+
+  openPomodoroFullscreen() {
+    if (!this.isFeatureEnabled("pomodoro")) return;
+    new PomodoroFullscreen(this.app, this).open();
   }
 
   openTaskCenter() {

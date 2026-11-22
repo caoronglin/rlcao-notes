@@ -47,7 +47,20 @@ const DEFAULT_SETTINGS = {
   wallpaperDim: 0.42,                  // 壁纸压暗程度 0-1
   glassEffect: true,                   // 毛玻璃
   glassBlur: 18,                       // 模糊半径 px
-  heatmapWeeks: 26,                    // 热力日历跨度（周）
+  heatmapWeeks: 52,                    // 热力日历跨度（周，52 = 一整年，宽屏才不空）
+
+  // 今日诗词（https://www.jinrishici.com/doc/）
+  showQuote: true,
+  // 天气（OpenWeather https://openweathermap.org/api）
+  showWeather: true,
+  weatherApiKey: "",
+  weatherCity: "Yangling,CN",
+  weatherUnits: "metric",
+
+  // Zotero 原生 API（https://www.zotero.org/support/dev/web_api/v3/basics）
+  zoteroApiKey: "",
+  zoteroUserId: "",
+  zoteroLibraryType: "user",
 
   // 多维表格
   basesFolder: "vault/工作台",

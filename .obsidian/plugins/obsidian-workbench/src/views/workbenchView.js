@@ -12,6 +12,8 @@ const { listBases, createBase } = require("../services/baseService");
 const { tagStats, attachmentStats } = require("../services/statsService");
 const { AttachmentPreviewModal } = require("../modals/attachmentPreviewModal");
 const { ATTACHMENT_EXTS, planOrganize, applyOrganize } = require("../services/attachmentService");
+const { getQuote } = require("../services/quoteService");
+const { getWeather } = require("../services/weatherService");
 
 /**
  * 个人知识工作台（v3.4）：视觉重做 + 性能缓存 + 调试面板。
@@ -135,19 +137,19 @@ class WorkbenchView extends ItemView {
     const body = cols.createDiv({ cls: "owb-heat-body" });
 
     const months = body.createDiv({ cls: "owb-heat-months" });
-    const COL = 17;
+    const weeks = heat.grid.length;
     let lastMonth = -1;
-    let lastLeft = -999;
+    let lastPct = -999;
     heat.grid.forEach((week, w) => {
       const firstReal = week.find((d) => !d.inFuture) || week[0];
       const m = firstReal.date.getMonth();
       if (m === lastMonth) return;
-      const left = w * COL;
+      const pct = (w / weeks) * 100;
       lastMonth = m;
-      if (left - lastLeft < 34) return;
-      lastLeft = left;
+      if (pct - lastPct < 4.5) return;   // 百分比间距，缩放后仍不重叠
+      lastPct = pct;
       const label = months.createSpan({ cls: "owb-heat-month", text: `${m + 1}月` });
-      label.style.left = `${left}px`;
+      label.style.left = `${pct}%`;
     });
 
     const wrap = body.createDiv({ cls: "owb-heat-wrap" });
@@ -245,6 +247,33 @@ class WorkbenchView extends ItemView {
     const hero = root.createDiv({ cls: "owb-hero" });
     hero.createDiv({ cls: "owb-eyebrow", text: `${todayStr} · ${getGreeting()}` });
     hero.createEl("h2", { cls: "owb-greeting", text: "麟，今天推进哪一件？" });
+
+    // 诗词 + 天气（各自失败互不影响）
+    const ambient = hero.createDiv({ cls: "owb-ambient" });
+    if (this.plugin.settings.showQuote !== false) {
+      const q = await getQuote();
+      if (q && q.content) {
+        const line = ambient.createDiv({ cls: "owb-quote" });
+        line.createSpan({ cls: "owb-quote-text", text: q.content });
+        if (q.author || q.origin) {
+          line.createSpan({ cls: "owb-muted", text: `　— ${q.author}${q.origin ? "《" + q.origin + "》" : ""}` });
+        }
+      }
+    }
+    if (this.plugin.settings.showWeather !== false) {
+      const w = await getWeather(this.plugin.settings);
+      if (w && !w.missing) {
+        const chip = ambient.createDiv({ cls: "owb-weather" });
+        if (w.error) {
+          chip.createSpan({ cls: "owb-muted", text: "天气获取失败" });
+        } else {
+          chip.createSpan({ cls: "owb-weather-emoji", text: w.emoji });
+          chip.createSpan({ cls: "owb-weather-temp", text: w.temp + "°C" });
+          chip.createSpan({ cls: "owb-muted", text: `${w.desc} · ${w.city} · 湿度 ${w.humidity}%` });
+        }
+      }
+    }
+
     this.renderStats(hero, data, heat);
 
     const heroActions = hero.createDiv({ cls: "owb-hero-actions" });
@@ -294,10 +323,16 @@ class WorkbenchView extends ItemView {
         cls: pomo.phase === "work" && pomo.running ? "" : "mod-cta",
         text: pomo.phase === "idle" ? "开始专注" : pomo.running ? "暂停" : "继续"
       }).addEventListener("click", () => {
+        const wasIdle = pomo.phase === "idle";
         pomo.togglePause();
         this.plugin.updatePomodoroStatusBar();
         this.render();
+        // 从静止开始的一次点击，直接进全屏沉浸倒计时
+        if (wasIdle) this.plugin.openPomodoroFullscreen();
       });
+      right.createEl("button", { text: "全屏" }).addEventListener("click", () =>
+        this.plugin.openPomodoroFullscreen()
+      );
       right.createEl("button", { text: "短休" }).addEventListener("click", () => {
         pomo.startBreak();
         this.plugin.updatePomodoroStatusBar();

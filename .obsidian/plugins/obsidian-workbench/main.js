@@ -52,7 +52,20 @@ const DEFAULT_SETTINGS = {
   wallpaperDim: 0.42,                  // 壁纸压暗程度 0-1
   glassEffect: true,                   // 毛玻璃
   glassBlur: 18,                       // 模糊半径 px
-  heatmapWeeks: 26,                    // 热力日历跨度（周）
+  heatmapWeeks: 52,                    // 热力日历跨度（周，52 = 一整年，宽屏才不空）
+
+  // 今日诗词（https://www.jinrishici.com/doc/）
+  showQuote: true,
+  // 天气（OpenWeather https://openweathermap.org/api）
+  showWeather: true,
+  weatherApiKey: "",
+  weatherCity: "Yangling,CN",
+  weatherUnits: "metric",
+
+  // Zotero 原生 API（https://www.zotero.org/support/dev/web_api/v3/basics）
+  zoteroApiKey: "",
+  zoteroUserId: "",
+  zoteroLibraryType: "user",
 
   // 多维表格
   basesFolder: "vault/工作台",
@@ -167,6 +180,7 @@ const { renderRunnableBlock, renderHtmlPreview } = require("./services/codeRunne
 const { AttachmentPreviewModal } = require("./modals/attachmentPreviewModal");
 const { saveAttachment, planOrganize, applyOrganize } = require("./services/attachmentService");
 const { BASE_STYLE_CSS } = require("./styles/basesStyle");
+const { PomodoroFullscreen } = require("./modals/pomodoroFullscreen");
 const { WorkbenchView } = require("./views/workbenchView");
 const { GitPanelView } = require("./views/gitView");
 const { QuizView } = require("./views/quizView");
@@ -297,6 +311,11 @@ class ObsidianWorkbenchPlugin extends Plugin {
       id: "daily-yesterday",
       name: "日记：打开昨日日记",
       checkCallback: (checking) => this._guardCommand("dailyJournal", checking, () => this.openDailyNote(-1))
+    });
+    this.addCommand({
+      id: "pomodoro-fullscreen",
+      name: "番茄钟：全屏沉浸倒计时",
+      checkCallback: (checking) => this._guardCommand("pomodoro", checking, () => this.openPomodoroFullscreen())
     });
     this.addCommand({
       id: "open-task-center",
@@ -642,6 +661,11 @@ class ObsidianWorkbenchPlugin extends Plugin {
     openDaily(this.app, this.settings, offsetDays).catch((err) =>
       new Notice("日记打开失败：" + err.message, 5000)
     );
+  }
+
+  openPomodoroFullscreen() {
+    if (!this.isFeatureEnabled("pomodoro")) return;
+    new PomodoroFullscreen(this.app, this).open();
   }
 
   openTaskCenter() {
@@ -1937,6 +1961,174 @@ class JevModal extends Modal {
 }
 
 module.exports = { JevModal };
+
+  }, "./modals"],
+  "./modals/pomodoroFullscreen.js": [function(require, module, exports) {
+"use strict";
+
+const { Modal, Notice, setIcon } = require("obsidian");
+
+/**
+ * 全屏番茄钟：点击「开始专注」后进入沉浸倒计时。
+ * - 大号环形进度（SVG stroke-dashoffset）
+ * - 入场动画（缩放 + 淡入），阶段切换时脉冲
+ * - 空格暂停/继续，Esc 退出
+ *
+ * 它只是 pomodoroService 的一个视图：状态都从 service 读，关闭不影响计时。
+ */
+class PomodoroFullscreen extends Modal {
+  constructor(app, plugin) {
+    super(app, plugin);
+    this.plugin = plugin;
+    this._raf = null;
+    this._lastPhase = "";
+  }
+
+  onOpen() {
+    const { contentEl, modalEl, containerEl } = this;
+    contentEl.empty();
+    contentEl.addClass("owb-fs-pomo");
+    modalEl.addClass("owb-fs-modal");
+    if (containerEl) containerEl.addClass("owb-fs-container");
+
+    const wrap = contentEl.createDiv({ cls: "owb-fs-wrap" });
+
+    // 环形进度
+    const ring = wrap.createDiv({ cls: "owb-fs-ring" });
+    const SVG = 320;
+    const r = 142;
+    const c = 2 * Math.PI * r;
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", `0 0 ${SVG} ${SVG}`);
+    svg.setAttribute("class", "owb-fs-svg");
+    const track = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    track.setAttribute("cx", String(SVG / 2));
+    track.setAttribute("cy", String(SVG / 2));
+    track.setAttribute("r", String(r));
+    track.setAttribute("class", "owb-fs-track");
+    const fill = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+    fill.setAttribute("cx", String(SVG / 2));
+    fill.setAttribute("cy", String(SVG / 2));
+    fill.setAttribute("r", String(r));
+    fill.setAttribute("class", "owb-fs-fill");
+    fill.style.strokeDasharray = String(c);
+    fill.style.strokeDashoffset = "0";
+    svg.appendChild(track);
+    svg.appendChild(fill);
+    ring.appendChild(svg);
+
+    const center = ring.createDiv({ cls: "owb-fs-center" });
+    this.clockEl = center.createDiv({ cls: "owb-fs-clock", text: "25:00" });
+    this.phaseEl = center.createDiv({ cls: "owb-fs-phase", text: "准备专注" });
+
+    this.metaEl = wrap.createDiv({ cls: "owb-fs-meta" });
+
+    const actions = wrap.createDiv({ cls: "owb-fs-actions" });
+    this.mainBtn = actions.createEl("button", { cls: "mod-cta owb-fs-btn" });
+    setIcon(this.mainBtn, "play");
+    this.mainBtn.createSpan({ text: "开始专注" });
+    this.mainBtn.addEventListener("click", () => {
+      const pomo = this.plugin.pomodoro;
+      pomo.togglePause();
+      this.plugin.updatePomodoroStatusBar();
+      this.plugin.refreshWorkbenchViews();
+      this._pulse();
+    });
+
+    const breakBtn = actions.createEl("button", { cls: "owb-fs-btn" });
+    setIcon(breakBtn, "coffee");
+    breakBtn.createSpan({ text: "短休" });
+    breakBtn.addEventListener("click", () => {
+      this.plugin.pomodoro.startBreak();
+      this.plugin.updatePomodoroStatusBar();
+      this._pulse();
+    });
+
+    const resetBtn = actions.createEl("button", { cls: "owb-fs-btn" });
+    setIcon(resetBtn, "rotate-ccw");
+    resetBtn.createSpan({ text: "重置" });
+    resetBtn.addEventListener("click", () => {
+      this.plugin.pomodoro.reset();
+      this.plugin.updatePomodoroStatusBar();
+      this._pulse();
+    });
+
+    const closeBtn = actions.createEl("button", { cls: "owb-fs-btn owb-fs-quiet" });
+    setIcon(closeBtn, "minimize-2");
+    closeBtn.createSpan({ text: "退出全屏" });
+    closeBtn.addEventListener("click", () => this.close());
+
+    // 空格暂停
+    this._keydown = (ev) => {
+      if (ev.key === " " || ev.code === "Space") {
+        ev.preventDefault();
+        this.plugin.pomodoro.togglePause();
+        this._pulse();
+      }
+    };
+    document.addEventListener("keydown", this._keydown);
+
+    wrap.classList.add("owb-fs-enter");
+    this._paint(c, r);
+    this._raf = window.setInterval(() => this._paint(c, r), 500);
+  }
+
+  _pulse() {
+    const el = this.contentEl.querySelector(".owb-fs-ring");
+    if (!el) return;
+    el.classList.remove("owb-fs-pulse");
+    // 强制重排以重启动画
+    void el.offsetWidth;
+    el.classList.add("owb-fs-pulse");
+  }
+
+  _paint(circumference, r) {
+    const pomo = this.plugin.pomodoro;
+    if (!pomo) return;
+    const mins =
+      pomo.phase === "break"
+        ? Number(this.plugin.settings.pomodoroBreakMinutes) || 5
+        : Number(this.plugin.settings.pomodoroWorkMinutes) || 25;
+    const total = Math.max(1, mins * 60);
+    const left = Math.max(0, pomo.remainingSeconds);
+    const progress = 1 - left / total;
+
+    this.clockEl.setText(pomo.formatRemaining());
+    const label =
+      pomo.phase === "idle" ? "准备专注" : pomo.phase === "work" ? (pomo.running ? "专注中" : "已暂停") : (pomo.running ? "休息中" : "休息暂停");
+    this.phaseEl.setText(label);
+
+    const fill = this.contentEl.querySelector(".owb-fs-fill");
+    if (fill) {
+      fill.style.strokeDasharray = String(circumference);
+      fill.style.strokeDashoffset = String(circumference * (1 - progress));
+    }
+
+    const today = pomo.getTodayStats();
+    this.metaEl.setText(`今日 ${today.sessions} 个番茄 · ${today.minutes} 分钟 · 空格暂停 / Esc 退出`);
+
+    const btnLabel = pomo.phase === "idle" ? "开始专注" : pomo.running ? "暂停" : "继续";
+    const span = this.mainBtn.querySelector("span");
+    if (span && span.textContent !== btnLabel) span.textContent = btnLabel;
+
+    if (this._lastPhase && this._lastPhase !== pomo.phase) this._pulse();
+    this._lastPhase = pomo.phase;
+  }
+
+  onClose() {
+    if (this._raf) {
+      window.clearInterval(this._raf);
+      this._raf = null;
+    }
+    if (this._keydown) {
+      document.removeEventListener("keydown", this._keydown);
+      this._keydown = null;
+    }
+    this.contentEl.empty();
+  }
+}
+
+module.exports = { PomodoroFullscreen };
 
   }, "./modals"],
   "./modals/quickCaptureModal.js": [function(require, module, exports) {
@@ -5078,6 +5270,51 @@ module.exports = {
 };
 
   }, "./services"],
+  "./services/quoteService.js": [function(require, module, exports) {
+"use strict";
+
+const { requestUrl } = require("obsidian");
+
+/**
+ * 今日诗词：https://www.jinrishici.com/doc/
+ *   GET https://v1.jinrishici.com/all.json → { content, origin, author, category }
+ * 走 Obsidian 的 requestUrl（绕过渲染进程 CORS），按天缓存。
+ */
+
+let cache = { key: "", data: null };
+
+function todayKey() {
+  const d = new Date();
+  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+}
+
+async function getQuote(force) {
+  const key = todayKey();
+  if (!force && cache.data && cache.key === key) return cache.data;
+  try {
+    const res = await requestUrl({
+      url: "https://v1.jinrishici.com/all.json",
+      method: "GET",
+      headers: { Accept: "application/json" }
+    });
+    const j = res.json || JSON.parse(res.text);
+    const data = {
+      content: String(j.content || "").trim(),
+      author: String(j.author || "").trim(),
+      origin: String(j.origin || "").trim(),
+      category: String(j.category || "").trim()
+    };
+    if (!data.content) throw new Error("空内容");
+    cache = { key, data };
+    return data;
+  } catch (e) {
+    return { error: String((e && e.message) || e), content: "", author: "", origin: "" };
+  }
+}
+
+module.exports = { getQuote };
+
+  }, "./services"],
   "./services/ragService.js": [function(require, module, exports) {
 "use strict";
 
@@ -5595,6 +5832,71 @@ function backgroundCss(url, dim) {
 }
 
 module.exports = { BASE, wallpaperUrl, shouldRefresh, backgroundCss };
+
+  }, "./services"],
+  "./services/weatherService.js": [function(require, module, exports) {
+"use strict";
+
+const { requestUrl } = require("obsidian");
+
+/**
+ * 天气：OpenWeather（https://openweathermap.org/api）
+ *   GET /data/2.5/weather?q={city}&appid={key}&units=metric&lang=zh_cn
+ *   → { main: { temp, feels_like, humidity }, weather: [{ description, icon }], name }
+ *
+ * 无 key 时不做请求（避免无谓报错），卡片提示去填。
+ * 缓存 30 分钟，避免频繁 render 触发限流。
+ */
+
+let cache = { at: 0, key: "", data: null };
+const TTL = 30 * 60 * 1000;
+
+function iconEmoji(code) {
+  const c = String(code || "");
+  if (c.startsWith("01")) return "☀️";
+  if (c.startsWith("02")) return "🌤️";
+  if (c.startsWith("03") || c.startsWith("04")) return "☁️";
+  if (c.startsWith("09") || c.startsWith("10")) return "🌧️";
+  if (c.startsWith("11")) return "⛈️";
+  if (c.startsWith("13")) return "❄️";
+  if (c.startsWith("50")) return "🌫️";
+  return "🌡️";
+}
+
+async function getWeather(settings, force) {
+  const key = String((settings && settings.weatherApiKey) || "").trim();
+  const city = String((settings && settings.weatherCity) || "").trim();
+  if (!key || !city) return { missing: true };
+  const cacheKey = key.slice(0, 6) + "|" + city;
+  if (!force && cache.data && cache.key === cacheKey && Date.now() - cache.at < TTL) return cache.data;
+
+  try {
+    const url =
+      "https://api.openweathermap.org/data/2.5/weather?q=" +
+      encodeURIComponent(city) +
+      "&appid=" + encodeURIComponent(key) +
+      "&units=metric&lang=zh_cn";
+    const res = await requestUrl({ url, method: "GET" });
+    const j = res.json || JSON.parse(res.text);
+    if (!j || !j.main) throw new Error((j && j.message) || "返回结构异常");
+    const w = (j.weather && j.weather[0]) || {};
+    const data = {
+      city: j.name || city,
+      temp: Math.round(j.main.temp),
+      feels: Math.round(j.main.feels_like),
+      humidity: j.main.humidity,
+      desc: w.description || "",
+      emoji: iconEmoji(w.icon),
+      code: w.icon || ""
+    };
+    cache = { at: Date.now(), key: cacheKey, data };
+    return data;
+  } catch (e) {
+    return { error: String((e && e.message) || e) };
+  }
+}
+
+module.exports = { getWeather, iconEmoji };
 
   }, "./services"],
   "./settings.js": [function(require, module, exports) {
@@ -7498,6 +7800,8 @@ const { listBases, createBase } = require("../services/baseService");
 const { tagStats, attachmentStats } = require("../services/statsService");
 const { AttachmentPreviewModal } = require("../modals/attachmentPreviewModal");
 const { ATTACHMENT_EXTS, planOrganize, applyOrganize } = require("../services/attachmentService");
+const { getQuote } = require("../services/quoteService");
+const { getWeather } = require("../services/weatherService");
 
 /**
  * 个人知识工作台（v3.4）：视觉重做 + 性能缓存 + 调试面板。
@@ -7621,19 +7925,19 @@ class WorkbenchView extends ItemView {
     const body = cols.createDiv({ cls: "owb-heat-body" });
 
     const months = body.createDiv({ cls: "owb-heat-months" });
-    const COL = 17;
+    const weeks = heat.grid.length;
     let lastMonth = -1;
-    let lastLeft = -999;
+    let lastPct = -999;
     heat.grid.forEach((week, w) => {
       const firstReal = week.find((d) => !d.inFuture) || week[0];
       const m = firstReal.date.getMonth();
       if (m === lastMonth) return;
-      const left = w * COL;
+      const pct = (w / weeks) * 100;
       lastMonth = m;
-      if (left - lastLeft < 34) return;
-      lastLeft = left;
+      if (pct - lastPct < 4.5) return;   // 百分比间距，缩放后仍不重叠
+      lastPct = pct;
       const label = months.createSpan({ cls: "owb-heat-month", text: `${m + 1}月` });
-      label.style.left = `${left}px`;
+      label.style.left = `${pct}%`;
     });
 
     const wrap = body.createDiv({ cls: "owb-heat-wrap" });
@@ -7731,6 +8035,33 @@ class WorkbenchView extends ItemView {
     const hero = root.createDiv({ cls: "owb-hero" });
     hero.createDiv({ cls: "owb-eyebrow", text: `${todayStr} · ${getGreeting()}` });
     hero.createEl("h2", { cls: "owb-greeting", text: "麟，今天推进哪一件？" });
+
+    // 诗词 + 天气（各自失败互不影响）
+    const ambient = hero.createDiv({ cls: "owb-ambient" });
+    if (this.plugin.settings.showQuote !== false) {
+      const q = await getQuote();
+      if (q && q.content) {
+        const line = ambient.createDiv({ cls: "owb-quote" });
+        line.createSpan({ cls: "owb-quote-text", text: q.content });
+        if (q.author || q.origin) {
+          line.createSpan({ cls: "owb-muted", text: `　— ${q.author}${q.origin ? "《" + q.origin + "》" : ""}` });
+        }
+      }
+    }
+    if (this.plugin.settings.showWeather !== false) {
+      const w = await getWeather(this.plugin.settings);
+      if (w && !w.missing) {
+        const chip = ambient.createDiv({ cls: "owb-weather" });
+        if (w.error) {
+          chip.createSpan({ cls: "owb-muted", text: "天气获取失败" });
+        } else {
+          chip.createSpan({ cls: "owb-weather-emoji", text: w.emoji });
+          chip.createSpan({ cls: "owb-weather-temp", text: w.temp + "°C" });
+          chip.createSpan({ cls: "owb-muted", text: `${w.desc} · ${w.city} · 湿度 ${w.humidity}%` });
+        }
+      }
+    }
+
     this.renderStats(hero, data, heat);
 
     const heroActions = hero.createDiv({ cls: "owb-hero-actions" });
@@ -7780,10 +8111,16 @@ class WorkbenchView extends ItemView {
         cls: pomo.phase === "work" && pomo.running ? "" : "mod-cta",
         text: pomo.phase === "idle" ? "开始专注" : pomo.running ? "暂停" : "继续"
       }).addEventListener("click", () => {
+        const wasIdle = pomo.phase === "idle";
         pomo.togglePause();
         this.plugin.updatePomodoroStatusBar();
         this.render();
+        // 从静止开始的一次点击，直接进全屏沉浸倒计时
+        if (wasIdle) this.plugin.openPomodoroFullscreen();
       });
+      right.createEl("button", { text: "全屏" }).addEventListener("click", () =>
+        this.plugin.openPomodoroFullscreen()
+      );
       right.createEl("button", { text: "短休" }).addEventListener("click", () => {
         pomo.startBreak();
         this.plugin.updatePomodoroStatusBar();

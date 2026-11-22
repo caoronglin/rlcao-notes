@@ -133,7 +133,7 @@ const {
   VIEW_TYPE_RAG,
   DEFAULT_SETTINGS
 } = require("./constants");
-const { deepMergeDefaults, formatDate } = require("./utils");
+const { deepMergeDefaults, formatDate, migrateSettings } = require("./utils");
 const { GitService } = require("./services/gitService");
 const { PomodoroService } = require("./services/pomodoroService");
 const { RagService } = require("./services/ragService");
@@ -413,7 +413,15 @@ class ObsidianWorkbenchPlugin extends Plugin {
 
   async loadSettings() {
     const saved = await this.loadData();
-    this.settings = deepMergeDefaults(DEFAULT_SETTINGS, saved);
+    this.settings = migrateSettings(deepMergeDefaults(DEFAULT_SETTINGS, saved));
+    const log = this.settings._migrationLog || [];
+    delete this.settings._migrationLog;
+    if (log.length) {
+      // 迁移结果立即落盘，避免每次启动重复判断
+      await this.saveData(this.settings);
+      this._migrationApplied = log;
+      console.info("[workbench] 设置迁移:", log.join("; "));
+    }
   }
 
   async saveSettings() {
@@ -4847,6 +4855,47 @@ function formatDuration(seconds) {
   return rem ? `${m} 分 ${rem} 秒` : `${m} 分`;
 }
 
+/**
+ * 设置迁移：修掉历史 data.json 里与当前默认值冲突的旧字段。
+ * 背景（2026-11-22 实测）：v3.0 的 dailyFolder 默认是 "diary"，写进了 data.json；
+ * v3.1 把默认改成 "vault/日记"，但 deepMerge 让已保存的 "diary" 永远赢，
+ * 于是「日记 · 连续 0 天 / 还没有日记」和「项目目录为空」——功能看着坏掉。
+ *
+ * 原则：只修正「能明确判定为旧默认值」的字段，用户手工改成别的值一律不动。
+ */
+function migrateSettings(settings) {
+  const s = settings || {};
+  const log = [];
+
+  // 旧默认 "diary" → 真实日记目录
+  if (s.dailyFolder === "diary" || s.dailyFolder === "") {
+    s.dailyFolder = "vault/日记";
+    log.push('dailyFolder: "diary" → "vault/日记"');
+  }
+  // 旧空值 → 真实项目目录
+  if (!s.projectFolder) {
+    s.projectFolder = "vault/项目";
+    log.push('projectFolder: "" → "vault/项目"');
+  }
+  // 任务落盘路径
+  if (!s.tasksPath) {
+    s.tasksPath = "vault/任务.md";
+    log.push('tasksPath → "vault/任务.md"');
+  }
+  // 隐私区
+  if (!s.privacyFolder) {
+    s.privacyFolder = "vault/隐私";
+    log.push('privacyFolder → "vault/隐私"');
+  }
+  // 题库错题导出（旧默认落在 notes/ 根，会在根目录生成游离文件）
+  if (s.quizWrongExportPath === "notes/错题复盘.md") {
+    s.quizWrongExportPath = "notes/bio/生信学习/错题复盘.md";
+    log.push("quizWrongExportPath → notes/bio/生信学习/");
+  }
+  s._migrationLog = log;
+  return s;
+}
+
 function deepMergeDefaults(defaults, saved) {
   if (!saved || typeof saved !== "object") {
     return JSON.parse(JSON.stringify(defaults));
@@ -4905,6 +4954,7 @@ function shuffleArray(list) {
 }
 
 module.exports = {
+  migrateSettings,
   pad2,
   formatDate,
   startOfTodayMs,

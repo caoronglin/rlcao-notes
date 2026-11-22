@@ -7,7 +7,15 @@
     "quizEngine": true,
     "pomodoro": true,
     "vaultDoctor": true,
-    "aiAssist": true
+    "aiAssist": true,
+    "dailyJournal": true,
+    "tasks": true,
+    "projects": true,
+    "privacy": false,
+    "ragSearch": true,
+    "decision": true,
+    "attachments": true,
+    "imageTools": true
   },
   "openWorkbenchOnStart": false,
   "dailyFolder": "diary",
@@ -25,6 +33,26 @@
       "target": "notes/bio/生信学习/生信自测题库.md"
     }
   ],
+  "wallpaperEnabled": true,
+  "wallpaperMode": "daily",
+  "wallpaperFormat": "webp",
+  "wallpaperCustomUrl": "",
+  "wallpaperDim": 0.42,
+  "glassEffect": true,
+  "glassBlur": 18,
+  "heatmapWeeks": 26,
+  "tasksPath": "vault/任务.md",
+  "tasksScanLimit": 200,
+  "privacyFolder": "vault/隐私",
+  "ragApiKey": "",
+  "ragBaseUrl": "https://api.siliconflow.cn",
+  "ragEmbedModel": "BAAI/bge-m3",
+  "ragRerankModel": "BAAI/bge-reranker-v2-m3",
+  "ragFolders": "notes,vault,wiki,_posts",
+  "ragChunkChars": 600,
+  "decisionEndpoint": "http://127.0.0.1:3425/v1/systemone",
+  "decisionToken": "magpie",
+  "decisionModel": "vercel-jev/typesafe-ai/jev",
   "inboxPath": "inbox.md",
   "captureInsertMode": "top",
   "captureTimeFormat": "HH:mm",
@@ -46,12 +74,45 @@
   "quizWrongExportPath": "notes/bio/生信学习/错题复盘.md",
   "quizStore": {
     "version": 2,
-    "times": 0,
-    "best": null,
-    "totalScore": 0,
-    "totalCorrect": 0,
-    "totalQuestions": 0,
-    "history": [],
-    "mastery": {}
+    "times": 1,
+    "best": 1,
+    "totalScore": 1,
+    "totalCorrect": 1,
+    "totalQuestions": 3,
+    "history": [
+      {
+        "at": 1795354223730,
+        "score": 1,
+        "total": 3,
+        "seconds": 9,
+        "mode": "all"
+      }
+    ],
+    "mastery": {
+      "4b8f941e44": {
+        "seen": 1,
+        "wrong": 1,
+        "streak": 0,
+        "ease": 2.3,
+        "intervalDays": 0,
+        "dueAt": 1795354218778
+      },
+      "131cbb6252": {
+        "seen": 1,
+        "wrong": 1,
+        "streak": 0,
+        "ease": 2.3,
+        "intervalDays": 0,
+        "dueAt": 1795354221481
+      },
+      "6ea38f4aed": {
+        "seen": 1,
+        "wrong": 0,
+        "streak": 1,
+        "ease": 2.6,
+        "intervalDays": 1,
+        "dueAt": 1795440623122
+      }
+    }
   }
 }

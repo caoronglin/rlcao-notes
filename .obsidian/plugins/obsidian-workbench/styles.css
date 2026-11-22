@@ -752,29 +752,49 @@
 }
 
 /* ===================================================================
-   v3.3 工作台重排版：每日壁纸 + 毛玻璃 + 热力日历
+   v3.4 工作台视觉重做
+   设计原则（针对 v3.3「糊成一片灰」的实测问题）：
+   1. 壁纸用「渐变压光」而非平铺半透明，顶部更暗保证标题可读
+   2. 卡片用深色实底 + 高模糊，而不是白色半透明（白玻璃在深色壁纸上必糊）
+   3. 顶部内高光 + 大阴影做层级，卡片不再等重
+   4. 统计条用分隔线而非方框，减少盒子感
+   5. 字体 HONOR Sans，数字 tabular-nums
    =================================================================== */
 
 .owb-workbench-view {
-  --owb-glass-bg: rgba(255, 255, 255, 0.12);
-  --owb-glass-border: rgba(255, 255, 255, 0.22);
-  --owb-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
-  --owb-glass-blur: 18px;
-  --owb-wallpaper-dim: rgba(0, 0, 0, 0.42);
+  --owb-glass-bg: rgba(18, 20, 26, 0.58);
+  --owb-glass-bg-strong: rgba(14, 16, 21, 0.74);
+  --owb-glass-border: rgba(255, 255, 255, 0.075);
+  --owb-glass-highlight: rgba(255, 255, 255, 0.06);
+  --owb-glass-blur: 22px;
+  --owb-accent: #1677ff;
+  --owb-text: #f2f4f8;
+  --owb-text-dim: rgba(242, 244, 248, 0.62);
+  --owb-radius: 14px;
+  --owb-gap: 12px;
+  --owb-heat-0: rgba(255, 255, 255, 0.06);
+  --owb-heat-1: rgba(22, 119, 255, 0.28);
+  --owb-heat-2: rgba(22, 119, 255, 0.48);
+  --owb-heat-3: rgba(22, 119, 255, 0.72);
+  --owb-heat-4: #1677ff;
+
   position: relative;
-  /* 覆盖 v3.0 的 max-width:1120px / margin:auto（宽屏会白掉两侧） */
   max-width: none;
   margin: 0;
-  padding: 20px 22px 28px;
+  padding: 18px 20px 28px;
   min-height: 100%;
   overflow-y: auto;
   background-color: var(--background-primary);
+  font-family: "HONOR Sans", "HONOR Sans CN", -apple-system, "Segoe UI", "Noto Sans CJK SC", sans-serif;
+  color: var(--owb-text);
+  font-feature-settings: "tnum" 1;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ---- 壁纸层 ---- */
+/* ---- 壁纸：渐变压光 + 暗角，图能看见但字压得住 ---- */
 .owb-wallpaper-on {
   background-image:
-    linear-gradient(var(--owb-wallpaper-dim), var(--owb-wallpaper-dim)),
+    radial-gradient(120% 80% at 50% 0%, rgba(0, 0, 0, 0.18) 0%, rgba(0, 0, 0, 0.52) 60%, rgba(0, 0, 0, 0.68) 100%),
     var(--owb-wallpaper);
   background-size: cover, cover;
   background-position: center, center;
@@ -782,122 +802,47 @@
   background-repeat: no-repeat, no-repeat;
 }
 
-/* 深色主题下壁纸压得更暗，保证文字对比度 */
-.theme-dark .owb-wallpaper-on {
+.theme-light .owb-wallpaper-on {
   background-image:
-    linear-gradient(rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0.62)),
+    radial-gradient(120% 80% at 50% 0%, rgba(255, 255, 255, 0.42) 0%, rgba(255, 255, 255, 0.66) 55%, rgba(255, 255, 255, 0.82) 100%),
     var(--owb-wallpaper);
 }
 
-/* ---- 毛玻璃面板 ---- */
-.owb-glass .owb-glass-panel,
+/* 无壁纸：回到主题色，卡片转实底 */
+.owb-workbench-view:not(.owb-wallpaper-on) {
+  --owb-glass-bg: var(--background-secondary);
+  --owb-glass-bg-strong: var(--background-secondary);
+  --owb-glass-border: var(--background-modifier-border);
+  --owb-text: var(--text-normal);
+  --owb-text-dim: var(--text-muted);
+}
+
+/* ---- 卡片 ---- */
 .owb-glass .owb-card,
 .owb-glass .owb-hero,
-.owb-glass .owb-pomo-bar {
+.owb-glass .owb-pomo-bar,
+.owb-glass .owb-glass-panel {
   background: var(--owb-glass-bg) !important;
   border: 1px solid var(--owb-glass-border) !important;
-  border-radius: 14px !important;
-  box-shadow: var(--owb-glass-shadow) !important;
-  backdrop-filter: blur(var(--owb-glass-blur)) saturate(1.7);
-  -webkit-backdrop-filter: blur(var(--owb-glass-blur)) saturate(1.7);
-  color: #fff;
+  border-radius: var(--owb-radius) !important;
+  box-shadow:
+    inset 0 1px 0 var(--owb-glass-highlight),
+    0 1px 2px rgba(0, 0, 0, 0.28),
+    0 10px 30px -12px rgba(0, 0, 0, 0.55) !important;
+  backdrop-filter: blur(var(--owb-glass-blur)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--owb-glass-blur)) saturate(150%);
+  color: var(--owb-text);
 }
 
-.theme-light .owb-glass .owb-glass-panel,
-.theme-light .owb-glass .owb-card,
-.theme-light .owb-glass .owb-hero,
-.theme-light .owb-glass .owb-pomo-bar {
-  background: rgba(255, 255, 255, 0.28) !important;
-  border-color: rgba(255, 255, 255, 0.42) !important;
-  color: var(--text-normal);
+.owb-card { padding: 14px 16px; }
+
+.owb-card-title {
+  font-size: 0.86em;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--owb-text);
+  margin-bottom: 10px;
 }
-
-/* 无壁纸时退回主题色，避免半透明糊在纯色上显得脏 */
-.owb-workbench-view:not(.owb-wallpaper-on) .owb-glass-panel,
-.owb-workbench-view:not(.owb-wallpaper-on) .owb-card,
-.owb-workbench-view:not(.owb-wallpaper-on) .owb-hero {
-  background: var(--background-secondary) !important;
-  border: 1px solid var(--background-modifier-border) !important;
-  backdrop-filter: none;
-}
-
-/* ---- Hero ---- */
-.owb-hero {
-  padding: 20px 22px;
-  margin-bottom: 16px;
-}
-
-.owb-hero-top {
-  margin-bottom: 14px;
-}
-
-.owb-eyebrow {
-  font-size: 0.78em;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  opacity: 0.72;
-  margin-bottom: 6px;
-}
-
-.owb-greeting {
-  margin: 0;
-  font-size: 1.6em;
-  font-weight: 700;
-  line-height: 1.25;
-}
-
-.owb-glass .owb-greeting { color: #fff; }
-.theme-light .owb-glass .owb-greeting { color: var(--text-normal); }
-
-/* ---- 四格统计 ---- */
-.owb-stat-strip {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
-  gap: 10px;
-  margin: 16px 0 14px;
-}
-
-.owb-stat {
-  padding: 10px 12px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-}
-
-.owb-workbench-view:not(.owb-wallpaper-on) .owb-stat {
-  background: var(--background-primary);
-  border-color: var(--background-modifier-border);
-}
-
-.owb-stat-value {
-  font-size: 1.55em;
-  font-weight: 700;
-  line-height: 1.1;
-  font-variant-numeric: tabular-nums;
-}
-
-.owb-stat-label {
-  font-size: 0.74em;
-  opacity: 0.72;
-  margin-top: 2px;
-}
-
-/* ---- 按钮组 ---- */
-.owb-hero-actions {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.owb-mini-btn {
-  padding: 2px 8px !important;
-  font-size: 0.76em !important;
-  height: auto !important;
-  box-shadow: none !important;
-}
-
-/* ---- 热力日历 ---- */
-.owb-heat-card { margin-bottom: 16px; padding: 16px 18px; }
 
 .owb-card-title-row {
   display: flex;
@@ -908,176 +853,296 @@
   margin-bottom: 10px;
 }
 
-.owb-heat-summary { font-size: 0.78em; }
+.owb-card-title-row .owb-card-title { margin-bottom: 0; }
+
+.owb-muted {
+  color: var(--owb-text-dim);
+  font-size: 0.82em;
+}
+
+/* ---- Hero ---- */
+.owb-hero { padding: 20px 22px; margin-bottom: var(--owb-gap); }
+
+.owb-hero-top { margin-bottom: 16px; }
+
+.owb-eyebrow {
+  font-size: 0.72em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--owb-text-dim);
+  margin-bottom: 8px;
+}
+
+.owb-greeting {
+  margin: 0;
+  font-size: 1.72em;
+  line-height: 1.18;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--owb-text);
+}
+
+/* ---- 统计条：分隔线取代方框 ---- */
+.owb-stat-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  margin: 18px 0 16px;
+  border-top: 1px solid var(--owb-glass-border);
+  padding-top: 14px;
+}
+
+.owb-stat {
+  padding: 0 14px;
+  border-left: 1px solid var(--owb-glass-border);
+  background: none;
+  border-radius: 0;
+}
+
+.owb-stat:first-child { padding-left: 0; border-left: none; }
+
+.owb-stat-value {
+  font-size: 1.72em;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.owb-stat-label {
+  font-size: 0.72em;
+  color: var(--owb-text-dim);
+  margin-top: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---- 按钮 ---- */
+.owb-hero-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.owb-workbench-view button {
+  font-family: inherit;
+  border-radius: 8px;
+  font-size: 0.82em;
+  padding: 5px 11px;
+  height: auto;
+  border: 1px solid var(--owb-glass-border);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--owb-text);
+  box-shadow: none;
+  transition: background 0.14s ease, border-color 0.14s ease;
+}
+
+.owb-workbench-view button:hover {
+  background: rgba(255, 255, 255, 0.11);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.owb-workbench-view button.mod-cta {
+  background: var(--owb-accent);
+  border-color: var(--owb-accent);
+  color: #fff;
+}
+
+.owb-workbench-view button.mod-cta:hover { background: #3d8bff; }
+
+.owb-mini-btn {
+  font-size: 0.74em !important;
+  padding: 2px 9px !important;
+  opacity: 0.82;
+}
+
+/* ---- 热力日历 ---- */
+.owb-heat-card { margin-bottom: var(--owb-gap); }
+
+.owb-heat-summary { font-variant-numeric: tabular-nums; }
+
+.owb-heat-body {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.owb-heat-months {
+  position: relative;
+  height: 14px;
+  margin-left: 20px;
+}
+
+.owb-heat-month {
+  position: absolute;
+  top: 0;
+  font-size: 0.66em;
+  line-height: 14px;
+  color: var(--owb-text-dim);
+  white-space: nowrap;
+}
 
 .owb-heat-wrap {
   display: flex;
   gap: 6px;
   overflow-x: auto;
-  padding-bottom: 4px;
+  padding-bottom: 2px;
 }
 
 .owb-heat-weekdays {
   display: flex;
   flex-direction: column;
   gap: 3px;
-  padding-top: 1px;
 }
 
 .owb-heat-wd {
-  width: 12px;
-  height: 13px;
+  width: 14px;
+  height: 14px;
   font-size: 0.62em;
-  line-height: 13px;
-  opacity: 0.6;
+  line-height: 14px;
+  color: var(--owb-text-dim);
   text-align: center;
 }
 
-.owb-heat-grid {
-  display: flex;
-  gap: 3px;
-}
-
-.owb-heat-col {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
+.owb-heat-grid { display: flex; gap: 3px; }
+.owb-heat-col { display: flex; flex-direction: column; gap: 3px; }
 
 .owb-heat-cell {
-  width: 13px;
-  height: 13px;
-  border-radius: 3px;
-  /* 纯色块：不显示数字（会撑破格子），数值走 title 悬浮提示 */
-  font-size: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  font-size: 0 !important;
+  line-height: 0;
   overflow: hidden;
   flex: none;
   transition: transform 0.12s ease, box-shadow 0.12s ease;
   cursor: pointer;
 }
 
-.owb-heat-body {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  width: fit-content;
-  margin: 0 auto; /* 网格居中，宽屏下不左挤 */
-}
-
-.owb-heat-months {
-  position: relative;
-  height: 14px;
-  margin-left: 18px; /* 对齐到格子起始（避开周几标签） */
-}
-
-.owb-heat-month {
-  position: absolute;
-  top: 0;
-  font-size: 0.64em;
-  line-height: 14px;
-  opacity: 0.62;
-  white-space: nowrap;
-}
-
 .owb-heat-cell:hover {
-  transform: scale(1.28);
-  box-shadow: 0 0 0 1px var(--interactive-accent);
-  z-index: 2;
+  transform: scale(1.3);
+  box-shadow: 0 0 0 1.5px var(--owb-accent);
+  z-index: 3;
 }
 
-/* 五级色阶（蓝主色，逐级加深） */
-.owb-heat-l0 { background: rgba(255, 255, 255, 0.10); }
-.owb-heat-l1 { background: rgba(22, 119, 255, 0.28); }
-.owb-heat-l2 { background: rgba(22, 119, 255, 0.48); }
-.owb-heat-l3 { background: rgba(22, 119, 255, 0.72); }
-.owb-heat-l4 { background: rgba(22, 119, 255, 0.95); }
+.owb-heat-l0 { background: var(--owb-heat-0); }
+.owb-heat-l1 { background: var(--owb-heat-1); }
+.owb-heat-l2 { background: var(--owb-heat-2); }
+.owb-heat-l3 { background: var(--owb-heat-3); }
+.owb-heat-l4 { background: var(--owb-heat-4); }
+.owb-heat-future { opacity: 0.22; }
 
 .owb-workbench-view:not(.owb-wallpaper-on) .owb-heat-l0 {
   background: var(--background-modifier-border);
 }
 
-.owb-heat-future { opacity: 0.28; }
-
 .owb-heat-legend {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 4px;
   margin-top: 10px;
-  font-size: 0.72em;
+  font-size: 0.7em;
 }
 
 .owb-heat-legend .owb-heat-cell { cursor: default; }
 
-/* ---- 主/次布局 ---- */
+/* ---- 布局 ---- */
 .owb-layout-main {
   display: grid;
-  grid-template-columns: minmax(0, 2.1fr) minmax(0, 1fr);
-  gap: 14px;
-  margin-bottom: 14px;
-  /* 两列等高，避免左侧卡片下方留一大块空壁纸 */
-  align-items: stretch;
+  grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr);
+  gap: var(--owb-gap);
+  margin-bottom: var(--owb-gap);
+  align-items: start;
 }
 
-.owb-layout-left {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  min-width: 0;
-}
-
-.owb-heat-cell {
-  width: 13px;
-  height: 13px;
-}
-
+.owb-layout-left,
 .owb-layout-side {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: var(--owb-gap);
+  min-width: 0;
 }
 
 .owb-layout-sub {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 14px;
-  margin-bottom: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--owb-gap);
+  margin-bottom: var(--owb-gap);
 }
 
-@media (max-width: 720px) {
+@media (max-width: 760px) {
   .owb-layout-main { grid-template-columns: 1fr; }
-  .owb-hero { padding: 16px; }
+  .owb-stat-strip { grid-template-columns: repeat(2, 1fr); gap: 12px 0; }
+  .owb-stat:nth-child(3) { padding-left: 0; border-left: none; }
 }
 
-/* ---- 卡片内部 ---- */
-.owb-card { padding: 14px 16px; }
-
-.owb-card-title {
-  font-weight: 650;
-  font-size: 0.95em;
-  margin-bottom: 8px;
-}
-
-.owb-task-list { display: flex; flex-direction: column; gap: 4px; }
+/* ---- 任务行：单行省略，不再撑满一屏 ---- */
+.owb-task-list { display: flex; flex-direction: column; gap: 1px; }
 
 .owb-task-row {
   display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 3px 4px;
-  border-radius: 6px;
+  gap: 8px;
+  padding: 5px 6px;
+  border-radius: 7px;
+  min-width: 0;
 }
 
-.owb-task-row:hover { background: rgba(255, 255, 255, 0.08); }
+.owb-task-row:hover { background: rgba(255, 255, 255, 0.055); }
 
-.owb-workbench-view:not(.owb-wallpaper-on) .owb-task-row:hover {
-  background: var(--background-modifier-hover);
+.owb-task-row input[type="checkbox"] {
+  flex: none;
+  margin: 0;
+  border-radius: 4px;
 }
 
-.owb-list { margin: 0; padding-left: 18px; }
+.owb-task-row .owb-link {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.86em;
+  color: var(--owb-text);
+}
 
-.owb-link { cursor: pointer; text-decoration: none; }
-.owb-link:hover { text-decoration: underline; }
+/* ---- 列表 ---- */
+.owb-list {
+  margin: 0;
+  padding-left: 16px;
+  font-size: 0.86em;
+  line-height: 1.75;
+}
 
+.owb-list li { min-width: 0; }
+.owb-list li .owb-link { color: var(--owb-text); }
+
+.owb-link {
+  cursor: pointer;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.14s ease;
+}
+
+.owb-link:hover { border-bottom-color: var(--owb-accent); }
+
+/* ---- 空状态：虚线内槽 + 提示，而不是一行灰字 ---- */
+.owb-empty-slot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 12px;
+  border: 1px dashed var(--owb-glass-border);
+  border-radius: 10px;
+  color: var(--owb-text-dim);
+  font-size: 0.82em;
+}
+
+/* ---- 番茄条 ---- */
 .owb-pomo-bar {
   display: flex;
   align-items: center;
@@ -1085,26 +1150,62 @@
   gap: 12px;
   flex-wrap: wrap;
   padding: 12px 16px;
-  margin-bottom: 14px;
+  margin-bottom: var(--owb-gap);
 }
+
+.owb-pomo-info { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
 
 .owb-pomo-clock {
-  font-family: var(--font-monospace);
-  font-size: 1.1em;
-  margin-right: 10px;
+  font-family: "HONOR Sans", ui-monospace, monospace;
+  font-size: 1.16em;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
 }
 
-.owb-quick-links {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  padding-top: 4px;
-}
+.owb-pomo-actions { display: flex; gap: 6px; align-items: center; }
+
+/* ---- 快捷入口 ---- */
+.owb-quick-links { display: flex; gap: 6px; flex-wrap: wrap; }
 
 .owb-chip {
-  font-size: 0.8em;
-  padding: 4px 12px !important;
   border-radius: 999px !important;
+  font-size: 0.76em !important;
+  padding: 4px 13px !important;
 }
 
-.owb-muted { opacity: 0.72; font-size: 0.86em; }
+/* ---- 多维表格卡 ---- */
+.owb-base-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: 0.85em;
+}
+
+.owb-base-row:hover { background: rgba(255, 255, 255, 0.055); }
+
+.owb-base-kind {
+  flex: none;
+  font-size: 0.72em;
+  padding: 1px 7px;
+  border-radius: 999px;
+  border: 1px solid var(--owb-glass-border);
+  color: var(--owb-text-dim);
+}
+
+/* ---- 调试面板 ---- */
+.owb-debug-bar {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px dashed var(--owb-glass-border);
+  font-family: ui-monospace, monospace;
+  font-size: 0.72em;
+  color: var(--owb-text-dim);
+}

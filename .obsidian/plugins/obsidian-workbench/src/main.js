@@ -8,7 +8,7 @@ const {
   VIEW_TYPE_RAG,
   DEFAULT_SETTINGS
 } = require("./constants");
-const { deepMergeDefaults, formatDate } = require("./utils");
+const { deepMergeDefaults, formatDate, migrateSettings } = require("./utils");
 const { GitService } = require("./services/gitService");
 const { PomodoroService } = require("./services/pomodoroService");
 const { RagService } = require("./services/ragService");
@@ -288,7 +288,15 @@ class ObsidianWorkbenchPlugin extends Plugin {
 
   async loadSettings() {
     const saved = await this.loadData();
-    this.settings = deepMergeDefaults(DEFAULT_SETTINGS, saved);
+    this.settings = migrateSettings(deepMergeDefaults(DEFAULT_SETTINGS, saved));
+    const log = this.settings._migrationLog || [];
+    delete this.settings._migrationLog;
+    if (log.length) {
+      // 迁移结果立即落盘，避免每次启动重复判断
+      await this.saveData(this.settings);
+      this._migrationApplied = log;
+      console.info("[workbench] 设置迁移:", log.join("; "));
+    }
   }
 
   async saveSettings() {

@@ -1030,6 +1030,181 @@ class AttachmentModal extends Modal {
 module.exports = { AttachmentModal, fmtSize };
 
   }, "./modals"],
+  "./modals/attachmentPreviewModal.js": [function(require, module, exports) {
+"use strict";
+
+const { Modal, Notice } = require("obsidian");
+
+/**
+ * 附件预览（open-file-viewer 优先，原生回退）。
+ *
+ * open-file-viewer（xushanpei/open-file-viewer）是框架无关的预览 SDK，
+ * 提供 PDF / Office / 图片 / 音视频 / 压缩包 / 邮件 / 3D / GIS 的统一容器。
+ * 它需要以 npm 包形式安装后才能在本插件内使用：
+ *     cd .obsidian/plugins/obsidian-workbench && npm i @open-file-viewer/core
+ * 未安装时自动回退到原生预览（图片 / PDF / 音视频 / 文本代码 / Markdown）。
+ */
+
+let ofvModule;
+let ofvError = "";
+let pluginDir = "";
+
+function setPluginDir(dir) {
+  pluginDir = String(dir || "");
+  ofvModule = undefined;
+}
+
+function loadOpenFileViewer() {
+  if (ofvModule !== undefined) return ofvModule;
+  const attempts = [() => require("@open-file-viewer/core")];
+  if (pluginDir && pluginDir.startsWith("/")) {
+    attempts.push(() => {
+      const p = require("path");
+      return require(p.join(pluginDir, "node_modules", "@open-file-viewer", "core"));
+    });
+  }
+  for (const fn of attempts) {
+    try {
+      ofvModule = fn();
+      ofvError = "";
+      return ofvModule;
+    } catch (e) {
+      ofvError = String((e && e.message) || e);
+    }
+  }
+  ofvModule = null;
+  return ofvModule;
+}
+
+const KIND = {
+  image: ["png", "jpg", "jpeg", "gif", "webp", "avif", "bmp", "svg"],
+  video: ["mp4", "webm", "ogv", "mov"],
+  audio: ["mp3", "wav", "ogg", "m4a", "flac"],
+  pdf: ["pdf"],
+  text: ["txt", "log", "json", "yaml", "yml", "toml", "ini", "conf", "csv", "tsv"],
+  code: ["js", "mjs", "cjs", "ts", "py", "r", "sh", "bash", "c", "h", "cpp", "java", "go", "rs", "sql", "html", "css", "xml"],
+  markdown: ["md"],
+  office: ["docx", "doc", "xlsx", "xls", "pptx", "ppt", "odt", "ods"],
+  archive: ["zip", "tar", "gz", "7z", "rar"]
+};
+
+function kindOf(ext) {
+  const e = String(ext || "").toLowerCase();
+  for (const [k, list] of Object.entries(KIND)) if (list.includes(e)) return k;
+  return "other";
+}
+
+/** 构造 Obsidian 资源 URL（vault adapter 已处理编码） */
+function resourceUrl(app, file) {
+  try {
+    if (app.vault.adapter && typeof app.vault.adapter.getResourcePath === "function") {
+      return app.vault.adapter.getResourcePath(file.path);
+    }
+  } catch (e) {
+    /* ignore */
+  }
+  return file.path;
+}
+
+/**
+ * 渲染预览内容到容器。
+ * 返回 { usedEngine: "open-file-viewer" | "native", kind }
+ */
+async function renderPreview(app, file, container) {
+  container.empty();
+  const kind = kindOf(file.extension);
+  const url = resourceUrl(app, file);
+
+  // 复杂格式优先交给 open-file-viewer
+  const ofv = loadOpenFileViewer();
+  const ofvKind = ["office", "archive", "other", "pdf"].includes(kind);
+  if (ofv && ofvKind && typeof ofv.createViewer === "function") {
+    try {
+      const host = container.createDiv({ cls: "owb-ofv-host" });
+      ofv.createViewer(host, { url, fileName: file.name, theme: "auto" });
+      return { usedEngine: "open-file-viewer", kind };
+    } catch (e) {
+      ofvError = String(e && e.message);
+    }
+  }
+
+  if (kind === "image") {
+    const img = container.createEl("img", { cls: "owb-preview-media" });
+    img.src = url;
+  } else if (kind === "pdf") {
+    const frame = container.createEl("iframe", { cls: "owb-preview-frame" });
+    frame.src = url;
+  } else if (kind === "video") {
+    const v = container.createEl("video", { cls: "owb-preview-media", attr: { controls: "controls" } });
+    v.src = url;
+  } else if (kind === "audio") {
+    const a = container.createEl("audio", { attr: { controls: "controls" }, cls: "owb-preview-audio" });
+    a.src = url;
+  } else if (kind === "text" || kind === "code" || kind === "markdown") {
+    let text = "";
+    try {
+      text = await app.vault.read(file);
+    } catch (e) {
+      text = "(读取失败：" + e.message + ")";
+    }
+    const pre = container.createEl("pre", { cls: "owb-preview-code" });
+    pre.setText(text.length > 200000 ? text.slice(0, 200000) + "\n…(已截断)" : text);
+  } else {
+    const box = container.createDiv({ cls: "owb-empty-slot" });
+    box.setText(
+      `${file.extension.toUpperCase()} 需要 open-file-viewer 才能内嵌预览。` +
+        `安装：cd .obsidian/plugins/obsidian-workbench && npm i @open-file-viewer/core`
+    );
+    const open = container.createEl("button", { text: "用系统默认应用打开" });
+    open.addEventListener("click", async () => {
+      try {
+        const electron = require("electron");
+        await electron.shell.openPath(resourceUrl(app, file));
+      } catch (e) {
+        new Notice("无法调用系统应用：" + e.message);
+      }
+    });
+  }
+  return { usedEngine: "native", kind, ofvError };
+}
+
+class AttachmentPreviewModal extends Modal {
+  constructor(app, plugin, file) {
+    super(app, plugin);
+    this.file = file;
+    this.plugin = plugin;
+  }
+
+  async onOpen() {
+    const { contentEl, titleEl } = this;
+    titleEl.setText(this.file.name);
+    contentEl.addClass("owb-preview-modal");
+    const meta = contentEl.createDiv({ cls: "owb-muted" });
+    const kb = this.file.stat ? (this.file.stat.size / 1024).toFixed(1) : "?";
+    meta.setText(`${this.file.path} · ${kb} KB`);
+    const body = contentEl.createDiv({ cls: "owb-preview-body" });
+    const res = await renderPreview(this.app, this.file, body);
+    if (res.usedEngine === "native" && res.ofvError && ["office", "archive", "other"].includes(res.kind)) {
+      contentEl.createDiv({ cls: "owb-muted", text: "open-file-viewer 未加载：" + res.ofvError.slice(0, 120) });
+    }
+  }
+
+  onClose() {
+    this.contentEl.empty();
+  }
+}
+
+module.exports = {
+  KIND,
+  kindOf,
+  renderPreview,
+  resourceUrl,
+  AttachmentPreviewModal,
+  setPluginDir,
+  loadOpenFileViewer
+};
+
+  }, "./modals"],
   "./modals/branchModal.js": [function(require, module, exports) {
 "use strict";
 
@@ -2373,7 +2548,157 @@ async function archiveOrphans(app, files, note) {
   return { moved, failed, destDir };
 }
 
+/**
+ * 整理计划（不改动任何文件）：把散落在 assets/ 之外的附件收进 assets/<年-月>/。
+ * 返回 { items: [{ file, dest }], bytes }
+ */
+function planOrganize(app) {
+  let files = [];
+  try {
+    files = app.vault.getFiles();
+  } catch (e) {
+    files = [];
+  }
+  const items = [];
+  let bytes = 0;
+  for (const f of files) {
+    const ext = String(f.extension || "").toLowerCase();
+    if (!ATTACHMENT_EXTS.has(ext)) continue;
+    if (f.path.startsWith("assets/") || f.path.startsWith("4-存档/") || f.path.startsWith(".obsidian/")) continue;
+    const parent = f.parent ? f.parent.path : "";
+    // 只为散落在库根或在笔记目录里的附件做归档
+    if (parent && /^assets\//.test(parent)) continue;
+    const d = f.stat && f.stat.mtime ? new Date(f.stat.mtime) : new Date();
+    const pad = (n) => String(n).padStart(2, "0");
+    const dir = `assets/${d.getFullYear()}-${pad(d.getMonth() + 1)}`;
+    items.push({ file: f, dest: normalizePath(`${dir}/${f.name}`) });
+    bytes += f.stat ? f.stat.size : 0;
+  }
+  return { items, bytes };
+}
+
+/**
+ * 执行整理：移动文件 + 改写「带路径的」引用。
+ * 说明：Obsidian 用文件名解析 [[name]]，移动后普通双链仍然有效；
+ * 只有显式带路径的引用（![[assets/old/x.png]] 或 ![](old/x.png)）需要改写。
+ */
+async function applyOrganize(app, plan, onProgress) {
+  const moved = [];
+  const failed = [];
+  const rewrites = new Map(); // oldPath -> newPath
+
+  for (const item of plan.items) {
+    try {
+      let dest = item.dest;
+      if (app.vault.getAbstractFileByPath(dest)) {
+        const dot = dest.lastIndexOf(".");
+        dest = dest.slice(0, dot) + "-" + Date.now() + dest.slice(dot);
+      }
+      await app.vault.rename(item.file, dest);
+      rewrites.set(item.file.path, dest);
+      moved.push({ from: item.file.path, to: dest });
+      if (onProgress) onProgress(moved.length, plan.items.length);
+    } catch (e) {
+      failed.push({ file: item.file.path, error: String(e && e.message) });
+    }
+  }
+
+  // 改写带路径的引用
+  let touched = 0;
+  if (rewrites.size) {
+    let mds = [];
+    try {
+      mds = app.vault.getMarkdownFiles();
+    } catch (e) {
+      mds = [];
+    }
+    for (const md of mds) {
+      let text = "";
+      try {
+        text = await app.vault.read(md);
+      } catch (e) {
+        continue;
+      }
+      let next = text;
+      for (const [oldPath, newPath] of rewrites) {
+        if (!next.includes(oldPath)) continue;
+        next = next.split(oldPath).join(newPath);
+      }
+      if (next !== text) {
+        try {
+          await app.vault.modify(md, next);
+          touched += 1;
+        } catch (e) {
+          /* 忽略单篇失败 */
+        }
+      }
+    }
+  }
+
+  if (moved.length) {
+    const pad = (n) => String(n).padStart(2, "0");
+    const now = new Date();
+    const day = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+    const readme = normalizePath(`assets/整理记录-${day}.md`);
+    const lines = [
+      `# 附件整理 ${day}`,
+      "",
+      `移动 ${moved.length} 个附件到 assets/<年-月>/，改写 ${touched} 篇笔记中的带路径引用。`,
+      "",
+      "| 原位置 | 新位置 |",
+      "|---|---|"
+    ];
+    for (const m of moved) lines.push(`| ${m.from} | ${m.to} |`);
+    const existing = app.vault.getAbstractFileByPath(readme);
+    if (existing) {
+      const oldText = await app.vault.read(existing);
+      await app.vault.modify(existing, oldText + "\n\n" + lines.join("\n") + "\n");
+    } else {
+      await app.vault.create(readme, lines.join("\n") + "\n");
+    }
+  }
+
+  return { moved, failed, touched };
+}
+
+/**
+ * 通用附件上传入库：任意类型写入 assets/<年-月>/，返回文件。
+ * 与图片工具同源，避免两套落盘逻辑。
+ */
+async function saveAttachment(app, input, opts) {
+  const o = opts || {};
+  const name = o.name || `attachment-${Date.now()}`;
+  const d = o.date || new Date();
+  const pad = (n) => String(n).padStart(2, "0");
+  const dir = o.dir || `assets/${d.getFullYear()}-${pad(d.getMonth() + 1)}`;
+  if (!app.vault.getAbstractFileByPath(normalizePath(dir))) {
+    try {
+      await app.vault.createFolder(normalizePath(dir));
+    } catch (e) {
+      /* 已存在 */
+    }
+  }
+  let bytes;
+  if (input instanceof ArrayBuffer) bytes = new Uint8Array(input);
+  else if (input && input.buffer instanceof ArrayBuffer) bytes = new Uint8Array(input.buffer);
+  else if (input && typeof input.arrayBuffer === "function") bytes = new Uint8Array(await input.arrayBuffer());
+  else throw new Error("无法识别的附件输入");
+
+  let path = normalizePath(`${dir}/${name}`);
+  if (app.vault.getAbstractFileByPath(path)) {
+    const dot = name.lastIndexOf(".");
+    const base = dot > 0 ? name.slice(0, dot) : name;
+    const ext = dot > 0 ? name.slice(dot) : "";
+    path = normalizePath(`${dir}/${base}-${Date.now()}${ext}`);
+  }
+  const file = await app.vault.createBinary(path, bytes.buffer);
+  return { file, path };
+}
+
 module.exports = {
+  planOrganize,
+  applyOrganize,
+  saveAttachment,
   ATTACHMENT_EXTS,
   extractAttachmentRefs,
   auditVault,
@@ -2914,15 +3239,40 @@ async function diagnoseVault(vaultBasePath, gitService) {
   }
 
   // 2. 旧版错误 QuickAdd 快捷键或非数组格式
+  //
+  // 2026-11-22 修正：原规则「凡 quickadd: 开头但非 choice: 前缀就报错」是误报。
+  // QuickAdd 自身注册了 quickadd:runQuickAdd（打开菜单）等内置命令，它们合法；
+  // 真正会静默失效的是「quickadd:choice:<不存在的 id>」和旧的 quickadd:<名字> 写法。
+  const QUICKADD_BUILTIN = new Set([
+    "quickadd:runQuickAdd",
+    "quickadd:openQuickAddSettings",
+    "quickadd:openSettings"
+  ]);
+  const quickAddChoices = new Set(
+    (
+      (safeReadJson(path.join(obsDir, "plugins/quickadd/data.json"), {}) || {}).choices || []
+    ).map((c) => c && c.id).filter(Boolean)
+  );
   const hotkeys = safeReadJson(path.join(obsDir, "hotkeys.json"), {});
   for (const [cmdId, val] of Object.entries(hotkeys)) {
-    if (cmdId.startsWith("quickadd:") && !cmdId.startsWith("quickadd:choice:")) {
+    if (cmdId.startsWith("quickadd:") && !cmdId.startsWith("quickadd:choice:") && !QUICKADD_BUILTIN.has(cmdId)) {
       issues.push({
         severity: "error",
         code: "LEGACY_QUICKADD_HOTKEY",
-        message: `快捷键 ${cmdId} 缺少 choice: 前缀，会静默失效`,
+        message: `快捷键 ${cmdId} 不是合法 QuickAdd 命令（缺 choice: 前缀或 id），会静默失效`,
         fixable: false
       });
+    }
+    if (cmdId.startsWith("quickadd:choice:") && quickAddChoices.size) {
+      const id = cmdId.slice("quickadd:choice:".length);
+      if (!quickAddChoices.has(id)) {
+        issues.push({
+          severity: "warning",
+          code: "DANGLING_QUICKADD_CHOICE",
+          message: `快捷键绑定的 QuickAdd choice 不存在：${id}`,
+          fixable: false
+        });
+      }
     }
     if (!Array.isArray(val)) {
       issues.push({
@@ -4844,6 +5194,95 @@ class RagService {
 }
 
 module.exports = { RagService, cosine };
+
+  }, "./services"],
+  "./services/statsService.js": [function(require, module, exports) {
+"use strict";
+
+/**
+ * 标签与附件统计（工作台卡片用）。
+ * 全部基于内存缓存（metadataCache + vault.getFiles），不读文件内容。
+ */
+
+/** 标签统计：返回 [{ tag, count }] 降序 */
+function tagStats(app, opts) {
+  const o = opts || {};
+  const counts = new Map();
+  let mc = null;
+  try {
+    mc = app.metadataCache.getTags ? app.metadataCache.getTags() : null;
+  } catch (e) {
+    mc = null;
+  }
+  if (mc && typeof mc === "object") {
+    for (const [tag, n] of Object.entries(mc)) {
+      const t = String(tag).replace(/^#/, "");
+      if (!t) continue;
+      counts.set(t, (counts.get(t) || 0) + Number(n || 0));
+    }
+  }
+  let list = [...counts.entries()].map(([tag, count]) => ({ tag, count }));
+  list.sort((a, b) => b.count - a.count || (a.tag < b.tag ? -1 : 1));
+
+  const total = list.reduce((s, x) => s + x.count, 0);
+  const nested = list.filter((x) => x.tag.includes("/")).length;
+  return {
+    list: list.slice(0, o.limit || 12),
+    all: list,
+    distinct: list.length,
+    total,
+    nested
+  };
+}
+
+/** 附件统计：按扩展名聚合体积与数量 */
+function attachmentStats(app, attachmentExts) {
+  let files = [];
+  try {
+    files = app.vault.getFiles();
+  } catch (e) {
+    files = [];
+  }
+  const byExt = new Map();
+  let totalBytes = 0;
+  let count = 0;
+  for (const f of files) {
+    const ext = String(f.extension || "").toLowerCase();
+    if (!attachmentExts.has(ext)) continue;
+    const size = f.stat ? f.stat.size : 0;
+    const cur = byExt.get(ext) || { ext, count: 0, bytes: 0 };
+    cur.count += 1;
+    cur.bytes += size;
+    byExt.set(ext, cur);
+    totalBytes += size;
+    count += 1;
+  }
+  const byExtList = [...byExt.values()].sort((a, b) => b.bytes - a.bytes);
+  return { count, totalBytes, byExt: byExtList };
+}
+
+/**
+ * 附件位置分布：有多少附件已经规整到 assets/，多少散落在别处。
+ * 用于「整理附件」前的体检。
+ */
+function attachmentLocations(app, attachmentExts) {
+  let files = [];
+  try {
+    files = app.vault.getFiles();
+  } catch (e) {
+    files = [];
+  }
+  const inAssets = [];
+  const loose = [];
+  for (const f of files) {
+    if (!attachmentExts.has(String(f.extension || "").toLowerCase())) continue;
+    if (f.path.startsWith("assets/") || f.path.startsWith("4-存档/")) inAssets.push(f);
+    else loose.push(f);
+  }
+  return { inAssets, loose };
+}
+
+module.exports = { tagStats, attachmentStats, attachmentLocations };
 
   }, "./services"],
   "./services/vaultStats.js": [function(require, module, exports) {
@@ -6811,6 +7250,9 @@ const { listProjects } = require("../services/projectService");
 const { buildHeatmap } = require("../services/heatmapService");
 const { wallpaperUrl } = require("../services/wallpaperService");
 const { listBases, createBase } = require("../services/baseService");
+const { tagStats, attachmentStats } = require("../services/statsService");
+const { AttachmentPreviewModal } = require("../modals/attachmentPreviewModal");
+const { ATTACHMENT_EXTS, planOrganize, applyOrganize } = require("../services/attachmentService");
 
 /**
  * 个人知识工作台（v3.4）：视觉重做 + 性能缓存 + 调试面板。
@@ -6926,7 +7368,8 @@ class WorkbenchView extends ItemView {
       text: `${heat.activeDays}/${heat.weeks * 7} 天有产出 · 累计 ${heat.total} 次 · 峰值 ${heat.max}`
     });
 
-    const body = card.createDiv({ cls: "owb-heat-body" });
+    const cols = card.createDiv({ cls: "owb-heat-cols" });
+    const body = cols.createDiv({ cls: "owb-heat-body" });
 
     const months = body.createDiv({ cls: "owb-heat-months" });
     const COL = 17;
@@ -6965,6 +7408,31 @@ class WorkbenchView extends ItemView {
           if (target) await this.app.workspace.getLeaf(false).openFile(target);
           else new Notice(`${day.key} · ${day.count} 次更新（当天没有日记）`);
         });
+      }
+    }
+
+    // TAG 统计（放在热力卡右侧，一块空间两用）
+    const tags = tagStats(this.app, { limit: 8 });
+    const tagPanel = cols.createDiv({ cls: "owb-tag-panel" });
+    const tagHead = tagPanel.createDiv({ cls: "owb-tag-head" });
+    tagHead.createDiv({ cls: "owb-card-title", text: "标签统计" });
+    tagHead.createDiv({ cls: "owb-muted", text: `${tags.distinct} 个标签 · ${tags.total} 次引用` });
+    if (!tags.list.length) {
+      this.emptySlot(tagPanel, "库里还没有标签");
+    } else {
+      const max = tags.list[0].count || 1;
+      const list = tagPanel.createDiv({ cls: "owb-tag-list" });
+      for (const t of tags.list) {
+        const row = list.createDiv({ cls: "owb-tag-row" });
+        const name = row.createSpan({ cls: "owb-tag-name", text: "#" + t.tag });
+        name.setAttribute("title", `#${t.tag} · ${t.count} 次`);
+        name.addEventListener("click", () => {
+          this.app.workspace.openLinkText("#" + t.tag, "", false);
+        });
+        const track = row.createDiv({ cls: "owb-tag-track" });
+        const fill = track.createDiv({ cls: "owb-tag-fill" });
+        fill.style.width = Math.max(6, Math.round((t.count / max) * 100)) + "%";
+        row.createSpan({ cls: "owb-muted owb-tag-count", text: String(t.count) });
       }
     }
 
@@ -7184,6 +7652,37 @@ class WorkbenchView extends ItemView {
           row.createSpan({ cls: "owb-base-kind", text: b.kind });
         }
       }
+    }
+
+    // 附件统计卡
+    if (this.plugin.isFeatureEnabled("attachments")) {
+      const att = attachmentStats(this.app, ATTACHMENT_EXTS);
+      const card = sideCol.createDiv({ cls: "owb-card" });
+      const h = card.createDiv({ cls: "owb-card-title-row" });
+      h.createDiv({ cls: "owb-card-title", text: `附件 · ${att.count}` });
+      const mb = att.totalBytes / 1024 / 1024;
+      h.createDiv({ cls: "owb-muted", text: mb >= 1 ? mb.toFixed(1) + " MB" : Math.round(att.totalBytes / 1024) + " KB" });
+      const top = att.byExt.slice(0, 4);
+      if (!top.length) {
+        this.emptySlot(card, "还没有附件");
+      } else {
+        const ul = card.createEl("ul", { cls: "owb-list" });
+        for (const e of top) {
+          const li = ul.createEl("li");
+          li.createSpan({ text: "." + e.ext });
+          li.createSpan({
+            cls: "owb-muted",
+            text: ` · ${e.count} 个 · ${(e.bytes / 1024 / 1024).toFixed(1)} MB`
+          });
+        }
+      }
+      const acts = card.createDiv({ cls: "owb-pomo-actions" });
+      acts.createEl("button", { cls: "owb-mini-btn", text: "整理到 assets" }).addEventListener("click", () =>
+        this.plugin.organizeAttachments()
+      );
+      acts.createEl("button", { cls: "owb-mini-btn", text: "上传附件" }).addEventListener("click", () =>
+        this.plugin.addAttachmentInteractive()
+      );
     }
 
     // ── RAG 卡片（原独立视图收进工作台）──

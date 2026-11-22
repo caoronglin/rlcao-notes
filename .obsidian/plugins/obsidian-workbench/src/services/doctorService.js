@@ -59,15 +59,40 @@ async function diagnoseVault(vaultBasePath, gitService) {
   }
 
   // 2. 旧版错误 QuickAdd 快捷键或非数组格式
+  //
+  // 2026-11-22 修正：原规则「凡 quickadd: 开头但非 choice: 前缀就报错」是误报。
+  // QuickAdd 自身注册了 quickadd:runQuickAdd（打开菜单）等内置命令，它们合法；
+  // 真正会静默失效的是「quickadd:choice:<不存在的 id>」和旧的 quickadd:<名字> 写法。
+  const QUICKADD_BUILTIN = new Set([
+    "quickadd:runQuickAdd",
+    "quickadd:openQuickAddSettings",
+    "quickadd:openSettings"
+  ]);
+  const quickAddChoices = new Set(
+    (
+      (safeReadJson(path.join(obsDir, "plugins/quickadd/data.json"), {}) || {}).choices || []
+    ).map((c) => c && c.id).filter(Boolean)
+  );
   const hotkeys = safeReadJson(path.join(obsDir, "hotkeys.json"), {});
   for (const [cmdId, val] of Object.entries(hotkeys)) {
-    if (cmdId.startsWith("quickadd:") && !cmdId.startsWith("quickadd:choice:")) {
+    if (cmdId.startsWith("quickadd:") && !cmdId.startsWith("quickadd:choice:") && !QUICKADD_BUILTIN.has(cmdId)) {
       issues.push({
         severity: "error",
         code: "LEGACY_QUICKADD_HOTKEY",
-        message: `快捷键 ${cmdId} 缺少 choice: 前缀，会静默失效`,
+        message: `快捷键 ${cmdId} 不是合法 QuickAdd 命令（缺 choice: 前缀或 id），会静默失效`,
         fixable: false
       });
+    }
+    if (cmdId.startsWith("quickadd:choice:") && quickAddChoices.size) {
+      const id = cmdId.slice("quickadd:choice:".length);
+      if (!quickAddChoices.has(id)) {
+        issues.push({
+          severity: "warning",
+          code: "DANGLING_QUICKADD_CHOICE",
+          message: `快捷键绑定的 QuickAdd choice 不存在：${id}`,
+          fixable: false
+        });
+      }
     }
     if (!Array.isArray(val)) {
       issues.push({

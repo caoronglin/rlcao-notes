@@ -1321,3 +1321,60 @@
   margin-top: 12px;
   justify-content: flex-end;
 }
+
+/* ---- v3.5 布局修正 ---- */
+.owb-heat-cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(200px, 1fr);
+  gap: 18px;
+  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .owb-heat-cols { grid-template-columns: 1fr; }
+}
+
+.owb-tag-panel { min-width: 0; border-left: 1px solid var(--owb-glass-border); padding-left: 16px; }
+@media (max-width: 900px) { .owb-tag-panel { border-left: none; padding-left: 0; } }
+
+.owb-tag-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+
+.owb-tag-list { display: flex; flex-direction: column; gap: 5px; }
+
+.owb-tag-row { display: grid; grid-template-columns: minmax(0, 1fr) 64px 32px; align-items: center; gap: 8px; }
+
+.owb-tag-name {
+  font-size: 0.8em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+.owb-tag-name:hover { color: var(--owb-accent); }
+
+.owb-tag-track { height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.08); overflow: hidden; }
+.owb-tag-fill { height: 100%; border-radius: 3px; background: var(--owb-accent); opacity: 0.85; }
+.owb-tag-count { text-align: right; font-variant-numeric: tabular-nums; font-size: 0.74em; }
+
+/* 两列等高，卡片内部撑满，避免大片空壁纸 */
+.owb-layout-main { align-items: stretch; }
+.owb-layout-left,
+.owb-layout-side { height: 100%; }
+
+/* 预览弹窗 */
+.owb-preview-modal { max-width: 900px; width: 92vw; }
+.owb-preview-body { margin-top: 10px; max-height: 70vh; overflow: auto; }
+.owb-preview-media { max-width: 100%; height: auto; border-radius: 8px; display: block; margin: 0 auto; }
+.owb-preview-frame { width: 100%; height: 68vh; border: none; border-radius: 8px; background: #fff; }
+.owb-preview-audio { width: 100%; }
+.owb-preview-code {
+  font-size: 0.82em;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 66vh;
+  overflow: auto;
+  background: var(--background-secondary);
+  padding: 12px;
+  border-radius: 8px;
+}
+.owb-ofv-host { min-height: 400px; }

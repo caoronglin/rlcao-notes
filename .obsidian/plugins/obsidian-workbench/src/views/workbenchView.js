@@ -9,6 +9,9 @@ const { listProjects } = require("../services/projectService");
 const { buildHeatmap } = require("../services/heatmapService");
 const { wallpaperUrl } = require("../services/wallpaperService");
 const { listBases, createBase } = require("../services/baseService");
+const { tagStats, attachmentStats } = require("../services/statsService");
+const { AttachmentPreviewModal } = require("../modals/attachmentPreviewModal");
+const { ATTACHMENT_EXTS, planOrganize, applyOrganize } = require("../services/attachmentService");
 
 /**
  * 个人知识工作台（v3.4）：视觉重做 + 性能缓存 + 调试面板。
@@ -124,7 +127,8 @@ class WorkbenchView extends ItemView {
       text: `${heat.activeDays}/${heat.weeks * 7} 天有产出 · 累计 ${heat.total} 次 · 峰值 ${heat.max}`
     });
 
-    const body = card.createDiv({ cls: "owb-heat-body" });
+    const cols = card.createDiv({ cls: "owb-heat-cols" });
+    const body = cols.createDiv({ cls: "owb-heat-body" });
 
     const months = body.createDiv({ cls: "owb-heat-months" });
     const COL = 17;
@@ -163,6 +167,31 @@ class WorkbenchView extends ItemView {
           if (target) await this.app.workspace.getLeaf(false).openFile(target);
           else new Notice(`${day.key} · ${day.count} 次更新（当天没有日记）`);
         });
+      }
+    }
+
+    // TAG 统计（放在热力卡右侧，一块空间两用）
+    const tags = tagStats(this.app, { limit: 8 });
+    const tagPanel = cols.createDiv({ cls: "owb-tag-panel" });
+    const tagHead = tagPanel.createDiv({ cls: "owb-tag-head" });
+    tagHead.createDiv({ cls: "owb-card-title", text: "标签统计" });
+    tagHead.createDiv({ cls: "owb-muted", text: `${tags.distinct} 个标签 · ${tags.total} 次引用` });
+    if (!tags.list.length) {
+      this.emptySlot(tagPanel, "库里还没有标签");
+    } else {
+      const max = tags.list[0].count || 1;
+      const list = tagPanel.createDiv({ cls: "owb-tag-list" });
+      for (const t of tags.list) {
+        const row = list.createDiv({ cls: "owb-tag-row" });
+        const name = row.createSpan({ cls: "owb-tag-name", text: "#" + t.tag });
+        name.setAttribute("title", `#${t.tag} · ${t.count} 次`);
+        name.addEventListener("click", () => {
+          this.app.workspace.openLinkText("#" + t.tag, "", false);
+        });
+        const track = row.createDiv({ cls: "owb-tag-track" });
+        const fill = track.createDiv({ cls: "owb-tag-fill" });
+        fill.style.width = Math.max(6, Math.round((t.count / max) * 100)) + "%";
+        row.createSpan({ cls: "owb-muted owb-tag-count", text: String(t.count) });
       }
     }
 
@@ -382,6 +411,37 @@ class WorkbenchView extends ItemView {
           row.createSpan({ cls: "owb-base-kind", text: b.kind });
         }
       }
+    }
+
+    // 附件统计卡
+    if (this.plugin.isFeatureEnabled("attachments")) {
+      const att = attachmentStats(this.app, ATTACHMENT_EXTS);
+      const card = sideCol.createDiv({ cls: "owb-card" });
+      const h = card.createDiv({ cls: "owb-card-title-row" });
+      h.createDiv({ cls: "owb-card-title", text: `附件 · ${att.count}` });
+      const mb = att.totalBytes / 1024 / 1024;
+      h.createDiv({ cls: "owb-muted", text: mb >= 1 ? mb.toFixed(1) + " MB" : Math.round(att.totalBytes / 1024) + " KB" });
+      const top = att.byExt.slice(0, 4);
+      if (!top.length) {
+        this.emptySlot(card, "还没有附件");
+      } else {
+        const ul = card.createEl("ul", { cls: "owb-list" });
+        for (const e of top) {
+          const li = ul.createEl("li");
+          li.createSpan({ text: "." + e.ext });
+          li.createSpan({
+            cls: "owb-muted",
+            text: ` · ${e.count} 个 · ${(e.bytes / 1024 / 1024).toFixed(1)} MB`
+          });
+        }
+      }
+      const acts = card.createDiv({ cls: "owb-pomo-actions" });
+      acts.createEl("button", { cls: "owb-mini-btn", text: "整理到 assets" }).addEventListener("click", () =>
+        this.plugin.organizeAttachments()
+      );
+      acts.createEl("button", { cls: "owb-mini-btn", text: "上传附件" }).addEventListener("click", () =>
+        this.plugin.addAttachmentInteractive()
+      );
     }
 
     // ── RAG 卡片（原独立视图收进工作台）──

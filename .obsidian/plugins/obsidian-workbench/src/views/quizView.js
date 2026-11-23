@@ -115,9 +115,9 @@ class QuizView extends ItemView {
       s.createDiv({ cls: "owb-stat-val", text: val });
     };
     addStat("累计答题", `${store.times} 次`);
-    addStat("总正确率", store.totalQuestions ? `${Math.round((store.totalCorrect / store.totalQuestions) * 100)}%` : "—");
+    addStat("总正确率", store.totalQuestions ? `${Math.round((store.totalCorrect / store.totalQuestions) * 100)}%` : "-");
     addStat("待复习错题", `${dueCount} 题`);
-    addStat("历史最高", store.best === null ? "—" : `${store.best} 分`);
+    addStat("历史最高", store.best === null ? "-" : `${store.best} 分`);
 
     root.createDiv({ cls: "owb-quiz-stage" });
     this.renderStage(root);

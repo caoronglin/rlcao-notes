@@ -969,7 +969,7 @@ class AIQuizModal extends Modal {
       attr: { type: "text", value: defaultOut }
     });
 
-    contentEl.createEl("label", { cls: "owb-muted", text: "生成题目数量（1–20）", attr: { style: "display:block;margin-top:10px" } });
+    contentEl.createEl("label", { cls: "owb-muted", text: "生成题目数量（1-20）", attr: { style: "display:block;margin-top:10px" } });
     const countInput = contentEl.createEl("input", {
       cls: "owb-input",
       attr: { type: "number", min: "1", max: "20", value: String(this.plugin.settings.aiQuizCount || 5) }
@@ -1913,7 +1913,7 @@ class JevModal extends Modal {
         row.createEl("strong", { text: String(a.value) });
         row.createSpan({
           cls: "owb-muted",
-          text: ` · 置信度 ${a.confidence !== null ? (a.confidence * 100).toFixed(0) + "%" : "—"} · 类型 ${a.type}`
+          text: ` · 置信度 ${a.confidence !== null ? (a.confidence * 100).toFixed(0) + "%" : "-"} · 类型 ${a.type}`
         });
       }
       const raw = box.createEl("pre", { cls: "owb-jev-raw" });
@@ -7379,9 +7379,9 @@ class QuizView extends ItemView {
       s.createDiv({ cls: "owb-stat-val", text: val });
     };
     addStat("累计答题", `${store.times} 次`);
-    addStat("总正确率", store.totalQuestions ? `${Math.round((store.totalCorrect / store.totalQuestions) * 100)}%` : "—");
+    addStat("总正确率", store.totalQuestions ? `${Math.round((store.totalCorrect / store.totalQuestions) * 100)}%` : "-");
     addStat("待复习错题", `${dueCount} 题`);
-    addStat("历史最高", store.best === null ? "—" : `${store.best} 分`);
+    addStat("历史最高", store.best === null ? "-" : `${store.best} 分`);
 
     root.createDiv({ cls: "owb-quiz-stage" });
     this.renderStage(root);
@@ -7878,6 +7878,7 @@ class WorkbenchView extends ItemView {
   }
 
   async onOpen() {
+    this._entered = false;
     await this.render();
   }
 
@@ -7944,6 +7945,7 @@ class WorkbenchView extends ItemView {
 
   renderStats(container, data, heat) {
     const strip = container.createDiv({ cls: "owb-stat-strip" });
+    strip.setAttribute("aria-live", "polite");
     const pomo = this.plugin.pomodoro ? this.plugin.pomodoro.getTodayStats() : { sessions: 0, minutes: 0 };
     const items = [
       { label: "知识库笔记", value: String(data.totalNotes) },
@@ -7951,9 +7953,16 @@ class WorkbenchView extends ItemView {
       { label: "当前连续更新", value: String(heat.streak) + " 天" },
       { label: "今日番茄", value: String(pomo.sessions) }
     ];
+    this._statPrev = this._statPrev || {};
     for (const it of items) {
       const cell = strip.createDiv({ cls: "owb-stat" });
-      cell.createDiv({ cls: "owb-stat-value", text: it.value });
+      const vEl = cell.createDiv({ cls: "owb-stat-value", text: it.value });
+      // 数值变化时轻弹一下（transform 动画，不触发重排）
+      const prev = this._statPrev[it.label];
+      if (prev !== undefined && prev !== it.value) {
+        vEl.addClass("pop");
+      }
+      this._statPrev[it.label] = it.value;
       cell.createDiv({ cls: "owb-stat-label", text: it.label });
     }
   }
@@ -8056,6 +8065,13 @@ class WorkbenchView extends ItemView {
     const root = this.contentEl;
     root.empty();
     root.addClass("owb-workbench-view");
+    // 首次打开播放入场动画，之后 render 不重复播放（避免每次状态刷新都闪）
+    if (!this._entered) {
+      root.addClass("owb-enter");
+      this._entered = true;
+    } else {
+      root.removeClass("owb-enter");
+    }
     this.applyChrome(root);
 
     if (!this.plugin.isFeatureEnabled("workbench")) {
@@ -8080,7 +8096,17 @@ class WorkbenchView extends ItemView {
     // ── Hero ──
     const hero = root.createDiv({ cls: "owb-hero" });
     hero.createDiv({ cls: "owb-eyebrow", text: `${todayStr} · ${getGreeting()}` });
-    hero.createEl("h2", { cls: "owb-greeting", text: "麟，今天推进哪一件？" });
+    const dayMsgs = [
+      "麟，今天先攻哪一题？",
+      "麟，今天推进哪一件？",
+      "麟，从哪件小事开始？",
+      "麟，给今天留一条记录。",
+      "麟，把最重要的事放在最前面。"
+    ];
+    const h = new Date().getHours();
+    const dayIdx = Math.floor(h / 5) % dayMsgs.length;
+    const dayMsg = h < 6 ? "夜深了，记完今天最后一笔就收工" : dayMsgs[dayIdx];
+    hero.createEl("h2", { cls: "owb-greeting", text: dayMsg });
 
     // 诗词 + 天气（各自失败互不影响）
     const ambient = hero.createDiv({ cls: "owb-ambient" });
@@ -8090,7 +8116,7 @@ class WorkbenchView extends ItemView {
         const line = ambient.createDiv({ cls: "owb-quote" });
         line.createSpan({ cls: "owb-quote-text", text: q.content });
         if (q.author || q.origin) {
-          line.createSpan({ cls: "owb-muted", text: `　— ${q.author}${q.origin ? "《" + q.origin + "》" : ""}` });
+          line.createSpan({ cls: "owb-muted", text: `　· ${q.author}${q.origin ? "《" + q.origin + "》" : ""}` });
         }
       }
     }
@@ -8201,12 +8227,15 @@ class WorkbenchView extends ItemView {
       for (const t of data.pendingTasks.slice(0, 12)) {
         const row = list.createDiv({ cls: "owb-task-row" });
         row.createEl("input", { attr: { type: "checkbox" } }).addEventListener("change", async () => {
+          row.addClass("done");   // 先划掉+绿色闪一下，再写盘
           try {
             await toggleTaskInFile(this.app, t.file, t.line);
             this.invalidateHeat();
             new Notice("已完成");
+            await new Promise((r) => setTimeout(r, 360)); // 等动画播完再重排
             await this.render();
           } catch (err) {
+            row.removeClass("done");
             new Notice(`更新失败：${err.message}`);
           }
         });
@@ -8454,7 +8483,9 @@ class WorkbenchView extends ItemView {
     });
 
     if (this._ragBusy) {
-      this.emptySlot(card, "处理中…（构建索引会分批调用 embeddings）");
+      const slot = card.createDiv({ cls: "owb-empty-slot" });
+      slot.createSpan({ cls: "owb-spinner" });
+      slot.createSpan({ text: "处理中…（构建索引会分批调用 embeddings）" });
       return;
     }
     if (this._ragError) {

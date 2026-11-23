@@ -142,7 +142,7 @@ class JevModal extends Modal {
         row.createEl("strong", { text: String(a.value) });
         row.createSpan({
           cls: "owb-muted",
-          text: ` · 置信度 ${a.confidence !== null ? (a.confidence * 100).toFixed(0) + "%" : "—"} · 类型 ${a.type}`
+          text: ` · 置信度 ${a.confidence !== null ? (a.confidence * 100).toFixed(0) + "%" : "-"} · 类型 ${a.type}`
         });
       }
       const raw = box.createEl("pre", { cls: "owb-jev-raw" });

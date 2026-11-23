@@ -593,3 +593,37 @@ test("v3.5 preview: 扩展名分类与原生/OFV 选择", () => {
   const ofv = m.loadOpenFileViewer();
   assert.ok(ofv === null || typeof ofv === "object");
 });
+
+test("v3.7 UI polish: 文案零 em-dash/en-dash + 动效 class 契约", () => {
+  const fs2 = fs;
+  const css = fs2.readFileSync(path.join(rootDir, "styles.css"), "utf8");
+  const scan = (dir) => {
+    let bad = [];
+    const walk = (d) => {
+      for (const e of fs2.readdirSync(d, { withFileTypes: true })) {
+        const f = path.join(d, e.name);
+        if (e.isDirectory()) walk(f);
+        else if (e.name.endsWith(".js")) {
+          const t = fs2.readFileSync(f, "utf8");
+          // 只查字符串字面量行里的 em/en dash（排除注释与正则）
+          for (const line of t.split("\n")) {
+            const l = line.trim();
+            if (l.startsWith("//") || l.startsWith("*") || l.startsWith("/*")) continue;
+            if (l.includes("\u2014") || l.includes("\u2013")) bad.push(f.replace(rootDir, "") + ": " + l.slice(0, 60));
+          }
+        }
+      }
+    };
+    walk(dir);
+    return bad;
+  };
+  const bad = scan(path.join(rootDir, "src"));
+  assert.deepEqual(bad, [], "UI 文案不应含 em-dash/en-dash");
+
+  // 动效与无障碍规则存在
+  assert.match(css, /prefers-reduced-motion/);
+  assert.match(css, /focus-visible/);
+  assert.match(css, /@keyframes owb-rise/);
+  assert.match(css, /\.owb-task-row\.done/);
+  assert.match(css, /cursor: pointer/);
+});

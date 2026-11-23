@@ -1583,3 +1583,126 @@
   gap: 6px;
 }
 .owb-btn-icon svg { width: 15px; height: 15px; }
+
+/* ===================================================================
+   v3.7 UI/UX 打磨：动效、焦点、无障碍、reduced-motion
+   依据 ui-ux-pro-max + antfu-design 规则
+   =================================================================== */
+
+/* ---- 入场：首次打开卡片依次浮现（只播一次，不随 render 重复）---- */
+.owb-enter .owb-hero,
+.owb-enter .owb-card,
+.owb-enter .owb-pomo-bar {
+  animation: owb-rise 460ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.owb-enter .owb-hero { animation-delay: 0ms; }
+.owb-enter .owb-heat-card { animation-delay: 70ms; }
+.owb-enter .owb-pomo-bar { animation-delay: 130ms; }
+.owb-enter .owb-layout-main > .owb-layout-left > .owb-card,
+.owb-enter .owb-layout-main > .owb-layout-side > .owb-card {
+  animation-delay: 180ms;
+}
+.owb-enter .owb-layout-sub > .owb-card { animation-delay: 240ms; }
+.owb-enter .owb-quick-links { animation-delay: 300ms; animation: owb-rise 420ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+@keyframes owb-rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---- 统计数字变化：轻弹（transform 不触发重排）---- */
+.owb-stat-value.pop {
+  animation: owb-count-pop 420ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: inline-block;
+  transform-origin: left center;
+}
+
+@keyframes owb-count-pop {
+  0% { transform: scale(1); }
+  46% { transform: scale(1.14); }
+  100% { transform: scale(1); }
+}
+
+/* ---- 任务勾选完成：划掉 + 绿闪 ---- */
+.owb-task-row.done .owb-link {
+  text-decoration: line-through;
+  opacity: 0.45;
+  transition: opacity 0.25s ease;
+}
+
+.owb-task-row.done {
+  animation: owb-task-done 380ms ease-out;
+  border-radius: 8px;
+}
+
+@keyframes owb-task-done {
+  0% { background: rgba(82, 196, 26, 0.22); box-shadow: 0 0 0 3px rgba(82, 196, 26, 0.14); }
+  100% { background: transparent; box-shadow: 0 0 0 0 rgba(82, 196, 26, 0); }
+}
+
+/* ---- 统一过渡（150-300ms，用 transform/opacity）---- */
+.owb-workbench-view button,
+.owb-workbench-view .owb-link,
+.owb-heat-cell,
+.owb-tag-name,
+.owb-chip {
+  transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease,
+    transform 0.18s ease, opacity 0.18s ease, box-shadow 0.18s ease;
+}
+
+.owb-heat-cell { transition: transform 0.14s ease, box-shadow 0.14s ease; }
+
+/* ---- 焦点可见环（键盘导航）---- */
+.owb-workbench-view button:focus-visible,
+.owb-workbench-view input:focus-visible,
+.owb-workbench-view a:focus-visible {
+  outline: 2px solid var(--owb-accent);
+  outline-offset: 2px;
+}
+
+/* ---- cursor ---- */
+.owb-workbench-view button,
+.owb-workbench-view a,
+.owb-heat-cell,
+.owb-tag-name,
+.owb-task-proj,
+.owb-chip { cursor: pointer; }
+
+/* ---- RAG 忙时 spinner ---- */
+.owb-spinner {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.22);
+  border-top-color: var(--owb-accent);
+  animation: owb-spin 700ms linear infinite;
+  flex: none;
+}
+
+@keyframes owb-spin {
+  to { transform: rotate(360deg); }
+}
+
+.owb-empty-slot .owb-spinner { margin-right: 8px; }
+
+/* ---- 卡片悬停轻浮起（不位移布局）---- */
+.owb-glass .owb-card:hover {
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+/* ---- 尊重系统减弱动效偏好 ---- */
+@media (prefers-reduced-motion: reduce) {
+  .owb-enter .owb-hero,
+  .owb-enter .owb-card,
+  .owb-enter .owb-pomo-bar,
+  .owb-enter .owb-quick-links {
+    animation: none !important;
+  }
+  .owb-stat-value.pop { animation: none !important; }
+  .owb-task-row.done { animation: none !important; }
+  .owb-heat-cell { transition: none !important; }
+  .owb-spinner { animation-duration: 1.6s; }
+  .owb-fs-enter, .owb-fs-pulse { animation: none !important; }
+  .owb-pomo-progress-fill { transition: none; }
+}

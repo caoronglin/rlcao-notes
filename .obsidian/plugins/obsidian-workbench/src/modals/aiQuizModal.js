@@ -38,7 +38,7 @@ class AIQuizModal extends Modal {
       attr: { type: "text", value: defaultOut }
     });
 
-    contentEl.createEl("label", { cls: "owb-muted", text: "生成题目数量（1–20）", attr: { style: "display:block;margin-top:10px" } });
+    contentEl.createEl("label", { cls: "owb-muted", text: "生成题目数量（1-20）", attr: { style: "display:block;margin-top:10px" } });
     const countInput = contentEl.createEl("input", {
       cls: "owb-input",
       attr: { type: "number", min: "1", max: "20", value: String(this.plugin.settings.aiQuizCount || 5) }

@@ -1,6 +1,7 @@
+// @ts-nocheck -- 渐进迁移: 语法已迁 TS, 类型化排入批1后续
 "use strict";
 
-const { formatDate, pad2 } = require("../utils");
+import { formatDate, pad2 } from "../utils";
 
 /**
  * 番茄钟状态机与每日专注统计服务（纯逻辑，独立可测）。
@@ -97,4 +98,6 @@ class PomodoroService {
   }
 }
 
-module.exports = { PomodoroService };
+export {
+  PomodoroService
+};

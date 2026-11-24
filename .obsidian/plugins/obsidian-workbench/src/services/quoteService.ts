@@ -1,6 +1,7 @@
+// @ts-nocheck -- 渐进迁移: 语法已迁 TS, 类型化排入批1后续
 "use strict";
 
-const { requestUrl } = require("obsidian");
+import { requestUrl } from "obsidian";
 
 /**
  * 今日诗词：https://www.jinrishici.com/doc/
@@ -84,4 +85,9 @@ async function getQuote(force, storage, fetcher) {
   }
 }
 
-module.exports = { getQuote, getCachedSnapshot, saveSnapshot, STORAGE_KEY };
+export {
+  getQuote,
+  getCachedSnapshot,
+  saveSnapshot,
+  STORAGE_KEY
+};

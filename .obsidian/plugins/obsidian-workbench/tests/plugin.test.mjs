@@ -33,9 +33,9 @@ const {
   formatWrongCalloutMarkdown
 } = require(path.join(rootDir, "src/services/quizEngine.js"));
 const { diagnoseVault, ensureSafeGitignore } = require(path.join(rootDir, "src/services/doctorService.js"));
-const { PomodoroService } = require(path.join(rootDir, "src/services/pomodoroService.js"));
+const { PomodoroService } = require(path.join(rootDir, "src/services/pomodoroService.ts"));
 const { generateCommitMessage, generateQuizMarkdownFromNote } = require(path.join(rootDir, "src/services/aiService.js"));
-const { insertCaptureLine } = require(path.join(rootDir, "src/utils.js"));
+const { insertCaptureLine } = require(path.join(rootDir, "src/utils.ts"));
 
 test("GitService end-to-end: Unicode paths, stash, remote config & conflict resolution", async () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), "owb-git-v3-"));
@@ -233,8 +233,8 @@ test("Bundled v3.0 main.js loads cleanly and exposes feature toggle APIs", () =>
 test("v3.1 modules: export contract + cosine/streak sanity", () => {
   const { RagService, cosine } = require(path.join(rootDir, "src/services/ragService.js"));
   const decision = require(path.join(rootDir, "src/services/decisionService.js"));
-  const daily = require(path.join(rootDir, "src/services/dailyService.js"));
-  const { listProjects, createProject, parseFrontmatter } = require(path.join(rootDir, "src/services/projectService.js"));
+  const daily = require(path.join(rootDir, "src/services/dailyService.ts"));
+  const { listProjects, createProject, parseFrontmatter } = require(path.join(rootDir, "src/services/projectService.ts"));
   const privacy = require(path.join(rootDir, "src/services/privacyService.js"));
 
   assert.equal(typeof RagService, "function");
@@ -359,7 +359,7 @@ test("v3.2 images: engine detect + canvas fallback contract", async () => {
 });
 
 test("v3.3 heatmap: 日期网格对齐 / 分级 / streak / 排除规则", () => {
-  const { buildHeatmap } = require(path.join(rootDir, "src/services/heatmapService.js"));
+  const { buildHeatmap } = require(path.join(rootDir, "src/services/heatmapService.ts"));
   const now = new Date();
   const dayMs = 86400000;
   const files = [
@@ -397,7 +397,7 @@ test("v3.3 heatmap: 日期网格对齐 / 分级 / streak / 排除规则", () => 
 });
 
 test("v3.3 wallpaper: bing.cnortles.top URL 构造与自定义覆盖", () => {
-  const wp = require(path.join(rootDir, "src/services/wallpaperService.js"));
+  const wp = require(path.join(rootDir, "src/services/wallpaperService.ts"));
   assert.equal(wp.wallpaperUrl({}), "https://bing.cnortles.top/api/daily");
   assert.equal(
     wp.wallpaperUrl({ wallpaperMode: "random" }),
@@ -530,7 +530,7 @@ test("v3.4 codeRunner: JS 沙箱执行与错误捕获", () => {
 });
 
 test("v3.5 pomodoro: tick 递减与完成回调", () => {
-  const { PomodoroService } = require(path.join(rootDir, "src/services/pomodoroService.js"));
+  const { PomodoroService } = require(path.join(rootDir, "src/services/pomodoroService.ts"));
   const settings = { pomodoroWorkMinutes: 1, pomodoroBreakMinutes: 1, pomodoroStats: {} };
   let completed = null;
   const svc = new PomodoroService(() => settings, (p) => (completed = p));
@@ -549,7 +549,7 @@ test("v3.5 pomodoro: tick 递减与完成回调", () => {
 });
 
 test("v3.5 stats: 标签统计与附件聚合", () => {
-  const { tagStats, attachmentStats, attachmentLocations } = require(path.join(rootDir, "src/services/statsService.js"));
+  const { tagStats, attachmentStats, attachmentLocations } = require(path.join(rootDir, "src/services/statsService.ts"));
   const app = {
     metadataCache: { getTags: () => ({ "#project": 5, "#笔记/生信": 3, "#project": 5 }) },
     vault: {
@@ -629,7 +629,7 @@ test("v3.7 UI polish: 文案零 em-dash/en-dash + 动效 class 契约", () => {
 });
 
 test("v3.8-A heatmap: .trash-1000/ 回收站文件不计入热力", () => {
-  const { buildHeatmap } = require(path.join(rootDir, "src/services/heatmapService.js"));
+  const { buildHeatmap } = require(path.join(rootDir, "src/services/heatmapService.ts"));
   const now = new Date();
   const files = [
     { path: "notes/good.md", name: "good.md", stat: { ctime: now.getTime(), mtime: now.getTime() } },
@@ -642,7 +642,7 @@ test("v3.8-A heatmap: .trash-1000/ 回收站文件不计入热力", () => {
 });
 
 test("v3.8-A quote/weather: render 不被网络阻塞(SWR 缓存读写)", async () => {
-  const quote = require(path.join(rootDir, "src/services/quoteService.js"));
+  const quote = require(path.join(rootDir, "src/services/quoteService.ts"));
   // fake storage：模拟 localStorage
   const store = new Map();
   const fakeStorage = {

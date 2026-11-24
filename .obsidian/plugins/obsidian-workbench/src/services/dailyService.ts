@@ -1,7 +1,8 @@
+// @ts-nocheck -- 渐进迁移: 语法已迁 TS, 类型化排入批1后续
 "use strict";
 
-const { normalizePath } = require("obsidian");
-const { formatDate } = require("../utils");
+import { normalizePath } from "obsidian";
+import { formatDate } from "../utils";
 
 /**
  * 日记中心服务：按 dailyFolder + dailyDateFormat 定位日记文件，
@@ -76,4 +77,9 @@ async function openDaily(app, settings, offsetDays) {
   return file;
 }
 
-module.exports = { dailyPathFor, listDailies, computeStreak, openDaily };
+export {
+  dailyPathFor,
+  listDailies,
+  computeStreak,
+  openDaily
+};

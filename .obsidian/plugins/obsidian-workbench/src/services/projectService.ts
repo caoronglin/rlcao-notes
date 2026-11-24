@@ -1,7 +1,8 @@
+// @ts-nocheck -- 渐进迁移: 语法已迁 TS, 类型化排入批1后续
 "use strict";
 
-const { normalizePath, Notice } = require("obsidian");
-const { formatDate } = require("../utils");
+import { normalizePath, Notice } from "obsidian";
+import { formatDate } from "../utils";
 
 /**
  * 项目管理服务：扫描 projectFolder 的一级实体（目录项目或单文件项目），
@@ -160,4 +161,8 @@ async function createProject(app, settings, name) {
   return file;
 }
 
-module.exports = { listProjects, createProject, parseFrontmatter };
+export {
+  listProjects,
+  createProject,
+  parseFrontmatter
+};

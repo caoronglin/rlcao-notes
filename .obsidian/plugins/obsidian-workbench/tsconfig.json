@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2019",
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "lib": [
+      "ES2019",
+      "DOM"
+    ],
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": false,
+    "esModuleInterop": true,
+    "allowJs": true,
+    "checkJs": false,
+    "skipLibCheck": true,
+    "declaration": false,
+    "noEmit": true,
+    "types": [
+      "node"
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.js",
+    "obsidian.d.ts"
+  ]
+}

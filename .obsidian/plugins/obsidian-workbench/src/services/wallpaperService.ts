@@ -1,3 +1,4 @@
+// @ts-nocheck -- 渐进迁移: 语法已迁 TS, 类型化排入批1后续
 "use strict";
 
 /**
@@ -45,4 +46,9 @@ function backgroundCss(url, dim) {
   return `linear-gradient(rgba(0,0,0,${overlay}), rgba(0,0,0,${overlay})), url("${url}")`;
 }
 
-module.exports = { BASE, wallpaperUrl, shouldRefresh, backgroundCss };
+export {
+  BASE,
+  wallpaperUrl,
+  shouldRefresh,
+  backgroundCss
+};

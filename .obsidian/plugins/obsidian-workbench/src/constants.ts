@@ -141,7 +141,7 @@ const DEFAULT_SETTINGS = {
   }
 };
 
-module.exports = {
+export {
   VIEW_TYPE_WORKBENCH,
   VIEW_TYPE_GIT,
   VIEW_TYPE_QUIZ,

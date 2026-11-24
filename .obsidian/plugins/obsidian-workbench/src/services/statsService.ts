@@ -1,3 +1,4 @@
+// @ts-nocheck -- 渐进迁移: 语法已迁 TS, 类型化排入批1后续
 "use strict";
 
 /**
@@ -83,4 +84,8 @@ function attachmentLocations(app, attachmentExts) {
   return { inAssets, loose };
 }
 
-module.exports = { tagStats, attachmentStats, attachmentLocations };
+export {
+  tagStats,
+  attachmentStats,
+  attachmentLocations
+};

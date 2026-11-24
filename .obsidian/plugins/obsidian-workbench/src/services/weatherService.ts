@@ -1,6 +1,7 @@
+// @ts-nocheck -- 渐进迁移: 语法已迁 TS, 类型化排入批1后续
 "use strict";
 
-const { requestUrl } = require("obsidian");
+import { requestUrl } from "obsidian";
 
 /**
  * 天气：OpenWeather（https://openweathermap.org/api）
@@ -90,4 +91,10 @@ async function getWeather(settings, force) {
   }
 }
 
-module.exports = { getWeather, iconEmoji, getCachedSnapshot, saveSnapshot, STORAGE_KEY };
+export {
+  getWeather,
+  iconEmoji,
+  getCachedSnapshot,
+  saveSnapshot,
+  STORAGE_KEY
+};

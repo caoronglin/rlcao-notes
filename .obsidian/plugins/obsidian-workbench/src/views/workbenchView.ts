@@ -1,20 +1,20 @@
 "use strict";
 
-const { ItemView, Notice, normalizePath, setIcon } = require("obsidian");
-const { VIEW_TYPE_WORKBENCH } = require("../constants");
-const { formatDate, getGreeting } = require("../utils");
-const { collectWorkbenchData, toggleTaskInFile } = require("../services/vaultStats");
-const { listDailies, computeStreak, openDaily } = require("../services/dailyService");
-const { listProjects } = require("../services/projectService");
-const { buildHeatmap } = require("../services/heatmapService");
-const { wallpaperUrl } = require("../services/wallpaperService");
-const { listBases, createBase } = require("../services/baseService");
-const { tagStats, attachmentStats } = require("../services/statsService");
-const { AttachmentPreviewModal } = require("../modals/attachmentPreviewModal");
-const { ATTACHMENT_EXTS, planOrganize, applyOrganize } = require("../services/attachmentService");
-const { getQuote, getCachedSnapshot: quoteSnapshot } = require("../services/quoteService");
-const { loadGoalTree, goalProgress } = require("../services/goalService");
-const { getWeather, getCachedSnapshot: weatherSnapshot } = require("../services/weatherService");
+import { ItemView, Notice, normalizePath, setIcon, type App, type TFile } from "obsidian";
+import { VIEW_TYPE_WORKBENCH } from "../constants";
+import { formatDate, getGreeting } from "../utils";
+import { collectWorkbenchData, toggleTaskInFile } from "../services/vaultStats";
+import { listDailies, computeStreak, openDaily } from "../services/dailyService";
+import { listProjects } from "../services/projectService";
+import { buildHeatmap } from "../services/heatmapService";
+import { wallpaperUrl } from "../services/wallpaperService";
+import { listBases, createBase } from "../services/baseService";
+import { tagStats, attachmentStats } from "../services/statsService";
+import { AttachmentPreviewModal } from "../modals/attachmentPreviewModal";
+import { ATTACHMENT_EXTS, planOrganize, applyOrganize } from "../services/attachmentService";
+import { getQuote, getCachedSnapshot as quoteSnapshot } from "../services/quoteService";
+import { loadGoalTree, goalProgress } from "../services/goalService";
+import { getWeather, getCachedSnapshot as weatherSnapshot } from "../services/weatherService";
 
 /**
  * 个人知识工作台（v3.4）：视觉重做 + 性能缓存 + 调试面板。
@@ -24,32 +24,81 @@ const { getWeather, getCachedSnapshot: weatherSnapshot } = require("../services/
  *   - 项目/日记/多维表在 render 内并行读取
  *   - 调试开关打开时，底部输出各阶段耗时（排查卡顿用）
  */
+interface HeatCacheEntry {
+  key: string;
+  data: import("../services/heatmapService").HeatmapData;
+  at: number;
+}
+
+/** 工作台对宿主插件的最小依赖面（结构化，宿主 Plugin 实现它） */
+interface WorkbenchHost {
+  settings: Record<string, any>;
+  isFeatureEnabled(key: string): boolean;
+  pomodoro: any;
+  rag: any;
+  openQuickCapture(): void;
+  openTaskCenter(): void;
+  openAttachmentModal(): void;
+  openImageToolsModal(): void;
+  openPomodoroFullscreen(): void;
+  openDoctorModal(): void;
+  openDailyNote(offset: number): void;
+  createProjectInteractive(): void;
+  activateGitView(): void;
+  activateQuizView(): void;
+  openYearGoals(): void;
+  goalAiBreakdown(): Promise<void>;
+  buildGraphNote(): Promise<void>;
+  buildRagIndex(): Promise<void>;
+  organizeAttachments(): void;
+  addAttachmentInteractive(): void;
+  updatePomodoroStatusBar(): void;
+  refreshWorkbenchViews(): void;
+  _migrationApplied?: string[];
+}
+
 class WorkbenchView extends ItemView {
-  constructor(leaf, plugin) {
+  plugin: WorkbenchHost;
+  _wallpaperUrl: string;
+  _wallpaperDayKey?: string;
+  _heatCache: HeatCacheEntry | null;
+  _entered: boolean;
+  _pomoTimer: number | null;
+  _ambientEl?: HTMLElement;
+  _statPrev?: Record<string, string>;
+  _ragQuery?: string;
+  _ragBusy?: boolean;
+  _ragResults?: Array<{ chunk: { path: string; heading: string; text: string }; score: number }> | null;
+  _ragError?: string;
+  _ragProgressText?: string;
+
+  constructor(leaf: import("obsidian").WorkspaceLeaf, plugin: WorkbenchHost) {
     super(leaf);
     this.plugin = plugin;
     this._wallpaperUrl = "";
-    this._heatCache = null; // { key, data, at }
+    this._heatCache = null;
+    this._entered = false;
+    this._pomoTimer = null;
   }
 
-  getViewType() {
+  getViewType(): string {
     return VIEW_TYPE_WORKBENCH;
   }
 
-  getDisplayText() {
+  getDisplayText(): string {
     return "知识工作台";
   }
 
-  getIcon() {
+  getIcon(): string {
     return "layout-dashboard";
   }
 
-  async onOpen() {
+  async onOpen(): Promise<void> {
     this._entered = false;
     await this.render();
   }
 
-  async onClose() {
+  async onClose(): Promise<void> {
     if (this._pomoTimer) {
       window.clearInterval(this._pomoTimer);
       this._pomoTimer = null;
@@ -57,11 +106,11 @@ class WorkbenchView extends ItemView {
     this.contentEl.empty();
   }
 
-  async openOrCreateDailyNote() {
+  async openOrCreateDailyNote(): Promise<void> {
     await openDaily(this.app, this.plugin.settings, 0);
   }
 
-  applyChrome(root) {
+  applyChrome(root: HTMLElement): void {
     const s = this.plugin.settings;
     root.classList.toggle("owb-glass", s.glassEffect !== false);
     root.classList.toggle("owb-wallpaper-on", s.wallpaperEnabled !== false);
@@ -81,7 +130,7 @@ class WorkbenchView extends ItemView {
   }
 
   /** 热力日历：按天+规模缓存，避免每次 render 全量遍历 550+ 文件 */
-  getHeat(perfOut) {
+  getHeat(perfOut?: Record<string, unknown>): import("../services/heatmapService").HeatmapData {
     const weeks = this.plugin.settings.heatmapWeeks || 26;
     const todayKey = formatDate(new Date(), "YYYY-MM-DD");
     let count = 0;
@@ -106,11 +155,11 @@ class WorkbenchView extends ItemView {
     return data;
   }
 
-  invalidateHeat() {
+  invalidateHeat(): void {
     this._heatCache = null;
   }
 
-  renderStats(container, data, heat) {
+  renderStats(container: HTMLElement, data: import("../services/vaultStats").WorkbenchData, heat: import("../services/heatmapService").HeatmapData): void {
     const strip = container.createDiv({ cls: "owb-stat-strip" });
     strip.setAttribute("aria-live", "polite");
     const pomo = this.plugin.pomodoro ? this.plugin.pomodoro.getTodayStats() : { sessions: 0, minutes: 0 };
@@ -134,7 +183,7 @@ class WorkbenchView extends ItemView {
     }
   }
 
-  renderHeatmap(container, heat) {
+  renderHeatmap(container: HTMLElement, heat: import("../services/heatmapService").HeatmapData): void {
     const card = container.createDiv({ cls: "owb-card owb-heat-card" });
     const head = card.createDiv({ cls: "owb-card-title-row" });
     // 结论式标题（smart-charts: 标题写结论不写主题）
@@ -186,8 +235,9 @@ class WorkbenchView extends ItemView {
           const target = this.app.vault.getAbstractFileByPath(
             normalizePath(`${this.plugin.settings.dailyFolder}/${day.key}.md`)
           );
-          if (target) await this.app.workspace.getLeaf(false).openFile(target);
-          else new Notice(`${day.key} · ${day.count} 次更新（当天没有日记）`);
+          if (target && (target as TFile).extension === "md") {
+            await this.app.workspace.getLeaf(false).openFile(target as TFile);
+          } else new Notice(`${day.key} · ${day.count} 次更新（当天没有日记）`);
         });
       }
     }
@@ -227,7 +277,7 @@ class WorkbenchView extends ItemView {
    * 空状态四要素（afrexai-ui-design-system）：
    * icon + 一句话说明 + 可选 CTA。绝不让用户看到一片空白的解释文。
    */
-  emptySlot(container, text, opts) {
+  emptySlot(container: HTMLElement, text: string, opts?: { icon?: string; ctaLabel?: string; ctaIcon?: string; onCta?: () => void }): HTMLElement {
     const o = opts || {};
     const slot = container.createDiv({ cls: "owb-empty-slot" });
     if (o.icon) {
@@ -247,8 +297,8 @@ class WorkbenchView extends ItemView {
     return slot;
   }
 
-  async render() {
-    const perf = { start: Date.now() };
+  async render(): Promise<void> {
+    const perf: { start: number; dataMs?: number; heatCache?: string; heatMs?: number; totalMs?: number } = { start: Date.now() };
     if (this._pomoTimer) {
       window.clearInterval(this._pomoTimer);
       this._pomoTimer = null;
@@ -302,7 +352,7 @@ class WorkbenchView extends ItemView {
     // 诗词 + 天气（SWR：同步填上次快照，异步刷新，绝不阻塞渲染）
     const ambient = hero.createDiv({ cls: "owb-ambient" });
     this._ambientEl = ambient;
-    const paintQuote = (q) => {
+    const paintQuote = (q: { content: string; author?: string; origin?: string } | null) => {
       if (!q || !q.content) return;
       ambient.createDiv({ cls: "owb-quote" }).createSpan({ cls: "owb-quote-text", text: q.content });
       const meta = ambient.querySelector(".owb-quote");
@@ -310,7 +360,7 @@ class WorkbenchView extends ItemView {
         meta.createSpan({ cls: "owb-muted", text: `　· ${q.author}${q.origin ? "《" + q.origin + "》" : ""}` });
       }
     };
-    const paintWeather = (w) => {
+    const paintWeather = (w: { emoji?: string; temp?: number; desc?: string; city?: string; humidity?: number; error?: string; missing?: boolean } | null) => {
       if (!w || w.missing) return;
       const chip = ambient.createDiv({ cls: "owb-weather" });
       if (w.error) {
@@ -349,7 +399,7 @@ class WorkbenchView extends ItemView {
     this.renderStats(hero, data, heat);
 
     const heroActions = hero.createDiv({ cls: "owb-hero-actions" });
-    const mkBtn = (label, icon, primary, handler) => {
+    const mkBtn = (label: string, icon: string, primary: boolean, handler: () => void) => {
       const b = heroActions.createEl("button", { cls: primary ? "mod-cta owb-btn-icon" : "owb-btn-icon" });
       if (icon) setIcon(b, icon);
       b.createSpan({ text: label });
@@ -448,7 +498,7 @@ class WorkbenchView extends ItemView {
             await this.render();
           } catch (err) {
             row.removeClass("done");
-            new Notice(`更新失败：${err.message}`);
+            new Notice(`更新失败：${(err as Error)?.message}`);
           }
         });
         const a = row.createEl("a", { cls: "owb-link", text: t.text });
@@ -506,7 +556,7 @@ class WorkbenchView extends ItemView {
         for (const item of projects.slice(0, 6)) {
           const li = ul.createEl("li");
           const a = li.createEl("a", { cls: "owb-link", text: item.name + (item.kind === "dir" ? "/" : "") });
-          if (item.file) a.addEventListener("click", () => this.app.workspace.getLeaf(false).openFile(item.file));
+          if (item.file) a.addEventListener("click", () => this.app.workspace.getLeaf(false).openFile(item.file!));
           const bits = [item.status, item.due && "截止 " + item.due].filter(Boolean);
           if (bits.length) li.createSpan({ cls: "owb-muted", text: " · " + bits.join(" · ") });
         }
@@ -595,7 +645,7 @@ class WorkbenchView extends ItemView {
                 this.invalidateHeat();
                 await this.render();
               } catch (e) {
-                new Notice("更新失败：" + e.message);
+                new Notice("更新失败：" + (e as Error)?.message);
               }
             });
             const a = row.createEl("a", { cls: "owb-link", text: t.text.slice(0, 48) });
@@ -615,11 +665,11 @@ class WorkbenchView extends ItemView {
           await createBase(this.app, "新建工作表");
           this.render();
         } catch (e) {
-          new Notice("创建失败：" + e.message);
+          new Notice("创建失败：" + (e as Error)?.message);
         }
       });
       if (!bases.length) {
-        this.emptySlot(baseCard, "还没有多维表格", { icon: "table-2", ctaLabel: "新建工作表", ctaIcon: "plus", onCta: async () => { const { createBase } = require("../services/baseService"); await createBase(this.app, "新建工作表"); this.render(); } });
+        this.emptySlot(baseCard, "还没有多维表格", { icon: "table-2", ctaLabel: "新建工作表", ctaIcon: "plus", onCta: async () => { await createBase(this.app, "新建工作表"); this.render(); } });
       } else {
         for (const b of bases.slice(0, 6)) {
           const row = baseCard.createDiv({ cls: "owb-base-row" });
@@ -678,7 +728,7 @@ class WorkbenchView extends ItemView {
       for (const item of links) {
         strip.createEl("button", { cls: "owb-chip", text: item.label }).addEventListener("click", async () => {
           const target = this.app.vault.getAbstractFileByPath(normalizePath(item.target));
-          if (target) await this.app.workspace.getLeaf(false).openFile(target);
+          if (target && (target as TFile).extension) await this.app.workspace.getLeaf(false).openFile(target as TFile);
           else new Notice(`未找到：${item.target}`);
         });
       }
@@ -694,7 +744,7 @@ class WorkbenchView extends ItemView {
       bar.createSpan({ text: `notes ${data.totalNotes}` });
       bar.createSpan({ text: `tasks ${data.pendingTasks.length}` });
       bar.createSpan({ text: `bases ${bases.length}` });
-      if (this.plugin._migrationApplied) bar.createSpan({ text: "migrated settings" });
+      if (this.plugin._migrationApplied && this.plugin._migrationApplied.length) bar.createSpan({ text: "migrated settings" });
       bar.createEl("button", { cls: "owb-mini-btn", text: "清缓存重渲染" }).addEventListener("click", () => {
         this.invalidateHeat();
         this.render();
@@ -703,12 +753,12 @@ class WorkbenchView extends ItemView {
   }
 
   /** RAG 卡片：索引状态 + 内联语义检索 + 知识图谱生成 */
-  async renderRagCard(container) {
+  async renderRagCard(container: HTMLElement): Promise<void> {
     const card = container.createDiv({ cls: "owb-card owb-rag-card" });
     const head = card.createDiv({ cls: "owb-card-title-row" });
     head.createDiv({ cls: "owb-card-title", text: "语义检索" });
 
-    let stat = { built: false, chunks: 0 };
+    let stat: { built: boolean; chunks: number; files?: number; model?: string; stale?: boolean } = { built: false, chunks: 0 };
     try {
       stat = this.plugin.rag.indexStat();
     } catch (e) {
@@ -734,7 +784,7 @@ class WorkbenchView extends ItemView {
       try {
         this._ragResults = await this.plugin.rag.search(q, { topK: 30, topN: 5 });
       } catch (err) {
-        this._ragError = err.message;
+        this._ragError = (err as Error)?.message;
       }
       this._ragBusy = false;
       await this.render();
@@ -785,10 +835,10 @@ class WorkbenchView extends ItemView {
       const top = hit.createDiv({ cls: "owb-rag-hit-head" });
       top.createEl("a", {
         cls: "owb-link",
-        text: r.chunk.path.split("/").pop().replace(/\.md$/, "")
+        text: (r.chunk.path.split("/").pop() || "").replace(/\.md$/, "")
       }).addEventListener("click", () => {
         const f = this.app.vault.getAbstractFileByPath(r.chunk.path);
-        if (f) this.app.workspace.getLeaf(false).openFile(f);
+        if (f && (f as TFile).extension) this.app.workspace.getLeaf(false).openFile(f as TFile);
       });
       top.createSpan({
         cls: "owb-muted",
@@ -798,7 +848,7 @@ class WorkbenchView extends ItemView {
     }
   }
 
-  renderFileCard(container, title, list, emptyText) {
+  renderFileCard(container: HTMLElement, title: string, list: Array<{ file: TFile }>, emptyText: string): void {
     const card = container.createDiv({ cls: "owb-card" });
     card.createDiv({ cls: "owb-card-title", text: title });
     // 去掉 README 与重复项：它们只说明"文件被同步过"，不代表今天做了什么
@@ -824,4 +874,6 @@ class WorkbenchView extends ItemView {
   }
 }
 
-module.exports = { WorkbenchView };
+export {
+  WorkbenchView
+};

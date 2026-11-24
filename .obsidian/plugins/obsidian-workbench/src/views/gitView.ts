@@ -1,12 +1,13 @@
+// @ts-nocheck -- 批3机械迁移: 类型化排入队列
 "use strict";
 
-const { ItemView, Notice, setIcon } = require("obsidian");
-const { VIEW_TYPE_GIT } = require("../constants");
-const { formatDate } = require("../utils");
-const { DiffModal } = require("../modals/diffModal");
-const { BranchModal } = require("../modals/branchModal");
-const { RemoteModal } = require("../modals/remoteModal");
-const { generateCommitMessage } = require("../services/aiService");
+import { ItemView, Notice, setIcon } from "obsidian";
+import { VIEW_TYPE_GIT } from "../constants";
+import { formatDate } from "../utils";
+import { DiffModal } from "../modals/diffModal";
+import { BranchModal } from "../modals/branchModal";
+import { RemoteModal } from "../modals/remoteModal";
+import { generateCommitMessage } from "../services/aiService";
 
 /**
  * 右侧边栏 Git 管理面板（v3.0）：
@@ -402,4 +403,6 @@ class GitPanelView extends ItemView {
   }
 }
 
-module.exports = { GitPanelView };
+export {
+  GitPanelView
+};

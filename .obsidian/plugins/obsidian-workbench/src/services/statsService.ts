@@ -21,7 +21,7 @@ export interface TagStatsResult {
   nested: number;
 }
 
-function tagStats(app: { metadataCache?: { getTags?: () => Record<string, number> } }, opts?: { limit?: number }): TagStatsResult {
+function tagStats(app: any, opts?: { limit?: number }): TagStatsResult {
   const o = opts || {};
   const counts = new Map();
   let mc = null;

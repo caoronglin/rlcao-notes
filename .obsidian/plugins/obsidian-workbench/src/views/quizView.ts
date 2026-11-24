@@ -1,14 +1,10 @@
+// @ts-nocheck -- 批3机械迁移: 类型化排入队列
 "use strict";
 
-const { ItemView, Notice, normalizePath } = require("obsidian");
-const { VIEW_TYPE_QUIZ } = require("../constants");
-const { formatDate, formatDuration, shuffleArray } = require("../utils");
-const {
-  parseMarkdownQuiz,
-  updateMasterySM2,
-  getDueOrWrongQuestions,
-  formatWrongCalloutMarkdown
-} = require("../services/quizEngine");
+import { ItemView, Notice, normalizePath } from "obsidian";
+import { VIEW_TYPE_QUIZ } from "../constants";
+import { formatDate, formatDuration, shuffleArray } from "../utils";
+import { parseMarkdownQuiz, updateMasterySM2, getDueOrWrongQuestions, formatWrongCalloutMarkdown } from "../services/quizEngine";
 
 /**
  * 原生 SM-2 互动自测视图：直接读取 Vault 内的 Markdown 题库，成绩与掌握度持久化在插件 data.json。
@@ -418,4 +414,6 @@ class QuizView extends ItemView {
   }
 }
 
-module.exports = { QuizView };
+export {
+  QuizView
+};

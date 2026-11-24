@@ -21,7 +21,7 @@ const KIND_LABEL = {
 
 const DEFAULT_FOLDER = "vault/工作台";
 
-function listBases(app, folderPrefix) {
+function listBases(app: any, folderPrefix?: string) {
   const prefix = String(folderPrefix || "").replace(/^\/+|\/+$/g, "");
   let files = [];
   try {
@@ -61,7 +61,7 @@ function duoweiTemplate(title) {
   );
 }
 
-async function createBase(app, name, folder) {
+async function createBase(app: any, name: string, folder?: string) {
   const title = String(name || "新建工作表").trim() || "新建工作表";
   const dir = normalizePath(folder || DEFAULT_FOLDER);
   if (!app.vault.getAbstractFileByPath(dir)) {

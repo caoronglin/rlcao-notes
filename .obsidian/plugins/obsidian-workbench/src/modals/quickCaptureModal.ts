@@ -1,13 +1,16 @@
 "use strict";
 
-const { Modal, Notice, normalizePath } = require("obsidian");
-const { formatDate, insertCaptureLine } = require("../utils");
+import { Modal, Notice, normalizePath, type App, type Plugin } from "obsidian";
+import { formatDate, insertCaptureLine } from "../utils";
 
 /**
  * 快速闪念弹窗：保留 YAML frontmatter，支持快捷标签与 Ctrl/Cmd+Enter 提交。
  */
 class QuickCaptureModal extends Modal {
-  constructor(app, plugin) {
+  plugin: Plugin & { settings: Record<string, unknown>; isFeatureEnabled(k: string): boolean; decide(s: Record<string, unknown>, q: Record<string, unknown>): Promise<{ answers: Record<string, { value: unknown; confidence: number | null }> }>; refreshWorkbenchViews(): void; openQuickCapture(): void };
+  selectedTags: Set<string>;
+
+  constructor(app: App, plugin: QuickCaptureModal["plugin"]) {
     super(app);
     this.plugin = plugin;
     this.selectedTags = new Set();
@@ -60,7 +63,7 @@ class QuickCaptureModal extends Modal {
         new Notice("已保存到闪念收件箱");
         this.close();
       } catch (err) {
-        new Notice(`保存失败：${err.message}`);
+        new Notice(`保存失败：${(err as Error)?.message || err}`);
         submitBtn.disabled = false;
       }
     };
@@ -76,14 +79,19 @@ class QuickCaptureModal extends Modal {
     setTimeout(() => textarea.focus(), 20);
   }
 
-  async saveCapture(text) {
-    const { inboxPath, captureInsertMode, captureTimeFormat } = this.plugin.settings;
+  async saveCapture(text: string): Promise<void> {
+    const inboxPath = String(this.plugin.settings.inboxPath || "inbox.md");
+    const captureInsertMode = String(this.plugin.settings.captureInsertMode || "top");
+    const captureTimeFormat = String(this.plugin.settings.captureTimeFormat || "HH:mm");
     const normPath = normalizePath(inboxPath || "inbox.md");
     const stamp = formatDate(new Date(), captureTimeFormat || "HH:mm");
     const suffix = this.selectedTags.size ? ` ${[...this.selectedTags].join(" ")}` : "";
     const line = `- ${stamp} - ${text}${suffix}`;
 
-    const existing = this.app.vault.getAbstractFileByPath(normPath);
+    const existingAbs = this.app.vault.getAbstractFileByPath(normPath);
+    const existing = existingAbs && (existingAbs as import("obsidian").TFile).extension === "md"
+      ? (existingAbs as import("obsidian").TFile)
+      : null;
     if (!existing) {
       const parentDir = normPath.includes("/") ? normPath.slice(0, normPath.lastIndexOf("/")) : "";
       if (parentDir && !this.app.vault.getAbstractFileByPath(parentDir)) {
@@ -105,11 +113,10 @@ class QuickCaptureModal extends Modal {
   }
 
   /** 后台调用决策模型，失败静默（不能因为模型挂了影响记笔记） */
-  async classifyInBackground(text) {
+  async classifyInBackground(text: string): Promise<void> {
     try {
-      const floor = this.plugin.settings.decisionConfidenceFloor == null
-        ? 0.6
-        : this.plugin.settings.decisionConfidenceFloor;
+      const floor = Number(this.plugin.settings.decisionConfidenceFloor);
+      const floorNum = Number.isFinite(floor) && floor > 0 ? floor : 0.6;
       const { answers } = await this.plugin.decide(
         { message: text },
         {
@@ -127,11 +134,11 @@ class QuickCaptureModal extends Modal {
         }
       );
       const a = answers && answers.area;
-      if (!a || a.confidence == null || a.confidence < floor) return;
+      if (!a || a.confidence == null || a.confidence < floorNum) return;
       new Notice(`决策建议：归入「${a.value}」（置信度 ${(a.confidence * 100).toFixed(0)}%）`, 6000);
     } catch (e) {
       // 静默：决策接口不可用不影响采集
-      console.debug("[workbench] 决策归类跳过:", e && e.message);
+      console.debug("[workbench] 决策归类跳过:", (e as Error)?.message);
     }
   }
 
@@ -140,4 +147,6 @@ class QuickCaptureModal extends Modal {
   }
 }
 
-module.exports = { QuickCaptureModal };
+export {
+  QuickCaptureModal
+};

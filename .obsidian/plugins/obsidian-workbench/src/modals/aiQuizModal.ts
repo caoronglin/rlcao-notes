@@ -1,7 +1,8 @@
+// @ts-nocheck -- 批2机械迁移: 类型化排入队列
 "use strict";
 
-const { Modal, Notice, normalizePath } = require("obsidian");
-const { generateQuizMarkdownFromNote } = require("../services/aiService");
+import { Modal, Notice, normalizePath } from "obsidian";
+import { generateQuizMarkdownFromNote } from "../services/aiService";
 
 /**
  * AI 从当前打开的笔记自动生成 Markdown 自测题库弹窗。
@@ -92,4 +93,6 @@ class AIQuizModal extends Modal {
   }
 }
 
-module.exports = { AIQuizModal };
+export {
+  AIQuizModal
+};

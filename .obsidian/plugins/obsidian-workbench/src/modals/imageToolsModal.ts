@@ -1,16 +1,9 @@
+// @ts-nocheck -- 批2机械迁移: 类型化排入队列
 "use strict";
 
-const { Modal, Notice, Setting } = require("obsidian");
-const {
-  engineInfo,
-  collectImages,
-  convertFiles,
-  saveImage,
-  assetDirFor,
-  SUPPORTED_OUT,
-  DEFAULT_FORMAT
-} = require("../services/imageService");
-const { fmtSize } = require("./attachmentModal");
+import { Modal, Notice, Setting } from "obsidian";
+import { engineInfo, collectImages, convertFiles, saveImage, assetDirFor, SUPPORTED_OUT, DEFAULT_FORMAT } from "../services/imageService";
+import { fmtSize } from "./attachmentModal";
 
 /**
  * 图片工具：引擎状态 + 粘贴/选择上传存档 + 批量格式转换与压缩。
@@ -232,4 +225,6 @@ class ImageToolsModal extends Modal {
   }
 }
 
-module.exports = { ImageToolsModal };
+export {
+  ImageToolsModal
+};

@@ -1,7 +1,8 @@
+// @ts-nocheck -- 批2机械迁移: 类型化排入队列
 "use strict";
 
-const { Modal, Notice } = require("obsidian");
-const { diagnoseVault, ensureSafeGitignore } = require("../services/doctorService");
+import { Modal, Notice } from "obsidian";
+import { diagnoseVault, ensureSafeGitignore } from "../services/doctorService";
 
 class DoctorModal extends Modal {
   constructor(app, plugin) {
@@ -56,4 +57,6 @@ class DoctorModal extends Modal {
   }
 }
 
-module.exports = { DoctorModal };
+export {
+  DoctorModal
+};

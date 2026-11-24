@@ -1,6 +1,6 @@
 "use strict";
 
-const { Modal, Notice, setIcon } = require("obsidian");
+import { Modal, Notice, setIcon, type App, type Plugin } from "obsidian";
 
 /**
  * 全屏番茄钟：点击「开始专注」后进入沉浸倒计时。
@@ -10,12 +10,29 @@ const { Modal, Notice, setIcon } = require("obsidian");
  *
  * 它只是 pomodoroService 的一个视图：状态都从 service 读，关闭不影响计时。
  */
+interface PomoPluginShape extends Plugin {
+  pomodoro: { phase: string; running: boolean; remainingSeconds: number; formatRemaining(): string; getTodayStats(): { sessions: number; minutes: number }; togglePause(): void; startBreak(): void; reset(): void };
+  settings: { pomodoroBreakMinutes?: number; pomodoroWorkMinutes?: number };
+  updatePomodoroStatusBar(): void;
+  refreshWorkbenchViews(): void;
+}
+
 class PomodoroFullscreen extends Modal {
-  constructor(app, plugin) {
-    super(app, plugin);
+  plugin: PomoPluginShape;
+  _raf: number | null;
+  _lastPhase: string;
+  _keydown: ((ev: KeyboardEvent) => void) | null;
+  clockEl!: HTMLElement;
+  phaseEl!: HTMLElement;
+  metaEl!: HTMLElement;
+  mainBtn!: HTMLElement;
+
+  constructor(app: App, plugin: PomoPluginShape) {
+    super(app);
     this.plugin = plugin;
     this._raf = null;
     this._lastPhase = "";
+    this._keydown = null;
   }
 
   onOpen() {
@@ -107,16 +124,16 @@ class PomodoroFullscreen extends Modal {
     this._raf = window.setInterval(() => this._paint(c, r), 500);
   }
 
-  _pulse() {
+  _pulse(): void {
     const el = this.contentEl.querySelector(".owb-fs-ring");
     if (!el) return;
     el.classList.remove("owb-fs-pulse");
     // 强制重排以重启动画
-    void el.offsetWidth;
+    void (el as HTMLElement).offsetWidth;
     el.classList.add("owb-fs-pulse");
   }
 
-  _paint(circumference, r) {
+  _paint(circumference: number, _r: number): void {
     const pomo = this.plugin.pomodoro;
     if (!pomo) return;
     const mins =
@@ -132,7 +149,7 @@ class PomodoroFullscreen extends Modal {
       pomo.phase === "idle" ? "准备专注" : pomo.phase === "work" ? (pomo.running ? "专注中" : "已暂停") : (pomo.running ? "休息中" : "休息暂停");
     this.phaseEl.setText(label);
 
-    const fill = this.contentEl.querySelector(".owb-fs-fill");
+    const fill = this.contentEl.querySelector(".owb-fs-fill") as HTMLElement | null;
     if (fill) {
       fill.style.strokeDasharray = String(circumference);
       fill.style.strokeDashoffset = String(circumference * (1 - progress));
@@ -162,4 +179,6 @@ class PomodoroFullscreen extends Modal {
   }
 }
 
-module.exports = { PomodoroFullscreen };
+export {
+  PomodoroFullscreen
+};

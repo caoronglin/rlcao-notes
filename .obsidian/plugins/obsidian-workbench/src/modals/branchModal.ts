@@ -1,6 +1,7 @@
+// @ts-nocheck -- 批2机械迁移: 类型化排入队列
 "use strict";
 
-const { Modal, Notice } = require("obsidian");
+import { Modal, Notice } from "obsidian";
 
 class BranchModal extends Modal {
   constructor(app, onCreate) {
@@ -52,4 +53,6 @@ class BranchModal extends Modal {
   }
 }
 
-module.exports = { BranchModal };
+export {
+  BranchModal
+};

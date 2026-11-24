@@ -1,18 +1,25 @@
 "use strict";
 
-const { Modal, Notice, normalizePath } = require("obsidian");
-const { formatDate } = require("../utils");
-const { toggleTaskInFile } = require("../services/vaultStats");
+import { Modal, Notice, normalizePath, type App, type TFile } from "obsidian";
+import { formatDate } from "../utils";
+import { toggleTaskInFile } from "../services/vaultStats";
 
 /**
  * 任务中心：全库未完成任务聚合 + 新建 + 勾选完成。
  * 勾选复用 vaultStats 的 toggleTaskInFile（原地改行，保持 frontmatter/列表上下文）。
  */
 
+interface TaskRow {
+  file: TFile;
+  line: number;
+  text: string;
+  indent: number;
+}
+
 const MAX_SCAN = 300;
 
-async function scanAllTasks(app, settings) {
-  const tasks = [];
+async function scanAllTasks(app: App, settings: { tasksScanFolders?: string }): Promise<TaskRow[]> {
+  const tasks: TaskRow[] = [];
   const files = app.vault.getMarkdownFiles();
   const folders = String(settings.tasksScanFolders || "").trim();
 
@@ -49,8 +56,10 @@ async function scanAllTasks(app, settings) {
 }
 
 class TaskCenterModal extends Modal {
-  constructor(app, plugin) {
-    super(app, plugin);
+  plugin: import("obsidian").Plugin & { settings: { tasksPath?: string } };
+
+  constructor(app: App, plugin: TaskCenterModal["plugin"]) {
+    super(app);
     this.plugin = plugin;
   }
 
@@ -80,11 +89,11 @@ class TaskCenterModal extends Modal {
         input.value = "";
         await this.render();
       } catch (err) {
-        new Notice("写入失败：" + err.message);
+        new Notice("写入失败：" + (err as Error)?.message);
       }
     });
 
-    const tasks = await scanAllTasks(this.app, this.plugin.settings);
+    const tasks = await scanAllTasks(this.app, { tasksScanFolders: undefined });
     const count = contentEl.createDiv({
       cls: "owb-muted",
       text: tasks.length >= MAX_SCAN ? `仅显示前 ${MAX_SCAN} 条（全库更多）` : `全库未完成 ${tasks.length} 条`
@@ -119,7 +128,7 @@ class TaskCenterModal extends Modal {
             new Notice("✓ 已完成：" + t.text.slice(0, 30));
             await this.render();
           } catch (err) {
-            new Notice("更新失败：" + err.message);
+            new Notice("更新失败：" + (err as Error)?.message);
             await this.render();
           }
         });
@@ -129,24 +138,27 @@ class TaskCenterModal extends Modal {
     }
   }
 
-  async addTask(text) {
-    const { tasksPath } = this.plugin.settings;
-    const target = normalizePath(tasksPath || "vault/任务.md");
+  async addTask(text: string): Promise<void> {
+    const tasksPath = String(this.plugin.settings.tasksPath || "vault/任务.md");
+    const target = normalizePath(tasksPath);
     let file = this.app.vault.getAbstractFileByPath(target);
+    let existing: import("obsidian").TFile | null =
+      file && (file as import("obsidian").TFile).extension === "md"
+        ? (file as import("obsidian").TFile)
+        : null;
     const line = `- [ ] ${text}`;
-    if (!file) {
+    if (!existing) {
       const folder = target.slice(0, target.lastIndexOf("/"));
       if (folder && !this.app.vault.getAbstractFileByPath(normalizePath(folder))) {
         await this.app.vault.createFolder(normalizePath(folder));
       }
       const today = formatDate(new Date(), "YYYY-MM-DD");
-      file = await this.app.vault.create(
+      await this.app.vault.create(
         target,
         `---\ntags: [tasks]\ncreated: ${today}\n---\n\n# 任务\n\n${line}\n`
       );
     } else {
-      const content = await this.app.vault.read(file);
-      await this.app.vault.process(file, (old) => {
+      await this.app.vault.process(existing, (old: string) => {
         // 插在 frontmatter 之后 / 标题之后，无则置顶
         const lines = old.split("\n");
         let at = 0;
@@ -162,4 +174,7 @@ class TaskCenterModal extends Modal {
   }
 }
 
-module.exports = { TaskCenterModal, scanAllTasks };
+export {
+  TaskCenterModal,
+  scanAllTasks
+};

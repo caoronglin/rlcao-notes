@@ -1,3 +1,4 @@
+// @ts-nocheck -- 批2机械迁移: 类型化排入队列
 "use strict";
 
 import { Modal, Notice, setIcon } from "obsidian";

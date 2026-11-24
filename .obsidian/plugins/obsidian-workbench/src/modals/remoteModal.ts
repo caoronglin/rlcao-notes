@@ -1,6 +1,7 @@
+// @ts-nocheck -- 批2机械迁移: 类型化排入队列
 "use strict";
 
-const { Modal, Notice } = require("obsidian");
+import { Modal, Notice } from "obsidian";
 
 /**
  * Git 远程仓库配置向导弹窗（查看/添加/修改/删除远程 URL + 绑定上游推送）。
@@ -100,4 +101,6 @@ class RemoteModal extends Modal {
   }
 }
 
-module.exports = { RemoteModal };
+export {
+  RemoteModal
+};

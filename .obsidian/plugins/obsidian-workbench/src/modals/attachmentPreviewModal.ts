@@ -1,6 +1,6 @@
 "use strict";
 
-const { Modal, Notice } = require("obsidian");
+import { Modal, Notice, type App, type Plugin, type TFile } from "obsidian";
 
 /**
  * 附件预览（open-file-viewer 优先，原生回退）。
@@ -12,16 +12,20 @@ const { Modal, Notice } = require("obsidian");
  * 未安装时自动回退到原生预览（图片 / PDF / 音视频 / 文本代码 / Markdown）。
  */
 
-let ofvModule;
+interface OfvLike {
+  createViewer(host: HTMLElement, opts: { url: string; fileName: string; theme?: string }): void;
+}
+
+let ofvModule: OfvLike | null | undefined;
 let ofvError = "";
 let pluginDir = "";
 
-function setPluginDir(dir) {
+export function setPluginDir(dir: string): void {
   pluginDir = String(dir || "");
   ofvModule = undefined;
 }
 
-function loadOpenFileViewer() {
+export function loadOpenFileViewer(): OfvLike | null | undefined {
   if (ofvModule !== undefined) return ofvModule;
   const attempts = [() => require("@open-file-viewer/core")];
   if (pluginDir && pluginDir.startsWith("/")) {
@@ -36,14 +40,14 @@ function loadOpenFileViewer() {
       ofvError = "";
       return ofvModule;
     } catch (e) {
-      ofvError = String((e && e.message) || e);
+      ofvError = String((e as Error)?.message || e);
     }
   }
   ofvModule = null;
   return ofvModule;
 }
 
-const KIND = {
+const KIND: Record<string, string[]> = {
   image: ["png", "jpg", "jpeg", "gif", "webp", "avif", "bmp", "svg"],
   video: ["mp4", "webm", "ogv", "mov"],
   audio: ["mp3", "wav", "ogg", "m4a", "flac"],
@@ -55,14 +59,14 @@ const KIND = {
   archive: ["zip", "tar", "gz", "7z", "rar"]
 };
 
-function kindOf(ext) {
+function kindOf(ext: string | undefined): string {
   const e = String(ext || "").toLowerCase();
   for (const [k, list] of Object.entries(KIND)) if (list.includes(e)) return k;
   return "other";
 }
 
 /** 构造 Obsidian 资源 URL（vault adapter 已处理编码） */
-function resourceUrl(app, file) {
+function resourceUrl(app: App, file: TFile): string {
   try {
     if (app.vault.adapter && typeof app.vault.adapter.getResourcePath === "function") {
       return app.vault.adapter.getResourcePath(file.path);
@@ -77,7 +81,7 @@ function resourceUrl(app, file) {
  * 渲染预览内容到容器。
  * 返回 { usedEngine: "open-file-viewer" | "native", kind }
  */
-async function renderPreview(app, file, container) {
+async function renderPreview(app: App, file: TFile, container: HTMLElement): Promise<{ usedEngine: string; kind: string; ofvError?: string }> {
   container.empty();
   const kind = kindOf(file.extension);
   const url = resourceUrl(app, file);
@@ -91,7 +95,7 @@ async function renderPreview(app, file, container) {
       ofv.createViewer(host, { url, fileName: file.name, theme: "auto" });
       return { usedEngine: "open-file-viewer", kind };
     } catch (e) {
-      ofvError = String(e && e.message);
+      ofvError = String((e as Error)?.message);
     }
   }
 
@@ -112,7 +116,7 @@ async function renderPreview(app, file, container) {
     try {
       text = await app.vault.read(file);
     } catch (e) {
-      text = "(读取失败：" + e.message + ")";
+      text = "(读取失败：" + (e as Error)?.message + ")";
     }
     const pre = container.createEl("pre", { cls: "owb-preview-code" });
     pre.setText(text.length > 200000 ? text.slice(0, 200000) + "\n…(已截断)" : text);
@@ -128,7 +132,7 @@ async function renderPreview(app, file, container) {
         const electron = require("electron");
         await electron.shell.openPath(resourceUrl(app, file));
       } catch (e) {
-        new Notice("无法调用系统应用：" + e.message);
+        new Notice("无法调用系统应用：" + (e as Error)?.message);
       }
     });
   }
@@ -136,8 +140,11 @@ async function renderPreview(app, file, container) {
 }
 
 class AttachmentPreviewModal extends Modal {
-  constructor(app, plugin, file) {
-    super(app, plugin);
+  plugin: Plugin;
+  file: TFile;
+
+  constructor(app: App, plugin: Plugin, file: TFile) {
+    super(app);
     this.file = file;
     this.plugin = plugin;
   }
@@ -161,12 +168,10 @@ class AttachmentPreviewModal extends Modal {
   }
 }
 
-module.exports = {
+export {
   KIND,
   kindOf,
   renderPreview,
   resourceUrl,
-  AttachmentPreviewModal,
-  setPluginDir,
-  loadOpenFileViewer
+  AttachmentPreviewModal
 };

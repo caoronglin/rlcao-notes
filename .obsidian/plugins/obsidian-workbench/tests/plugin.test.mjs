@@ -582,7 +582,7 @@ test("v3.5 bases style: 片段包含关键选择器", () => {
 });
 
 test("v3.5 preview: 扩展名分类与原生/OFV 选择", () => {
-  const m = require(path.join(rootDir, "src/modals/attachmentPreviewModal.js"));
+  const m = require(path.join(rootDir, "src/modals/attachmentPreviewModal.ts"));
   assert.equal(m.kindOf("png"), "image");
   assert.equal(m.kindOf("pdf"), "pdf");
   assert.equal(m.kindOf("docx"), "office");

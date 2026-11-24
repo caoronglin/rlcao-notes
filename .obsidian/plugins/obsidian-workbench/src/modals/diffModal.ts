@@ -1,6 +1,7 @@
+// @ts-nocheck -- 批2机械迁移: 类型化排入队列
 "use strict";
 
-const { Modal } = require("obsidian");
+import { Modal } from "obsidian";
 
 /**
  * Git Diff 语法高亮查看弹窗（按行安全渲染，零 innerHTML）。
@@ -34,4 +35,6 @@ class DiffModal extends Modal {
   }
 }
 
-module.exports = { DiffModal };
+export {
+  DiffModal
+};

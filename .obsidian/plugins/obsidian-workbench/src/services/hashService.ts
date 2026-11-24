@@ -34,7 +34,7 @@ export function emptyIndex(): HashIndex {
 
 /** Web Crypto 计算 SHA-256（Chromium/Electron 原生可用）。 */
 export async function sha256Hex(bytes: Uint8Array): Promise<string> {
-  const buf = bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength);
+  const buf = new Uint8Array(bytes).slice().buffer as ArrayBuffer;
   const digest = await crypto.subtle.digest("SHA-256", buf);
   return Array.from(new Uint8Array(digest))
     .map((b) => b.toString(16).padStart(2, "0"))
@@ -89,7 +89,7 @@ export async function storeByHash(
   if (folder && !app.vault.getAbstractFileByPath(normalizePath(folder))) {
     await app.vault.createFolder(normalizePath(folder));
   }
-  const buf = bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength);
+  const buf = new Uint8Array(bytes).slice().buffer as ArrayBuffer;
   const file = await app.vault.createBinary(path, buf);
   if (idx) {
     idx.entries[full] = { hash: full, path, size: bytes.length, at: Date.now() };

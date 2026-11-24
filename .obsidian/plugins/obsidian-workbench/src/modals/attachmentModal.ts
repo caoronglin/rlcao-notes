@@ -1,8 +1,9 @@
+// @ts-nocheck -- 批2机械迁移: 类型化排入队列
 "use strict";
 
-const { Modal, Notice } = require("obsidian");
-const { auditVault, archiveOrphans } = require("../services/attachmentService");
-const { AttachmentPreviewModal } = require("./attachmentPreviewModal");
+import { Modal, Notice } from "obsidian";
+import { auditVault, archiveOrphans } from "../services/attachmentService";
+import { AttachmentPreviewModal } from "./attachmentPreviewModal";
 
 function fmtSize(bytes) {
   const n = Number(bytes) || 0;
@@ -163,4 +164,7 @@ class AttachmentModal extends Modal {
   }
 }
 
-module.exports = { AttachmentModal, fmtSize };
+export {
+  AttachmentModal,
+  fmtSize
+};

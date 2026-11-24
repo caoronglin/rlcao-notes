@@ -56,9 +56,9 @@ npm install
 
 ### 语雀仓库相关配置·
 
-1. 登录语雀官网，点击知识库→创建知识库（互联网可见）![32313fe168cc0285905d35fc3d96cab2.png](../../assets/yuque/blog/2ce064db40bf3c0d.png)
-2. 导入服务器上根目录下_posts下内容（如果未新配置站点可跳过此步骤），如果文章过多，可以将整个_posts目录压缩上传至语雀仓库（后续同步语雀仓库会删除本地_posts下内容）![Screenshot_20220109_181029.jpg](../../assets/yuque/blog/8764d1bca3108d24.jpeg)
-3. 创建模板（方便后面编写文章）点击右上角新建→新建模板（文档）![Screenshot_20220109_181450.jpg](../../assets/yuque/blog/44db33d3bbeb42f8.jpeg)
+1. 登录语雀官网，点击知识库→创建知识库（互联网可见）![32313fe168cc0285905d35fc3d96cab2.png](../../assets/yuque/blog/2ce064db40bf3c0d.avif)
+2. 导入服务器上根目录下_posts下内容（如果未新配置站点可跳过此步骤），如果文章过多，可以将整个_posts目录压缩上传至语雀仓库（后续同步语雀仓库会删除本地_posts下内容）![Screenshot_20220109_181029.jpg](../../assets/yuque/blog/8764d1bca3108d24.avif)
+3. 创建模板（方便后面编写文章）点击右上角新建→新建模板（文档）![Screenshot_20220109_181450.jpg](../../assets/yuque/blog/44db33d3bbeb42f8.avif)
 
 在模板中，放置以下内容
 
@@ -137,7 +137,7 @@ token可以点击头像获取
 npm run start //刚才已配置在json里面，可直接完成语雀仓库同步，渲染，部署
 ```
 
-{% image ../../assets/yuque/blog/5cc648d0184c05d9.jpeg Screenshot_20220109_182709.jpg %}
+{% image ../../assets/yuque/blog/5cc648d0184c05d9.avif Screenshot_20220109_182709.jpg %}
 
 # 总结
 

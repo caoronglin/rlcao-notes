@@ -64,7 +64,7 @@
 
 #### 常见分析流程
 
-![[assets/Pasted image 20261007153939.png]]
+![[assets/Pasted image 20261007153939.avif]]
 
 ### 第三代测序
 

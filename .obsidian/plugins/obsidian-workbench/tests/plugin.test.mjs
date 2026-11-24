@@ -673,3 +673,47 @@ test("v3.8-A quote/weather: render 不被网络阻塞(SWR 缓存读写)", async 
   const kept = JSON.parse(fakeStorage.getItem("owb-quote-cache"));
   assert.equal(kept.data.content, "keep");
 });
+
+test("v3.10 hash: SHA-256 已知向量 + 路径规约 + storeByHash 去重复用", async () => {
+  const hs = require(path.join(rootDir, "src/services/hashService.ts"));
+  // 已知向量: sha256("abc")
+  const abc = new TextEncoder().encode("abc");
+  const h = await hs.sha256Hex(abc);
+  assert.equal(h, "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad");
+
+  // 路径规约: assets/<YY>/<MM>/<hash16>.<ext>
+  const p = hs.hashPathFor(h, "png", new Date(2026, 10, 24));
+  assert.equal(p, "assets/26/11/ba7816bf8f01cfea.png");
+
+  // storeByHash: 同哈希第二次调用复用，不写盘
+  const created = [];
+  const app = {
+    vault: {
+      getAbstractFileByPath: (path) => (path === "assets/26/11/ba7816bf8f01cfea.png" ? created[0] : null),
+      createFolder: async () => ({}),
+      createBinary: async (path, buf) => {
+        const f = { path, extension: "png", name: path.split("/").pop() };
+        created.push(f);
+        return f;
+      }
+    }
+  };
+  const idx = hs.emptyIndex();
+  const r1 = await hs.storeByHash(app, abc, { ext: "png", date: new Date(2026, 10, 24), index: idx });
+  assert.equal(r1.reused, false);
+  const r2 = await hs.storeByHash(app, abc, { ext: "png", date: new Date(2026, 10, 24), index: idx });
+  assert.equal(r2.reused, true);          // 索引命中
+  assert.equal(created.length, 1);       // 只写了一次盘
+  assert.equal(idx.entries[h].path, r1.path);
+
+  // scanDuplicates: 同内容两份 → 一组，正本取引用多的
+  const files = [
+    { file: { path: "assets/a.png", name: "a.png", stat: { mtime: 10 } }, bytes: async () => abc },
+    { file: { path: "notes/b.png", name: "b.png", stat: { mtime: 20 } }, bytes: async () => abc }
+  ];
+  const dup = await hs.scanDuplicates(files, (f) => (f.name === "a.png" ? 3 : 0));
+  assert.equal(dup.groups.length, 1);
+  assert.equal(dup.groups[0].keep.file.name, "a.png");
+  assert.equal(dup.groups[0].dups.length, 1);
+  assert.equal(dup.groups[0].dups[0].file.name, "b.png");
+});

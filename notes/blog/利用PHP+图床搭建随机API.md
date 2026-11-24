@@ -158,7 +158,7 @@ function str_re($str){
 
 示例目录结构
 
-![Screenshot_20220131_155256.jpg](../../assets/yuque/blog/4c51f56fc6ab09ee.jpeg)
+![Screenshot_20220131_155256.jpg](../../assets/yuque/blog/4c51f56fc6ab09ee.avif)
 
 ```plain
 项目文件

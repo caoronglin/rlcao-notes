@@ -102,17 +102,17 @@ nohup tkserver >> tkserver.log 2>&1 &
 
 ### 安装插件
 
-![image.png](../../assets/yuque/blog/cdca7c987f96ae60.png)
+![image.png](../../assets/yuque/blog/cdca7c987f96ae60.avif)
 
 ### 选择`node.js`版本
 
-![image.png](../../assets/yuque/blog/a23bca09b09c843b.png)
+![image.png](../../assets/yuque/blog/a23bca09b09c843b.avif)
 
 最好选择大于`14`的稳定版
 
 ### 配置node项目
 
-![image.png](../../assets/yuque/blog/c1e4a100a24fcccb.png)
+![image.png](../../assets/yuque/blog/c1e4a100a24fcccb.avif)
 
 1. 选择添加`NODE项目`
 2. 选择`文件`所在目录

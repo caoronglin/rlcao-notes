@@ -142,7 +142,7 @@ else if(navigator.userAgent.match(/qq/i)){ var we_mes = 'QQ浏览器';}
 - <script type="text/javascript" src="https://api.cnortles.top/ip/"></script>
 ```
 
-{% image ../../assets/yuque/blog/c14013111ba01816.png image.png %}
+{% image ../../assets/yuque/blog/c14013111ba01816.avif image.png %}
 
 #### 代码
 
@@ -174,7 +174,7 @@ btf.snackbarShow("你好啊，来自"+ip_mess+"的朋友，您使用"+we_mes+"�
 
 # 效果
 
-{% image ../../assets/yuque/blog/d76a2d2ed088160a.png image.png %}
+{% image ../../assets/yuque/blog/d76a2d2ed088160a.avif image.png %}
 
 # 利用COOKIE只在第一次打开时显示（完整代码）
 

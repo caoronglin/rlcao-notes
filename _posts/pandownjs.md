@@ -50,11 +50,11 @@ footer:
 <pandown type="lz" url="123" pwd="1234" fname="啥都没有，我没放链接"></pandown>
 ```
 
-{% image ../../assets/yuque/blog/58cd1fcbf65d0c92.png image.png %}
+{% image ../../assets/yuque/blog/58cd1fcbf65d0c92.avif image.png %}
 
-{% image ../../assets/yuque/blog/3890ba24796333ad.png image.png %}
+{% image ../../assets/yuque/blog/3890ba24796333ad.avif image.png %}
 
-{% image ../../assets/yuque/blog/22602bdc510b0093.png image.png %}
+{% image ../../assets/yuque/blog/22602bdc510b0093.avif image.png %}
 
 # 引入方式
 

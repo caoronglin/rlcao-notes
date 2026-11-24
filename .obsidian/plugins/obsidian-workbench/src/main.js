@@ -20,7 +20,8 @@ const decisionService = require("./services/decisionService");
 const graphService = require("./services/graphService");
 const { renderRunnableBlock, renderHtmlPreview } = require("./services/codeRunner");
 const { AttachmentPreviewModal } = require("./modals/attachmentPreviewModal");
-const { saveAttachment, planOrganize, applyOrganize } = require("./services/attachmentService");
+const { DedupeModal } = require("./modals/dedupeModal");
+const { saveAttachment, planOrganize, applyOrganize, cleanupConvertPairs } = require("./services/attachmentService");
 const { BASE_STYLE_CSS } = require("./styles/basesStyle");
 const { PomodoroFullscreen } = require("./modals/pomodoroFullscreen");
 const { WorkbenchView } = require("./views/workbenchView");
@@ -198,6 +199,16 @@ class ObsidianWorkbenchPlugin extends Plugin {
       id: "organize-attachments",
       name: "附件：整理散落附件到 assets/（先预览）",
       checkCallback: (checking) => this._guardCommand("attachments", checking, () => this.organizeAttachments())
+    });
+    this.addCommand({
+      id: "cleanup-convert-pairs",
+      name: "附件：清理转码残留（引用改到 AVIF/WebP，旧原件归档）",
+      checkCallback: (checking) => this._guardCommand("attachments", checking, () => this.cleanupConvertPairsNow())
+    });
+    this.addCommand({
+      id: "dedupe-attachments",
+      name: "附件：SHA-256 去重（扫描重复内容并归档副本）",
+      checkCallback: (checking) => this._guardCommand("attachments", checking, () => this.openDedupeModal())
     });
     this.addCommand({
       id: "add-attachment",
@@ -527,6 +538,27 @@ class ObsidianWorkbenchPlugin extends Plugin {
   }
 
   /** 附件预览（open-file-viewer 优先，原生回退） */
+  async cleanupConvertPairsNow() {
+    if (!this.isFeatureEnabled("attachments")) return;
+    try {
+      const res = await cleanupConvertPairs(this.app);
+      new Notice(
+        res.pairs.length
+          ? `转码清理：${res.pairs.length} 对，已归档 ${res.moved.length} 个旧原件，改写 ${res.touched} 篇笔记引用`
+          : "没有转码残留（未发现同名的旧格式/新格式成对文件）",
+        8000
+      );
+      this.refreshWorkbenchViews();
+    } catch (err) {
+      new Notice("转码清理失败：" + err.message, 8000);
+    }
+  }
+
+  openDedupeModal() {
+    if (!this.isFeatureEnabled("attachments")) return;
+    new DedupeModal(this.app, this).open();
+  }
+
   previewAttachment(file) {
     if (!file) return;
     new AttachmentPreviewModal(this.app, this, file).open();

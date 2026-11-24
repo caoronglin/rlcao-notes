@@ -38,7 +38,7 @@ gcc helloword.c
 
 这就是一个很简单的C语言函数，让我们来看一下运行效果（此为编译后的效果）
 
-![Screenshot_20220117_232921.jpg](../../assets/yuque/blog/a99b2852de9ed265.jpeg)
+![Screenshot_20220117_232921.jpg](../../assets/yuque/blog/a99b2852de9ed265.avif)
 
 # 变量
 

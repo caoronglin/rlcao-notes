@@ -2,6 +2,7 @@
 "use strict";
 
 import { normalizePath, Notice } from "obsidian";
+import { storeByHash } from "./hashService";
 
 /**
  * 图片服务：上传存档 + 格式转换 + 压缩。
@@ -161,13 +162,23 @@ async function saveImage(app, input, opts) {
     engine = conv.engine;
   }
 
-  const finalName = `${baseOf(name)}.${outExt}`;
-  let path = normalizePath(`${dir}/${finalName}`);
-  if (app.vault.getAbstractFileByPath(path)) {
-    path = normalizePath(`${dir}/${baseOf(name)}-${Date.now()}.${outExt}`);
+  // v3.10: 内容寻址落盘 assets/<YY>/<MM>/<sha256-16>.<ext>，同内容自动去重
+  const stored = await storeByHash(app, outBytes, {
+    ext: outExt,
+    date: o.date,
+    index: o.index
+  });
+  if (stored.reused) {
+    new Notice(`图片内容已存在，复用：${stored.path}`);
   }
-  const file = await app.vault.createBinary(path, outBytes.buffer ? outBytes.buffer : outBytes);
-  return { file, path, engine, bytes: outBytes.length };
+  return {
+    file: stored.file,
+    path: stored.path,
+    engine,
+    bytes: outBytes.length,
+    hash: stored.hash,
+    reused: stored.reused
+  };
 }
 
 /**

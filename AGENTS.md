@@ -171,7 +171,7 @@ PY
 
 - `vault/日记/`、`vault/项目/` 历史上 0 次提交
 - `panel/`、`assets/` 曾被跟踪，在 `609a19f`「目录扁平化」时被顺带排除
-- `Home.md` 依赖 `panel/hero.md`，hero 又引用 `assets/workbench-hero.png`，换机重克隆必现坏链
+- `Home.md` 依赖 `panel/hero.md`，hero 又引用 `assets/workbench-hero.avif`，换机重克隆必现坏链
 
 **只看 `git status` 干净不能说明备份正常**，必须显式检查：
 
@@ -358,7 +358,7 @@ pdftotext -f N -l N -layout 报告.pdf - | tail -c 100   # 每页末句是否完
   - Zotero 复验：本地 API 与 BBT JSON-RPC 可用，补装 `pdfannots2json-linux-x64`（批注转图依赖，此前目录不存在）。
   - 新增 `.gitattributes` 钉死换行；git 本地配置补齐 `quotepath` / `push.default` / `rerere` / `remote.pushDefault`。
 
-- **2026-11-06（晚）** 实验二、三补入 NCBI 检索证据图：实验二新增 `fig_entrez_search.svg/.png`（E-utilities 的 esearch/elink/esummary 原始输出，由 `02/scripts/make_entrez_figure.py` 生成）；实验三新增 `03/shot-ncbi-blastn.png`（NCBI BLAST 网页版结果页截图，RID `EVDGFU20016`，blastn/megablast、`core_nt` 限 `Viridiplantae[Organism]`，52 条命中，前 5 条含 `AY195850.2`（标题含 type 2，不能仅凭此认定为 FIE2））。两份报告仍为 5 页；为此收紧段距（p 1.0→0.85 mm、表 1.8→1.5 mm、图 1.6→1.3 mm）并压缩若干段落。
+- **2026-11-06（晚）** 实验二、三补入 NCBI 检索证据图：实验二新增 `fig_entrez_search.svg/.png`（E-utilities 的 esearch/elink/esummary 原始输出，由 `02/scripts/make_entrez_figure.py` 生成）；实验三新增 `03/shot-ncbi-blastn.avif`（NCBI BLAST 网页版结果页截图，RID `EVDGFU20016`，blastn/megablast、`core_nt` 限 `Viridiplantae[Organism]`，52 条命中，前 5 条含 `AY195850.2`（标题含 type 2，不能仅凭此认定为 FIE2））。两份报告仍为 5 页；为此收紧段距（p 1.0→0.85 mm、表 1.8→1.5 mm、图 1.6→1.3 mm）并压缩若干段落。
   **踩坑**：本机无头 Chrome 访问 `www.ncbi.nlm.nih.gov/{nuccore,gene,assembly,books}` 一律返回 reCAPTCHA 挑战页（等待 45 s 后升级为图片验证码），拿不到 Entrez 网页截图；`blast.ncbi.nlm.nih.gov` 与 `www.ncbi.nlm.nih.gov/` 首页不受影响。该现象仅针对当时无头 Chrome；同日可见浏览器成功获取 Nucleotide 搜索页面截图。E-utilities 渲染图应标明是 API 记录，不能冒充网页截图。
 - **2026-11-06** 实验二、三的研究分子统一到玉米 `ZmFIE1`：实验二 1.3 改为 5 条 FIE1 直系 + 5 条 FIE2 并系（跨禾本科补齐），10 组 EMBOSS 比对；实验三重跑 BLASTN/BLASTP/PSI/DELTA/翻译搜索，核酸库改为 11 个植物物种 Ensembl Plants cDNA + FIE 家族（652,197 条），蛋白库 576,022 条；报告改为 WeasyPrint 排版，02、03 均为 5 页。
 - **2026-10-30** 实验一报告按课程模板重排：宋体 + Times + 雅黑、全文黑、5 页、三线表；重绘转录本结构图与文献证据矩阵；修正 FIE/EED 亚基表述、poly(A) 信号判读、文献计数口径。

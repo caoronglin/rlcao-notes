@@ -55,11 +55,11 @@ npm config set registry http://registry.npm.taobao.org/
 
 3. 利用[宝塔面板安装](https://www.bt.cn)
 
-![Screenshot_20220123_194530.jpg](../../assets/yuque/blog/abdc81ff34fea823.jpeg)
+![Screenshot_20220123_194530.jpg](../../assets/yuque/blog/abdc81ff34fea823.avif)
 
 安装node管理器
 
-![Screenshot_20220123_194641.jpg](../../assets/yuque/blog/c0eb4bbf1469b961.jpeg)
+![Screenshot_20220123_194641.jpg](../../assets/yuque/blog/c0eb4bbf1469b961.avif)
 
 选择任意一个版本（建议选一个长期支持版本，宝塔面板安装不好处理），可以使用`npx hexo使用`这样的安装方式需要自己添加环境变量
 
@@ -93,7 +93,7 @@ hexo s //（在线预览博客，需要放行4000端口）or hexo s -p+端口号
 
 好了，就这样一个静态博客就初始化好了（可以通过http://localhost:4000/127.0.0.1:4000访问）
 
-![Screenshot_20220123_202223_com.huawei.browser.png](../../assets/yuque/blog/7ab2846ae4839d12.png)
+![Screenshot_20220123_202223_com.huawei.browser.png](../../assets/yuque/blog/7ab2846ae4839d12.avif)
 
 这是成功后的目录结构，期中_config.yml是前期用的比较多的
 
@@ -105,9 +105,9 @@ hexo s //（在线预览博客，需要放行4000端口）or hexo s -p+端口号
 
 ### 什么是主题butterfly
 
-![Screenshot_20220123_201316.jpg](../../assets/yuque/blog/7643e82bacd7afc7.jpeg)
+![Screenshot_20220123_201316.jpg](../../assets/yuque/blog/7643e82bacd7afc7.avif)
 
-![68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f6a65727279633132372f43444e406d322f696d672f627574746572666c792d726561646d652d73637265656e73686f74732d312e6a7067.jpg](../../assets/yuque/blog/c93498228f4c7d97.jpeg)
+![68747470733a2f2f63646e2e6a7364656c6976722e6e65742f67682f6a65727279633132372f43444e406d322f696d672f627574746572666c792d726561646d652d73637265656e73686f74732d312e6a7067.jpg](../../assets/yuque/blog/c93498228f4c7d97.avif)
 
 ### 获取主题（以下均在刚刚创建的博客根目录进行（/myblog））
 
@@ -184,7 +184,7 @@ hexo s //npx hexo s
 
 为了方便主题更新，请将主题目录下的_config.yml（原文件不要删除！！！）复制到博客根目录下并改为_config.butterfly.yml
 
-![Screenshot_20220123_204303.jpg](../../assets/yuque/blog/e858284849d869a1.jpeg)
+![Screenshot_20220123_204303.jpg](../../assets/yuque/blog/e858284849d869a1.avif)
 
 在hexo5.0以上，会自动合并两个配置，默认读取“_config.butterfly.yml”后续关于主题的魔改也会在这里修改
 
@@ -194,9 +194,9 @@ hexo s //npx hexo s
 
 为方便后续主题更新，我们需要在站点根目录下的source目录下创建custom目录
 
-![Screenshot_20220123_204729.jpg](../../assets/yuque/blog/ab07d4816908646b.jpeg)
+![Screenshot_20220123_204729.jpg](../../assets/yuque/blog/ab07d4816908646b.avif)
 
-![Screenshot_20220123_204746.jpg](../../assets/yuque/blog/200284d401379b85.jpeg)
+![Screenshot_20220123_204746.jpg](../../assets/yuque/blog/200284d401379b85.avif)
 
 # 番外
 

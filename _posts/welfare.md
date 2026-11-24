@@ -127,7 +127,7 @@ https://cdn.cnortles.top/gh/user/repo@version/file
 
 {% note blue  测速由 [boce](https://www.boce.com/http/2979e24cff6c40d908337065d59d05f5.html?k=iEj3ZJD5jq)提供 %}
 
-{% image ../../assets/yuque/blog/c083998d49898924.png image.png %}
+{% image ../../assets/yuque/blog/c083998d49898924.avif image.png %}
 
 #### 文件列表
 

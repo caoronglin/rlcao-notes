@@ -197,7 +197,7 @@ cd user
 bash run.sh
 ```
 
-![[Pasted image 20260604174116.png]]
+![[Pasted image 20260604174116.avif]]
 
 ## 功能概述
 
@@ -357,7 +357,7 @@ ncdu
 
 ----
 
-![[Pasted image 20260604174927.png]]
+![[Pasted image 20260604174927.avif]]
 
 >详细参数
 

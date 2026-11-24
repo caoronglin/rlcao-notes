@@ -154,7 +154,7 @@ ncdu
 
 ----
 
-![[Pasted image 20260604174927.png]]
+![[Pasted image 20260604174927.avif]]
 
 >详细参数
 

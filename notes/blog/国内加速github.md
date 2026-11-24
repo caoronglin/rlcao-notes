@@ -21,13 +21,13 @@ tags: [yuque, 反代]
 
 ## 1.登录 [cf worker](https://workers.cloudflare.com/)注册一个账号
 
-## 2.回到主页，点击创建worker，![25f799bafb8546dfabaabbc0fcc6cd68](../../assets/yuque/blog/7b900e8473a20f33.png)
+## 2.回到主页，点击创建worker，![25f799bafb8546dfabaabbc0fcc6cd68](../../assets/yuque/blog/7b900e8473a20f33.avif)
 
 按照提示，完成worker创建
 
 ## 3.进入刚刚创建好的worker，点击快速编辑，部署js代码
 
-![2c4fdcdb86cb4620a871f2747159278d](../../assets/yuque/blog/b9d7b20f205f24a2.png)
+![2c4fdcdb86cb4620a871f2747159278d](../../assets/yuque/blog/b9d7b20f205f24a2.avif)
 
 ## 4.部署代码
 
@@ -305,7 +305,7 @@ async function device_status(user_agent_info) {
 
 5.添加路由（需要将域名托管在cf上）
 
-![5c9794260004433d9a76117dd71cb242](../../assets/yuque/blog/88b8c950494074e1.png)
+![5c9794260004433d9a76117dd71cb242](../../assets/yuque/blog/88b8c950494074e1.avif)
 
 然后就可以美滋滋的使用了（一定要注意额度）
 

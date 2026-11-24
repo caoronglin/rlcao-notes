@@ -38,7 +38,7 @@ footer:
 >
 > 简单高效管理你的习惯和目标
 
-{% image ../../assets/yuque/blog/00e3c2075f1651d6.png image.png %}
+{% image ../../assets/yuque/blog/00e3c2075f1651d6.avif image.png %}
 
 自由设置自己的TO DO 清单,每天打开养成好习惯
 
@@ -50,7 +50,7 @@ footer:
 >
 > 学霸模式还可在你分心时发出警告
 
-{% image ../../assets/yuque/blog/c2a054cac13b5ce2.png image.png %}
+{% image ../../assets/yuque/blog/c2a054cac13b5ce2.avif image.png %}
 
 独特的锁机模式,在什么时候就做什么事,将设备锁起来,这乃是网课必备神器,免费用户最长锁机时间内可达60分钟
 
@@ -60,9 +60,9 @@ footer:
 >
 > 不仅可比拼时长，还可查看专注分布
 
-{% image ../../assets/yuque/blog/740549b96d986ae1.png image.png %}
+{% image ../../assets/yuque/blog/740549b96d986ae1.avif image.png %}
 
-{% image ../../assets/yuque/blog/15a8f4d095341f14.png image.png %}
+{% image ../../assets/yuque/blog/15a8f4d095341f14.avif image.png %}
 
 这个自习室需要VIP,不过VIP十分便宜,50元可以买三年
 

@@ -13,6 +13,7 @@ const { tagStats, attachmentStats } = require("../services/statsService");
 const { AttachmentPreviewModal } = require("../modals/attachmentPreviewModal");
 const { ATTACHMENT_EXTS, planOrganize, applyOrganize } = require("../services/attachmentService");
 const { getQuote, getCachedSnapshot: quoteSnapshot } = require("../services/quoteService");
+const { loadGoalTree, goalProgress } = require("../services/goalService");
 const { getWeather, getCachedSnapshot: weatherSnapshot } = require("../services/weatherService");
 
 /**
@@ -534,6 +535,72 @@ class WorkbenchView extends ItemView {
           ul.createEl("li").createEl("a", { cls: "owb-link", text: d.key }).addEventListener("click", () =>
             this.app.workspace.getLeaf(false).openFile(d.file)
           );
+        }
+      }
+    }
+
+    // 目标卡（年=月=周=日）
+    if (this.plugin.isFeatureEnabled("goals")) {
+      const tree = await loadGoalTree(this.app, new Date().getFullYear());
+      const goalCard = sideCol.createDiv({ cls: "owb-card" });
+      const gh = goalCard.createDiv({ cls: "owb-card-title-row" });
+      if (!tree) {
+        gh.createDiv({ cls: "owb-card-title", text: "目标" });
+        this.emptySlot(goalCard, "还没有年度目标文件", {
+          icon: "target",
+          ctaLabel: "创建年目标",
+          ctaIcon: "plus",
+          onCta: () => this.plugin.openYearGoals()
+        });
+      } else {
+        const pr = goalProgress(tree);
+        gh.createDiv({
+          cls: "owb-card-title",
+          text: pr.yearTotal
+            ? `年目标 ${pr.yearDone}/${pr.yearTotal} · 本周 ${pr.weekDone}/${pr.weekTotal}`
+            : "目标"
+        });
+        const openBtn = gh.createEl("button", { cls: "owb-mini-btn", text: "打开" });
+        openBtn.addEventListener("click", () => this.app.workspace.getLeaf(false).openFile(tree.file));
+        const aiBtn = gh.createEl("button", { cls: "owb-mini-btn", text: "AI 拆解" });
+        aiBtn.addEventListener("click", () => this.plugin.goalAiBreakdown());
+
+        // 三层进度条（年/月/周）
+        const tiers = [
+          { label: "年", done: pr.yearDone, total: pr.yearTotal },
+          { label: "月", done: pr.monthDone, total: pr.monthTotal },
+          { label: "周", done: pr.weekDone, total: pr.weekTotal }
+        ];
+        for (const t of tiers) {
+          if (!t.total) continue;
+          const row = goalCard.createDiv({ cls: "owb-goal-tier" });
+          row.createSpan({ cls: "owb-goal-tier-label", text: t.label });
+          const track = row.createDiv({ cls: "owb-goal-track" });
+          const fill = track.createDiv({ cls: "owb-goal-fill" });
+          fill.style.width = Math.round((t.done / t.total) * 100) + "%";
+          row.createSpan({ cls: "owb-muted owb-goal-count", text: `${t.done}/${t.total}` });
+        }
+
+        // 今日目标日任务
+        const todayTasks = tree.dayTasks.filter((t) => !t.done).slice(0, 4);
+        if (todayTasks.length) {
+          const list = goalCard.createDiv({ cls: "owb-task-list" });
+          for (const t of todayTasks) {
+            const row = list.createDiv({ cls: "owb-task-row" });
+            const cb = row.createEl("input", { attr: { type: "checkbox" } });
+            cb.addEventListener("change", async () => {
+              try {
+                const { toggleTaskInFile } = require("../services/vaultStats");
+                await toggleTaskInFile(this.app, tree.file, t.line);
+                this.invalidateHeat();
+                await this.render();
+              } catch (e) {
+                new Notice("更新失败：" + e.message);
+              }
+            });
+            const a = row.createEl("a", { cls: "owb-link", text: t.text.slice(0, 48) });
+            a.addEventListener("click", () => this.app.workspace.getLeaf(false).openFile(tree.file));
+          }
         }
       }
     }

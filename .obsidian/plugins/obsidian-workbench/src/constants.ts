@@ -23,6 +23,8 @@ const DEFAULT_SETTINGS = {
     ragSearch: true,      // AI RAG 搜索：SiliconFlow embeddings + rerank
     decision: true,       // 决策模型接口（内部）：闪念归类等由它自动判断，无独立入口
     bases: true,          // 多维表格：.duowei / .base 发现与新建
+    goals: true,          // 目标模式：年=月=周=日 层级 + 决策模型/LLM 拆解
+    autoFormat: true,     // 自动格式化：frontmatter 规范化 + 决策模型打标签
     attachments: true,    // 附件管理：孤儿/坏引用/体积榜 + 批量归档
     imageTools: true      // 图片工具：上传存档 + sharp/Canvas 格式转换与压缩
   },
@@ -80,6 +82,9 @@ const DEFAULT_SETTINGS = {
   // 文件浏览器整理（分栏/隐藏/分隔线）
   explorerHideList: "assets,scripts,panel,muban,4-存档",
   explorerSeparatorAfter: "vault,notes,wiki,_posts",
+
+  // 目标模式
+  goalFolder: "vault/目标",
 
   // 任务中心
   tasksPath: "vault/任务.md",

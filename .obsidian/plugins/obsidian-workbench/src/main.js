@@ -24,6 +24,19 @@ const { DedupeModal } = require("./modals/dedupeModal");
 const { saveAttachment, planOrganize, applyOrganize, cleanupConvertPairs } = require("./services/attachmentService");
 const { BASE_STYLE_CSS } = require("./styles/basesStyle");
 const { PomodoroFullscreen } = require("./modals/pomodoroFullscreen");
+const goalService = require("./services/goalService");
+const { formatNote } = require("./services/autoFormatService");
+const { chatCompletion } = require("./services/aiService");
+
+/** LLM 桥：OpenAI 兼容接口，无配置时抛明确错误 */
+async function aiBridgeChat(messages, settings) {
+  const baseUrl = String((settings && settings.aiBaseUrl) || "").replace(/\/+$/, "");
+  const model = String((settings && settings.aiModel) || "").trim();
+  if (!baseUrl || !model) {
+    throw new Error("请先在设置中配置 AI Base URL 与模型（OpenAI/DeepSeek/Ollama 均可）");
+  }
+  return chatCompletion(messages, settings);
+}
 const { WorkbenchView } = require("./views/workbenchView");
 const { GitPanelView } = require("./views/gitView");
 const { QuizView } = require("./views/quizView");
@@ -219,6 +232,21 @@ class ObsidianWorkbenchPlugin extends Plugin {
       id: "bases-style",
       name: "多维表格：应用统一样式",
       checkCallback: (checking) => this._guardCommand("bases", checking, () => this.applyBasesStyle())
+    });
+    this.addCommand({
+      id: "open-year-goals",
+      name: "目标：打开年度目标（年=月=周=日）",
+      checkCallback: (checking) => this._guardCommand("goals", checking, () => this.openYearGoals())
+    });
+    this.addCommand({
+      id: "goal-ai-breakdown",
+      name: "目标：AI 拆解当前目标到月/周/日",
+      checkCallback: (checking) => this._guardCommand("goals", checking, () => this.goalAiBreakdown())
+    });
+    this.addCommand({
+      id: "format-note",
+      name: "格式化：规范当前笔记（frontmatter + 决策模型打标签）",
+      checkCallback: (checking) => this._guardCommand("autoFormat", checking, () => this.formatCurrentNote())
     });
     this.addCommand({
       id: "tidy-explorer",
@@ -514,6 +542,91 @@ class ObsidianWorkbenchPlugin extends Plugin {
     openDaily(this.app, this.settings, offsetDays).catch((err) =>
       new Notice("日记打开失败：" + err.message, 5000)
     );
+  }
+
+  // ── 目标模式 ──
+  async openYearGoals() {
+    const year = new Date().getFullYear();
+    const file = await goalService.ensureGoalFile(this.app, year);
+    await this.app.workspace.getLeaf(false).openFile(file);
+    this.refreshWorkbenchViews();
+  }
+
+  /**
+   * AI 拆解：取当前笔记中的未勾目标行（或用户选中文本），决策模型判定领域/优先级，
+   * LLM 生成层级草案 → 追加进目标文件的 AI 草稿小节（不静默改正文）。
+   */
+  async goalAiBreakdown() {
+    try {
+      const leaf = this.app.workspace.getMostRecentLeaf();
+      const view = leaf && leaf.view;
+      if (!view || !view.file) {
+        new Notice("先打开目标文件（或包含目标行的笔记）");
+        return;
+      }
+      let goalText = "";
+      const editor = view.editor;
+      if (editor && editor.somethingSelected && editor.somethingSelected()) {
+        goalText = editor.getSelection().trim();
+      }
+      if (!goalText) {
+        const content = await this.app.vault.read(view.file);
+        const open = content.match(/^\s*[-*]\s*\[ \]\s*(.+)$/m);
+        goalText = open ? open[1].replace(/（?关联\s*→\s*[A-Z]\d+）?/, "").trim() : "";
+      }
+      if (!goalText) {
+        new Notice("没有可拆解的目标行（需要一条未勾选的任务行或选中文本）");
+        return;
+      }
+
+      const year = new Date().getFullYear();
+      const tree = await goalService.loadGoalTree(this.app, year);
+      if (!tree) {
+        new Notice(`目标文件不存在，将先创建 ${year} 年目标`);
+        await this.openYearGoals();
+        return;
+      }
+
+      new Notice("拆解中：决策模型判定领域 → LLM 生成草案…", 6000);
+      const res = await goalService.aiBreakdown(
+        (state, questions) => this.decide(state, questions),
+        (messages) => aiBridgeChat(messages, this.settings),
+        goalText,
+        "month"
+      );
+      await goalService.appendDraft(this.app, tree, res.lines);
+      new Notice(
+        `已生成 ${res.lines.length} 条草案 → vault/目标/${year}.md 的「AI 草稿」小节（领域 ${res.domain} · ${res.priority}）`,
+        8000
+      );
+      await this.app.workspace.getLeaf(false).openFile(tree.file);
+    } catch (err) {
+      new Notice("AI 拆解失败：" + err.message, 8000);
+    }
+  }
+
+  async formatCurrentNote() {
+    const leaf = this.app.workspace.getMostRecentLeaf();
+    const view = leaf && leaf.view;
+    if (!view || !view.file || view.file.extension !== "md") {
+      new Notice("先打开一篇笔记");
+      return;
+    }
+    try {
+      const res = await formatNote(this.app, view.file, {
+        decide: (state, questions) => this.decide(state, questions)
+      });
+      if (!res.changed) {
+        new Notice("frontmatter 已完备，无需改动");
+        return;
+      }
+      new Notice(
+        `已规范化：\n${res.additions.join("\n")}`,
+        8000
+      );
+    } catch (err) {
+      new Notice("格式化失败：" + err.message, 8000);
+    }
   }
 
   openPomodoroFullscreen() {

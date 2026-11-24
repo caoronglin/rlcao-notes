@@ -83,6 +83,10 @@ var init_constants = __esm({
         // 决策模型接口（内部）：闪念归类等由它自动判断，无独立入口
         bases: true,
         // 多维表格：.duowei / .base 发现与新建
+        goals: true,
+        // 目标模式：年=月=周=日 层级 + 决策模型/LLM 拆解
+        autoFormat: true,
+        // 自动格式化：frontmatter 规范化 + 决策模型打标签
         attachments: true,
         // 附件管理：孤儿/坏引用/体积榜 + 批量归档
         imageTools: true
@@ -140,6 +144,8 @@ var init_constants = __esm({
       // 文件浏览器整理（分栏/隐藏/分隔线）
       explorerHideList: "assets,scripts,panel,muban,4-\u5B58\u6863",
       explorerSeparatorAfter: "vault,notes,wiki,_posts",
+      // 目标模式
+      goalFolder: "vault/\u76EE\u6807",
       // 任务中心
       tasksPath: "vault/\u4EFB\u52A1.md",
       tasksScanLimit: 200,
@@ -1163,7 +1169,7 @@ var init_projectService = __esm({
 var require_privacyService = __commonJS({
   "src/services/privacyService.js"(exports2, module2) {
     "use strict";
-    var { normalizePath: normalizePath8, Notice: Notice9 } = require("obsidian");
+    var { normalizePath: normalizePath9, Notice: Notice10 } = require("obsidian");
     var APP_JSON = ".obsidian/app.json";
     async function readJson(adapter, path2, fallback) {
       try {
@@ -1192,7 +1198,7 @@ var require_privacyService = __commonJS({
         gitExcluded = Boolean(folder) && new RegExp("^" + folder.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "/?$", "m").test(gi);
       } catch (e) {
       }
-      const abs = folder ? app.vault.getAbstractFileByPath(normalizePath8(folder)) : null;
+      const abs = folder ? app.vault.getAbstractFileByPath(normalizePath9(folder)) : null;
       const fileCount = abs && abs.children ? abs.children.length : 0;
       return { folder, hidden, gitExcluded, fileCount, pattern };
     }
@@ -1225,7 +1231,7 @@ var require_privacyService = __commonJS({
       }
       const st = await status(app, settings);
       const verb = hidden ? "\u5DF2\u9501\u5B9A" : "\u5DF2\u89E3\u9501";
-      new Notice9(
+      new Notice10(
         `\u9690\u79C1\u533A ${verb}\uFF08${folder}\uFF0C${st.fileCount} \u4E2A\u6587\u4EF6\uFF09\u3002\u641C\u7D22\u4E0E\u94FE\u63A5\u7D22\u5F15${hidden ? "\u4E0D\u518D\u6536\u5F55\u8BE5\u533A" : "\u5DF2\u6062\u590D"}\uFF0C\u9700\u91CD\u8F7D Obsidian \u751F\u6548\u3002`,
         8e3
       );
@@ -1234,14 +1240,14 @@ var require_privacyService = __commonJS({
     async function ensureFolder2(app, settings) {
       const folder = (settings.privacyFolder || "").replace(/^\/+|\/+$/g, "");
       if (!folder) throw new Error("\u8BF7\u5148\u5728\u8BBE\u7F6E\u4E2D\u586B\u5199\u9690\u79C1\u533A\u76EE\u5F55");
-      const abs = app.vault.getAbstractFileByPath(normalizePath8(folder));
+      const abs = app.vault.getAbstractFileByPath(normalizePath9(folder));
       if (!abs) {
-        await app.vault.createFolder(normalizePath8(folder));
+        await app.vault.createFolder(normalizePath9(folder));
         await app.vault.create(
-          normalizePath8(folder + "/\u8BF4\u660E.md"),
+          normalizePath9(folder + "/\u8BF4\u660E.md"),
           "---\ntags: [privacy]\n---\n\n# \u9690\u79C1\u533A\n\n\u672C\u76EE\u5F55\u7531 Obsidian Workbench \u9690\u79C1\u6A21\u5757\u7BA1\u7406\u3002\n\n- \u9501\u5B9A\u540E\uFF1A\u641C\u7D22\u3001\u53CD\u5411\u94FE\u63A5\u3001\u56FE\u8C31\u5B8C\u5168\u4E0D\u6536\u5F55\u672C\u76EE\u5F55\uFF0C\u4E14\u88AB Git \u6392\u9664\u3002\n- \u89E3\u9501\u540E\uFF1A\u6062\u590D\u6B63\u5E38\u7D22\u5F15\u3002\n- \u5207\u6362\u540E\u9700\u91CD\u8F7D Obsidian\uFF08Ctrl/Cmd+P \u2192 Reload app without saving\uFF09\u3002\n"
         );
-        new Notice9("\u9690\u79C1\u533A\u76EE\u5F55\u5DF2\u521B\u5EFA\uFF1A" + folder);
+        new Notice10("\u9690\u79C1\u533A\u76EE\u5F55\u5DF2\u521B\u5EFA\uFF1A" + folder);
       }
       return abs;
     }
@@ -2060,7 +2066,7 @@ var init_codeRunner = __esm({
 var require_attachmentPreviewModal = __commonJS({
   "src/modals/attachmentPreviewModal.js"(exports2, module2) {
     "use strict";
-    var { Modal: Modal2, Notice: Notice9 } = require("obsidian");
+    var { Modal: Modal2, Notice: Notice10 } = require("obsidian");
     var ofvModule;
     var ofvError = "";
     var pluginDir2 = "";
@@ -2161,7 +2167,7 @@ var require_attachmentPreviewModal = __commonJS({
             const electron = require("electron");
             await electron.shell.openPath(resourceUrl(app, file));
           } catch (e) {
-            new Notice9("\u65E0\u6CD5\u8C03\u7528\u7CFB\u7EDF\u5E94\u7528\uFF1A" + e.message);
+            new Notice10("\u65E0\u6CD5\u8C03\u7528\u7CFB\u7EDF\u5E94\u7528\uFF1A" + e.message);
           }
         });
       }
@@ -2960,7 +2966,7 @@ var init_basesStyle = __esm({
 var require_pomodoroFullscreen = __commonJS({
   "src/modals/pomodoroFullscreen.js"(exports2, module2) {
     "use strict";
-    var { Modal: Modal2, Notice: Notice9, setIcon: setIcon3 } = require("obsidian");
+    var { Modal: Modal2, Notice: Notice10, setIcon: setIcon3 } = require("obsidian");
     var PomodoroFullscreen2 = class extends Modal2 {
       constructor(app, plugin) {
         super(app, plugin);
@@ -3090,103 +3096,605 @@ var require_pomodoroFullscreen = __commonJS({
   }
 });
 
-// src/services/vaultStats.js
-var require_vaultStats = __commonJS({
-  "src/services/vaultStats.js"(exports2, module2) {
+// src/services/goalService.ts
+var goalService_exports = {};
+__export(goalService_exports, {
+  aiBreakdown: () => aiBreakdown,
+  appendDraft: () => appendDraft,
+  ensureGoalFile: () => ensureGoalFile,
+  goalFilePath: () => goalFilePath,
+  goalProgress: () => goalProgress,
+  goalTemplate: () => goalTemplate,
+  isoWeek: () => isoWeek,
+  loadGoalTree: () => loadGoalTree,
+  monday: () => monday,
+  parseGoalContent: () => parseGoalContent,
+  sunday: () => sunday
+});
+function goalFilePath(year) {
+  return (0, import_obsidian9.normalizePath)(`vault/\u76EE\u6807/${year}.md`);
+}
+function goalTemplate(year) {
+  const now = /* @__PURE__ */ new Date();
+  const jan1 = new Date(year, 0, 1);
+  const dec31 = new Date(year, 11, 31);
+  const iso = (d) => formatDate(d, "YYYY-MM-DD");
+  return [
+    "---",
+    "type: goal",
+    `title: ${year} \u5E74\u76EE\u6807`,
+    "tags: [goal/year]",
+    `created: ${formatDate(now, "YYYY-MM-DD")}`,
+    "---",
+    "",
+    `# ${year} \u5E74\u76EE\u6807`,
+    "",
+    "## \u{1F3AF} \u5E74\u5EA6\u76EE\u6807",
+    "- [ ] G1 ",
+    "- [ ] G2 ",
+    "",
+    "### \u{1F4C6} \u6708\u5EA6\u62C6\u89E3",
+    `#### ${year}-${String(now.getMonth() + 1).padStart(2, "0")}`,
+    "- [ ] M1 \uFF08\u5173\u8054 \u2192 G1\uFF09",
+    "",
+    "##### \u5468\u4EFB\u52A1",
+    "###### W" + isoWeek(now) + " (" + formatDate(monday(now), "MM-DD") + " ~ " + formatDate(sunday(now), "MM-DD") + ")",
+    "- [ ] W1 \uFF08\u5173\u8054 \u2192 M1\uFF09",
+    "",
+    "###### \u{1F4C5} \u65E5\u4EFB\u52A1",
+    `- [ ] ${formatDate(now, "YYYY-MM-DD")}\uFF1A`,
+    "- [ ] \uFF08\u5173\u8054 \u2192 W1\uFF09",
+    "",
+    "---",
+    "",
+    "## \u{1F916} AI \u8349\u7A3F\uFF08\u7531\u51B3\u7B56\u6A21\u578B+LLM \u751F\u6210\uFF0C\u786E\u8BA4\u540E\u624B\u52A8\u5408\u5165\u5BF9\u5E94\u5C42\u7EA7\uFF09",
+    ""
+  ].join("\n");
+}
+function isoWeek(d) {
+  const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const dayNum = date.getUTCDay() || 7;
+  date.setUTCDate(date.getUTCDate() + 4 - dayNum);
+  const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+  return Math.ceil(((date.getTime() - yearStart.getTime()) / 864e5 + 1) / 7);
+}
+function monday(d) {
+  const x = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  x.setDate(x.getDate() - (x.getDay() + 6) % 7);
+  return x;
+}
+function sunday(d) {
+  const x = monday(d);
+  x.setDate(x.getDate() + 6);
+  return x;
+}
+async function ensureGoalFile(app, year) {
+  const path2 = goalFilePath(year);
+  let f = app.vault.getAbstractFileByPath(path2);
+  if (f && f.extension === "md") return f;
+  const folder = path2.slice(0, path2.lastIndexOf("/"));
+  if (!app.vault.getAbstractFileByPath((0, import_obsidian9.normalizePath)(folder))) {
+    await app.vault.createFolder((0, import_obsidian9.normalizePath)(folder));
+  }
+  const file = await app.vault.create(path2, goalTemplate(year));
+  new import_obsidian9.Notice(`\u5DF2\u521B\u5EFA ${year} \u5E74\u76EE\u6807\u6587\u4EF6`);
+  return file;
+}
+function parseGoalContent(content) {
+  const lines = content.split(/\r?\n/);
+  const yearGoals = [];
+  const months = [];
+  const weeks = [];
+  const dayTasks = [];
+  const draft = [];
+  let section = "none";
+  let inDraft = false;
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const h = line.match(/^(#{1,6})\s+(.*)$/);
+    if (h) {
+      const text = h[2].trim();
+      if (text.includes("\u5E74\u5EA6\u76EE\u6807")) {
+        section = "year";
+        inDraft = false;
+        continue;
+      }
+      if (text.includes("\u6708\u5EA6\u62C6\u89E3")) {
+        section = "month";
+        inDraft = false;
+        continue;
+      }
+      if (/周任务/.test(text) && !/年度|月度/.test(text)) {
+        section = "week";
+        inDraft = false;
+        continue;
+      }
+      if (/日任务/.test(text) && !/年度|月度|周/.test(text)) {
+        section = "day";
+        inDraft = false;
+        continue;
+      }
+      if (text.includes("AI \u8349\u7A3F")) {
+        inDraft = true;
+        section = "draft";
+        continue;
+      }
+      if (inDraft) {
+        section = "draft";
+        continue;
+      }
+      if (/^\d{4}-\d{2}$/.test(text)) {
+        section = "month";
+        months.push({ key: text, tasks: [] });
+        continue;
+      }
+      if (/^W\d+/.test(text) && section === "week") {
+        weeks.push({ key: text, tasks: [] });
+        continue;
+      }
+      continue;
+    }
+    const m = line.match(TASK_LINE);
+    if (!m) continue;
+    const task = {
+      line: i,
+      text: m[3].replace(/（?关联\s*→\s*([A-Z]\d+)）?/, "").trim(),
+      ref: (m[3].match(/→\s*([A-Z]\d+)/) || [null, null])[1],
+      done: m[2] !== " "
+    };
+    if (inDraft) {
+      draft.push(line);
+      continue;
+    }
+    if (section === "year") yearGoals.push(task);
+    else if (section === "month" && months.length) months[months.length - 1].tasks.push(task);
+    else if (section === "week" && weeks.length) weeks[weeks.length - 1].tasks.push(task);
+    else if (section === "day") dayTasks.push(task);
+  }
+  return { yearGoals, months, weeks, dayTasks, draft };
+}
+async function loadGoalTree(app, year) {
+  const f = app.vault.getAbstractFileByPath(goalFilePath(year));
+  if (!f || f.extension !== "md") return null;
+  const content = await app.vault.read(f);
+  return { file: f, year, ...parseGoalContent(content) };
+}
+function goalProgress(tree) {
+  const count = (list) => ({ done: list.filter((t) => t.done).length, total: list.length });
+  const y = count(tree.yearGoals);
+  const allMonths = tree.months.flatMap((m) => m.tasks);
+  const mo = count(allMonths);
+  const wk = count(tree.weeks.flatMap((w) => w.tasks));
+  const dy = count(tree.dayTasks);
+  return {
+    yearDone: y.done,
+    yearTotal: y.total,
+    monthDone: mo.done,
+    monthTotal: mo.total,
+    weekDone: wk.done,
+    weekTotal: wk.total,
+    dayDone: dy.done,
+    dayTotal: dy.total
+  };
+}
+async function aiBreakdown(decide, chat, goalText, level) {
+  let domain = "project";
+  let priority = "P1";
+  let confidence = null;
+  try {
+    const res = await decide(
+      { message: goalText },
+      {
+        domain: {
+          type: "choice",
+          instructions: "\u8FD9\u4E2A\u76EE\u6807\u5C5E\u4E8E\u54EA\u4E2A\u9886\u57DF\uFF1F",
+          criteria: { study: "\u8BFE\u7A0B\u4E0E\u5B66\u4E60", project: "\u9879\u76EE\u4E0E\u5B9E\u9A8C\u4EA4\u4ED8", research: "\u6587\u732E\u4E0E\u79D1\u7814\u63A2\u7D22", life: "\u751F\u6D3B\u4E0E\u5065\u5EB7" }
+        },
+        priority: {
+          type: "choice",
+          instructions: "\u6309\u622A\u6B62\u4E34\u8FD1\u4E0E\u5F71\u54CD\u9762\u5224\u65AD\u4F18\u5148\u7EA7",
+          criteria: { P0: "\u6709\u5916\u90E8\u622A\u6B62\u6216\u963B\u585E\u4ED6\u4EBA", P1: "\u91CD\u8981\u4F46\u4E0D\u7D27\u6025", P2: "\u53EF\u5EF6\u540E" }
+        }
+      }
+    );
+    const d = res.answers.domain;
+    const p = res.answers.priority;
+    if (d && typeof d.value === "string") domain = d.value;
+    if (p && typeof p.value === "string") priority = p.value;
+    confidence = d ? d.confidence : null;
+  } catch (e) {
+  }
+  const n = level === "month" ? 3 : level === "week" ? 4 : 5;
+  const prompt = [
+    `\u76EE\u6807\uFF1A${goalText}`,
+    `\u8BF7\u628A\u5B83\u62C6\u89E3\u6210 ${n} \u6761${level === "month" ? "\u6708\u5EA6\u76EE\u6807" : level === "week" ? "\u672C\u5468\u53EF\u6267\u884C\u4EFB\u52A1" : "\u4ECA\u5929\u53EF\u5B8C\u6210\u7684\u65E5\u4EFB\u52A1"}\u3002`,
+    "\u8981\u6C42\uFF1A\u6BCF\u6761\u4E00\u884C\u3001\u52A8\u8BCD\u5F00\u5934\u3001\u53EF\u52FE\u9009\u5B8C\u6210\uFF1B\u4E0D\u8981\u7F16\u53F7\uFF1B\u76F4\u63A5\u8F93\u51FA\u5217\u8868\u672C\u8EAB\uFF0C\u4E0D\u8981\u524D\u540E\u8BF4\u660E\u3002",
+    level === "day" ? "\u6BCF\u6761 30 \u5206\u949F\u5185\u53EF\u5B8C\u6210\u3002" : level === "week" ? "\u6BCF\u6761 1-3 \u5C0F\u65F6\u89C4\u6A21\u3002" : "\u6BCF\u6761\u662F\u4E00\u4E2A\u6708\u5185\u53EF\u9A8C\u6536\u7684\u91CC\u7A0B\u7891\u3002"
+  ].join("\n");
+  let raw = "";
+  try {
+    raw = await chat([{ role: "user", content: prompt }]);
+  } catch (e) {
+    throw new Error("LLM \u62C6\u89E3\u5931\u8D25\uFF1A" + String(e?.message || e));
+  }
+  const lines = raw.split(/\r?\n/).map((l) => l.replace(/^[-*\d.\s]+/, "").trim()).filter((l) => l.length >= 4).slice(0, n).map((l) => `- [ ] ${l}\uFF08${level === "month" ? "\u6708" : level === "week" ? "\u5468" : "\u65E5"} \xB7 ${domain}/${priority}\uFF09`);
+  if (!lines.length) throw new Error("LLM \u672A\u8FD4\u56DE\u53EF\u7528\u7684\u4EFB\u52A1\u884C");
+  return { lines, domain, priority, confidence };
+}
+async function appendDraft(app, tree, lines) {
+  const content = await app.vault.read(tree.file);
+  const stamp = formatDate(/* @__PURE__ */ new Date(), "YYYY-MM-DD HH:mm");
+  const block = ["", `### ${stamp} \u62C6\u89E3\u8349\u6848\uFF08\u786E\u8BA4\u540E\u5408\u5165\u5BF9\u5E94\u5C42\u7EA7\uFF0C\u6216\u76F4\u63A5\u5728\u8349\u7A3F\u533A\u52FE\u9009\u6267\u884C\uFF09`, ...lines].join("\n");
+  const marker = "## \u{1F916} AI \u8349\u7A3F";
+  if (content.includes(marker)) {
+    await app.vault.modify(tree.file, content + block + "\n");
+  } else {
+    await app.vault.modify(tree.file, content + "\n---\n\n" + marker + "\uFF08\u7531\u51B3\u7B56\u6A21\u578B+LLM \u751F\u6210\uFF0C\u786E\u8BA4\u540E\u624B\u52A8\u5408\u5165\u5BF9\u5E94\u5C42\u7EA7\uFF09\n" + block + "\n");
+  }
+}
+var import_obsidian9, TASK_LINE;
+var init_goalService = __esm({
+  "src/services/goalService.ts"() {
     "use strict";
-    var { startOfTodayMs: startOfTodayMs2 } = (init_utils(), __toCommonJS(utils_exports));
-    var TASK_RE = /^(\s*[-*]\s*)\[([ xX])\]\s+(.+)$/;
-    var DUE_RE = /(?:📅|due::)\s*(\d{4}-\d{2}-\d{2})/;
-    async function collectWorkbenchData(app, settings) {
-      const files = app.vault.getMarkdownFiles();
-      const todayMs = startOfTodayMs2();
-      const nowMs = Date.now();
-      const dayMs = 864e5;
-      const forgottenThresholdMs = nowMs - (settings.forgottenDays || 30) * dayMs;
-      const sevenDaysAgoMs = nowMs - 7 * dayMs;
-      const createdToday = [];
-      const modifiedToday = [];
-      const forgotten = [];
-      const folderFocus = /* @__PURE__ */ new Map();
-      const pendingTasks = [];
-      const projectPrefix = (settings.projectFolder || "").replace(/^\/+|\/+$/g, "");
-      const todayIso = (/* @__PURE__ */ new Date()).toISOString().slice(0, 10);
-      for (const file of files) {
-        const ctime = file.stat ? file.stat.ctime : 0;
-        const mtime = file.stat ? file.stat.mtime : 0;
-        const size = file.stat ? file.stat.size : 0;
-        if (ctime >= todayMs) {
-          createdToday.push({ file, time: ctime });
-        }
-        if (mtime >= todayMs) {
-          modifiedToday.push({ file, time: mtime });
-        }
-        if (mtime > 0 && mtime <= forgottenThresholdMs && size >= 300) {
-          const daysAgo = Math.floor((nowMs - mtime) / dayMs);
-          forgotten.push({ file, daysAgo, mtime });
-        }
-        if (mtime >= sevenDaysAgoMs) {
-          const topFolder = file.path.includes("/") ? file.path.split("/")[0] : "\u6839\u76EE\u5F55";
-          folderFocus.set(topFolder, (folderFocus.get(topFolder) || 0) + 1);
-        }
-        if (pendingTasks.length < 30 && (!projectPrefix || file.path.startsWith(projectPrefix + "/"))) {
-          const cache3 = app.metadataCache.getFileCache(file);
-          const listItems = cache3 && cache3.listItems || [];
-          const hasOpenTask = listItems.some((item) => item.task === " ");
-          if (hasOpenTask) {
-            const content = await app.vault.cachedRead(file);
-            const lines = content.split(/\r?\n/);
-            for (const item of listItems) {
-              if (item.task !== " ") continue;
-              const lineIdx = item.position.start.line;
-              const rawLine = lines[lineIdx] || "";
-              const m = rawLine.match(TASK_RE);
-              if (!m) continue;
-              const text = m[3].trim();
-              const dueMatch = text.match(DUE_RE);
-              const dueDate = dueMatch ? dueMatch[1] : null;
-              if (settings.onlyDueTasks && (!dueDate || dueDate > todayIso)) {
-                continue;
-              }
-              pendingTasks.push({
-                file,
-                line: lineIdx,
-                text,
-                dueDate
-              });
-              if (pendingTasks.length >= 30) break;
-            }
+    import_obsidian9 = require("obsidian");
+    init_utils();
+    TASK_LINE = /^(\s*[-*]\s*)\[([ xX])\]\s*(.+)$/;
+  }
+});
+
+// src/services/autoFormatService.ts
+var autoFormatService_exports = {};
+__export(autoFormatService_exports, {
+  formatNote: () => formatNote
+});
+function splitFrontmatter(content) {
+  if (!content.startsWith("---")) return { fm: null, body: content };
+  const end = content.indexOf("\n---", 3);
+  if (end < 0) return { fm: null, body: content };
+  return { fm: content.slice(4, end), body: content.slice(end + 4) };
+}
+function parseFmKeys(fm) {
+  const keys = /* @__PURE__ */ new Set();
+  for (const line of fm.split("\n")) {
+    const m = line.match(/^([A-Za-z_][\w-]*):/);
+    if (m) keys.add(m[1]);
+  }
+  return keys;
+}
+function renderFmLine(key, value) {
+  if (Array.isArray(value)) return `${key}: [${value.join(", ")}]`;
+  const needsQuote = /[:#\[\]{}&*!|>%@`,"']/.test(value) || value.startsWith(" ") || value.endsWith(" ");
+  return `${key}: ${needsQuote ? JSON.stringify(value) : value}`;
+}
+async function classifyDomain(decide, text) {
+  try {
+    const res = await decide(
+      { message: text.slice(0, 3e3) },
+      {
+        domain: {
+          type: "choice",
+          instructions: "\u8FD9\u7BC7\u7B14\u8BB0\u5C5E\u4E8E\u54EA\u4E2A\u77E5\u8BC6\u9886\u57DF\uFF1F\u53EA\u4F9D\u636E\u5185\u5BB9\u5224\u65AD\uFF0C\u72B9\u8C6B\u65F6\u9009 inbox\u3002",
+          criteria: {
+            study: "\u8BFE\u7A0B\u5B66\u4E60\u4E0E\u77E5\u8BC6\u6574\u7406",
+            project: "\u67D0\u4E2A\u5177\u4F53\u9879\u76EE\u6216\u5B9E\u9A8C\u7684\u4E00\u90E8\u5206",
+            research: "\u6587\u732E\u9605\u8BFB\u4E0E\u79D1\u7814\u63A2\u7D22",
+            tooling: "\u73AF\u5883\u914D\u7F6E\u4E0E\u5DE5\u5177\u94FE",
+            life: "\u751F\u6D3B\u4E8B\u52A1",
+            inbox: "\u4FE1\u606F\u6DF7\u6742\u6216\u5185\u5BB9\u8FC7\u77ED"
           }
         }
       }
-      createdToday.sort((a, b) => b.time - a.time);
-      modifiedToday.sort((a, b) => b.time - a.time);
-      forgotten.sort((a, b) => a.mtime - b.mtime);
-      const focusDistribution = [...folderFocus.entries()].sort((a, b) => b[1] - a[1]).slice(0, 6).map(([folder, count]) => ({ folder, count }));
-      return {
-        totalNotes: files.length,
-        createdToday: createdToday.slice(0, 10),
-        modifiedToday: modifiedToday.slice(0, 10),
-        forgotten: forgotten.slice(0, 8),
-        focusDistribution,
-        pendingTasks: pendingTasks.slice(0, 12)
+    );
+    const a = res.answers.domain;
+    if (!a || typeof a.value !== "string") return { domain: null, confidence: null };
+    return { domain: a.value, confidence: a.confidence ?? null };
+  } catch (e) {
+    return { domain: null, confidence: null };
+  }
+}
+async function formatNote(app, file, opts) {
+  const content = await app.vault.read(file);
+  const { fm, body } = splitFrontmatter(content);
+  const patch = { changed: false, additions: [], domain: null, confidence: null };
+  const today = formatDate(/* @__PURE__ */ new Date(), "YYYY-MM-DD");
+  const keys = fm ? parseFmKeys(fm) : /* @__PURE__ */ new Set();
+  const h1 = (body.match(/^#\s+(.+)$/m) || [null, null])[1];
+  const titleVal = (h1 || file.basename).trim();
+  const ctime = file.stat && file.stat.ctime ? formatDate(new Date(file.stat.ctime), "YYYY-MM-DD") : today;
+  const addLines = [];
+  if (!keys.has("title")) {
+    addLines.push(renderFmLine("title", titleVal));
+    patch.additions.push(`title: ${titleVal}`);
+  }
+  if (!keys.has("created")) {
+    addLines.push(renderFmLine("created", ctime));
+    patch.additions.push(`created: ${ctime}`);
+  }
+  if (opts.updateTimestamp !== false) {
+    addLines.push(renderFmLine("updated", today));
+    if (keys.has("updated")) patch.additions.push(`updated \u2192 ${today}`);
+  }
+  let tagsLine = null;
+  if (!keys.has("tags") && body.trim().length >= 40 && opts.decide) {
+    const cls = await classifyDomain(opts.decide, body);
+    patch.domain = cls.domain;
+    patch.confidence = cls.confidence;
+    if (cls.domain && cls.domain !== "inbox") {
+      tagsLine = renderFmLine("tags", [`\u9886\u57DF/${cls.domain}`]);
+      patch.additions.push(`tags: [\u9886\u57DF/${cls.domain}]\uFF08\u51B3\u7B56\u6A21\u578B\u7F6E\u4FE1\u5EA6 ${cls.confidence !== null ? Math.round((cls.confidence || 0) * 100) + "%" : "n/a"}\uFF09`);
+    }
+  }
+  if (!addLines.length && !tagsLine) return patch;
+  let next;
+  if (fm === null) {
+    const fmBlock = ["---", ...addLines, tagsLine, "---"].filter(Boolean).join("\n");
+    next = fmBlock + "\n\n" + content;
+  } else {
+    const lines = fm.split("\n");
+    let inserted = 0;
+    if (keys.has("updated")) {
+      const out = [];
+      for (const line of lines) {
+        if (line.match(/^updated:/)) out.push(renderFmLine("updated", today));
+        else out.push(line);
+      }
+      lines.splice(0, lines.length, ...out);
+    } else {
+      lines.push(renderFmLine("updated", today));
+      inserted++;
+    }
+    for (const l of addLines) {
+      if (l.startsWith("updated:")) continue;
+      lines.push(l);
+    }
+    if (tagsLine) lines.push(tagsLine);
+    next = "---\n" + lines.join("\n") + "\n---" + body;
+  }
+  await app.vault.modify(file, next);
+  patch.changed = true;
+  return patch;
+}
+var init_autoFormatService = __esm({
+  "src/services/autoFormatService.ts"() {
+    "use strict";
+    init_utils();
+  }
+});
+
+// src/services/aiService.ts
+var aiService_exports = {};
+__export(aiService_exports, {
+  chatCompletion: () => chatCompletion,
+  generateCommitMessage: () => generateCommitMessage,
+  generateQuizMarkdownFromNote: () => generateQuizMarkdownFromNote
+});
+function getHttpClient() {
+  try {
+    const obs = require("obsidian");
+    if (obs && typeof obs.requestUrl === "function") {
+      return async (url, headers, bodyObj) => {
+        const res = await obs.requestUrl({
+          url,
+          method: "POST",
+          headers,
+          body: JSON.stringify(bodyObj),
+          throw: false
+        });
+        if (res.status < 200 || res.status >= 300) {
+          throw new Error(`HTTP ${res.status}: ${String(res.text || "").slice(0, 200)}`);
+        }
+        return res.json;
       };
     }
-    async function toggleTaskInFile(app, file, lineIndex) {
-      await app.vault.process(file, (content) => {
-        const lines = content.split(/\r?\n/);
-        if (lineIndex < 0 || lineIndex >= lines.length) return content;
-        const m = lines[lineIndex].match(TASK_RE);
-        if (!m) return content;
-        const nextMark = m[2] === " " ? "x" : " ";
-        lines[lineIndex] = `${m[1]}[${nextMark}] ${m[3]}`;
-        return lines.join("\n");
-      });
+  } catch {
+  }
+  return async (url, headers, bodyObj) => {
+    const res = await fetch(url, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(bodyObj)
+    });
+    const text = await res.text();
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}: ${text.slice(0, 200)}`);
     }
-    module2.exports = {
-      collectWorkbenchData,
-      toggleTaskInFile
+    return JSON.parse(text);
+  };
+}
+async function chatCompletion(messages, config, customClient) {
+  const baseUrl = String(config.aiBaseUrl || "").replace(/\/+$/, "");
+  const model = String(config.aiModel || "").trim();
+  const apiKey = String(config.aiApiKey || "").trim();
+  if (!baseUrl || !model) {
+    throw new Error("\u8BF7\u5148\u5728\u8BBE\u7F6E\u4E2D\u586B\u5199 AI Base URL \u4E0E\u6A21\u578B\u540D\u79F0");
+  }
+  const endpoint = baseUrl.endsWith("/chat/completions") ? baseUrl : `${baseUrl}/chat/completions`;
+  const headers = { "Content-Type": "application/json" };
+  if (apiKey) headers.Authorization = `Bearer ${apiKey}`;
+  const client = customClient || getHttpClient();
+  const data = await client(endpoint, headers, {
+    model,
+    temperature: 0.3,
+    messages
+  });
+  const content = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+  if (!content) {
+    throw new Error("AI \u63A5\u53E3\u8FD4\u56DE\u5185\u5BB9\u4E3A\u7A7A");
+  }
+  return String(content).trim();
+}
+async function generateCommitMessage(diffText, config, customClient) {
+  if (!diffText || !diffText.trim()) {
+    throw new Error("\u5F53\u524D\u6CA1\u6709\u53EF\u4F9B\u5206\u6790\u7684 Git \u53D8\u66F4\u5185\u5BB9");
+  }
+  const prompt = [
+    "\u6839\u636E\u4EE5\u4E0B Git \u53D8\u66F4\u6458\u8981\u751F\u6210\u4E00\u6761\u7B80\u6D01\u3001\u89C4\u8303\u7684\u4E2D\u6587 Conventional Commit \u4FE1\u606F\u3002",
+    "\u8981\u6C42\uFF1A\u4EC5\u8F93\u51FA\u5355\u884C\u63D0\u4EA4\u4FE1\u606F\uFF08\u5982 `docs(notes): \u66F4\u65B0 RNA-seq \u5B9E\u9A8C\u8BB0\u5F55`\uFF09\uFF0C\u4E0D\u8981\u52A0\u5F15\u53F7\u3001\u4E0D\u8981\u89E3\u91CA\u3001\u4E0D\u8D85\u8FC7 60 \u5B57\u3002",
+    "",
+    diffText.slice(0, 5e3)
+  ].join("\n");
+  const raw = await chatCompletion(
+    [
+      { role: "system", content: "\u4F60\u662F\u4E25\u8C28\u7684\u8F6F\u4EF6\u5DE5\u7A0B\u4E0E\u77E5\u8BC6\u5E93\u7248\u672C\u7BA1\u7406\u52A9\u624B\u3002" },
+      { role: "user", content: prompt }
+    ],
+    config,
+    customClient
+  );
+  return raw.split(/\r?\n/)[0].replace(/^[`"']+|[`"']+$/g, "").trim();
+}
+async function generateQuizMarkdownFromNote(noteTitle, noteContent, count, config, customClient) {
+  const n = Math.max(1, Math.min(20, Number(count) || 5));
+  const prompt = [
+    `\u8BF7\u6839\u636E\u4E0B\u9762\u8FD9\u7BC7\u7B14\u8BB0\u300A${noteTitle}\u300B\u751F\u6210 ${n} \u9053\u9AD8\u8D28\u91CF\u81EA\u6D4B\u9898\uFF08\u5305\u542B\u5355\u9009\u3001\u591A\u9009\u4E0E\u5224\u65AD\u9898\uFF09\u3002`,
+    "\u5FC5\u987B\u4E25\u683C\u8F93\u51FA\u5982\u4E0B Markdown \u683C\u5F0F\uFF08\u4E0D\u8981\u52A0\u989D\u5916\u8BF4\u660E\u6216\u4EE3\u7801\u5757\u56F4\u680F\uFF09\uFF1A",
+    "",
+    "---",
+    `title: ${noteTitle} \xB7 \u81EA\u6D4B\u9898\u5E93`,
+    "desc: \u7531 AI \u57FA\u4E8E\u7B14\u8BB0\u5185\u5BB9\u81EA\u52A8\u751F\u6210",
+    "---",
+    "",
+    "## \u9898\u5E72\u5185\u5BB9",
+    "- [ ] A. \u9009\u9879\u4E00",
+    "- [x] B. \u6B63\u786E\u9009\u9879",
+    "- [ ] C. \u9009\u9879\u4E09",
+    "- [ ] D. \u9009\u9879\u56DB",
+    "> \u89E3\u6790\uFF1A\u7B80\u6D01\u89E3\u91CA\u6B63\u786E\u7B54\u6848\u539F\u56E0\u3002",
+    "> \u6807\u7B7E\uFF1A\u5173\u952E\u8BCD1, \u5173\u952E\u8BCD2",
+    "",
+    "\u4EE5\u4E0B\u662F\u7B14\u8BB0\u539F\u6587\uFF1A",
+    noteContent.slice(0, 8e3)
+  ].join("\n");
+  const raw = await chatCompletion(
+    [
+      { role: "system", content: "\u4F60\u662F\u7CBE\u901A\u8BA4\u77E5\u79D1\u5B66\u4E0E\u95F4\u9694\u91CD\u590D\u51FA\u9898\u7684\u6559\u5B66\u4E13\u5BB6\u3002" },
+      { role: "user", content: prompt }
+    ],
+    config,
+    customClient
+  );
+  return raw.replace(/^```(?:markdown|md)?\r?\n?/i, "").replace(/\r?\n?```$/i, "").trim() + "\n";
+}
+var init_aiService = __esm({
+  "src/services/aiService.ts"() {
+    "use strict";
+  }
+});
+
+// src/services/vaultStats.ts
+var vaultStats_exports = {};
+__export(vaultStats_exports, {
+  collectWorkbenchData: () => collectWorkbenchData,
+  toggleTaskInFile: () => toggleTaskInFile
+});
+async function collectWorkbenchData(app, settings) {
+  const files = app.vault.getMarkdownFiles();
+  const todayMs = startOfTodayMs();
+  const nowMs = Date.now();
+  const dayMs = 864e5;
+  const forgottenThresholdMs = nowMs - (settings.forgottenDays || 30) * dayMs;
+  const sevenDaysAgoMs = nowMs - 7 * dayMs;
+  const createdToday = [];
+  const modifiedToday = [];
+  const forgotten = [];
+  const folderFocus = /* @__PURE__ */ new Map();
+  const pendingTasks = [];
+  const projectPrefix = (settings.projectFolder || "").replace(/^\/+|\/+$/g, "");
+  const tasksPath = (settings.tasksPath || "").replace(/^\/+|\/+$/g, "");
+  const todayIso = (/* @__PURE__ */ new Date()).toISOString().slice(0, 10);
+  const pad = (n) => String(n).padStart(2, "0");
+  const d = /* @__PURE__ */ new Date();
+  const todayDaily = (settings.dailyFolder || "").replace(/^\/+|\/+$/g, "") + `/${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}.md`;
+  const isTaskSource = (path2) => {
+    if (path2.startsWith("4-\u5B58\u6863/")) return false;
+    if (projectPrefix && path2.startsWith(projectPrefix + "/")) return true;
+    if (tasksPath && path2 === tasksPath) return true;
+    if (todayDaily && path2 === todayDaily) return true;
+    if (path2.startsWith("vault/\u76EE\u6807/")) return true;
+    if (!projectPrefix) return true;
+    return false;
+  };
+  for (const file of files) {
+    const ctime = file.stat ? file.stat.ctime : 0;
+    const mtime = file.stat ? file.stat.mtime : 0;
+    const size = file.stat ? file.stat.size : 0;
+    if (ctime >= todayMs) createdToday.push({ file, time: ctime });
+    if (mtime >= todayMs) modifiedToday.push({ file, time: mtime });
+    if (mtime > 0 && mtime <= forgottenThresholdMs && size >= 300) {
+      forgotten.push({ file, daysAgo: Math.floor((nowMs - mtime) / dayMs), mtime });
+    }
+    if (mtime >= sevenDaysAgoMs) {
+      const topFolder = file.path.includes("/") ? file.path.split("/")[0] : "\u6839\u76EE\u5F55";
+      folderFocus.set(topFolder, (folderFocus.get(topFolder) || 0) + 1);
+    }
+    if (pendingTasks.length < 60 && isTaskSource(file.path)) {
+      const cache3 = app.metadataCache.getFileCache(file);
+      const listItems = cache3 && cache3.listItems || [];
+      const hasOpenTask = listItems.some((item) => item.task === " ");
+      if (hasOpenTask) {
+        const content = await app.vault.cachedRead(file);
+        const lines = content.split(/\r?\n/);
+        for (const item of listItems) {
+          if (item.task !== " ") continue;
+          const lineIdx = item.position.start.line;
+          const rawLine = lines[lineIdx] || "";
+          const m = rawLine.match(TASK_RE);
+          if (!m) continue;
+          const text = m[3].trim();
+          if (!text) continue;
+          const dueMatch = text.match(DUE_RE);
+          const dueDate = dueMatch ? dueMatch[1] : null;
+          if (settings.onlyDueTasks && (!dueDate || dueDate > todayIso)) continue;
+          pendingTasks.push({ file, line: lineIdx, text, dueDate });
+          if (pendingTasks.length >= 60) break;
+        }
+      }
+    }
+  }
+  pendingTasks.sort((a, b) => {
+    const rank = (t) => {
+      if (t.dueDate && t.dueDate < todayIso) return 0;
+      if (t.dueDate === todayIso) return 1;
+      return 2;
     };
+    const ra = rank(a);
+    const rb = rank(b);
+    if (ra !== rb) return ra - rb;
+    const am = a.file.stat ? a.file.stat.mtime : 0;
+    const bm = b.file.stat ? b.file.stat.mtime : 0;
+    return bm - am;
+  });
+  createdToday.sort((a, b) => b.time - a.time);
+  modifiedToday.sort((a, b) => b.time - a.time);
+  forgotten.sort((a, b) => a.mtime - b.mtime);
+  const focusDistribution = [...folderFocus.entries()].sort((a, b) => b[1] - a[1]).slice(0, 6).map(([folder, count]) => ({ folder, count }));
+  return {
+    totalNotes: files.length,
+    createdToday: createdToday.slice(0, 10),
+    modifiedToday: modifiedToday.slice(0, 10),
+    forgotten: forgotten.slice(0, 8),
+    focusDistribution,
+    pendingTasks: pendingTasks.slice(0, 14)
+  };
+}
+async function toggleTaskInFile(app, file, line) {
+  const content = await app.vault.read(file);
+  const lines = content.split(/\r?\n/);
+  const raw = lines[line];
+  if (raw == null) throw new Error(`\u884C ${line + 1} \u4E0D\u5B58\u5728\uFF08\u6587\u4EF6\u53EF\u80FD\u5DF2\u88AB\u4FEE\u6539\uFF0C\u8BF7\u5237\u65B0\uFF09`);
+  const m = raw.match(/^(\s*[-*]\s*)\[([ xX])\]/);
+  if (!m) throw new Error("\u8BE5\u884C\u4E0D\u662F\u4EFB\u52A1");
+  const done = m[2] !== " ";
+  lines[line] = raw.replace(/^(\s*[-*]\s*)\[([ xX])\]/, `$1[${done ? " " : "x"}]`);
+  await app.vault.modify(file, lines.join("\n"));
+}
+var TASK_RE, DUE_RE;
+var init_vaultStats = __esm({
+  "src/services/vaultStats.ts"() {
+    "use strict";
+    init_utils();
+    TASK_RE = /^(\s*[-*]\s*)\[([ xX])\]\s*(.+)$/;
+    DUE_RE = /(?:📅|due::)\s*(\d{4}-\d{2}-\d{2})/;
   }
 });
 
@@ -3355,27 +3863,27 @@ function duoweiTemplate(title) {
 }
 async function createBase(app, name, folder) {
   const title = String(name || "\u65B0\u5EFA\u5DE5\u4F5C\u8868").trim() || "\u65B0\u5EFA\u5DE5\u4F5C\u8868";
-  const dir2 = (0, import_obsidian9.normalizePath)(folder || DEFAULT_FOLDER);
+  const dir2 = (0, import_obsidian10.normalizePath)(folder || DEFAULT_FOLDER);
   if (!app.vault.getAbstractFileByPath(dir2)) {
     try {
       await app.vault.createFolder(dir2);
     } catch (e) {
     }
   }
-  let path2 = (0, import_obsidian9.normalizePath)(`${dir2}/${title}.duowei`);
+  let path2 = (0, import_obsidian10.normalizePath)(`${dir2}/${title}.duowei`);
   if (app.vault.getAbstractFileByPath(path2)) {
-    path2 = (0, import_obsidian9.normalizePath)(`${dir2}/${title}-${Date.now()}.duowei`);
+    path2 = (0, import_obsidian10.normalizePath)(`${dir2}/${title}-${Date.now()}.duowei`);
   }
   const file = await app.vault.create(path2, duoweiTemplate(title));
-  new import_obsidian9.Notice(`\u5DF2\u521B\u5EFA\u591A\u7EF4\u8868\u683C\uFF1A${path2}`);
+  new import_obsidian10.Notice(`\u5DF2\u521B\u5EFA\u591A\u7EF4\u8868\u683C\uFF1A${path2}`);
   await app.workspace.getLeaf(false).openFile(file);
   return file;
 }
-var import_obsidian9, BASE_EXTS, KIND_LABEL, DEFAULT_FOLDER;
+var import_obsidian10, BASE_EXTS, KIND_LABEL, DEFAULT_FOLDER;
 var init_baseService = __esm({
   "src/services/baseService.ts"() {
     "use strict";
-    import_obsidian9 = require("obsidian");
+    import_obsidian10 = require("obsidian");
     BASE_EXTS = ["base", "duowei"];
     KIND_LABEL = {
       base: "Bases",
@@ -3504,7 +4012,7 @@ function saveSnapshot(storage, data) {
 }
 function defaultFetcher() {
   return async () => {
-    const res = await (0, import_obsidian10.requestUrl)({
+    const res = await (0, import_obsidian11.requestUrl)({
       url: "https://v1.jinrishici.com/all.json",
       method: "GET",
       headers: { Accept: "application/json" }
@@ -3532,11 +4040,11 @@ async function getQuote(force, storage, fetcher) {
     return { error: String(e?.message || e), content: "", author: "", origin: "", category: "" };
   }
 }
-var import_obsidian10, cache, STORAGE_KEY;
+var import_obsidian11, cache, STORAGE_KEY;
 var init_quoteService = __esm({
   "src/services/quoteService.ts"() {
     "use strict";
-    import_obsidian10 = require("obsidian");
+    import_obsidian11 = require("obsidian");
     cache = { key: "", data: null };
     STORAGE_KEY = "owb-quote-cache";
   }
@@ -3594,7 +4102,7 @@ async function getWeather(settings, force) {
   if (!force && cache2.data && cache2.key === cacheKey && Date.now() - cache2.at < TTL) return cache2.data;
   try {
     const url = "https://api.openweathermap.org/data/2.5/weather?q=" + encodeURIComponent(city) + "&appid=" + encodeURIComponent(key) + "&units=metric&lang=zh_cn";
-    const res = await (0, import_obsidian11.requestUrl)({ url, method: "GET" });
+    const res = await (0, import_obsidian12.requestUrl)({ url, method: "GET" });
     const j = res.json || JSON.parse(res.text);
     if (!j || !j.main) throw new Error(j && j.message || "\u8FD4\u56DE\u7ED3\u6784\u5F02\u5E38");
     const w = j.weather && j.weather[0] || {};
@@ -3614,11 +4122,11 @@ async function getWeather(settings, force) {
     return { error: String(e?.message || e), city, temp: 0, feels: 0, humidity: 0, desc: "", emoji: "", code: "" };
   }
 }
-var import_obsidian11, cache2, TTL, STORAGE_KEY2;
+var import_obsidian12, cache2, TTL, STORAGE_KEY2;
 var init_weatherService = __esm({
   "src/services/weatherService.ts"() {
     "use strict";
-    import_obsidian11 = require("obsidian");
+    import_obsidian12 = require("obsidian");
     cache2 = { at: 0, key: "", data: null };
     TTL = 30 * 60 * 1e3;
     STORAGE_KEY2 = "owb-weather-cache";
@@ -3629,10 +4137,10 @@ var init_weatherService = __esm({
 var require_workbenchView = __commonJS({
   "src/views/workbenchView.js"(exports2, module2) {
     "use strict";
-    var { ItemView, Notice: Notice9, normalizePath: normalizePath8, setIcon: setIcon3 } = require("obsidian");
+    var { ItemView, Notice: Notice10, normalizePath: normalizePath9, setIcon: setIcon3 } = require("obsidian");
     var { VIEW_TYPE_WORKBENCH: VIEW_TYPE_WORKBENCH3 } = (init_constants(), __toCommonJS(constants_exports));
     var { formatDate: formatDate3, getGreeting: getGreeting2 } = (init_utils(), __toCommonJS(utils_exports));
-    var { collectWorkbenchData, toggleTaskInFile } = require_vaultStats();
+    var { collectWorkbenchData: collectWorkbenchData2, toggleTaskInFile: toggleTaskInFile2 } = (init_vaultStats(), __toCommonJS(vaultStats_exports));
     var { listDailies: listDailies2, computeStreak: computeStreak2, openDaily: openDaily3 } = (init_dailyService(), __toCommonJS(dailyService_exports));
     var { listProjects: listProjects3 } = (init_projectService(), __toCommonJS(projectService_exports));
     var { buildHeatmap: buildHeatmap2 } = (init_heatmapService(), __toCommonJS(heatmapService_exports));
@@ -3642,6 +4150,7 @@ var require_workbenchView = __commonJS({
     var { AttachmentPreviewModal: AttachmentPreviewModal2 } = require_attachmentPreviewModal();
     var { ATTACHMENT_EXTS: ATTACHMENT_EXTS2, planOrganize: planOrganize3, applyOrganize: applyOrganize3 } = (init_attachmentService(), __toCommonJS(attachmentService_exports));
     var { getQuote: getQuote2, getCachedSnapshot: quoteSnapshot } = (init_quoteService(), __toCommonJS(quoteService_exports));
+    var { loadGoalTree: loadGoalTree2, goalProgress: goalProgress2 } = (init_goalService(), __toCommonJS(goalService_exports));
     var { getWeather: getWeather2, getCachedSnapshot: weatherSnapshot } = (init_weatherService(), __toCommonJS(weatherService_exports));
     var WorkbenchView2 = class extends ItemView {
       constructor(leaf, plugin) {
@@ -3783,10 +4292,10 @@ var require_workbenchView = __commonJS({
             cell.setAttribute("title", label);
             cell.addEventListener("click", async () => {
               const target = this.app.vault.getAbstractFileByPath(
-                normalizePath8(`${this.plugin.settings.dailyFolder}/${day.key}.md`)
+                normalizePath9(`${this.plugin.settings.dailyFolder}/${day.key}.md`)
               );
               if (target) await this.app.workspace.getLeaf(false).openFile(target);
-              else new Notice9(`${day.key} \xB7 ${day.count} \u6B21\u66F4\u65B0\uFF08\u5F53\u5929\u6CA1\u6709\u65E5\u8BB0\uFF09`);
+              else new Notice10(`${day.key} \xB7 ${day.count} \u6B21\u66F4\u65B0\uFF08\u5F53\u5929\u6CA1\u6709\u65E5\u8BB0\uFF09`);
             });
           }
         }
@@ -3863,7 +4372,7 @@ var require_workbenchView = __commonJS({
         }
         const tData = Date.now();
         const [data, dailies, projects, bases] = await Promise.all([
-          collectWorkbenchData(this.app, this.plugin.settings),
+          collectWorkbenchData2(this.app, this.plugin.settings),
           listDailies2(this.app, this.plugin.settings),
           this.plugin.isFeatureEnabled("projects") ? listProjects3(this.app, this.plugin.settings) : Promise.resolve([]),
           this.plugin.isFeatureEnabled("bases") ? listBases2(this.app) : Promise.resolve([])
@@ -4013,14 +4522,14 @@ var require_workbenchView = __commonJS({
             row.createEl("input", { attr: { type: "checkbox" } }).addEventListener("change", async () => {
               row.addClass("done");
               try {
-                await toggleTaskInFile(this.app, t.file, t.line);
+                await toggleTaskInFile2(this.app, t.file, t.line);
                 this.invalidateHeat();
-                new Notice9("\u5DF2\u5B8C\u6210");
+                new Notice10("\u5DF2\u5B8C\u6210");
                 await new Promise((r) => setTimeout(r, 360));
                 await this.render();
               } catch (err) {
                 row.removeClass("done");
-                new Notice9(`\u66F4\u65B0\u5931\u8D25\uFF1A${err.message}`);
+                new Notice10(`\u66F4\u65B0\u5931\u8D25\uFF1A${err.message}`);
               }
             });
             const a = row.createEl("a", { cls: "owb-link", text: t.text });
@@ -4109,6 +4618,64 @@ ${t.file.path}`);
             }
           }
         }
+        if (this.plugin.isFeatureEnabled("goals")) {
+          const tree = await loadGoalTree2(this.app, (/* @__PURE__ */ new Date()).getFullYear());
+          const goalCard = sideCol.createDiv({ cls: "owb-card" });
+          const gh = goalCard.createDiv({ cls: "owb-card-title-row" });
+          if (!tree) {
+            gh.createDiv({ cls: "owb-card-title", text: "\u76EE\u6807" });
+            this.emptySlot(goalCard, "\u8FD8\u6CA1\u6709\u5E74\u5EA6\u76EE\u6807\u6587\u4EF6", {
+              icon: "target",
+              ctaLabel: "\u521B\u5EFA\u5E74\u76EE\u6807",
+              ctaIcon: "plus",
+              onCta: () => this.plugin.openYearGoals()
+            });
+          } else {
+            const pr = goalProgress2(tree);
+            gh.createDiv({
+              cls: "owb-card-title",
+              text: pr.yearTotal ? `\u5E74\u76EE\u6807 ${pr.yearDone}/${pr.yearTotal} \xB7 \u672C\u5468 ${pr.weekDone}/${pr.weekTotal}` : "\u76EE\u6807"
+            });
+            const openBtn = gh.createEl("button", { cls: "owb-mini-btn", text: "\u6253\u5F00" });
+            openBtn.addEventListener("click", () => this.app.workspace.getLeaf(false).openFile(tree.file));
+            const aiBtn = gh.createEl("button", { cls: "owb-mini-btn", text: "AI \u62C6\u89E3" });
+            aiBtn.addEventListener("click", () => this.plugin.goalAiBreakdown());
+            const tiers = [
+              { label: "\u5E74", done: pr.yearDone, total: pr.yearTotal },
+              { label: "\u6708", done: pr.monthDone, total: pr.monthTotal },
+              { label: "\u5468", done: pr.weekDone, total: pr.weekTotal }
+            ];
+            for (const t of tiers) {
+              if (!t.total) continue;
+              const row = goalCard.createDiv({ cls: "owb-goal-tier" });
+              row.createSpan({ cls: "owb-goal-tier-label", text: t.label });
+              const track = row.createDiv({ cls: "owb-goal-track" });
+              const fill = track.createDiv({ cls: "owb-goal-fill" });
+              fill.style.width = Math.round(t.done / t.total * 100) + "%";
+              row.createSpan({ cls: "owb-muted owb-goal-count", text: `${t.done}/${t.total}` });
+            }
+            const todayTasks = tree.dayTasks.filter((t) => !t.done).slice(0, 4);
+            if (todayTasks.length) {
+              const list = goalCard.createDiv({ cls: "owb-task-list" });
+              for (const t of todayTasks) {
+                const row = list.createDiv({ cls: "owb-task-row" });
+                const cb = row.createEl("input", { attr: { type: "checkbox" } });
+                cb.addEventListener("change", async () => {
+                  try {
+                    const { toggleTaskInFile: toggleTaskInFile3 } = (init_vaultStats(), __toCommonJS(vaultStats_exports));
+                    await toggleTaskInFile3(this.app, tree.file, t.line);
+                    this.invalidateHeat();
+                    await this.render();
+                  } catch (e) {
+                    new Notice10("\u66F4\u65B0\u5931\u8D25\uFF1A" + e.message);
+                  }
+                });
+                const a = row.createEl("a", { cls: "owb-link", text: t.text.slice(0, 48) });
+                a.addEventListener("click", () => this.app.workspace.getLeaf(false).openFile(tree.file));
+              }
+            }
+          }
+        }
         if (this.plugin.isFeatureEnabled("bases")) {
           const baseCard = leftCol.createDiv({ cls: "owb-card" });
           const bh = baseCard.createDiv({ cls: "owb-card-title-row" });
@@ -4118,7 +4685,7 @@ ${t.file.path}`);
               await createBase2(this.app, "\u65B0\u5EFA\u5DE5\u4F5C\u8868");
               this.render();
             } catch (e) {
-              new Notice9("\u521B\u5EFA\u5931\u8D25\uFF1A" + e.message);
+              new Notice10("\u521B\u5EFA\u5931\u8D25\uFF1A" + e.message);
             }
           });
           if (!bases.length) {
@@ -4178,9 +4745,9 @@ ${t.file.path}`);
           const strip = root.createDiv({ cls: "owb-quick-links" });
           for (const item of links) {
             strip.createEl("button", { cls: "owb-chip", text: item.label }).addEventListener("click", async () => {
-              const target = this.app.vault.getAbstractFileByPath(normalizePath8(item.target));
+              const target = this.app.vault.getAbstractFileByPath(normalizePath9(item.target));
               if (target) await this.app.workspace.getLeaf(false).openFile(target);
-              else new Notice9(`\u672A\u627E\u5230\uFF1A${item.target}`);
+              else new Notice10(`\u672A\u627E\u5230\uFF1A${item.target}`);
             });
           }
         }
@@ -4356,7 +4923,7 @@ var require_diffModal = __commonJS({
 var require_branchModal = __commonJS({
   "src/modals/branchModal.js"(exports2, module2) {
     "use strict";
-    var { Modal: Modal2, Notice: Notice9 } = require("obsidian");
+    var { Modal: Modal2, Notice: Notice10 } = require("obsidian");
     var BranchModal = class extends Modal2 {
       constructor(app, onCreate) {
         super(app);
@@ -4378,7 +4945,7 @@ var require_branchModal = __commonJS({
         const submit = async () => {
           const name = input.value.trim();
           if (!name) {
-            new Notice9("\u8BF7\u8F93\u5165\u5206\u652F\u540D\u79F0");
+            new Notice10("\u8BF7\u8F93\u5165\u5206\u652F\u540D\u79F0");
             return;
           }
           okBtn.disabled = true;
@@ -4386,7 +4953,7 @@ var require_branchModal = __commonJS({
             await this.onCreate(name);
             this.close();
           } catch (err) {
-            new Notice9(err.message);
+            new Notice10(err.message);
             okBtn.disabled = false;
           }
         };
@@ -4408,7 +4975,7 @@ var require_branchModal = __commonJS({
 var require_remoteModal = __commonJS({
   "src/modals/remoteModal.js"(exports2, module2) {
     "use strict";
-    var { Modal: Modal2, Notice: Notice9 } = require("obsidian");
+    var { Modal: Modal2, Notice: Notice10 } = require("obsidian");
     var RemoteModal = class extends Modal2 {
       constructor(app, gitService, currentBranch, onUpdated) {
         super(app);
@@ -4435,10 +5002,10 @@ var require_remoteModal = __commonJS({
               pushBtn.disabled = true;
               try {
                 await this.gitService.pushSetUpstream(r.name, this.currentBranch);
-                new Notice9(`\u5DF2\u63A8\u9001\u5E76\u7ED1\u5B9A\u4E0A\u6E38 ${r.name}/${this.currentBranch}`);
+                new Notice10(`\u5DF2\u63A8\u9001\u5E76\u7ED1\u5B9A\u4E0A\u6E38 ${r.name}/${this.currentBranch}`);
                 if (this.onUpdated) await this.onUpdated();
               } catch (err) {
-                new Notice9(err.message, 6e3);
+                new Notice10(err.message, 6e3);
               } finally {
                 pushBtn.disabled = false;
               }
@@ -4447,11 +5014,11 @@ var require_remoteModal = __commonJS({
             delBtn.addEventListener("click", async () => {
               try {
                 await this.gitService.removeRemote(r.name);
-                new Notice9(`\u5DF2\u79FB\u9664\u8FDC\u7A0B ${r.name}`);
+                new Notice10(`\u5DF2\u79FB\u9664\u8FDC\u7A0B ${r.name}`);
                 if (this.onUpdated) await this.onUpdated();
                 await this.onOpen();
               } catch (err) {
-                new Notice9(err.message);
+                new Notice10(err.message);
               }
             });
           }
@@ -4477,17 +5044,17 @@ var require_remoteModal = __commonJS({
           const name = nameInput.value.trim() || "origin";
           const url = urlInput.value.trim();
           if (!url) {
-            new Notice9("\u8BF7\u8F93\u5165\u8FDC\u7A0B\u4ED3\u5E93 URL");
+            new Notice10("\u8BF7\u8F93\u5165\u8FDC\u7A0B\u4ED3\u5E93 URL");
             return;
           }
           saveBtn.disabled = true;
           try {
             await this.gitService.setRemote(name, url);
-            new Notice9(`\u5DF2\u4FDD\u5B58\u8FDC\u7A0B ${name}`);
+            new Notice10(`\u5DF2\u4FDD\u5B58\u8FDC\u7A0B ${name}`);
             if (this.onUpdated) await this.onUpdated();
             await this.onOpen();
           } catch (err) {
-            new Notice9(err.message);
+            new Notice10(err.message);
           } finally {
             saveBtn.disabled = false;
           }
@@ -4501,131 +5068,11 @@ var require_remoteModal = __commonJS({
   }
 });
 
-// src/services/aiService.ts
-var aiService_exports = {};
-__export(aiService_exports, {
-  chatCompletion: () => chatCompletion,
-  generateCommitMessage: () => generateCommitMessage,
-  generateQuizMarkdownFromNote: () => generateQuizMarkdownFromNote
-});
-function getHttpClient() {
-  try {
-    const obs = require("obsidian");
-    if (obs && typeof obs.requestUrl === "function") {
-      return async (url, headers, bodyObj) => {
-        const res = await obs.requestUrl({
-          url,
-          method: "POST",
-          headers,
-          body: JSON.stringify(bodyObj),
-          throw: false
-        });
-        if (res.status < 200 || res.status >= 300) {
-          throw new Error(`HTTP ${res.status}: ${String(res.text || "").slice(0, 200)}`);
-        }
-        return res.json;
-      };
-    }
-  } catch {
-  }
-  return async (url, headers, bodyObj) => {
-    const res = await fetch(url, {
-      method: "POST",
-      headers,
-      body: JSON.stringify(bodyObj)
-    });
-    const text = await res.text();
-    if (!res.ok) {
-      throw new Error(`HTTP ${res.status}: ${text.slice(0, 200)}`);
-    }
-    return JSON.parse(text);
-  };
-}
-async function chatCompletion(messages, config, customClient) {
-  const baseUrl = String(config.aiBaseUrl || "").replace(/\/+$/, "");
-  const model = String(config.aiModel || "").trim();
-  const apiKey = String(config.aiApiKey || "").trim();
-  if (!baseUrl || !model) {
-    throw new Error("\u8BF7\u5148\u5728\u8BBE\u7F6E\u4E2D\u586B\u5199 AI Base URL \u4E0E\u6A21\u578B\u540D\u79F0");
-  }
-  const endpoint = baseUrl.endsWith("/chat/completions") ? baseUrl : `${baseUrl}/chat/completions`;
-  const headers = { "Content-Type": "application/json" };
-  if (apiKey) headers.Authorization = `Bearer ${apiKey}`;
-  const client = customClient || getHttpClient();
-  const data = await client(endpoint, headers, {
-    model,
-    temperature: 0.3,
-    messages
-  });
-  const content = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
-  if (!content) {
-    throw new Error("AI \u63A5\u53E3\u8FD4\u56DE\u5185\u5BB9\u4E3A\u7A7A");
-  }
-  return String(content).trim();
-}
-async function generateCommitMessage(diffText, config, customClient) {
-  if (!diffText || !diffText.trim()) {
-    throw new Error("\u5F53\u524D\u6CA1\u6709\u53EF\u4F9B\u5206\u6790\u7684 Git \u53D8\u66F4\u5185\u5BB9");
-  }
-  const prompt = [
-    "\u6839\u636E\u4EE5\u4E0B Git \u53D8\u66F4\u6458\u8981\u751F\u6210\u4E00\u6761\u7B80\u6D01\u3001\u89C4\u8303\u7684\u4E2D\u6587 Conventional Commit \u4FE1\u606F\u3002",
-    "\u8981\u6C42\uFF1A\u4EC5\u8F93\u51FA\u5355\u884C\u63D0\u4EA4\u4FE1\u606F\uFF08\u5982 `docs(notes): \u66F4\u65B0 RNA-seq \u5B9E\u9A8C\u8BB0\u5F55`\uFF09\uFF0C\u4E0D\u8981\u52A0\u5F15\u53F7\u3001\u4E0D\u8981\u89E3\u91CA\u3001\u4E0D\u8D85\u8FC7 60 \u5B57\u3002",
-    "",
-    diffText.slice(0, 5e3)
-  ].join("\n");
-  const raw = await chatCompletion(
-    [
-      { role: "system", content: "\u4F60\u662F\u4E25\u8C28\u7684\u8F6F\u4EF6\u5DE5\u7A0B\u4E0E\u77E5\u8BC6\u5E93\u7248\u672C\u7BA1\u7406\u52A9\u624B\u3002" },
-      { role: "user", content: prompt }
-    ],
-    config,
-    customClient
-  );
-  return raw.split(/\r?\n/)[0].replace(/^[`"']+|[`"']+$/g, "").trim();
-}
-async function generateQuizMarkdownFromNote(noteTitle, noteContent, count, config, customClient) {
-  const n = Math.max(1, Math.min(20, Number(count) || 5));
-  const prompt = [
-    `\u8BF7\u6839\u636E\u4E0B\u9762\u8FD9\u7BC7\u7B14\u8BB0\u300A${noteTitle}\u300B\u751F\u6210 ${n} \u9053\u9AD8\u8D28\u91CF\u81EA\u6D4B\u9898\uFF08\u5305\u542B\u5355\u9009\u3001\u591A\u9009\u4E0E\u5224\u65AD\u9898\uFF09\u3002`,
-    "\u5FC5\u987B\u4E25\u683C\u8F93\u51FA\u5982\u4E0B Markdown \u683C\u5F0F\uFF08\u4E0D\u8981\u52A0\u989D\u5916\u8BF4\u660E\u6216\u4EE3\u7801\u5757\u56F4\u680F\uFF09\uFF1A",
-    "",
-    "---",
-    `title: ${noteTitle} \xB7 \u81EA\u6D4B\u9898\u5E93`,
-    "desc: \u7531 AI \u57FA\u4E8E\u7B14\u8BB0\u5185\u5BB9\u81EA\u52A8\u751F\u6210",
-    "---",
-    "",
-    "## \u9898\u5E72\u5185\u5BB9",
-    "- [ ] A. \u9009\u9879\u4E00",
-    "- [x] B. \u6B63\u786E\u9009\u9879",
-    "- [ ] C. \u9009\u9879\u4E09",
-    "- [ ] D. \u9009\u9879\u56DB",
-    "> \u89E3\u6790\uFF1A\u7B80\u6D01\u89E3\u91CA\u6B63\u786E\u7B54\u6848\u539F\u56E0\u3002",
-    "> \u6807\u7B7E\uFF1A\u5173\u952E\u8BCD1, \u5173\u952E\u8BCD2",
-    "",
-    "\u4EE5\u4E0B\u662F\u7B14\u8BB0\u539F\u6587\uFF1A",
-    noteContent.slice(0, 8e3)
-  ].join("\n");
-  const raw = await chatCompletion(
-    [
-      { role: "system", content: "\u4F60\u662F\u7CBE\u901A\u8BA4\u77E5\u79D1\u5B66\u4E0E\u95F4\u9694\u91CD\u590D\u51FA\u9898\u7684\u6559\u5B66\u4E13\u5BB6\u3002" },
-      { role: "user", content: prompt }
-    ],
-    config,
-    customClient
-  );
-  return raw.replace(/^```(?:markdown|md)?\r?\n?/i, "").replace(/\r?\n?```$/i, "").trim() + "\n";
-}
-var init_aiService = __esm({
-  "src/services/aiService.ts"() {
-    "use strict";
-  }
-});
-
 // src/views/gitView.js
 var require_gitView = __commonJS({
   "src/views/gitView.js"(exports2, module2) {
     "use strict";
-    var { ItemView, Notice: Notice9, setIcon: setIcon3 } = require("obsidian");
+    var { ItemView, Notice: Notice10, setIcon: setIcon3 } = require("obsidian");
     var { VIEW_TYPE_GIT: VIEW_TYPE_GIT3 } = (init_constants(), __toCommonJS(constants_exports));
     var { formatDate: formatDate3 } = (init_utils(), __toCommonJS(utils_exports));
     var { DiffModal } = require_diffModal();
@@ -4662,7 +5109,7 @@ var require_gitView = __commonJS({
           await this.render();
           await this.plugin.updateGitStatusBar();
         } catch (err) {
-          new Notice9(`${label}\u5931\u8D25\uFF1A${err.message}`, 6e3);
+          new Notice10(`${label}\u5931\u8D25\uFF1A${err.message}`, 6e3);
         } finally {
           this.busy = false;
         }
@@ -4695,7 +5142,7 @@ var require_gitView = __commonJS({
             "click",
             () => this.runAction("\u521D\u59CB\u5316\u4ED3\u5E93", async () => {
               await git.initRepo();
-              new Notice9("\u5DF2\u521D\u59CB\u5316 Git \u4ED3\u5E93");
+              new Notice10("\u5DF2\u521D\u59CB\u5316 Git \u4ED3\u5E93");
             })
           );
           return;
@@ -4718,7 +5165,7 @@ var require_gitView = __commonJS({
           if (target && target !== status.branch) {
             this.runAction("\u5207\u6362\u5206\u652F", async () => {
               await git.checkoutBranch(target);
-              new Notice9(`\u5DF2\u5207\u6362\u81F3\u5206\u652F ${target}`);
+              new Notice10(`\u5DF2\u5207\u6362\u81F3\u5206\u652F ${target}`);
             });
           }
         });
@@ -4730,7 +5177,7 @@ var require_gitView = __commonJS({
         newBrBtn.addEventListener("click", () => {
           new BranchModal(this.app, async (name) => {
             await git.createBranch(name);
-            new Notice9(`\u5DF2\u521B\u5EFA\u5E76\u5207\u6362\u81F3 ${name}`);
+            new Notice10(`\u5DF2\u521B\u5EFA\u5E76\u5207\u6362\u81F3 ${name}`);
             await this.render();
           }).open();
         });
@@ -4752,7 +5199,7 @@ var require_gitView = __commonJS({
           "\u62C9\u53D6 (Pull)",
           () => this.runAction("Pull", async () => {
             await git.pull();
-            new Notice9("\u62C9\u53D6\u5B8C\u6210");
+            new Notice10("\u62C9\u53D6\u5B8C\u6210");
           })
         );
         addIconBtn(
@@ -4760,7 +5207,7 @@ var require_gitView = __commonJS({
           "\u63A8\u9001 (Push)",
           () => this.runAction("Push", async () => {
             await git.push();
-            new Notice9("\u63A8\u9001\u5B8C\u6210");
+            new Notice10("\u63A8\u9001\u5B8C\u6210");
           })
         );
         const metaBar = root.createDiv({ cls: "owb-git-meta" });
@@ -4782,7 +5229,7 @@ var require_gitView = __commonJS({
               "click",
               () => this.runAction("\u4FDD\u7559\u672C\u5730\u7248\u672C", async () => {
                 await git.resolveConflict(item.path, "ours");
-                new Notice9(`\u5DF2\u91C7\u7528\u672C\u5730\u7248\u672C\uFF1A${item.path}`);
+                new Notice10(`\u5DF2\u91C7\u7528\u672C\u5730\u7248\u672C\uFF1A${item.path}`);
               })
             );
             const theirsBtn = ops.createEl("button", { cls: "owb-btn-sm", text: "\u91C7\u7528\u8FDC\u7A0B" });
@@ -4790,7 +5237,7 @@ var require_gitView = __commonJS({
               "click",
               () => this.runAction("\u91C7\u7528\u8FDC\u7A0B\u7248\u672C", async () => {
                 await git.resolveConflict(item.path, "theirs");
-                new Notice9(`\u5DF2\u91C7\u7528\u8FDC\u7A0B\u7248\u672C\uFF1A${item.path}`);
+                new Notice10(`\u5DF2\u91C7\u7528\u8FDC\u7A0B\u7248\u672C\uFF1A${item.path}`);
               })
             );
           }
@@ -4817,9 +5264,9 @@ var require_gitView = __commonJS({
               const msg = await generateCommitMessage2(diff, this.plugin.settings);
               this.commitDraft = msg;
               msgInput.value = msg;
-              new Notice9("\u5DF2\u751F\u6210 AI \u63D0\u4EA4\u4FE1\u606F");
+              new Notice10("\u5DF2\u751F\u6210 AI \u63D0\u4EA4\u4FE1\u606F");
             } catch (err) {
-              new Notice9(`AI \u751F\u6210\u5931\u8D25\uFF1A${err.message}`, 6e3);
+              new Notice10(`AI \u751F\u6210\u5931\u8D25\uFF1A${err.message}`, 6e3);
             } finally {
               aiBtn.disabled = false;
               aiBtn.setText("\u2728 AI \u6458\u8981");
@@ -4838,7 +5285,7 @@ var require_gitView = __commonJS({
             if (!status.staged.length) await git.stageAll();
             await git.commit(resolveMessage());
             this.commitDraft = "";
-            new Notice9("Git \u63D0\u4EA4\u6210\u529F");
+            new Notice10("Git \u63D0\u4EA4\u6210\u529F");
           })
         );
         syncBtn.addEventListener(
@@ -4854,9 +5301,9 @@ var require_gitView = __commonJS({
             if (st.upstream) {
               await git.pull();
               await git.push();
-              new Notice9("\u5DF2\u5B8C\u6210\u63D0\u4EA4\u3001\u62C9\u53D6\u4E0E\u63A8\u9001");
+              new Notice10("\u5DF2\u5B8C\u6210\u63D0\u4EA4\u3001\u62C9\u53D6\u4E0E\u63A8\u9001");
             } else {
-              new Notice9("\u5DF2\u5B8C\u6210\u672C\u5730\u63D0\u4EA4\uFF08\u672A\u914D\u7F6E\u8FDC\u7A0B\u5206\u652F\uFF0C\u8DF3\u8FC7\u63A8\u9001\uFF09");
+              new Notice10("\u5DF2\u5B8C\u6210\u672C\u5730\u63D0\u4EA4\uFF08\u672A\u914D\u7F6E\u8FDC\u7A0B\u5206\u652F\uFF0C\u8DF3\u8FC7\u63A8\u9001\uFF09");
             }
           })
         );
@@ -4872,7 +5319,7 @@ var require_gitView = __commonJS({
             "click",
             () => this.runAction("Stash \u6682\u5B58", async () => {
               await git.stashPush(`owb-stash ${formatDate3(/* @__PURE__ */ new Date(), "MM-DD HH:mm")}`);
-              new Notice9("\u5DF2\u5C06\u5F53\u524D\u5DE5\u4F5C\u533A\u5B58\u5165 Stash");
+              new Notice10("\u5DF2\u5C06\u5F53\u524D\u5DE5\u4F5C\u533A\u5B58\u5165 Stash");
             })
           );
           if (!stashes.length) {
@@ -4888,7 +5335,7 @@ var require_gitView = __commonJS({
                 "click",
                 () => this.runAction("\u5F39\u51FA Stash", async () => {
                   await git.stashPop(st.ref);
-                  new Notice9(`\u5DF2\u5F39\u51FA ${st.ref}`);
+                  new Notice10(`\u5DF2\u5F39\u51FA ${st.ref}`);
                 })
               );
               const dropBtn = ops.createEl("button", { cls: "owb-btn-sm", text: "\u5220" });
@@ -4896,7 +5343,7 @@ var require_gitView = __commonJS({
                 "click",
                 () => this.runAction("\u5220\u9664 Stash", async () => {
                   await git.stashDrop(st.ref);
-                  new Notice9(`\u5DF2\u5220\u9664 ${st.ref}`);
+                  new Notice10(`\u5DF2\u5220\u9664 ${st.ref}`);
                 })
               );
             }
@@ -4919,7 +5366,7 @@ var require_gitView = __commonJS({
                 const diff = await git.getCommitDiff(entry.hash);
                 new DiffModal(this.app, `Commit ${entry.hash} \xB7 ${entry.subject}`, diff).open();
               } catch (err) {
-                new Notice9(err.message);
+                new Notice10(err.message);
               }
             });
           }
@@ -5152,7 +5599,7 @@ var init_quizEngine = __esm({
 var require_quizView = __commonJS({
   "src/views/quizView.js"(exports2, module2) {
     "use strict";
-    var { ItemView, Notice: Notice9, normalizePath: normalizePath8 } = require("obsidian");
+    var { ItemView, Notice: Notice10, normalizePath: normalizePath9 } = require("obsidian");
     var { VIEW_TYPE_QUIZ: VIEW_TYPE_QUIZ3 } = (init_constants(), __toCommonJS(constants_exports));
     var { formatDate: formatDate3, formatDuration: formatDuration2, shuffleArray: shuffleArray2 } = (init_utils(), __toCommonJS(utils_exports));
     var {
@@ -5231,7 +5678,7 @@ var require_quizView = __commonJS({
           this.session = null;
           await this.loadSelectedBank(this.selectedFilePath);
           this.renderStage(root);
-          new Notice9("\u9898\u5E93\u5DF2\u91CD\u65B0\u52A0\u8F7D");
+          new Notice10("\u9898\u5E93\u5DF2\u91CD\u65B0\u52A0\u8F7D");
         });
         if (this.selectedFilePath && !this.parsed) {
           await this.loadSelectedBank(this.selectedFilePath);
@@ -5474,7 +5921,7 @@ var require_quizView = __commonJS({
         });
       }
       async exportWrongNote(wrongQuestions) {
-        const targetPath = normalizePath8(this.plugin.settings.quizWrongExportPath || "notes/\u9519\u9898\u590D\u76D8.md");
+        const targetPath = normalizePath9(this.plugin.settings.quizWrongExportPath || "notes/\u9519\u9898\u590D\u76D8.md");
         const callout = formatWrongCalloutMarkdown2(
           this.parsed.meta.title,
           wrongQuestions,
@@ -5496,7 +5943,7 @@ ${callout}`);
 
 ${callout}`);
         }
-        new Notice9(`\u5DF2\u5199\u5165 ${wrongQuestions.length} \u9053\u9519\u9898\u5230 ${targetPath}`);
+        new Notice10(`\u5DF2\u5199\u5165 ${wrongQuestions.length} \u9053\u9519\u9898\u5230 ${targetPath}`);
       }
       _handleKeyDown(evt) {
         if (!this.containerEl.isShown() || !this.session || this.session.finished) return;
@@ -5527,7 +5974,7 @@ ${callout}`);
 var require_quickCaptureModal = __commonJS({
   "src/modals/quickCaptureModal.js"(exports2, module2) {
     "use strict";
-    var { Modal: Modal2, Notice: Notice9, normalizePath: normalizePath8 } = require("obsidian");
+    var { Modal: Modal2, Notice: Notice10, normalizePath: normalizePath9 } = require("obsidian");
     var { formatDate: formatDate3, insertCaptureLine: insertCaptureLine2 } = (init_utils(), __toCommonJS(utils_exports));
     var QuickCaptureModal2 = class extends Modal2 {
       constructor(app, plugin) {
@@ -5568,16 +6015,16 @@ var require_quickCaptureModal = __commonJS({
         const submit = async () => {
           const raw = textarea.value.trim();
           if (!raw) {
-            new Notice9("\u8BF7\u8F93\u5165\u95EA\u5FF5\u5185\u5BB9");
+            new Notice10("\u8BF7\u8F93\u5165\u95EA\u5FF5\u5185\u5BB9");
             return;
           }
           submitBtn.disabled = true;
           try {
             await this.saveCapture(raw);
-            new Notice9("\u5DF2\u4FDD\u5B58\u5230\u95EA\u5FF5\u6536\u4EF6\u7BB1");
+            new Notice10("\u5DF2\u4FDD\u5B58\u5230\u95EA\u5FF5\u6536\u4EF6\u7BB1");
             this.close();
           } catch (err) {
-            new Notice9(`\u4FDD\u5B58\u5931\u8D25\uFF1A${err.message}`);
+            new Notice10(`\u4FDD\u5B58\u5931\u8D25\uFF1A${err.message}`);
             submitBtn.disabled = false;
           }
         };
@@ -5592,7 +6039,7 @@ var require_quickCaptureModal = __commonJS({
       }
       async saveCapture(text) {
         const { inboxPath, captureInsertMode, captureTimeFormat } = this.plugin.settings;
-        const normPath = normalizePath8(inboxPath || "inbox.md");
+        const normPath = normalizePath9(inboxPath || "inbox.md");
         const stamp = formatDate3(/* @__PURE__ */ new Date(), captureTimeFormat || "HH:mm");
         const suffix = this.selectedTags.size ? ` ${[...this.selectedTags].join(" ")}` : "";
         const line = `- ${stamp} - ${text}${suffix}`;
@@ -5642,7 +6089,7 @@ ${line}
           );
           const a = answers && answers.area;
           if (!a || a.confidence == null || a.confidence < floor) return;
-          new Notice9(`\u51B3\u7B56\u5EFA\u8BAE\uFF1A\u5F52\u5165\u300C${a.value}\u300D\uFF08\u7F6E\u4FE1\u5EA6 ${(a.confidence * 100).toFixed(0)}%\uFF09`, 6e3);
+          new Notice10(`\u51B3\u7B56\u5EFA\u8BAE\uFF1A\u5F52\u5165\u300C${a.value}\u300D\uFF08\u7F6E\u4FE1\u5EA6 ${(a.confidence * 100).toFixed(0)}%\uFF09`, 6e3);
         } catch (e) {
           console.debug("[workbench] \u51B3\u7B56\u5F52\u7C7B\u8DF3\u8FC7:", e && e.message);
         }
@@ -5659,9 +6106,9 @@ ${line}
 var require_taskModal = __commonJS({
   "src/modals/taskModal.js"(exports2, module2) {
     "use strict";
-    var { Modal: Modal2, Notice: Notice9, normalizePath: normalizePath8 } = require("obsidian");
+    var { Modal: Modal2, Notice: Notice10, normalizePath: normalizePath9 } = require("obsidian");
     var { formatDate: formatDate3 } = (init_utils(), __toCommonJS(utils_exports));
-    var { toggleTaskInFile } = require_vaultStats();
+    var { toggleTaskInFile: toggleTaskInFile2 } = (init_vaultStats(), __toCommonJS(vaultStats_exports));
     var MAX_SCAN = 300;
     async function scanAllTasks(app, settings) {
       const tasks = [];
@@ -5725,7 +6172,7 @@ var require_taskModal = __commonJS({
             input.value = "";
             await this.render();
           } catch (err) {
-            new Notice9("\u5199\u5165\u5931\u8D25\uFF1A" + err.message);
+            new Notice10("\u5199\u5165\u5931\u8D25\uFF1A" + err.message);
           }
         });
         const tasks = await scanAllTasks(this.app, this.plugin.settings);
@@ -5755,11 +6202,11 @@ var require_taskModal = __commonJS({
             const cb = row.createEl("input", { attr: { type: "checkbox" } });
             cb.addEventListener("change", async () => {
               try {
-                await toggleTaskInFile(this.app, t.file, t.line);
-                new Notice9("\u2713 \u5DF2\u5B8C\u6210\uFF1A" + t.text.slice(0, 30));
+                await toggleTaskInFile2(this.app, t.file, t.line);
+                new Notice10("\u2713 \u5DF2\u5B8C\u6210\uFF1A" + t.text.slice(0, 30));
                 await this.render();
               } catch (err) {
-                new Notice9("\u66F4\u65B0\u5931\u8D25\uFF1A" + err.message);
+                new Notice10("\u66F4\u65B0\u5931\u8D25\uFF1A" + err.message);
                 await this.render();
               }
             });
@@ -5770,13 +6217,13 @@ var require_taskModal = __commonJS({
       }
       async addTask(text) {
         const { tasksPath } = this.plugin.settings;
-        const target = normalizePath8(tasksPath || "vault/\u4EFB\u52A1.md");
+        const target = normalizePath9(tasksPath || "vault/\u4EFB\u52A1.md");
         let file = this.app.vault.getAbstractFileByPath(target);
         const line = `- [ ] ${text}`;
         if (!file) {
           const folder = target.slice(0, target.lastIndexOf("/"));
-          if (folder && !this.app.vault.getAbstractFileByPath(normalizePath8(folder))) {
-            await this.app.vault.createFolder(normalizePath8(folder));
+          if (folder && !this.app.vault.getAbstractFileByPath(normalizePath9(folder))) {
+            await this.app.vault.createFolder(normalizePath9(folder));
           }
           const today = formatDate3(/* @__PURE__ */ new Date(), "YYYY-MM-DD");
           file = await this.app.vault.create(
@@ -5804,7 +6251,7 @@ ${line}
             return lines.join("\n");
           });
         }
-        new Notice9("\u5DF2\u8BB0\u5F55\uFF1A" + text.slice(0, 30));
+        new Notice10("\u5DF2\u8BB0\u5F55\uFF1A" + text.slice(0, 30));
       }
     };
     module2.exports = { TaskCenterModal: TaskCenterModal2, scanAllTasks };
@@ -5815,7 +6262,7 @@ ${line}
 var require_attachmentModal = __commonJS({
   "src/modals/attachmentModal.js"(exports2, module2) {
     "use strict";
-    var { Modal: Modal2, Notice: Notice9 } = require("obsidian");
+    var { Modal: Modal2, Notice: Notice10 } = require("obsidian");
     var { auditVault: auditVault2, archiveOrphans: archiveOrphans2 } = (init_attachmentService(), __toCommonJS(attachmentService_exports));
     var { AttachmentPreviewModal: AttachmentPreviewModal2 } = require_attachmentPreviewModal();
     function fmtSize2(bytes) {
@@ -5845,7 +6292,7 @@ var require_attachmentModal = __commonJS({
           this.report = await auditVault2(this.app);
           this.selected.clear();
         } catch (e) {
-          new Notice9("\u9644\u4EF6\u626B\u63CF\u5931\u8D25\uFF1A" + e.message, 8e3);
+          new Notice10("\u9644\u4EF6\u626B\u63CF\u5931\u8D25\uFF1A" + e.message, 8e3);
           this.report = null;
         }
         this.render();
@@ -5949,10 +6396,10 @@ var require_attachmentModal = __commonJS({
         if (!files.length) return;
         try {
           const res = await archiveOrphans2(this.app, files, "\u9644\u4EF6\u7BA1\u7406\u5668");
-          new Notice9(`\u5DF2\u5F52\u6863 ${res.moved.length} \u4E2A\u9644\u4EF6 \u2192 ${res.destDir}${res.failed.length ? `\uFF0C\u5931\u8D25 ${res.failed.length}` : ""}`, 7e3);
+          new Notice10(`\u5DF2\u5F52\u6863 ${res.moved.length} \u4E2A\u9644\u4EF6 \u2192 ${res.destDir}${res.failed.length ? `\uFF0C\u5931\u8D25 ${res.failed.length}` : ""}`, 7e3);
           await this.audit();
         } catch (e) {
-          new Notice9("\u5F52\u6863\u5931\u8D25\uFF1A" + e.message, 8e3);
+          new Notice10("\u5F52\u6863\u5931\u8D25\uFF1A" + e.message, 8e3);
         }
       }
     };
@@ -5964,7 +6411,7 @@ var require_attachmentModal = __commonJS({
 var require_imageToolsModal = __commonJS({
   "src/modals/imageToolsModal.js"(exports2, module2) {
     "use strict";
-    var { Modal: Modal2, Notice: Notice9, Setting } = require("obsidian");
+    var { Modal: Modal2, Notice: Notice10, Setting } = require("obsidian");
     var {
       engineInfo: engineInfo2,
       collectImages: collectImages2,
@@ -6087,7 +6534,7 @@ var require_imageToolsModal = __commonJS({
             });
             out.push(res);
           }
-          new Notice9(
+          new Notice10(
             `\u5DF2\u5B58\u6863 ${out.length} \u5F20 \u2192 ${assetDirFor2()}\uFF08\u5F15\u64CE ${out[0] ? out[0].engine : "-"}\uFF09`,
             6e3
           );
@@ -6097,7 +6544,7 @@ var require_imageToolsModal = __commonJS({
             leaf.view.editor.replaceSelection(link);
           }
         } catch (e) {
-          new Notice9("\u4E0A\u4F20\u5931\u8D25\uFF1A" + e.message, 8e3);
+          new Notice10("\u4E0A\u4F20\u5931\u8D25\uFF1A" + e.message, 8e3);
         }
       }
       preview() {
@@ -6109,7 +6556,7 @@ var require_imageToolsModal = __commonJS({
       async run() {
         const imgs = collectImages2(this.app, this.scope);
         if (!imgs.length) {
-          new Notice9("\u8BE5\u8303\u56F4\u5185\u6CA1\u6709\u53EF\u8F6C\u6362\u7684\u56FE\u7247");
+          new Notice10("\u8BE5\u8303\u56F4\u5185\u6CA1\u6709\u53EF\u8F6C\u6362\u7684\u56FE\u7247");
           return;
         }
         this.progress = `\u8F6C\u6362\u4E2D 0/${imgs.length}`;
@@ -6133,7 +6580,7 @@ var require_imageToolsModal = __commonJS({
         const ok = results.filter((r) => !r.error && !r.skipped);
         const saved = ok.reduce((s, r) => s + (r.saved || 0), 0);
         this.progress = `\u5B8C\u6210\uFF1A\u8F6C\u6362 ${ok.length} \u4E2A\uFF0C\u8282\u7701 ${fmtSize2(saved)}`;
-        new Notice9(this.progress, 8e3);
+        new Notice10(this.progress, 8e3);
         this.render();
       }
       renderResults(container, results) {
@@ -6317,7 +6764,7 @@ var init_doctorService = __esm({
 var require_doctorModal = __commonJS({
   "src/modals/doctorModal.js"(exports2, module2) {
     "use strict";
-    var { Modal: Modal2, Notice: Notice9 } = require("obsidian");
+    var { Modal: Modal2, Notice: Notice10 } = require("obsidian");
     var { diagnoseVault: diagnoseVault2, ensureSafeGitignore: ensureSafeGitignore2 } = (init_doctorService(), __toCommonJS(doctorService_exports));
     var DoctorModal2 = class extends Modal2 {
       constructor(app, plugin) {
@@ -6353,7 +6800,7 @@ var require_doctorModal = __commonJS({
             const fixBtn = row.createEl("button", { cls: "owb-btn-sm", text: "\u4E00\u952E\u8865\u5168 .gitignore" });
             fixBtn.addEventListener("click", () => {
               const added = ensureSafeGitignore2(basePath);
-              new Notice9(added ? "\u5DF2\u5199\u5165\u63A8\u8350 .gitignore \u4FDD\u62A4\u89C4\u5219" : "\u89C4\u5219\u5DF2\u5B58\u5728");
+              new Notice10(added ? "\u5DF2\u5199\u5165\u63A8\u8350 .gitignore \u4FDD\u62A4\u89C4\u5219" : "\u89C4\u5219\u5DF2\u5B58\u5728");
               this.onOpen();
             });
           }
@@ -6371,7 +6818,7 @@ var require_doctorModal = __commonJS({
 var require_aiQuizModal = __commonJS({
   "src/modals/aiQuizModal.js"(exports2, module2) {
     "use strict";
-    var { Modal: Modal2, Notice: Notice9, normalizePath: normalizePath8 } = require("obsidian");
+    var { Modal: Modal2, Notice: Notice10, normalizePath: normalizePath9 } = require("obsidian");
     var { generateQuizMarkdownFromNote: generateQuizMarkdownFromNote2 } = (init_aiService(), __toCommonJS(aiService_exports));
     var AIQuizModal2 = class extends Modal2 {
       constructor(app, plugin) {
@@ -6393,7 +6840,7 @@ var require_aiQuizModal = __commonJS({
           text: `\u6E90\u7B14\u8BB0\uFF1A${activeFile.path} \xB7 \u6A21\u578B\uFF1A${this.plugin.settings.aiModel}`
         });
         const folder = (this.plugin.settings.quizFolder || "notes").replace(/^\/+|\/+$/g, "");
-        const defaultOut = normalizePath8(`${folder}/${activeFile.basename}-\u81EA\u6D4B\u9898\u5E93.md`);
+        const defaultOut = normalizePath9(`${folder}/${activeFile.basename}-\u81EA\u6D4B\u9898\u5E93.md`);
         contentEl.createEl("label", { cls: "owb-muted", text: "\u8F93\u51FA\u9898\u5E93\u8DEF\u5F84" });
         const pathInput = contentEl.createEl("input", {
           cls: "owb-input",
@@ -6409,7 +6856,7 @@ var require_aiQuizModal = __commonJS({
         cancelBtn.addEventListener("click", () => this.close());
         const genBtn = actions.createEl("button", { cls: "mod-cta", text: "\u5F00\u59CB\u751F\u6210\u9898\u5E93" });
         genBtn.addEventListener("click", async () => {
-          const outPath = normalizePath8(pathInput.value.trim() || defaultOut);
+          const outPath = normalizePath9(pathInput.value.trim() || defaultOut);
           const count = Math.max(1, Math.min(20, Number.parseInt(countInput.value, 10) || 5));
           genBtn.disabled = true;
           genBtn.setText("\u6B63\u5728\u751F\u6210...");
@@ -6431,13 +6878,13 @@ var require_aiQuizModal = __commonJS({
             } else {
               await this.app.vault.create(outPath, md);
             }
-            new Notice9(`\u5DF2\u751F\u6210\u81EA\u6D4B\u9898\u5E93\uFF1A${outPath}`);
+            new Notice10(`\u5DF2\u751F\u6210\u81EA\u6D4B\u9898\u5E93\uFF1A${outPath}`);
             this.close();
             if (this.plugin.isFeatureEnabled("quizEngine")) {
               await this.plugin.activateQuizView(outPath);
             }
           } catch (err) {
-            new Notice9(`AI \u51FA\u9898\u5931\u8D25\uFF1A${err.message}`, 7e3);
+            new Notice10(`AI \u51FA\u9898\u5931\u8D25\uFF1A${err.message}`, 7e3);
             genBtn.disabled = false;
             genBtn.setText("\u5F00\u59CB\u751F\u6210\u9898\u5E93");
           }
@@ -6455,7 +6902,7 @@ var require_aiQuizModal = __commonJS({
 var require_settings = __commonJS({
   "src/settings.js"(exports2, module2) {
     "use strict";
-    var { PluginSettingTab, Setting, Notice: Notice9 } = require("obsidian");
+    var { PluginSettingTab, Setting, Notice: Notice10 } = require("obsidian");
     var FEATURE_META = [
       { key: "workbench", name: "\u4E2A\u4EBA\u77E5\u8BC6\u5DE5\u4F5C\u53F0", desc: "\u9996\u5C4F\u95EE\u5019\u3001\u4ECA\u65E5\u884C\u52A8\u52FE\u9009\u3001\u4ECA\u65E5\u8F93\u5165/\u8F93\u51FA\u4E0E\u6C89\u7761\u7B14\u8BB0\u6D1E\u5BDF" },
       { key: "gitPanel", name: "Git \u7BA1\u7406\u9762\u677F\u4E0E\u72B6\u6001\u680F", desc: "\u53F3\u4FA7\u8FB9\u680F\u5206\u652F\u5207\u6362\u3001\u6682\u5B58/\u64A4\u9500/Diff\u3001\u63D0\u4EA4\u540C\u6B65\u4E0E\u5386\u53F2\u8BB0\u5F55" },
@@ -6702,7 +7149,7 @@ var require_settings = __commonJS({
                 mastery: {}
               };
               await this.plugin.saveSettings();
-              new Notice9("\u7B54\u9898\u8BB0\u5F55\u5DF2\u6E05\u7A7A");
+              new Notice10("\u7B54\u9898\u8BB0\u5F55\u5DF2\u6E05\u7A7A");
             })
           );
         }
@@ -6902,7 +7349,7 @@ var require_settings = __commonJS({
               if (leaf.view && leaf.view.invalidateHeat) leaf.view.invalidateHeat();
             }
             this.plugin.refreshWorkbenchViews();
-            new Notice9("\u7F13\u5B58\u5DF2\u6E05\u7A7A");
+            new Notice10("\u7F13\u5B58\u5DF2\u6E05\u7A7A");
           })
         );
         if (this.plugin.isFeatureEnabled("imageTools")) {
@@ -6919,7 +7366,7 @@ var require_settings = __commonJS({
 });
 
 // src/main.js
-var { Plugin, Notice: Notice8 } = require("obsidian");
+var { Plugin, Notice: Notice9 } = require("obsidian");
 var {
   VIEW_TYPE_WORKBENCH: VIEW_TYPE_WORKBENCH2,
   VIEW_TYPE_GIT: VIEW_TYPE_GIT2,
@@ -6943,6 +7390,17 @@ var { DedupeModal: DedupeModal2 } = (init_dedupeModal(), __toCommonJS(dedupeModa
 var { saveAttachment: saveAttachment2, planOrganize: planOrganize2, applyOrganize: applyOrganize2, cleanupConvertPairs: cleanupConvertPairs2 } = (init_attachmentService(), __toCommonJS(attachmentService_exports));
 var { BASE_STYLE_CSS: BASE_STYLE_CSS2 } = (init_basesStyle(), __toCommonJS(basesStyle_exports));
 var { PomodoroFullscreen } = require_pomodoroFullscreen();
+var goalService = (init_goalService(), __toCommonJS(goalService_exports));
+var { formatNote: formatNote2 } = (init_autoFormatService(), __toCommonJS(autoFormatService_exports));
+var { chatCompletion: chatCompletion2 } = (init_aiService(), __toCommonJS(aiService_exports));
+async function aiBridgeChat(messages, settings) {
+  const baseUrl = String(settings && settings.aiBaseUrl || "").replace(/\/+$/, "");
+  const model = String(settings && settings.aiModel || "").trim();
+  if (!baseUrl || !model) {
+    throw new Error("\u8BF7\u5148\u5728\u8BBE\u7F6E\u4E2D\u914D\u7F6E AI Base URL \u4E0E\u6A21\u578B\uFF08OpenAI/DeepSeek/Ollama \u5747\u53EF\uFF09");
+  }
+  return chatCompletion2(messages, settings);
+}
 var { WorkbenchView } = require_workbenchView();
 var { GitPanelView } = require_gitView();
 var { QuizView } = require_quizView();
@@ -6965,7 +7423,7 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
       () => this.settings,
       async (finishedPhase) => {
         await this.saveSettings();
-        new Notice8(
+        new Notice9(
           finishedPhase === "work" ? "\u{1F345} \u4E13\u6CE8\u756A\u8304\u5B8C\u6210\uFF01\u4F11\u606F\u4E00\u4E0B\u5427" : "\u2615 \u4F11\u606F\u7ED3\u675F\uFF0C\u51C6\u5907\u5F00\u542F\u4E0B\u4E00\u8F6E\u4E13\u6CE8",
           6e3
         );
@@ -7116,6 +7574,21 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
       checkCallback: (checking) => this._guardCommand("bases", checking, () => this.applyBasesStyle())
     });
     this.addCommand({
+      id: "open-year-goals",
+      name: "\u76EE\u6807\uFF1A\u6253\u5F00\u5E74\u5EA6\u76EE\u6807\uFF08\u5E74=\u6708=\u5468=\u65E5\uFF09",
+      checkCallback: (checking) => this._guardCommand("goals", checking, () => this.openYearGoals())
+    });
+    this.addCommand({
+      id: "goal-ai-breakdown",
+      name: "\u76EE\u6807\uFF1AAI \u62C6\u89E3\u5F53\u524D\u76EE\u6807\u5230\u6708/\u5468/\u65E5",
+      checkCallback: (checking) => this._guardCommand("goals", checking, () => this.goalAiBreakdown())
+    });
+    this.addCommand({
+      id: "format-note",
+      name: "\u683C\u5F0F\u5316\uFF1A\u89C4\u8303\u5F53\u524D\u7B14\u8BB0\uFF08frontmatter + \u51B3\u7B56\u6A21\u578B\u6253\u6807\u7B7E\uFF09",
+      checkCallback: (checking) => this._guardCommand("autoFormat", checking, () => this.formatCurrentNote())
+    });
+    this.addCommand({
       id: "tidy-explorer",
       name: "\u6587\u4EF6\u6D4F\u89C8\u5668\uFF1A\u751F\u6210\u6574\u7406\u6837\u5F0F\uFF08\u9690\u85CF\u76EE\u5F55 + \u5206\u9694\u7EBF\uFF09",
       checkCallback: (checking) => this._guardCommand("workbench", checking, () => this.applyExplorerStyle())
@@ -7179,7 +7652,7 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
             await this.updateGitStatusBar();
           }
         } catch (err) {
-          new Notice8(`\u542F\u52A8\u81EA\u52A8\u62C9\u53D6\u5931\u8D25\uFF1A${err.message}`, 5e3);
+          new Notice9(`\u542F\u52A8\u81EA\u52A8\u62C9\u53D6\u5931\u8D25\uFF1A${err.message}`, 5e3);
         }
       }
     });
@@ -7302,17 +7775,17 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
   }
   async runGitQuickSync(silent = false) {
     if (!this.isFeatureEnabled("gitPanel") || !this.gitService) {
-      if (!silent) new Notice8("Git \u6A21\u5757\u672A\u542F\u7528\u6216\u5F53\u524D\u73AF\u5883\u4E0D\u652F\u6301");
+      if (!silent) new Notice9("Git \u6A21\u5757\u672A\u542F\u7528\u6216\u5F53\u524D\u73AF\u5883\u4E0D\u652F\u6301");
       return;
     }
     try {
       const st = await this.gitService.getStatus();
       if (!st.isRepo) {
-        if (!silent) new Notice8("\u5F53\u524D Vault \u5C1A\u672A\u521D\u59CB\u5316 Git \u4ED3\u5E93");
+        if (!silent) new Notice9("\u5F53\u524D Vault \u5C1A\u672A\u521D\u59CB\u5316 Git \u4ED3\u5E93");
         return;
       }
       if (st.conflicts.length) {
-        new Notice8("\u5B58\u5728\u672A\u89E3\u51B3\u7684\u5408\u5E76\u51B2\u7A81\uFF0C\u8BF7\u5148\u5728 Git \u9762\u677F\u5904\u7406", 6e3);
+        new Notice9("\u5B58\u5728\u672A\u89E3\u51B3\u7684\u5408\u5E76\u51B2\u7A81\uFF0C\u8BF7\u5148\u5728 Git \u9762\u677F\u5904\u7406", 6e3);
         return;
       }
       if (st.staged.length || st.unstaged.length) {
@@ -7327,9 +7800,9 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
       }
       await this.updateGitStatusBar();
       this.refreshGitViews();
-      if (!silent) new Notice8("Git \u540C\u6B65\u5B8C\u6210");
+      if (!silent) new Notice9("Git \u540C\u6B65\u5B8C\u6210");
     } catch (err) {
-      new Notice8(`Git \u540C\u6B65\u5931\u8D25\uFF1A${err.message}`, 6e3);
+      new Notice9(`Git \u540C\u6B65\u5931\u8D25\uFF1A${err.message}`, 6e3);
     }
   }
   async activateWorkbenchView() {
@@ -7375,8 +7848,89 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
   openDailyNote(offsetDays) {
     if (!this.isFeatureEnabled("dailyJournal")) return;
     openDaily2(this.app, this.settings, offsetDays).catch(
-      (err) => new Notice8("\u65E5\u8BB0\u6253\u5F00\u5931\u8D25\uFF1A" + err.message, 5e3)
+      (err) => new Notice9("\u65E5\u8BB0\u6253\u5F00\u5931\u8D25\uFF1A" + err.message, 5e3)
     );
+  }
+  // ── 目标模式 ──
+  async openYearGoals() {
+    const year = (/* @__PURE__ */ new Date()).getFullYear();
+    const file = await goalService.ensureGoalFile(this.app, year);
+    await this.app.workspace.getLeaf(false).openFile(file);
+    this.refreshWorkbenchViews();
+  }
+  /**
+   * AI 拆解：取当前笔记中的未勾目标行（或用户选中文本），决策模型判定领域/优先级，
+   * LLM 生成层级草案 → 追加进目标文件的 AI 草稿小节（不静默改正文）。
+   */
+  async goalAiBreakdown() {
+    try {
+      const leaf = this.app.workspace.getMostRecentLeaf();
+      const view = leaf && leaf.view;
+      if (!view || !view.file) {
+        new Notice9("\u5148\u6253\u5F00\u76EE\u6807\u6587\u4EF6\uFF08\u6216\u5305\u542B\u76EE\u6807\u884C\u7684\u7B14\u8BB0\uFF09");
+        return;
+      }
+      let goalText = "";
+      const editor = view.editor;
+      if (editor && editor.somethingSelected && editor.somethingSelected()) {
+        goalText = editor.getSelection().trim();
+      }
+      if (!goalText) {
+        const content = await this.app.vault.read(view.file);
+        const open = content.match(/^\s*[-*]\s*\[ \]\s*(.+)$/m);
+        goalText = open ? open[1].replace(/（?关联\s*→\s*[A-Z]\d+）?/, "").trim() : "";
+      }
+      if (!goalText) {
+        new Notice9("\u6CA1\u6709\u53EF\u62C6\u89E3\u7684\u76EE\u6807\u884C\uFF08\u9700\u8981\u4E00\u6761\u672A\u52FE\u9009\u7684\u4EFB\u52A1\u884C\u6216\u9009\u4E2D\u6587\u672C\uFF09");
+        return;
+      }
+      const year = (/* @__PURE__ */ new Date()).getFullYear();
+      const tree = await goalService.loadGoalTree(this.app, year);
+      if (!tree) {
+        new Notice9(`\u76EE\u6807\u6587\u4EF6\u4E0D\u5B58\u5728\uFF0C\u5C06\u5148\u521B\u5EFA ${year} \u5E74\u76EE\u6807`);
+        await this.openYearGoals();
+        return;
+      }
+      new Notice9("\u62C6\u89E3\u4E2D\uFF1A\u51B3\u7B56\u6A21\u578B\u5224\u5B9A\u9886\u57DF \u2192 LLM \u751F\u6210\u8349\u6848\u2026", 6e3);
+      const res = await goalService.aiBreakdown(
+        (state, questions) => this.decide(state, questions),
+        (messages) => aiBridgeChat(messages, this.settings),
+        goalText,
+        "month"
+      );
+      await goalService.appendDraft(this.app, tree, res.lines);
+      new Notice9(
+        `\u5DF2\u751F\u6210 ${res.lines.length} \u6761\u8349\u6848 \u2192 vault/\u76EE\u6807/${year}.md \u7684\u300CAI \u8349\u7A3F\u300D\u5C0F\u8282\uFF08\u9886\u57DF ${res.domain} \xB7 ${res.priority}\uFF09`,
+        8e3
+      );
+      await this.app.workspace.getLeaf(false).openFile(tree.file);
+    } catch (err) {
+      new Notice9("AI \u62C6\u89E3\u5931\u8D25\uFF1A" + err.message, 8e3);
+    }
+  }
+  async formatCurrentNote() {
+    const leaf = this.app.workspace.getMostRecentLeaf();
+    const view = leaf && leaf.view;
+    if (!view || !view.file || view.file.extension !== "md") {
+      new Notice9("\u5148\u6253\u5F00\u4E00\u7BC7\u7B14\u8BB0");
+      return;
+    }
+    try {
+      const res = await formatNote2(this.app, view.file, {
+        decide: (state, questions) => this.decide(state, questions)
+      });
+      if (!res.changed) {
+        new Notice9("frontmatter \u5DF2\u5B8C\u5907\uFF0C\u65E0\u9700\u6539\u52A8");
+        return;
+      }
+      new Notice9(
+        `\u5DF2\u89C4\u8303\u5316\uFF1A
+${res.additions.join("\n")}`,
+        8e3
+      );
+    } catch (err) {
+      new Notice9("\u683C\u5F0F\u5316\u5931\u8D25\uFF1A" + err.message, 8e3);
+    }
   }
   openPomodoroFullscreen() {
     if (!this.isFeatureEnabled("pomodoro")) return;
@@ -7401,13 +7955,13 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
     if (!this.isFeatureEnabled("attachments")) return;
     try {
       const res = await cleanupConvertPairs2(this.app);
-      new Notice8(
+      new Notice9(
         res.pairs.length ? `\u8F6C\u7801\u6E05\u7406\uFF1A${res.pairs.length} \u5BF9\uFF0C\u5DF2\u5F52\u6863 ${res.moved.length} \u4E2A\u65E7\u539F\u4EF6\uFF0C\u6539\u5199 ${res.touched} \u7BC7\u7B14\u8BB0\u5F15\u7528` : "\u6CA1\u6709\u8F6C\u7801\u6B8B\u7559\uFF08\u672A\u53D1\u73B0\u540C\u540D\u7684\u65E7\u683C\u5F0F/\u65B0\u683C\u5F0F\u6210\u5BF9\u6587\u4EF6\uFF09",
         8e3
       );
       this.refreshWorkbenchViews();
     } catch (err) {
-      new Notice8("\u8F6C\u7801\u6E05\u7406\u5931\u8D25\uFF1A" + err.message, 8e3);
+      new Notice9("\u8F6C\u7801\u6E05\u7406\u5931\u8D25\uFF1A" + err.message, 8e3);
     }
   }
   openDedupeModal() {
@@ -7435,10 +7989,10 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
 `);
           }
         }
-        new Notice8(`\u5DF2\u5F52\u6863 ${files.length} \u4E2A\u9644\u4EF6\u5230 assets/`);
+        new Notice9(`\u5DF2\u5F52\u6863 ${files.length} \u4E2A\u9644\u4EF6\u5230 assets/`);
         this.refreshWorkbenchViews();
       } catch (e) {
-        new Notice8("\u4E0A\u4F20\u5931\u8D25\uFF1A" + e.message, 7e3);
+        new Notice9("\u4E0A\u4F20\u5931\u8D25\uFF1A" + e.message, 7e3);
       }
     });
     input.click();
@@ -7447,7 +8001,7 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
   async organizeAttachments() {
     const plan = planOrganize2(this.app);
     if (!plan.items.length) {
-      new Notice8("\u6CA1\u6709\u9700\u8981\u6574\u7406\u7684\u9644\u4EF6\uFF0C\u5168\u90E8\u5DF2\u5728 assets/ \u6216\u5F52\u6863\u533A");
+      new Notice9("\u6CA1\u6709\u9700\u8981\u6574\u7406\u7684\u9644\u4EF6\uFF0C\u5168\u90E8\u5DF2\u5728 assets/ \u6216\u5F52\u6863\u533A");
       return;
     }
     const { Modal: Modal2 } = require("obsidian");
@@ -7470,7 +8024,7 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
     foot.createEl("button", { cls: "mod-warning", text: "\u786E\u8BA4\u6574\u7406" }).addEventListener("click", async () => {
       modal.close();
       const res = await applyOrganize2(this.app, plan);
-      new Notice8(
+      new Notice9(
         `\u6574\u7406\u5B8C\u6210\uFF1A\u79FB\u52A8 ${res.moved.length} \u4E2A\uFF0C\u6539\u5199 ${res.touched} \u7BC7\u7B14\u8BB0${res.failed.length ? `\uFF0C\u5931\u8D25 ${res.failed.length}` : ""}`,
         8e3
       );
@@ -7495,16 +8049,16 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
       if (!list.includes("workbench-bases")) list.push("workbench-bases");
       appJson.enabledCssSnippets = list;
       await this.app.vault.adapter.write(p, JSON.stringify(appJson, null, 2));
-      new Notice8("\u591A\u7EF4\u8868\u683C\u6837\u5F0F\u5DF2\u751F\u6210\u5E76\u542F\u7528\uFF1Aworkbench-bases.css", 6e3);
+      new Notice9("\u591A\u7EF4\u8868\u683C\u6837\u5F0F\u5DF2\u751F\u6210\u5E76\u542F\u7528\uFF1Aworkbench-bases.css", 6e3);
     } catch (e) {
-      new Notice8("\u751F\u6210\u5931\u8D25\uFF1A" + e.message, 7e3);
+      new Notice9("\u751F\u6210\u5931\u8D25\uFF1A" + e.message, 7e3);
     }
   }
   async buildGraphNote() {
     try {
       await graphService.writeGraphNote(this.app, { dir: "vault/\u7CFB\u7EDF\u4E0E\u5DE5\u5177" });
     } catch (err) {
-      new Notice8("\u77E5\u8BC6\u56FE\u8C31\u751F\u6210\u5931\u8D25\uFF1A" + err.message, 8e3);
+      new Notice9("\u77E5\u8BC6\u56FE\u8C31\u751F\u6210\u5931\u8D25\uFF1A" + err.message, 8e3);
     }
   }
   /**
@@ -7561,9 +8115,9 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
       if (!list.includes("workbench-explorer")) list.push("workbench-explorer");
       appJson.enabledCssSnippets = list;
       await this.app.vault.adapter.write(appJsonPath, JSON.stringify(appJson, null, 2));
-      new Notice8("\u6587\u4EF6\u6D4F\u89C8\u5668\u6837\u5F0F\u5DF2\u751F\u6210\u5E76\u542F\u7528\uFF1A.obsidian/snippets/workbench-explorer.css", 7e3);
+      new Notice9("\u6587\u4EF6\u6D4F\u89C8\u5668\u6837\u5F0F\u5DF2\u751F\u6210\u5E76\u542F\u7528\uFF1A.obsidian/snippets/workbench-explorer.css", 7e3);
     } catch (err) {
-      new Notice8("\u751F\u6210\u5931\u8D25\uFF1A" + err.message, 8e3);
+      new Notice9("\u751F\u6210\u5931\u8D25\uFF1A" + err.message, 8e3);
     }
   }
   openAttachmentModal() {
@@ -7579,7 +8133,7 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
     const name = window.prompt("\u9879\u76EE\u540D\u79F0\uFF08\u5C06\u5728\u9879\u76EE\u76EE\u5F55\u4E0B\u521B\u5EFA <\u540D\u79F0>.md\uFF09\uFF1A", "");
     if (!name || !name.trim()) return;
     createProject2(this.app, this.settings, name).catch(
-      (err) => new Notice8("\u9879\u76EE\u521B\u5EFA\u5931\u8D25\uFF1A" + err.message, 6e3)
+      (err) => new Notice9("\u9879\u76EE\u521B\u5EFA\u5931\u8D25\uFF1A" + err.message, 6e3)
     );
   }
   async setPrivacy(hidden) {
@@ -7588,19 +8142,19 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
       if (hidden) await privacyService.ensureFolder(this.app, this.settings);
       await privacyService.setHidden(this.app, this.settings, hidden);
     } catch (err) {
-      new Notice8("\u9690\u79C1\u533A\u5207\u6362\u5931\u8D25\uFF1A" + err.message, 6e3);
+      new Notice9("\u9690\u79C1\u533A\u5207\u6362\u5931\u8D25\uFF1A" + err.message, 6e3);
     }
   }
   async showPrivacyStatus() {
     if (!this.isFeatureEnabled("privacy")) return;
     try {
       const st = await privacyService.status(this.app, this.settings);
-      new Notice8(
+      new Notice9(
         "\u9690\u79C1\u533A " + st.folder + "\uFF1A" + (st.hidden ? "\u{1F512} \u5DF2\u9501\u5B9A\uFF08\u641C\u7D22/\u94FE\u63A5\u4E0D\u7D22\u5F15\uFF0CGit \u6392\u9664\uFF09" : "\u{1F513} \u672A\u9501\u5B9A") + " \xB7 " + st.fileCount + " \u4E2A\u6587\u4EF6 \xB7 Git \u6392\u9664\uFF1A" + (st.gitExcluded ? "\u662F" : "\u5426"),
         8e3
       );
     } catch (err) {
-      new Notice8("\u72B6\u6001\u8BFB\u53D6\u5931\u8D25\uFF1A" + err.message, 6e3);
+      new Notice9("\u72B6\u6001\u8BFB\u53D6\u5931\u8D25\uFF1A" + err.message, 6e3);
     }
   }
   async activateRagView() {
@@ -7614,9 +8168,9 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
     if (!this.isFeatureEnabled("ragSearch")) return;
     try {
       const stat = await this.rag.buildIndex(this.app, null);
-      new Notice8("RAG \u7D22\u5F15\u5B8C\u6210\uFF1A" + stat.files + " \u7BC7 / " + stat.chunks + " \u5757", 6e3);
+      new Notice9("RAG \u7D22\u5F15\u5B8C\u6210\uFF1A" + stat.files + " \u7BC7 / " + stat.chunks + " \u5757", 6e3);
     } catch (err) {
-      new Notice8("\u7D22\u5F15\u6784\u5EFA\u5931\u8D25\uFF1A" + err.message, 8e3);
+      new Notice9("\u7D22\u5F15\u6784\u5EFA\u5931\u8D25\uFF1A" + err.message, 8e3);
     }
   }
   refreshWorkbenchViews() {

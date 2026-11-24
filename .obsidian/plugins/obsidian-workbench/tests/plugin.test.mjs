@@ -717,3 +717,128 @@ test("v3.10 hash: SHA-256 已知向量 + 路径规约 + storeByHash 去重复用
   assert.equal(dup.groups[0].dups.length, 1);
   assert.equal(dup.groups[0].dups[0].file.name, "b.png");
 });
+
+test("v3.12 goals: 四层解析 / 进度 / isoWeek / 拆解草案格式", async () => {
+  const gs = require(path.join(rootDir, "src/services/goalService.ts"));
+  const sample = [
+    "---",
+    "type: goal",
+    "---",
+    "# 2026 年目标",
+    "## 🎯 年度目标",
+    "- [ ] G1 生信技能树补全",
+    "- [x] G2 组会汇报体系",
+    "### 📆 月度拆解",
+    "#### 2026-12",
+    "- [ ] M1 BSA-seq 收尾（关联 → G1）",
+    "##### 周任务",
+    "###### W48 (11-24 ~ 11-30)",
+    "- [x] W1 整理注释表（关联 → M1）",
+    "###### 📅 日任务",
+    "- [ ] 核对表达数据（关联 → W1）",
+    "---",
+    "## 🤖 AI 草稿（由决策模型+LLM 生成）",
+    "- [ ] 某草案行（月 · project/P1）"
+  ].join("\n");
+
+  const tree = gs.parseGoalContent(sample);
+  assert.equal(tree.yearGoals.length, 2);
+  assert.equal(tree.yearGoals[0].ref, null);
+  assert.equal(tree.yearGoals[1].done, true);
+  assert.equal(tree.months.length, 1);
+  assert.equal(tree.months[0].key, "2026-12");
+  assert.equal(tree.months[0].tasks[0].ref, "G1");
+  assert.equal(tree.months[0].tasks[0].done, false);
+  assert.equal(tree.weeks.length, 1);
+  assert.equal(tree.weeks[0].tasks[0].done, true);
+  assert.equal(tree.weeks[0].tasks[0].ref, "M1");
+  assert.equal(tree.dayTasks.length, 1);
+  assert.equal(tree.dayTasks[0].ref, "W1");
+  assert.equal(tree.draft.length, 1);
+
+  const full = { file: null, year: 2026, ...tree };
+  const pr = gs.goalProgress(full);
+  assert.equal(pr.yearDone, 1);
+  assert.equal(pr.yearTotal, 2);
+  assert.equal(pr.monthTotal, 1);
+  assert.equal(pr.weekDone, 1);
+  assert.equal(pr.dayTotal, 1);
+
+  // isoWeek 已知向量：2026-11-24 是周一，ISO 周与实现一致即可往返
+  const w = gs.isoWeek(new Date(2026, 10, 24));
+  assert.ok(w >= 47 && w <= 49, "ISO 周在合理区间");
+  const mon = gs.monday(new Date(2026, 10, 25)); // 周三 → 周一应是 11-23? 实际 11-23 是周一
+  assert.equal(mon.getDate(), 23);
+
+  // aiBreakdown: 决策模型 + 假 LLM
+  const res = await gs.aiBreakdown(
+    async () => ({ answers: { domain: { value: "project", confidence: 0.9 }, priority: { value: "P0", confidence: 0.8 } } }),
+    async () => "完成 GWAS 注释核对\n整理候选基因表格\n撰写方法小结\n多余的一行应被裁剪到 3 条",
+    "完成 BSA-seq 项目",
+    "month"
+  );
+  assert.equal(res.domain, "project");
+  assert.equal(res.priority, "P0");
+  assert.equal(res.lines.length, 3);
+  assert.match(res.lines[0], /- \[ \] 完成 GWAS 注释核对/);
+  assert.match(res.lines[0], /月 · project\/P0/);
+});
+
+test("v3.12 autoFormat: 补全 frontmatter + 决策模型打标签（只加不减）", async () => {
+  const { formatNote } = require(path.join(rootDir, "src/services/autoFormatService.ts"));
+  const file = {
+    path: "notes/x.md",
+    basename: "x",
+    extension: "md",
+    stat: { ctime: new Date("2026-06-01").getTime(), mtime: Date.now() }
+  };
+  let written = null;
+  const app = { vault: { read: async () => "# 我的笔记\n\n这是正文，长度超过四十字符以确保触发领域判定与标签补全逻辑，内容涉及单细胞转录组分析。", modify: async (f, data) => (written = data) } };
+  const decide = async () => ({ answers: { domain: { value: "study", confidence: 0.88 } } });
+
+  const res = await formatNote(app, file, { decide });
+  assert.equal(res.changed, true);
+  assert.match(written, /^---\n/);
+  assert.match(written, /title: 我的笔记/);
+  assert.match(written, /created: 2026-06-01/);
+  assert.match(written, /updated: \d{4}-\d{2}-\d{2}/);
+  assert.match(written, /tags: \[领域\/study\]/);
+  assert.equal(res.domain, "study");
+  assert.equal(res.confidence, 0.88);
+  // 正文保留
+  assert.match(written, /# 我的笔记/);
+});
+
+test("v3.12 vaultStats: 任务来源含目标目录与任务清单，排除归档", async () => {
+  const { collectWorkbenchData } = require(path.join(rootDir, "src/services/vaultStats.ts"));
+  const mk = (path) => ({
+    path, basename: path.split("/").pop(), extension: "md",
+    stat: { ctime: 1, mtime: 1, size: 500 },
+    // listItems 挂 metadataCache
+  });
+  const taskFile = mk("vault/任务.md");
+  const goalFile = mk("vault/目标/2026.md");
+  const projectFile = mk("vault/项目/p.md");
+  const archived = mk("4-存档/old.md");
+  const stray = mk("notes/游离任务.md"); // 不在三个来源里 → 不扫
+  const files = [taskFile, goalFile, projectFile, archived, stray];
+  const app = {
+    vault: {
+      getMarkdownFiles: () => files,
+      cachedRead: async (f) => f === goalFile ? "###### 📅 日任务\n- [ ] 今日目标A\n" : "- [ ] 任务行\n",
+    },
+    metadataCache: {
+      getFileCache: (f) => ({
+        listItems: [{ task: " ", position: { start: { line: f === goalFile ? 1 : 0 } } }]
+      })
+    }
+  };
+  const data = await collectWorkbenchData(app, {
+    projectFolder: "vault/项目",
+    tasksPath: "vault/任务.md",
+    dailyFolder: "vault/日记"
+  });
+  const paths = data.pendingTasks.map((t) => t.file.path).sort();
+  // 归档与游离文件不进今日行动；任务清单/目标/项目三路都在
+  assert.deepEqual(paths, ["vault/任务.md", "vault/目标/2026.md", "vault/项目/p.md"]);
+});

@@ -4,7 +4,7 @@
 
 | 重复副本 | 归档位置 | 保留正本 |
 |---|---|---|
-| assets/Pasted image 20260604174921.png | 本目录 | assets/Pasted image 20260604174927.png（被 2 篇引用） |
+| assets/Pasted image 20260604174921.png | （已随转码清理进入 ../2026-11-24_转码原件/） | assets/Pasted image 20260604174927.avif（2 篇引用已改到 AVIF） |
 | notes/生信实验/02/fig1.svg | 本目录/02-fig1.svg | notes/生信实验/02/fig_align_na.svg（同名同内容） |
 | notes/生信实验/02/fig2.svg | 本目录/02-fig2.svg | notes/生信实验/02/fig_gap_runs.svg |
 | notes/生信实验/04/fig_gap_quality.svg | 本目录/04-fig_gap_quality.svg | notes/生信实验/04/scripts/fig_gap_quality.svg |

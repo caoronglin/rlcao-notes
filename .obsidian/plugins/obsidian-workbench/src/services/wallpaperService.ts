@@ -1,4 +1,3 @@
-// @ts-nocheck -- 渐进迁移: 语法已迁 TS, 类型化排入批1后续
 "use strict";
 
 /**
@@ -14,13 +13,19 @@
  * 无元数据 JSON 端点（无标题/版权字段），因此 UI 只呈现图像本身。
  */
 
-const BASE = "https://bing.cnortles.top";
+export const BASE = "https://bing.cnortles.top";
+
+export interface WallpaperSettings {
+  wallpaperMode?: string;
+  wallpaperFormat?: string;
+  wallpaperCustomUrl?: string;
+}
 
 /**
  * 由设置生成壁纸 URL。mode: "daily" | "random"
  * bust=true 时附加时间戳强制换图（daily 换不了日期，但可绕过缓存）。
  */
-function wallpaperUrl(settings, opts) {
+export function wallpaperUrl(settings: WallpaperSettings, opts?: { bust?: boolean }): string {
   const s = settings || {};
   const custom = String(s.wallpaperCustomUrl || "").trim();
   if (custom) return custom;
@@ -36,19 +41,13 @@ function wallpaperUrl(settings, opts) {
 /**
  * 计算今天是否该换图（用于「每天自动更新」开关的节流判断）。
  */
-function shouldRefresh(lastRefreshKey, todayKey) {
+export function shouldRefresh(lastRefreshKey: string, todayKey: string): boolean {
   return lastRefreshKey !== todayKey;
 }
 
 /** 生成 CSS 背景层声明。 */
-function backgroundCss(url, dim) {
+export function backgroundCss(url: string, dim?: number): string {
   const overlay = typeof dim === "number" ? dim : 0.45;
   return `linear-gradient(rgba(0,0,0,${overlay}), rgba(0,0,0,${overlay})), url("${url}")`;
 }
 
-export {
-  BASE,
-  wallpaperUrl,
-  shouldRefresh,
-  backgroundCss
-};

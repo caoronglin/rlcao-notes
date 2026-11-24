@@ -1,3 +1,4 @@
+// @ts-nocheck -- 渐进迁移: 语法已迁 TS, 类型化排入后续批次
 "use strict";
 
 const { execFile } = require("child_process");
@@ -346,4 +347,6 @@ class GitService {
   }
 }
 
-module.exports = { GitService };
+export {
+  GitService
+};

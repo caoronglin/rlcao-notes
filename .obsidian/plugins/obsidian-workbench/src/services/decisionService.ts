@@ -1,3 +1,4 @@
+// @ts-nocheck -- 渐进迁移: 语法已迁 TS, 类型化排入后续批次
 "use strict";
 
 /**
@@ -74,4 +75,8 @@ function noteToState(file, content, maxChars) {
   return state;
 }
 
-module.exports = { ask, normalizeAnswers, noteToState };
+export {
+  ask,
+  normalizeAnswers,
+  noteToState
+};

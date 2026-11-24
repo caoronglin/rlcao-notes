@@ -1,7 +1,7 @@
 filters:
   and:
-    - "file.ext == \"md\""
-    - "file.inFolder(\"vault/文献笔记\")"
+    - file.ext == "md"
+    - file.inFolder("vault/文献笔记")
 properties:
   file.name:
     displayName: 笔记
@@ -14,9 +14,9 @@ views:
     name: 总览
     order:
       - file.name
-      - note.status
+      - status
       - file.mtime
-    limit: 100
     sort:
       - property: file.mtime
         direction: DESC
+    limit: 100

@@ -1,6 +1,7 @@
+// @ts-nocheck -- 渐进迁移: 语法已迁 TS, 类型化排入后续批次
 "use strict";
 
-const { normalizePath } = require("obsidian");
+import { normalizePath } from "obsidian";
 
 /**
  * 附件管理服务：
@@ -336,7 +337,7 @@ async function saveAttachment(app, input, opts) {
   return { file, path };
 }
 
-module.exports = {
+export {
   planOrganize,
   applyOrganize,
   saveAttachment,

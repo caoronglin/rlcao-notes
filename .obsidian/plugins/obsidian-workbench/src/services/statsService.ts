@@ -1,4 +1,3 @@
-// @ts-nocheck -- 渐进迁移: 语法已迁 TS, 类型化排入批1后续
 "use strict";
 
 /**
@@ -7,12 +6,27 @@
  */
 
 /** 标签统计：返回 [{ tag, count }] 降序 */
-function tagStats(app, opts) {
+export interface VaultFileLite {
+  path: string;
+  extension: string;
+  stat?: { size?: number } | null;
+}
+
+export interface TagStat { tag: string; count: number }
+export interface TagStatsResult {
+  list: TagStat[];
+  all: TagStat[];
+  distinct: number;
+  total: number;
+  nested: number;
+}
+
+function tagStats(app: { metadataCache?: { getTags?: () => Record<string, number> } }, opts?: { limit?: number }): TagStatsResult {
   const o = opts || {};
   const counts = new Map();
   let mc = null;
   try {
-    mc = app.metadataCache.getTags ? app.metadataCache.getTags() : null;
+    mc = app.metadataCache && app.metadataCache.getTags ? app.metadataCache.getTags() : null;
   } catch (e) {
     mc = null;
   }
@@ -23,7 +37,7 @@ function tagStats(app, opts) {
       counts.set(t, (counts.get(t) || 0) + Number(n || 0));
     }
   }
-  let list = [...counts.entries()].map(([tag, count]) => ({ tag, count }));
+  let list: TagStat[] = [...counts.entries()].map(([tag, count]) => ({ tag, count }));
   list.sort((a, b) => b.count - a.count || (a.tag < b.tag ? -1 : 1));
 
   const total = list.reduce((s, x) => s + x.count, 0);
@@ -38,20 +52,20 @@ function tagStats(app, opts) {
 }
 
 /** 附件统计：按扩展名聚合体积与数量 */
-function attachmentStats(app, attachmentExts) {
-  let files = [];
+function attachmentStats(app: { vault: { getFiles(): Array<{ path: string; extension: string; stat?: { size?: number } | null }> } }, attachmentExts: Set<string>): { count: number; totalBytes: number; byExt: Array<{ ext: string; count: number; bytes: number }> } {
+  let files: VaultFileLite[] = [];
   try {
     files = app.vault.getFiles();
   } catch (e) {
     files = [];
   }
-  const byExt = new Map();
+  const byExt = new Map<string, { ext: string; count: number; bytes: number }>();
   let totalBytes = 0;
   let count = 0;
   for (const f of files) {
     const ext = String(f.extension || "").toLowerCase();
     if (!attachmentExts.has(ext)) continue;
-    const size = f.stat ? f.stat.size : 0;
+    const size = f.stat ? (f.stat.size ?? 0) : 0;
     const cur = byExt.get(ext) || { ext, count: 0, bytes: 0 };
     cur.count += 1;
     cur.bytes += size;
@@ -67,8 +81,8 @@ function attachmentStats(app, attachmentExts) {
  * 附件位置分布：有多少附件已经规整到 assets/，多少散落在别处。
  * 用于「整理附件」前的体检。
  */
-function attachmentLocations(app, attachmentExts) {
-  let files = [];
+function attachmentLocations(app: { vault: { getFiles(): Array<{ path: string; extension: string }> } }, attachmentExts: Set<string>): { inAssets: Array<{ path: string; extension: string }>; loose: Array<{ path: string; extension: string }> } {
+  let files: VaultFileLite[] = [];
   try {
     files = app.vault.getFiles();
   } catch (e) {

@@ -1,6 +1,7 @@
+// @ts-nocheck -- 渐进迁移: 语法已迁 TS, 类型化排入后续批次
 "use strict";
 
-const { normalizePath, Notice } = require("obsidian");
+import { normalizePath, Notice } from "obsidian";
 
 /**
  * 多维表格（Bases / duowei-table）支持：
@@ -80,4 +81,10 @@ async function createBase(app, name, folder) {
   return file;
 }
 
-module.exports = { BASE_EXTS, listBases, createBase, duoweiTemplate, DEFAULT_FOLDER };
+export {
+  BASE_EXTS,
+  listBases,
+  createBase,
+  duoweiTemplate,
+  DEFAULT_FOLDER
+};

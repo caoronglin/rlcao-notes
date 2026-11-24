@@ -1,7 +1,6 @@
-// @ts-nocheck -- 渐进迁移: 语法已迁 TS, 类型化排入批1后续
 "use strict";
 
-import { normalizePath, Notice } from "obsidian";
+import { normalizePath, Notice, type App, type TFile, type TFolder } from "obsidian";
 import { formatDate } from "../utils";
 
 /**
@@ -9,8 +8,18 @@ import { formatDate } from "../utils";
  * 读取 frontmatter 状态；支持基于模板的新建。
  */
 
-function parseFrontmatter(text) {
-  const out = {};
+export interface ProjectEntry {
+  name: string;
+  kind: "file" | "dir";
+  file: TFile | null;
+  status: string;
+  due: string;
+  priority: string;
+  noteCount: number;
+}
+
+function parseFrontmatter(text: string): Record<string, string> {
+  const out: Record<string, string> = {};
   if (!text || !text.startsWith("---")) return out;
   const end = text.indexOf("\n---", 3);
   if (end < 0) return out;
@@ -32,31 +41,31 @@ const MAIN_FILE_NAMES = ["index.md", "README.md"];
 /**
  * 目录项目的「主文件」：同名 .md → index.md → README.md → 第一个带 type:project 的 md。
  */
-function pickMainFile(dirAbs) {
-  const sameName = dirAbs.children.find(
-    (c) => c.extension === "md" && c.basename === dirAbs.name
-  );
+function pickMainFile(dirAbs: TFolder): TFile | null {
+  const files = dirAbs.children as TFile[];
+  const sameName = files.find((c) => c.extension === "md" && c.basename === dirAbs.name);
   if (sameName) return sameName;
   for (const name of MAIN_FILE_NAMES) {
-    const hit = dirAbs.children.find((c) => c.name === name);
+    const hit = files.find((c) => c.name === name);
     if (hit) return hit;
   }
-  return dirAbs.children.find((c) => c.extension === "md") || null;
+  return files.find((c) => c.extension === "md") || null;
 }
 
 /**
  * 列出项目：projectFolder 下的一级目录与 .md 文件。
  * 返回 [{ name, kind, file, status, due, priority, noteCount }]
  */
-async function listProjects(app, settings) {
+async function listProjects(app: App, settings: { projectFolder?: string }): Promise<ProjectEntry[]> {
   const folder = (settings.projectFolder || "").replace(/^\/+|\/+$/g, "");
   if (!folder) return [];
   const abs = app.vault.getAbstractFileByPath(normalizePath(folder));
-  if (!abs || !abs.children) return [];
-  const out = [];
-  for (const child of abs.children) {
+  if (!abs || !(abs as TFolder).children) return [];
+  const out: ProjectEntry[] = [];
+  for (const abstractChild of (abs as TFolder).children) {
+    const child = abstractChild as TFile;
     if (child.extension === "md") {
-      let meta = {};
+      let meta: Record<string, string> = {};
       try {
         meta = parseFrontmatter(await app.vault.cachedRead(child));
       } catch (e) {
@@ -71,9 +80,9 @@ async function listProjects(app, settings) {
         priority: meta.priority || "",
         noteCount: 1
       });
-    } else if (child.children) {
-      const main = pickMainFile(child);
-      let meta = {};
+    } else if ((abstractChild as TFolder).children) {
+      const main = pickMainFile(abstractChild as TFolder);
+      let meta: Record<string, string> = {};
       if (main) {
         try {
           meta = parseFrontmatter(await app.vault.cachedRead(main));
@@ -88,7 +97,7 @@ async function listProjects(app, settings) {
         status: meta.status || "",
         due: meta.due || "",
         priority: meta.priority || "",
-        noteCount: child.children.length
+        noteCount: (abstractChild as TFolder).children.length
       });
     }
   }
@@ -128,7 +137,7 @@ const PROJECT_TEMPLATE = [
 /**
  * 新建项目：在 projectFolder 下创建 <name>.md（若模板存在则优先用库内模板）。
  */
-async function createProject(app, settings, name) {
+async function createProject(app: App, settings: { projectFolder?: string }, name: string): Promise<TFile> {
   const clean = (name || "").trim();
   if (!clean) throw new Error("项目名不能为空");
   const folder = (settings.projectFolder || "").replace(/^\/+|\/+$/g, "");
@@ -143,7 +152,8 @@ async function createProject(app, settings, name) {
   // 库内 Templater 模板优先
   let content = null;
   const tplPath = normalizePath("muban/project-dashboard-template.md");
-  const tplFile = app.vault.getAbstractFileByPath(tplPath);
+  const tplAbs = app.vault.getAbstractFileByPath(tplPath);
+  const tplFile = tplAbs && (tplAbs as TFile).extension === "md" ? (tplAbs as TFile) : null;
   if (tplFile) {
     content = await app.vault.cachedRead(tplFile);
     content = content

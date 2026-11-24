@@ -1,3 +1,4 @@
+// @ts-nocheck -- 渐进迁移: 语法已迁 TS, 类型化排入后续批次
 "use strict";
 
 const fs = require("fs");
@@ -163,7 +164,7 @@ function ensureSafeGitignore(vaultBasePath) {
   return true;
 }
 
-module.exports = {
+export {
   diagnoseVault,
   ensureSafeGitignore
 };

@@ -1,3 +1,4 @@
+// @ts-nocheck -- 渐进迁移: 语法已迁 TS, 类型化排入后续批次
 "use strict";
 
 const crypto = require("crypto");
@@ -158,7 +159,7 @@ function formatWrongCalloutMarkdown(title, wrongQuestions, dateStr) {
   return lines.join("\n") + "\n";
 }
 
-module.exports = {
+export {
   parseMarkdownQuiz,
   updateMasterySM2,
   getDueOrWrongQuestions,

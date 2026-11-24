@@ -1,3 +1,4 @@
+// @ts-nocheck -- 渐进迁移: 语法已迁 TS, 类型化排入后续批次
 "use strict";
 
 /**
@@ -98,4 +99,6 @@ const BASE_STYLE_CSS = `/* 由 Obsidian Workbench 生成：多维表格统一外
 }
 `;
 
-module.exports = { BASE_STYLE_CSS };
+export {
+  BASE_STYLE_CSS
+};

@@ -1,6 +1,7 @@
+// @ts-nocheck -- 渐进迁移: 语法已迁 TS, 类型化排入后续批次
 "use strict";
 
-const { Notice, setIcon } = require("obsidian");
+import { Notice, setIcon } from "obsidian";
 
 /**
  * 代码块执行与预览（精简版 execute-code）。
@@ -217,4 +218,10 @@ function renderHtmlPreview(code, container) {
   frame.srcdoc = code;
 }
 
-module.exports = { renderRunnableBlock, renderHtmlPreview, runJs, runProcess, MAX_OUTPUT };
+export {
+  renderRunnableBlock,
+  renderHtmlPreview,
+  runJs,
+  runProcess,
+  MAX_OUTPUT
+};

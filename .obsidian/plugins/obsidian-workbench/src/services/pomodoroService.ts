@@ -1,4 +1,3 @@
-// @ts-nocheck -- 渐进迁移: 语法已迁 TS, 类型化排入批1后续
 "use strict";
 
 import { formatDate, pad2 } from "../utils";
@@ -6,11 +5,28 @@ import { formatDate, pad2 } from "../utils";
 /**
  * 番茄钟状态机与每日专注统计服务（纯逻辑，独立可测）。
  */
+type Phase = "idle" | "work" | "break";
+
+interface PomoSettings {
+  pomodoroWorkMinutes?: number;
+  pomodoroBreakMinutes?: number;
+  pomodoroStats?: Record<string, { sessions?: number; minutes?: number }>;
+}
+
+type GetSettings = () => PomoSettings;
+type OnComplete = (phase: Phase) => void;
+
 class PomodoroService {
-  constructor(getSettings, onComplete) {
+  getSettings: GetSettings;
+  onComplete: OnComplete | null;
+  phase: Phase;
+  running: boolean;
+  remainingSeconds: number;
+
+  constructor(getSettings: GetSettings, onComplete: OnComplete | null = null) {
     this.getSettings = getSettings;
     this.onComplete = onComplete;
-    this.phase = "idle"; // "idle" | "work" | "break"
+    this.phase = "idle";
     this.running = false;
     this.remainingSeconds = 25 * 60;
   }
@@ -47,7 +63,7 @@ class PomodoroService {
   /**
    * 每秒推进一次；倒计时归零时自动记录当日专注数据并触发回调。
    */
-  tick(now = new Date()) {
+  tick(now: Date = new Date()): boolean {
     if (!this.running || this.phase === "idle") return false;
     this.remainingSeconds -= 1;
     if (this.remainingSeconds > 0) return false;
@@ -64,6 +80,8 @@ class PomodoroService {
         settings.pomodoroStats = {};
       }
       const rec = settings.pomodoroStats[key] || { sessions: 0, minutes: 0 };
+      rec.sessions = rec.sessions ?? 0;
+      rec.minutes = rec.minutes ?? 0;
       rec.sessions += 1;
       rec.minutes += mins;
       settings.pomodoroStats[key] = rec;
@@ -75,19 +93,19 @@ class PomodoroService {
     return true;
   }
 
-  getTodayStats(now = new Date()) {
+  getTodayStats(now: Date = new Date()): { date: string; sessions: number; minutes: number } {
     const settings = this.getSettings();
     const key = formatDate(now, "YYYY-MM-DD");
     const rec = (settings.pomodoroStats && settings.pomodoroStats[key]) || { sessions: 0, minutes: 0 };
     return { date: key, sessions: rec.sessions || 0, minutes: rec.minutes || 0 };
   }
 
-  formatRemaining() {
+  formatRemaining(): string {
     const s = Math.max(0, this.remainingSeconds);
     return `${pad2(Math.floor(s / 60))}:${pad2(s % 60)}`;
   }
 
-  getStatusBarText() {
+  getStatusBarText(): string {
     if (this.phase === "idle") {
       const today = this.getTodayStats();
       return `🍅 ${today.sessions}`;

@@ -1,7 +1,8 @@
+// @ts-nocheck -- 渐进迁移: 语法已迁 TS, 类型化排入后续批次
 "use strict";
 
-const { normalizePath, Notice } = require("obsidian");
-const { formatDate } = require("../utils");
+import { normalizePath, Notice } from "obsidian";
+import { formatDate } from "../utils";
 
 /**
  * 知识图谱生成：从 Obsidian 的链接解析缓存（metadataCache.resolvedLinks）
@@ -258,4 +259,10 @@ async function writeGraphNote(app, opts) {
   return { file, graph };
 }
 
-module.exports = { buildGraph, renderGraphMarkdown, writeGraphNote, detectCommunities, shortName };
+export {
+  buildGraph,
+  renderGraphMarkdown,
+  writeGraphNote,
+  detectCommunities,
+  shortName
+};

@@ -20,7 +20,12 @@
     "noEmit": true,
     "types": [
       "node"
-    ]
+    ],
+    "paths": {
+      "obsidian": [
+        "./obsidian.d.ts"
+      ]
+    }
   },
   "include": [
     "src/**/*.ts",

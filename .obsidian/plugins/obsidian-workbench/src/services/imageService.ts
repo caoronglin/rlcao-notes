@@ -1,6 +1,7 @@
+// @ts-nocheck -- 渐进迁移: 语法已迁 TS, 类型化排入后续批次
 "use strict";
 
-const { normalizePath, Notice } = require("obsidian");
+import { normalizePath, Notice } from "obsidian";
 
 /**
  * 图片服务：上传存档 + 格式转换 + 压缩。
@@ -276,7 +277,7 @@ function collectImages(app, folderPrefix) {
   });
 }
 
-module.exports = {
+export {
   DEFAULT_FORMAT,
   SUPPORTED_OUT,
   setPluginDir,

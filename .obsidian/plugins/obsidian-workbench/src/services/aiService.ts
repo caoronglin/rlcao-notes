@@ -1,3 +1,4 @@
+// @ts-nocheck -- 渐进迁移: 语法已迁 TS, 类型化排入后续批次
 "use strict";
 
 /**
@@ -128,7 +129,7 @@ async function generateQuizMarkdownFromNote(noteTitle, noteContent, count, confi
   return raw.replace(/^```(?:markdown|md)?\r?\n?/i, "").replace(/\r?\n?```$/i, "").trim() + "\n";
 }
 
-module.exports = {
+export {
   chatCompletion,
   generateCommitMessage,
   generateQuizMarkdownFromNote

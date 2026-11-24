@@ -25,16 +25,16 @@ Module.registerHooks({
   }
 });
 
-const { GitService } = require(path.join(rootDir, "src/services/gitService.js"));
+const { GitService } = require(path.join(rootDir, "src/services/gitService.ts"));
 const {
   parseMarkdownQuiz,
   updateMasterySM2,
   getDueOrWrongQuestions,
   formatWrongCalloutMarkdown
-} = require(path.join(rootDir, "src/services/quizEngine.js"));
-const { diagnoseVault, ensureSafeGitignore } = require(path.join(rootDir, "src/services/doctorService.js"));
+} = require(path.join(rootDir, "src/services/quizEngine.ts"));
+const { diagnoseVault, ensureSafeGitignore } = require(path.join(rootDir, "src/services/doctorService.ts"));
 const { PomodoroService } = require(path.join(rootDir, "src/services/pomodoroService.ts"));
-const { generateCommitMessage, generateQuizMarkdownFromNote } = require(path.join(rootDir, "src/services/aiService.js"));
+const { generateCommitMessage, generateQuizMarkdownFromNote } = require(path.join(rootDir, "src/services/aiService.ts"));
 const { insertCaptureLine } = require(path.join(rootDir, "src/utils.ts"));
 
 test("GitService end-to-end: Unicode paths, stash, remote config & conflict resolution", async () => {
@@ -231,8 +231,8 @@ test("Bundled v3.0 main.js loads cleanly and exposes feature toggle APIs", () =>
 });
 
 test("v3.1 modules: export contract + cosine/streak sanity", () => {
-  const { RagService, cosine } = require(path.join(rootDir, "src/services/ragService.js"));
-  const decision = require(path.join(rootDir, "src/services/decisionService.js"));
+  const { RagService, cosine } = require(path.join(rootDir, "src/services/ragService.ts"));
+  const decision = require(path.join(rootDir, "src/services/decisionService.ts"));
   const daily = require(path.join(rootDir, "src/services/dailyService.ts"));
   const { listProjects, createProject, parseFrontmatter } = require(path.join(rootDir, "src/services/projectService.ts"));
   const privacy = require(path.join(rootDir, "src/services/privacyService.js"));
@@ -287,7 +287,7 @@ test("v3.1 modules: export contract + cosine/streak sanity", () => {
 });
 
 test("v3.2 attachments: ref extraction + orphan/坏引用 detection", async () => {
-  const { extractAttachmentRefs, auditVault } = require(path.join(rootDir, "src/services/attachmentService.js"));
+  const { extractAttachmentRefs, auditVault } = require(path.join(rootDir, "src/services/attachmentService.ts"));
 
   // 四种引用形式
   const text = [
@@ -328,7 +328,7 @@ test("v3.2 attachments: ref extraction + orphan/坏引用 detection", async () =
 });
 
 test("v3.2 images: engine detect + canvas fallback contract", async () => {
-  const img = require(path.join(rootDir, "src/services/imageService.js"));
+  const img = require(path.join(rootDir, "src/services/imageService.ts"));
   const info = img.engineInfo();
   assert.ok(["sharp", "canvas"].includes(info.engine));
   assert.equal(typeof img.saveImage, "function");
@@ -419,13 +419,13 @@ test("v3.3 wallpaper: bing.cnortles.top URL 构造与自定义覆盖", () => {
 });
 
 test("v3.3 image: AVIF 为默认输出格式", async () => {
-  const img = require(path.join(rootDir, "src/services/imageService.js"));
+  const img = require(path.join(rootDir, "src/services/imageService.ts"));
   assert.equal(img.DEFAULT_FORMAT, "avif");
   assert.equal(img.SUPPORTED_OUT[0], "avif");
 });
 
 test("v3.4 attachment: 裸 % 文件名不再抛 URI malformed", () => {
-  const { extractAttachmentRefs } = require(path.join(rootDir, "src/services/attachmentService.js"));
+  const { extractAttachmentRefs } = require(path.join(rootDir, "src/services/attachmentService.ts"));
   // 真实踩坑：文件名含裸 % 时 decodeURIComponent 抛 URI malformed，整个扫描崩溃
   const text = [
     "![](assets/100%完成.png)",
@@ -439,7 +439,7 @@ test("v3.4 attachment: 裸 % 文件名不再抛 URI malformed", () => {
 });
 
 test("v3.4 graph: 建图 / 社区检测 / Markdown 渲染", () => {
-  const { buildGraph, renderGraphMarkdown, detectCommunities, shortName } = require(path.join(rootDir, "src/services/graphService.js"));
+  const { buildGraph, renderGraphMarkdown, detectCommunities, shortName } = require(path.join(rootDir, "src/services/graphService.ts"));
   const mk = (p) => ({ path: p, basename: p.split("/").pop().replace(/\.md$/, "") });
   const files = [mk("a.md"), mk("b.md"), mk("c.md"), mk("d.md"), mk("isolated.md")];
   const resolved = {
@@ -477,7 +477,7 @@ test("v3.4 graph: 建图 / 社区检测 / Markdown 渲染", () => {
 });
 
 test("v3.4 bases: 扫描 .duowei/.base 与模板合法性", () => {
-  const base = require(path.join(rootDir, "src/services/baseService.js"));
+  const base = require(path.join(rootDir, "src/services/baseService.ts"));
   const f = (p, ext) => ({ path: p, extension: ext, basename: p.split("/").pop().replace(/\.[^.]+$/, "") });
   const app = {
     vault: {
@@ -499,7 +499,7 @@ test("v3.4 bases: 扫描 .duowei/.base 与模板合法性", () => {
 });
 
 test("v3.4 sharp: 相对 manifest.dir 必须拼成绝对路径再 require", () => {
-  const img = require(path.join(rootDir, "src/services/imageService.js"));
+  const img = require(path.join(rootDir, "src/services/imageService.ts"));
   // 直接给相对目录：不应尝试 require（否则打包器会当相对模块解析并抛错）
   img.setPluginDir(".obsidian/plugins/obsidian-workbench");
   const info = img.engineInfo();
@@ -514,7 +514,7 @@ test("v3.4 sharp: 相对 manifest.dir 必须拼成绝对路径再 require", () =
 });
 
 test("v3.4 codeRunner: JS 沙箱执行与错误捕获", () => {
-  const { runJs } = require(path.join(rootDir, "src/services/codeRunner.js"));
+  const { runJs } = require(path.join(rootDir, "src/services/codeRunner.ts"));
   const ok = runJs("console.log('hello'); return 1 + 1;");
   assert.equal(ok.ok, true);
   assert.match(ok.output, /hello/);
@@ -575,7 +575,7 @@ test("v3.5 stats: 标签统计与附件聚合", () => {
 });
 
 test("v3.5 bases style: 片段包含关键选择器", () => {
-  const { BASE_STYLE_CSS } = require(path.join(rootDir, "src/styles/basesStyle.js"));
+  const { BASE_STYLE_CSS } = require(path.join(rootDir, "src/styles/basesStyle.ts"));
   assert.match(BASE_STYLE_CSS, /\.mt-command-bar/);
   assert.match(BASE_STYLE_CSS, /\.mt-gallery-card/);
   assert.ok(BASE_STYLE_CSS.length > 300);

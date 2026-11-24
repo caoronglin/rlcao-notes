@@ -309,14 +309,19 @@ var init_utils = __esm({
   }
 });
 
-// src/services/gitService.js
-var require_gitService = __commonJS({
-  "src/services/gitService.js"(exports2, module2) {
+// src/services/gitService.ts
+var gitService_exports = {};
+__export(gitService_exports, {
+  GitService: () => GitService
+});
+var execFile, promisify, execFileAsync, GitService;
+var init_gitService = __esm({
+  "src/services/gitService.ts"() {
     "use strict";
-    var { execFile } = require("child_process");
-    var { promisify } = require("util");
-    var execFileAsync = promisify(execFile);
-    var GitService2 = class _GitService {
+    ({ execFile } = require("child_process"));
+    ({ promisify } = require("util"));
+    execFileAsync = promisify(execFile);
+    GitService = class _GitService {
       constructor(vaultPath, options = {}) {
         this.vaultPath = vaultPath;
         this.gitBinary = options.gitBinary || "git";
@@ -605,7 +610,6 @@ var require_gitService = __commonJS({
         }
       }
     };
-    module2.exports = { GitService: GitService2 };
   }
 });
 
@@ -620,7 +624,7 @@ var init_pomodoroService = __esm({
     "use strict";
     init_utils();
     PomodoroService = class {
-      constructor(getSettings, onComplete) {
+      constructor(getSettings, onComplete = null) {
         this.getSettings = getSettings;
         this.onComplete = onComplete;
         this.phase = "idle";
@@ -670,6 +674,8 @@ var init_pomodoroService = __esm({
             settings.pomodoroStats = {};
           }
           const rec = settings.pomodoroStats[key] || { sessions: 0, minutes: 0 };
+          rec.sessions = rec.sessions ?? 0;
+          rec.minutes = rec.minutes ?? 0;
           rec.sessions += 1;
           rec.minutes += mins;
           settings.pomodoroStats[key] = rec;
@@ -702,12 +708,29 @@ var init_pomodoroService = __esm({
   }
 });
 
-// src/services/ragService.js
-var require_ragService = __commonJS({
-  "src/services/ragService.js"(exports2, module2) {
+// src/services/ragService.ts
+var ragService_exports = {};
+__export(ragService_exports, {
+  RagService: () => RagService,
+  cosine: () => cosine
+});
+function cosine(a, b) {
+  let dot = 0, na = 0, nb = 0;
+  const n = Math.min(a.length, b.length);
+  for (let i = 0; i < n; i++) {
+    dot += a[i] * b[i];
+    na += a[i] * a[i];
+    nb += b[i] * b[i];
+  }
+  if (!na || !nb) return 0;
+  return dot / (Math.sqrt(na) * Math.sqrt(nb));
+}
+var INDEX_FILE, SKIP_DIR_NAMES, RagService;
+var init_ragService = __esm({
+  "src/services/ragService.ts"() {
     "use strict";
-    var INDEX_FILE = ".rag-index.json";
-    var SKIP_DIR_NAMES = /* @__PURE__ */ new Set([
+    INDEX_FILE = ".rag-index.json";
+    SKIP_DIR_NAMES = /* @__PURE__ */ new Set([
       ".obsidian",
       ".trash",
       ".trash-1000",
@@ -717,18 +740,7 @@ var require_ragService = __commonJS({
       "muban",
       "panel"
     ]);
-    function cosine(a, b) {
-      let dot = 0, na = 0, nb = 0;
-      const n = Math.min(a.length, b.length);
-      for (let i = 0; i < n; i++) {
-        dot += a[i] * b[i];
-        na += a[i] * a[i];
-        nb += b[i] * b[i];
-      }
-      if (!na || !nb) return 0;
-      return dot / (Math.sqrt(na) * Math.sqrt(nb));
-    }
-    var RagService2 = class {
+    RagService = class {
       constructor(getSettings, adapter) {
         this.getSettings = getSettings;
         this.adapter = adapter;
@@ -810,14 +822,14 @@ var require_ragService = __commonJS({
         const raw = String(settings.ragFolders || "notes,vault,wiki,_posts");
         return raw.split(",").map((x) => x.trim()).filter(Boolean);
       }
-      shouldIndex(path, roots, privacyFolder) {
-        if (privacyFolder && (path + "/").startsWith(privacyFolder + "/")) return false;
-        if (path.startsWith(".obsidian/") || path.startsWith(".trash/")) return false;
+      shouldIndex(path2, roots, privacyFolder) {
+        if (privacyFolder && (path2 + "/").startsWith(privacyFolder + "/")) return false;
+        if (path2.startsWith(".obsidian/") || path2.startsWith(".trash/")) return false;
         for (const d of SKIP_DIR_NAMES) {
-          if (path === d || path.startsWith(d + "/")) return false;
+          if (path2 === d || path2.startsWith(d + "/")) return false;
         }
         if (!roots.length) return true;
-        return roots.some((r) => path === r || path.startsWith(r + "/"));
+        return roots.some((r) => path2 === r || path2.startsWith(r + "/"));
       }
       async loadIndex() {
         if (this.index) return this.index;
@@ -928,7 +940,6 @@ var require_ragService = __commonJS({
         return true;
       }
     };
-    module2.exports = { RagService: RagService2, cosine };
   }
 });
 
@@ -952,12 +963,13 @@ async function listDailies(app, settings) {
   if (!abs || !abs.children) return [];
   const out = [];
   for (const child of abs.children) {
-    if (child.extension !== "md") continue;
-    const m = child.basename.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    const f = child;
+    if (f.extension !== "md") continue;
+    const m = f.basename.match(/^(\d{4})-(\d{2})-(\d{2})$/);
     if (!m) continue;
     const d = new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
     if (Number.isNaN(d.getTime())) continue;
-    out.push({ file: child, date: d, key: child.basename });
+    out.push({ file: f, date: d, key: f.basename });
   }
   out.sort((a, b) => a.key < b.key ? 1 : -1);
   return out;
@@ -980,7 +992,8 @@ async function openDaily(app, settings, offsetDays) {
   const target = new Date(now.getFullYear(), now.getMonth(), now.getDate() + offsetDays);
   const targetPath = dailyPathFor(settings, target);
   const folder = (settings.dailyFolder || "").replace(/^\/+|\/+$/g, "");
-  let file = app.vault.getAbstractFileByPath(targetPath);
+  const existingAbs = app.vault.getAbstractFileByPath(targetPath);
+  let file = existingAbs && existingAbs.extension === "md" ? existingAbs : null;
   if (!file) {
     if (folder && !app.vault.getAbstractFileByPath((0, import_obsidian.normalizePath)(folder))) {
       await app.vault.createFolder((0, import_obsidian.normalizePath)(folder));
@@ -1026,15 +1039,14 @@ function parseFrontmatter(text) {
   return out;
 }
 function pickMainFile(dirAbs) {
-  const sameName = dirAbs.children.find(
-    (c) => c.extension === "md" && c.basename === dirAbs.name
-  );
+  const files = dirAbs.children;
+  const sameName = files.find((c) => c.extension === "md" && c.basename === dirAbs.name);
   if (sameName) return sameName;
   for (const name of MAIN_FILE_NAMES) {
-    const hit = dirAbs.children.find((c) => c.name === name);
+    const hit = files.find((c) => c.name === name);
     if (hit) return hit;
   }
-  return dirAbs.children.find((c) => c.extension === "md") || null;
+  return files.find((c) => c.extension === "md") || null;
 }
 async function listProjects(app, settings) {
   const folder = (settings.projectFolder || "").replace(/^\/+|\/+$/g, "");
@@ -1042,7 +1054,8 @@ async function listProjects(app, settings) {
   const abs = app.vault.getAbstractFileByPath((0, import_obsidian2.normalizePath)(folder));
   if (!abs || !abs.children) return [];
   const out = [];
-  for (const child of abs.children) {
+  for (const abstractChild of abs.children) {
+    const child = abstractChild;
     if (child.extension === "md") {
       let meta = {};
       try {
@@ -1058,8 +1071,8 @@ async function listProjects(app, settings) {
         priority: meta.priority || "",
         noteCount: 1
       });
-    } else if (child.children) {
-      const main = pickMainFile(child);
+    } else if (abstractChild.children) {
+      const main = pickMainFile(abstractChild);
       let meta = {};
       if (main) {
         try {
@@ -1074,7 +1087,7 @@ async function listProjects(app, settings) {
         status: meta.status || "",
         due: meta.due || "",
         priority: meta.priority || "",
-        noteCount: child.children.length
+        noteCount: abstractChild.children.length
       });
     }
   }
@@ -1095,7 +1108,8 @@ async function createProject(app, settings, name) {
   }
   let content = null;
   const tplPath = (0, import_obsidian2.normalizePath)("muban/project-dashboard-template.md");
-  const tplFile = app.vault.getAbstractFileByPath(tplPath);
+  const tplAbs = app.vault.getAbstractFileByPath(tplPath);
+  const tplFile = tplAbs && tplAbs.extension === "md" ? tplAbs : null;
   if (tplFile) {
     content = await app.vault.cachedRead(tplFile);
     content = content.replace(/\{\{VALUE:[^}]*\}\}/g, clean).replace(/\{\{DATE:YYYY-MM-DD\}\}/g, formatDate(/* @__PURE__ */ new Date(), "YYYY-MM-DD")).replace(/\{\{DATE\}\}/g, formatDate(/* @__PURE__ */ new Date(), "YYYY-MM-DD"));
@@ -1149,18 +1163,18 @@ var init_projectService = __esm({
 var require_privacyService = __commonJS({
   "src/services/privacyService.js"(exports2, module2) {
     "use strict";
-    var { normalizePath: normalizePath3, Notice: Notice3 } = require("obsidian");
+    var { normalizePath: normalizePath7, Notice: Notice7 } = require("obsidian");
     var APP_JSON = ".obsidian/app.json";
-    async function readJson(adapter, path, fallback) {
+    async function readJson(adapter, path2, fallback) {
       try {
-        const raw = await adapter.read(path);
+        const raw = await adapter.read(path2);
         return raw ? JSON.parse(raw) : { ...fallback };
       } catch (e) {
         return { ...fallback };
       }
     }
-    async function writeJson(adapter, path, obj) {
-      await adapter.write(path, JSON.stringify(obj, null, 2));
+    async function writeJson(adapter, path2, obj) {
+      await adapter.write(path2, JSON.stringify(obj, null, 2));
     }
     function filterPatternFor(folder) {
       return "^" + folder.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "(/|$)";
@@ -1178,7 +1192,7 @@ var require_privacyService = __commonJS({
         gitExcluded = Boolean(folder) && new RegExp("^" + folder.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "/?$", "m").test(gi);
       } catch (e) {
       }
-      const abs = folder ? app.vault.getAbstractFileByPath(normalizePath3(folder)) : null;
+      const abs = folder ? app.vault.getAbstractFileByPath(normalizePath7(folder)) : null;
       const fileCount = abs && abs.children ? abs.children.length : 0;
       return { folder, hidden, gitExcluded, fileCount, pattern };
     }
@@ -1211,77 +1225,250 @@ var require_privacyService = __commonJS({
       }
       const st = await status(app, settings);
       const verb = hidden ? "\u5DF2\u9501\u5B9A" : "\u5DF2\u89E3\u9501";
-      new Notice3(
+      new Notice7(
         `\u9690\u79C1\u533A ${verb}\uFF08${folder}\uFF0C${st.fileCount} \u4E2A\u6587\u4EF6\uFF09\u3002\u641C\u7D22\u4E0E\u94FE\u63A5\u7D22\u5F15${hidden ? "\u4E0D\u518D\u6536\u5F55\u8BE5\u533A" : "\u5DF2\u6062\u590D"}\uFF0C\u9700\u91CD\u8F7D Obsidian \u751F\u6548\u3002`,
         8e3
       );
       return st;
     }
-    async function ensureFolder(app, settings) {
+    async function ensureFolder2(app, settings) {
       const folder = (settings.privacyFolder || "").replace(/^\/+|\/+$/g, "");
       if (!folder) throw new Error("\u8BF7\u5148\u5728\u8BBE\u7F6E\u4E2D\u586B\u5199\u9690\u79C1\u533A\u76EE\u5F55");
-      const abs = app.vault.getAbstractFileByPath(normalizePath3(folder));
+      const abs = app.vault.getAbstractFileByPath(normalizePath7(folder));
       if (!abs) {
-        await app.vault.createFolder(normalizePath3(folder));
+        await app.vault.createFolder(normalizePath7(folder));
         await app.vault.create(
-          normalizePath3(folder + "/\u8BF4\u660E.md"),
+          normalizePath7(folder + "/\u8BF4\u660E.md"),
           "---\ntags: [privacy]\n---\n\n# \u9690\u79C1\u533A\n\n\u672C\u76EE\u5F55\u7531 Obsidian Workbench \u9690\u79C1\u6A21\u5757\u7BA1\u7406\u3002\n\n- \u9501\u5B9A\u540E\uFF1A\u641C\u7D22\u3001\u53CD\u5411\u94FE\u63A5\u3001\u56FE\u8C31\u5B8C\u5168\u4E0D\u6536\u5F55\u672C\u76EE\u5F55\uFF0C\u4E14\u88AB Git \u6392\u9664\u3002\n- \u89E3\u9501\u540E\uFF1A\u6062\u590D\u6B63\u5E38\u7D22\u5F15\u3002\n- \u5207\u6362\u540E\u9700\u91CD\u8F7D Obsidian\uFF08Ctrl/Cmd+P \u2192 Reload app without saving\uFF09\u3002\n"
         );
-        new Notice3("\u9690\u79C1\u533A\u76EE\u5F55\u5DF2\u521B\u5EFA\uFF1A" + folder);
+        new Notice7("\u9690\u79C1\u533A\u76EE\u5F55\u5DF2\u521B\u5EFA\uFF1A" + folder);
       }
       return abs;
     }
-    module2.exports = { status, setHidden, ensureFolder };
+    module2.exports = { status, setHidden, ensureFolder: ensureFolder2 };
   }
 });
 
-// src/services/imageService.js
-var require_imageService = __commonJS({
-  "src/services/imageService.js"(exports2, module2) {
-    "use strict";
-    var { normalizePath: normalizePath3, Notice: Notice3 } = require("obsidian");
-    var DEFAULT_FORMAT = "avif";
-    var SUPPORTED_OUT = ["avif", "webp", "jpeg", "jpg", "png"];
-    var sharpModule;
-    var sharpError = "";
-    var pluginDir = "";
-    function setPluginDir2(dir) {
-      pluginDir = String(dir || "");
-      sharpModule = void 0;
-    }
-    function loadSharp() {
-      if (sharpModule !== void 0) return sharpModule;
-      const attempts = [];
-      attempts.push(() => require("sharp"));
-      if (pluginDir && pluginDir.startsWith("/")) {
-        attempts.push(() => {
-          const nodePath = require("path");
-          return require(nodePath.join(pluginDir, "node_modules", "sharp"));
-        });
-      }
-      for (const attempt of attempts) {
-        try {
-          sharpModule = attempt();
-          sharpError = "";
-          return sharpModule;
-        } catch (e) {
-          sharpError = String(e && e.message || e);
-        }
-      }
-      sharpModule = null;
+// src/services/imageService.ts
+var imageService_exports = {};
+__export(imageService_exports, {
+  DEFAULT_FORMAT: () => DEFAULT_FORMAT,
+  SUPPORTED_OUT: () => SUPPORTED_OUT,
+  assetDirFor: () => assetDirFor,
+  baseOf: () => baseOf,
+  collectImages: () => collectImages,
+  convertBuffer: () => convertBuffer,
+  convertFiles: () => convertFiles,
+  engineInfo: () => engineInfo,
+  extOf: () => extOf,
+  loadSharp: () => loadSharp,
+  saveImage: () => saveImage,
+  setPluginDir: () => setPluginDir
+});
+function setPluginDir(dir) {
+  pluginDir = String(dir || "");
+  sharpModule = void 0;
+}
+function loadSharp() {
+  if (sharpModule !== void 0) return sharpModule;
+  const attempts = [];
+  attempts.push(() => require("sharp"));
+  if (pluginDir && pluginDir.startsWith("/")) {
+    attempts.push(() => {
+      const nodePath = require("path");
+      return require(nodePath.join(pluginDir, "node_modules", "sharp"));
+    });
+  }
+  for (const attempt of attempts) {
+    try {
+      sharpModule = attempt();
+      sharpError = "";
       return sharpModule;
+    } catch (e) {
+      sharpError = String(e && e.message || e);
     }
-    function engineInfo() {
-      const sharp = loadSharp();
-      return {
-        engine: sharp ? "sharp" : "canvas",
-        sharpVersion: sharp ? sharp.versions ? sharp.versions.sharp : "unknown" : null,
-        libvips: sharp && sharp.versions ? sharp.versions.vips : null,
-        formats: sharp ? Object.keys(sharp.format || {}).filter((k) => sharp.format[k].output && sharp.format[k].output.buffer) : ["webp", "jpeg", "png"],
-        error: sharpError
-      };
+  }
+  sharpModule = null;
+  return sharpModule;
+}
+function engineInfo() {
+  const sharp = loadSharp();
+  return {
+    engine: sharp ? "sharp" : "canvas",
+    sharpVersion: sharp ? sharp.versions ? sharp.versions.sharp : "unknown" : null,
+    libvips: sharp && sharp.versions ? sharp.versions.vips : null,
+    formats: sharp ? Object.keys(sharp.format || {}).filter((k) => sharp.format[k].output && sharp.format[k].output.buffer) : ["webp", "jpeg", "png"],
+    error: sharpError
+  };
+}
+function extOf(name) {
+  const i = String(name).lastIndexOf(".");
+  return i < 0 ? "" : name.slice(i + 1).toLowerCase();
+}
+function baseOf(name) {
+  const i = String(name).lastIndexOf(".");
+  return i < 0 ? name : name.slice(0, i);
+}
+function assetDirFor(date) {
+  const d = date || /* @__PURE__ */ new Date();
+  const pad = (n) => String(n).padStart(2, "0");
+  return `assets/${d.getFullYear()}-${pad(d.getMonth() + 1)}`;
+}
+async function ensureFolder(app, path2) {
+  const abs = app.vault.getAbstractFileByPath((0, import_obsidian3.normalizePath)(path2));
+  if (abs) return abs;
+  try {
+    return await app.vault.createFolder((0, import_obsidian3.normalizePath)(path2));
+  } catch (e) {
+    return app.vault.getAbstractFileByPath((0, import_obsidian3.normalizePath)(path2));
+  }
+}
+async function saveImage(app, input, opts) {
+  const o = opts || {};
+  const name = o.name || `pasted-${Date.now()}.png`;
+  const targetExt = String(o.format || DEFAULT_FORMAT).toLowerCase();
+  const dir = o.dir || assetDirFor(o.date);
+  await ensureFolder(app, dir);
+  let bytes;
+  if (typeof input === "string") {
+    const comma = input.indexOf(",");
+    const b64 = comma >= 0 ? input.slice(comma + 1) : input;
+    const bin = atob(b64);
+    bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  } else if (input instanceof ArrayBuffer) {
+    bytes = new Uint8Array(input);
+  } else if (input && input.buffer instanceof ArrayBuffer) {
+    bytes = new Uint8Array(input.buffer);
+  } else if (input && typeof input.arrayBuffer === "function") {
+    bytes = new Uint8Array(await input.arrayBuffer());
+  } else {
+    throw new Error("\u65E0\u6CD5\u8BC6\u522B\u7684\u56FE\u7247\u8F93\u5165\u7C7B\u578B");
+  }
+  let outBytes = bytes;
+  let outExt = extOf(name) || "png";
+  let engine = "none";
+  const needConvert = targetExt !== extOf(name);
+  const needResize = o.maxWidth && o.maxWidth > 0;
+  const needQuality = typeof o.quality === "number";
+  if (needConvert || needResize || needQuality) {
+    const conv = await convertBuffer(bytes, outExt, {
+      format: targetExt,
+      quality: o.quality,
+      maxWidth: o.maxWidth
+    });
+    outBytes = conv.bytes;
+    outExt = conv.ext;
+    engine = conv.engine;
+  }
+  const finalName = `${baseOf(name)}.${outExt}`;
+  let path2 = (0, import_obsidian3.normalizePath)(`${dir}/${finalName}`);
+  if (app.vault.getAbstractFileByPath(path2)) {
+    path2 = (0, import_obsidian3.normalizePath)(`${dir}/${baseOf(name)}-${Date.now()}.${outExt}`);
+  }
+  const file = await app.vault.createBinary(path2, outBytes.buffer ? outBytes.buffer : outBytes);
+  return { file, path: path2, engine, bytes: outBytes.length };
+}
+async function convertBuffer(bytes, srcExt, opts) {
+  const o = opts || {};
+  const format = String(o.format || srcExt || "png").toLowerCase();
+  if (!SUPPORTED_OUT.includes(format)) throw new Error(`\u4E0D\u652F\u6301\u7684\u76EE\u6807\u683C\u5F0F\uFF1A${format}`);
+  const ext = format === "jpg" ? "jpeg" : format;
+  const sharp = loadSharp();
+  if (sharp) {
+    let pipe = sharp(Buffer.from(bytes), { failOn: "none" });
+    if (o.maxWidth) pipe = pipe.resize({ width: o.maxWidth, withoutEnlargement: true });
+    if (format === "webp") pipe = pipe.webp({ quality: o.quality == null ? 82 : o.quality });
+    else if (format === "avif") pipe = pipe.avif({ quality: o.quality == null ? 60 : o.quality });
+    else if (ext === "jpeg") pipe = pipe.jpeg({ quality: o.quality == null ? 85 : o.quality, mozjpeg: true });
+    else if (format === "png") pipe = pipe.png({ compressionLevel: 9 });
+    const buf = await pipe.toBuffer();
+    return { bytes: new Uint8Array(buf), ext: format === "jpeg" ? "jpg" : format, engine: "sharp" };
+  }
+  if (typeof document === "undefined") throw new Error("\u5F53\u524D\u73AF\u5883\u65E0 Canvas\uFF0C\u4E5F\u65E0\u6CD5\u52A0\u8F7D sharp");
+  if (format === "avif") {
+    throw new Error(
+      "AVIF \u9700\u8981 sharp\uFF08Canvas \u65E0\u6CD5\u7F16\u7801 AVIF\uFF09\u3002\u8BF7\u6267\u884C\uFF1Acd .obsidian/plugins/obsidian-workbench && npm i sharp\uFF0C\u7136\u540E\u91CD\u542F Obsidian"
+    );
+  }
+  const blob = new Blob([bytes], { type: MIME[srcExt] || "image/png" });
+  const bitmap = await createImageBitmap(blob);
+  const scale = o.maxWidth && bitmap.width > o.maxWidth ? o.maxWidth / bitmap.width : 1;
+  const w = Math.max(1, Math.round(bitmap.width * scale));
+  const h = Math.max(1, Math.round(bitmap.height * scale));
+  const canvas = document.createElement("canvas");
+  canvas.width = w;
+  canvas.height = h;
+  const ctx = canvas.getContext("2d");
+  ctx.imageSmoothingQuality = "high";
+  ctx.drawImage(bitmap, 0, 0, w, h);
+  if (bitmap.close) bitmap.close();
+  const mime = format === "webp" ? "image/webp" : format === "png" ? "image/png" : "image/jpeg";
+  const outBlob = await new Promise(
+    (resolve, reject) => canvas.toBlob((b) => b ? resolve(b) : reject(new Error("canvas.toBlob \u5931\u8D25")), mime, o.quality == null ? 0.85 : o.quality)
+  );
+  const arr = new Uint8Array(await outBlob.arrayBuffer());
+  return { bytes: arr, engine: "canvas", ext: format === "jpeg" ? "jpg" : format };
+}
+async function convertFiles(app, files, opts, onProgress) {
+  const o = opts || {};
+  const results = [];
+  let done = 0;
+  for (const f of files) {
+    done += 1;
+    if (onProgress) onProgress(done, files.length, f.path);
+    try {
+      const srcExt = extOf(f.name);
+      if (o.skipSameFormat && srcExt === (o.format || "").toLowerCase()) {
+        results.push({ file: f, skipped: true, reason: "\u5DF2\u662F\u76EE\u6807\u683C\u5F0F" });
+        continue;
+      }
+      if (srcExt === "svg" || srcExt === "gif") {
+        results.push({ file: f, skipped: true, reason: "\u77E2\u91CF/\u52A8\u56FE\u4E0D\u8F6C\u6362" });
+        continue;
+      }
+      const buf = await app.vault.readBinary(f);
+      const conv = await convertBuffer(new Uint8Array(buf), srcExt, o);
+      const dir = f.parent ? f.parent.path : "";
+      const outName = `${baseOf(f.name)}.${conv.ext}`;
+      let outPath = (0, import_obsidian3.normalizePath)(dir ? `${dir}/${outName}` : outName);
+      if (app.vault.getAbstractFileByPath(outPath) && outPath !== f.path) {
+        outPath = (0, import_obsidian3.normalizePath)(dir ? `${dir}/${baseOf(f.name)}-${Date.now()}.${conv.ext}` : `${baseOf(f.name)}-${Date.now()}.${conv.ext}`);
+      }
+      const created = await app.vault.createBinary(outPath, conv.bytes.buffer);
+      results.push({
+        file: f,
+        created,
+        engine: conv.engine,
+        from: buf.byteLength,
+        to: conv.bytes.length,
+        saved: buf.byteLength - conv.bytes.length
+      });
+    } catch (e) {
+      results.push({ file: f, error: String(e && e.message || e) });
     }
-    var MIME = {
+  }
+  return results;
+}
+function collectImages(app, folderPrefix) {
+  const prefix = (folderPrefix || "").replace(/^\/+|\/+$/g, "");
+  return app.vault.getFiles().filter((f) => {
+    const e = f.extension.toLowerCase();
+    if (!["png", "jpg", "jpeg", "webp", "bmp"].includes(e)) return false;
+    if (prefix && !(f.path === prefix || f.path.startsWith(prefix + "/"))) return false;
+    return true;
+  });
+}
+var import_obsidian3, DEFAULT_FORMAT, SUPPORTED_OUT, sharpModule, sharpError, pluginDir, MIME;
+var init_imageService = __esm({
+  "src/services/imageService.ts"() {
+    "use strict";
+    import_obsidian3 = require("obsidian");
+    DEFAULT_FORMAT = "avif";
+    SUPPORTED_OUT = ["avif", "webp", "jpeg", "jpg", "png"];
+    sharpError = "";
+    pluginDir = "";
+    MIME = {
       png: "image/png",
       jpg: "image/jpeg",
       jpeg: "image/jpeg",
@@ -1291,628 +1478,477 @@ var require_imageService = __commonJS({
       bmp: "image/bmp",
       svg: "image/svg+xml"
     };
-    function extOf(name) {
-      const i = String(name).lastIndexOf(".");
-      return i < 0 ? "" : name.slice(i + 1).toLowerCase();
-    }
-    function baseOf(name) {
-      const i = String(name).lastIndexOf(".");
-      return i < 0 ? name : name.slice(0, i);
-    }
-    function assetDirFor(date) {
-      const d = date || /* @__PURE__ */ new Date();
-      const pad = (n) => String(n).padStart(2, "0");
-      return `assets/${d.getFullYear()}-${pad(d.getMonth() + 1)}`;
-    }
-    async function ensureFolder(app, path) {
-      const abs = app.vault.getAbstractFileByPath(normalizePath3(path));
-      if (abs) return abs;
-      try {
-        return await app.vault.createFolder(normalizePath3(path));
-      } catch (e) {
-        return app.vault.getAbstractFileByPath(normalizePath3(path));
-      }
-    }
-    async function saveImage(app, input, opts) {
-      const o = opts || {};
-      const name = o.name || `pasted-${Date.now()}.png`;
-      const targetExt = String(o.format || DEFAULT_FORMAT).toLowerCase();
-      const dir = o.dir || assetDirFor(o.date);
-      await ensureFolder(app, dir);
-      let bytes;
-      if (typeof input === "string") {
-        const comma = input.indexOf(",");
-        const b64 = comma >= 0 ? input.slice(comma + 1) : input;
-        const bin = atob(b64);
-        bytes = new Uint8Array(bin.length);
-        for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
-      } else if (input instanceof ArrayBuffer) {
-        bytes = new Uint8Array(input);
-      } else if (input && input.buffer instanceof ArrayBuffer) {
-        bytes = new Uint8Array(input.buffer);
-      } else if (input && typeof input.arrayBuffer === "function") {
-        bytes = new Uint8Array(await input.arrayBuffer());
-      } else {
-        throw new Error("\u65E0\u6CD5\u8BC6\u522B\u7684\u56FE\u7247\u8F93\u5165\u7C7B\u578B");
-      }
-      let outBytes = bytes;
-      let outExt = extOf(name) || "png";
-      let engine = "none";
-      const needConvert = targetExt !== extOf(name);
-      const needResize = o.maxWidth && o.maxWidth > 0;
-      const needQuality = typeof o.quality === "number";
-      if (needConvert || needResize || needQuality) {
-        const conv = await convertBuffer(bytes, outExt, {
-          format: targetExt,
-          quality: o.quality,
-          maxWidth: o.maxWidth
-        });
-        outBytes = conv.bytes;
-        outExt = conv.ext;
-        engine = conv.engine;
-      }
-      const finalName = `${baseOf(name)}.${outExt}`;
-      let path = normalizePath3(`${dir}/${finalName}`);
-      if (app.vault.getAbstractFileByPath(path)) {
-        path = normalizePath3(`${dir}/${baseOf(name)}-${Date.now()}.${outExt}`);
-      }
-      const file = await app.vault.createBinary(path, outBytes.buffer ? outBytes.buffer : outBytes);
-      return { file, path, engine, bytes: outBytes.length };
-    }
-    async function convertBuffer(bytes, srcExt, opts) {
-      const o = opts || {};
-      const format = String(o.format || srcExt || "png").toLowerCase();
-      if (!SUPPORTED_OUT.includes(format)) throw new Error(`\u4E0D\u652F\u6301\u7684\u76EE\u6807\u683C\u5F0F\uFF1A${format}`);
-      const ext = format === "jpg" ? "jpeg" : format;
-      const sharp = loadSharp();
-      if (sharp) {
-        let pipe = sharp(Buffer.from(bytes), { failOn: "none" });
-        if (o.maxWidth) pipe = pipe.resize({ width: o.maxWidth, withoutEnlargement: true });
-        if (format === "webp") pipe = pipe.webp({ quality: o.quality == null ? 82 : o.quality });
-        else if (format === "avif") pipe = pipe.avif({ quality: o.quality == null ? 60 : o.quality });
-        else if (ext === "jpeg") pipe = pipe.jpeg({ quality: o.quality == null ? 85 : o.quality, mozjpeg: true });
-        else if (format === "png") pipe = pipe.png({ compressionLevel: 9 });
-        const buf = await pipe.toBuffer();
-        return { bytes: new Uint8Array(buf), ext: format === "jpeg" ? "jpg" : format, engine: "sharp" };
-      }
-      if (typeof document === "undefined") throw new Error("\u5F53\u524D\u73AF\u5883\u65E0 Canvas\uFF0C\u4E5F\u65E0\u6CD5\u52A0\u8F7D sharp");
-      if (format === "avif") {
-        throw new Error(
-          "AVIF \u9700\u8981 sharp\uFF08Canvas \u65E0\u6CD5\u7F16\u7801 AVIF\uFF09\u3002\u8BF7\u6267\u884C\uFF1Acd .obsidian/plugins/obsidian-workbench && npm i sharp\uFF0C\u7136\u540E\u91CD\u542F Obsidian"
-        );
-      }
-      const blob = new Blob([bytes], { type: MIME[srcExt] || "image/png" });
-      const bitmap = await createImageBitmap(blob);
-      const scale = o.maxWidth && bitmap.width > o.maxWidth ? o.maxWidth / bitmap.width : 1;
-      const w = Math.max(1, Math.round(bitmap.width * scale));
-      const h = Math.max(1, Math.round(bitmap.height * scale));
-      const canvas = document.createElement("canvas");
-      canvas.width = w;
-      canvas.height = h;
-      const ctx = canvas.getContext("2d");
-      ctx.imageSmoothingQuality = "high";
-      ctx.drawImage(bitmap, 0, 0, w, h);
-      if (bitmap.close) bitmap.close();
-      const mime = format === "webp" ? "image/webp" : format === "png" ? "image/png" : "image/jpeg";
-      const outBlob = await new Promise(
-        (resolve, reject) => canvas.toBlob((b) => b ? resolve(b) : reject(new Error("canvas.toBlob \u5931\u8D25")), mime, o.quality == null ? 0.85 : o.quality)
-      );
-      const arr = new Uint8Array(await outBlob.arrayBuffer());
-      return { bytes: arr, engine: "canvas", ext: format === "jpeg" ? "jpg" : format };
-    }
-    async function convertFiles(app, files, opts, onProgress) {
-      const o = opts || {};
-      const results = [];
-      let done = 0;
-      for (const f of files) {
-        done += 1;
-        if (onProgress) onProgress(done, files.length, f.path);
-        try {
-          const srcExt = extOf(f.name);
-          if (o.skipSameFormat && srcExt === (o.format || "").toLowerCase()) {
-            results.push({ file: f, skipped: true, reason: "\u5DF2\u662F\u76EE\u6807\u683C\u5F0F" });
-            continue;
-          }
-          if (srcExt === "svg" || srcExt === "gif") {
-            results.push({ file: f, skipped: true, reason: "\u77E2\u91CF/\u52A8\u56FE\u4E0D\u8F6C\u6362" });
-            continue;
-          }
-          const buf = await app.vault.readBinary(f);
-          const conv = await convertBuffer(new Uint8Array(buf), srcExt, o);
-          const dir = f.parent ? f.parent.path : "";
-          const outName = `${baseOf(f.name)}.${conv.ext}`;
-          let outPath = normalizePath3(dir ? `${dir}/${outName}` : outName);
-          if (app.vault.getAbstractFileByPath(outPath) && outPath !== f.path) {
-            outPath = normalizePath3(dir ? `${dir}/${baseOf(f.name)}-${Date.now()}.${conv.ext}` : `${baseOf(f.name)}-${Date.now()}.${conv.ext}`);
-          }
-          const created = await app.vault.createBinary(outPath, conv.bytes.buffer);
-          results.push({
-            file: f,
-            created,
-            engine: conv.engine,
-            from: buf.byteLength,
-            to: conv.bytes.length,
-            saved: buf.byteLength - conv.bytes.length
-          });
-        } catch (e) {
-          results.push({ file: f, error: String(e && e.message || e) });
-        }
-      }
-      return results;
-    }
-    function collectImages(app, folderPrefix) {
-      const prefix = (folderPrefix || "").replace(/^\/+|\/+$/g, "");
-      return app.vault.getFiles().filter((f) => {
-        const e = f.extension.toLowerCase();
-        if (!["png", "jpg", "jpeg", "webp", "bmp"].includes(e)) return false;
-        if (prefix && !(f.path === prefix || f.path.startsWith(prefix + "/"))) return false;
-        return true;
-      });
-    }
-    module2.exports = {
-      DEFAULT_FORMAT,
-      SUPPORTED_OUT,
-      setPluginDir: setPluginDir2,
-      loadSharp,
-      engineInfo,
-      assetDirFor,
-      saveImage,
-      convertBuffer,
-      convertFiles,
-      collectImages,
-      extOf,
-      baseOf
+  }
+});
+
+// src/services/decisionService.ts
+var decisionService_exports = {};
+__export(decisionService_exports, {
+  ask: () => ask,
+  normalizeAnswers: () => normalizeAnswers,
+  noteToState: () => noteToState
+});
+async function ask(state, questions, settings, opts) {
+  const endpoint = String(settings && settings.decisionEndpoint || "http://127.0.0.1:3425/v1/systemone");
+  const token = String(settings && settings.decisionToken || "magpie");
+  const model = String(settings && settings.decisionModel || "vercel-jev/typesafe-ai/jev");
+  const res = await fetch(endpoint, {
+    method: "POST",
+    headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" },
+    body: JSON.stringify({ model, state, questions })
+  });
+  const text = await res.text();
+  let json = null;
+  try {
+    json = JSON.parse(text);
+  } catch (e) {
+    throw new Error("\u7F51\u5173\u8FD4\u56DE\u975E JSON\uFF1A" + text.slice(0, 200));
+  }
+  if (!res.ok) {
+    const msg = json && (json.error && json.error.message || json.message) || "HTTP " + res.status;
+    throw new Error(msg);
+  }
+  return normalizeAnswers(json, opts && opts.questionTypes ? opts.questionTypes : {});
+}
+function normalizeAnswers(json, questionTypes) {
+  const answers = json && json.answers || {};
+  const out = {};
+  for (const key of Object.keys(answers)) {
+    const a = answers[key] || {};
+    const type = questionTypes[key] || "choice";
+    let value = null;
+    if (type === "score") value = typeof a.score === "number" ? a.score : null;
+    else if (type === "noul") value = "noul" in a ? a.noul : a.value !== void 0 ? a.value : null;
+    else value = a.choice !== void 0 ? a.choice : a.value !== void 0 ? a.value : null;
+    out[key] = {
+      type,
+      value,
+      confidence: typeof a.confidence === "number" ? a.confidence : null,
+      raw: a
     };
   }
-});
-
-// src/services/decisionService.js
-var require_decisionService = __commonJS({
-  "src/services/decisionService.js"(exports2, module2) {
+  return { answers: out, raw: json };
+}
+function noteToState(file, content, maxChars) {
+  const limit = maxChars || 4e3;
+  const trimmed = content.length > limit ? content.slice(0, limit) + "\n\u2026(\u622A\u65AD)" : content;
+  const state = { path: file ? file.path : "", content: trimmed };
+  return state;
+}
+var init_decisionService = __esm({
+  "src/services/decisionService.ts"() {
     "use strict";
-    async function ask(state, questions, settings, opts) {
-      const endpoint = String(settings && settings.decisionEndpoint || "http://127.0.0.1:3425/v1/systemone");
-      const token = String(settings && settings.decisionToken || "magpie");
-      const model = String(settings && settings.decisionModel || "vercel-jev/typesafe-ai/jev");
-      const res = await fetch(endpoint, {
-        method: "POST",
-        headers: { Authorization: "Bearer " + token, "Content-Type": "application/json" },
-        body: JSON.stringify({ model, state, questions })
-      });
-      const text = await res.text();
-      let json = null;
-      try {
-        json = JSON.parse(text);
-      } catch (e) {
-        throw new Error("\u7F51\u5173\u8FD4\u56DE\u975E JSON\uFF1A" + text.slice(0, 200));
-      }
-      if (!res.ok) {
-        const msg = json && (json.error && json.error.message || json.message) || "HTTP " + res.status;
-        throw new Error(msg);
-      }
-      return normalizeAnswers(json, opts && opts.questionTypes ? opts.questionTypes : {});
-    }
-    function normalizeAnswers(json, questionTypes) {
-      const answers = json && json.answers || {};
-      const out = {};
-      for (const key of Object.keys(answers)) {
-        const a = answers[key] || {};
-        const type = questionTypes[key] || "choice";
-        let value = null;
-        if (type === "score") value = typeof a.score === "number" ? a.score : null;
-        else if (type === "noul") value = "noul" in a ? a.noul : a.value !== void 0 ? a.value : null;
-        else value = a.choice !== void 0 ? a.choice : a.value !== void 0 ? a.value : null;
-        out[key] = {
-          type,
-          value,
-          confidence: typeof a.confidence === "number" ? a.confidence : null,
-          raw: a
-        };
-      }
-      return { answers: out, raw: json };
-    }
-    function noteToState(file, content, maxChars) {
-      const limit = maxChars || 4e3;
-      const trimmed = content.length > limit ? content.slice(0, limit) + "\n\u2026(\u622A\u65AD)" : content;
-      const state = { path: file ? file.path : "", content: trimmed };
-      return state;
-    }
-    module2.exports = { ask, normalizeAnswers, noteToState };
   }
 });
 
-// src/services/graphService.js
-var require_graphService = __commonJS({
-  "src/services/graphService.js"(exports2, module2) {
+// src/services/graphService.ts
+var graphService_exports = {};
+__export(graphService_exports, {
+  buildGraph: () => buildGraph,
+  detectCommunities: () => detectCommunities,
+  renderGraphMarkdown: () => renderGraphMarkdown,
+  shortName: () => shortName,
+  writeGraphNote: () => writeGraphNote
+});
+function resolveLinks(app) {
+  const mc = app.metadataCache;
+  if (!mc || typeof mc.resolvedLinks !== "object") return null;
+  return mc.resolvedLinks;
+}
+function detectCommunities(nodes, adj, rounds) {
+  const label = /* @__PURE__ */ new Map();
+  nodes.forEach((n, i) => label.set(n, i));
+  const order = nodes.slice().sort();
+  for (let r = 0; r < (rounds || 5); r++) {
+    let changed = false;
+    for (const n of order) {
+      const counts = /* @__PURE__ */ new Map();
+      for (const m of adj.get(n) || []) {
+        const l = label.get(m);
+        counts.set(l, (counts.get(l) || 0) + 1);
+      }
+      if (!counts.size) continue;
+      let best = label.get(n);
+      let bestCount = -1;
+      for (const [l, c] of counts) {
+        if (c > bestCount || c === bestCount && String(l) < String(best)) {
+          best = l;
+          bestCount = c;
+        }
+      }
+      const ownCount = counts.get(label.get(n)) || 0;
+      if (best !== label.get(n) && bestCount > ownCount) {
+        label.set(n, best);
+        changed = true;
+      }
+    }
+    if (!changed) break;
+  }
+  const groups = /* @__PURE__ */ new Map();
+  for (const n of nodes) {
+    const l = label.get(n);
+    if (!groups.has(l)) groups.set(l, []);
+    groups.get(l).push(n);
+  }
+  return [...groups.values()].sort((a, b) => b.length - a.length);
+}
+function buildGraph(app, opts) {
+  const o = opts || {};
+  const resolved = resolveLinks(app);
+  const notes = app.vault.getMarkdownFiles().filter((f) => !f.path.startsWith("4-\u5B58\u6863/"));
+  const byPath = new Map(notes.map((f) => [f.path, f]));
+  const adj = /* @__PURE__ */ new Map();
+  const degree = /* @__PURE__ */ new Map();
+  let edgeCount = 0;
+  const addEdge = (a, b) => {
+    if (a === b) return;
+    if (!adj.has(a)) adj.set(a, /* @__PURE__ */ new Set());
+    if (!adj.has(b)) adj.set(b, /* @__PURE__ */ new Set());
+    if (adj.get(a).has(b)) return;
+    adj.get(a).add(b);
+    adj.get(b).add(a);
+    degree.set(a, (degree.get(a) || 0) + 1);
+    degree.set(b, (degree.get(b) || 0) + 1);
+    edgeCount += 1;
+  };
+  if (resolved) {
+    for (const [src, targets] of Object.entries(resolved)) {
+      if (!byPath.has(src)) continue;
+      for (const tgt of Object.keys(targets || {})) {
+        if (!byPath.has(tgt)) continue;
+        addEdge(src, tgt);
+      }
+    }
+  }
+  const all = [...byPath.keys()];
+  const ranked = all.slice().sort((a, b) => (degree.get(b) || 0) - (degree.get(a) || 0));
+  const limit = o.limit || 600;
+  const nodes = ranked.slice(0, limit).filter((p) => (degree.get(p) || 0) >= (o.minDegree || 0));
+  const nodeSet = new Set(nodes);
+  const subAdj = /* @__PURE__ */ new Map();
+  for (const n of nodes) {
+    const keep = /* @__PURE__ */ new Set();
+    for (const m of adj.get(n) || []) if (nodeSet.has(m)) keep.add(m);
+    subAdj.set(n, keep);
+  }
+  const communities = detectCommunities(nodes, subAdj);
+  const orphans = all.filter((p) => !degree.get(p));
+  return {
+    nodes,
+    nodeSet,
+    adj: subAdj,
+    degree,
+    edgeCount,
+    communities,
+    orphans,
+    totalNotes: all.length
+  };
+}
+function shortName(path2, allPaths) {
+  const base = path2.split("/").pop().replace(/\.md$/, "");
+  const same = allPaths.filter((p) => p.split("/").pop().replace(/\.md$/, "") === base);
+  if (same.length <= 1) return base;
+  const parent = path2.split("/").slice(-2, -1)[0] || "";
+  return `${base}(${parent})`;
+}
+function mermaidId(i) {
+  return "n" + i;
+}
+function renderGraphMarkdown(app, graph, opts) {
+  const o = opts || {};
+  const date = formatDate(/* @__PURE__ */ new Date(), "YYYY-MM-DD HH:mm");
+  const allPaths = graph.nodes;
+  const lines = [];
+  lines.push("---");
+  lines.push("tags: [knowledge-graph, generated]");
+  lines.push(`generated: ${date}`);
+  lines.push("---");
+  lines.push("");
+  lines.push(`# \u77E5\u8BC6\u56FE\u8C31 \xB7 ${formatDate(/* @__PURE__ */ new Date(), "YYYY-MM-DD")}`);
+  lines.push("");
+  lines.push(
+    `> \u7531 Workbench RAG \u5361\u7247\u751F\u6210\u3002\u7B14\u8BB0 ${graph.totalNotes} \u7BC7\uFF0C\u8FDE\u8FB9 ${graph.edgeCount} \u6761\uFF0C\u6D3B\u8DC3\u8282\u70B9 ${graph.nodes.length} \u4E2A\uFF0C\u5B64\u7ACB\u7B14\u8BB0 ${graph.orphans.length} \u7BC7\u3002`
+  );
+  lines.push("");
+  const topN = graph.nodes.slice(0, o.mermaidMax || 40);
+  const topSet = new Set(topN);
+  const idOf = new Map(topN.map((p, i) => [p, mermaidId(i)]));
+  lines.push("## \u7ED3\u6784\u56FE\uFF08\u5EA6\u6700\u9AD8\u7684 " + topN.length + " \u4E2A\u8282\u70B9\uFF09");
+  lines.push("");
+  lines.push("```mermaid");
+  lines.push("graph LR");
+  topN.forEach((p) => {
+    const name = shortName(p, allPaths).replace(/"/g, "'");
+    const deg = graph.degree.get(p) || 0;
+    lines.push(`  ${idOf.get(p)}["${name}<br/>${deg}"]`);
+  });
+  const drawn = /* @__PURE__ */ new Set();
+  for (const a of topN) {
+    for (const b of graph.adj.get(a) || []) {
+      if (!topSet.has(b)) continue;
+      const key = a < b ? a + "|" + b : b + "|" + a;
+      if (drawn.has(key)) continue;
+      drawn.add(key);
+      lines.push(`  ${idOf.get(a)} --- ${idOf.get(b)}`);
+    }
+  }
+  lines.push("```");
+  lines.push("");
+  lines.push("## \u67A2\u7EBD\u7B14\u8BB0\uFF08\u8FDE\u63A5\u6570\u6700\u591A\uFF09");
+  lines.push("");
+  lines.push("| \u7B14\u8BB0 | \u8FDE\u63A5\u6570 |");
+  lines.push("|---|---|");
+  for (const p of graph.nodes.slice(0, 15)) {
+    const name = shortName(p, allPaths);
+    lines.push(`| [[${p.replace(/\.md$/, "")}\\|${name}]] | ${graph.degree.get(p) || 0} |`);
+  }
+  lines.push("");
+  lines.push("## \u4E3B\u9898\u805A\u7C7B\uFF08\u6807\u7B7E\u4F20\u64AD\uFF09");
+  lines.push("");
+  const commCount = o.communityTop || 5;
+  const perComm = o.communitySize || 8;
+  graph.communities.slice(0, commCount).forEach((group, i) => {
+    const names = group.slice(0, perComm).map((p) => shortName(p, allPaths)).join("\u3001");
+    lines.push(`- **\u7C07 ${i + 1}**\uFF08${group.length} \u7BC7\uFF09\uFF1A${names}${group.length > perComm ? " \u7B49" : ""}`);
+  });
+  lines.push("");
+  lines.push("## \u5B64\u7ACB\u7B14\u8BB0\uFF08\u6CA1\u6709\u4EFB\u4F55\u94FE\u63A5\uFF09");
+  lines.push("");
+  if (!graph.orphans.length) {
+    lines.push("\u65E0\u3002\u6240\u6709\u7B14\u8BB0\u90FD\u5728\u94FE\u63A5\u7F51\u7EDC\u91CC\u3002");
+  } else {
+    lines.push(`\u5171 ${graph.orphans.length} \u7BC7\uFF0C\u524D 20\uFF1A`);
+    lines.push("");
+    for (const p of graph.orphans.slice(0, 20)) lines.push(`- [[${p.replace(/\.md$/, "")}]]`);
+  }
+  lines.push("");
+  return lines.join("\n");
+}
+async function writeGraphNote(app, opts) {
+  const o = opts || {};
+  const graph = buildGraph(app, o);
+  const md = renderGraphMarkdown(app, graph, o);
+  const dir = (0, import_obsidian4.normalizePath)(o.dir || "vault/\u7CFB\u7EDF\u4E0E\u5DE5\u5177");
+  if (!app.vault.getAbstractFileByPath(dir)) {
+    try {
+      await app.vault.createFolder(dir);
+    } catch (e) {
+    }
+  }
+  const path2 = (0, import_obsidian4.normalizePath)(`${dir}/\u77E5\u8BC6\u56FE\u8C31-${formatDate(/* @__PURE__ */ new Date(), "YYYY-MM-DD")}.md`);
+  const existing = app.vault.getAbstractFileByPath(path2);
+  let file;
+  if (existing) {
+    await app.vault.modify(existing, md);
+    file = existing;
+  } else {
+    file = await app.vault.create(path2, md);
+  }
+  new import_obsidian4.Notice(
+    `\u77E5\u8BC6\u56FE\u8C31\u5DF2\u751F\u6210\uFF1A${graph.nodes.length} \u6D3B\u8DC3\u8282\u70B9 / ${graph.edgeCount} \u6761\u8FDE\u8FB9 / ${graph.orphans.length} \u7BC7\u5B64\u7ACB`,
+    7e3
+  );
+  await app.workspace.getLeaf(false).openFile(file);
+  return { file, graph };
+}
+var import_obsidian4;
+var init_graphService = __esm({
+  "src/services/graphService.ts"() {
     "use strict";
-    var { normalizePath: normalizePath3, Notice: Notice3 } = require("obsidian");
-    var { formatDate: formatDate3 } = (init_utils(), __toCommonJS(utils_exports));
-    function resolveLinks(app) {
-      const mc = app.metadataCache;
-      if (!mc || typeof mc.resolvedLinks !== "object") return null;
-      return mc.resolvedLinks;
-    }
-    function detectCommunities(nodes, adj, rounds) {
-      const label = /* @__PURE__ */ new Map();
-      nodes.forEach((n, i) => label.set(n, i));
-      const order = nodes.slice().sort();
-      for (let r = 0; r < (rounds || 5); r++) {
-        let changed = false;
-        for (const n of order) {
-          const counts = /* @__PURE__ */ new Map();
-          for (const m of adj.get(n) || []) {
-            const l = label.get(m);
-            counts.set(l, (counts.get(l) || 0) + 1);
-          }
-          if (!counts.size) continue;
-          let best = label.get(n);
-          let bestCount = -1;
-          for (const [l, c] of counts) {
-            if (c > bestCount || c === bestCount && String(l) < String(best)) {
-              best = l;
-              bestCount = c;
-            }
-          }
-          const ownCount = counts.get(label.get(n)) || 0;
-          if (best !== label.get(n) && bestCount > ownCount) {
-            label.set(n, best);
-            changed = true;
-          }
-        }
-        if (!changed) break;
-      }
-      const groups = /* @__PURE__ */ new Map();
-      for (const n of nodes) {
-        const l = label.get(n);
-        if (!groups.has(l)) groups.set(l, []);
-        groups.get(l).push(n);
-      }
-      return [...groups.values()].sort((a, b) => b.length - a.length);
-    }
-    function buildGraph(app, opts) {
-      const o = opts || {};
-      const resolved = resolveLinks(app);
-      const notes = app.vault.getMarkdownFiles().filter((f) => !f.path.startsWith("4-\u5B58\u6863/"));
-      const byPath = new Map(notes.map((f) => [f.path, f]));
-      const adj = /* @__PURE__ */ new Map();
-      const degree = /* @__PURE__ */ new Map();
-      let edgeCount = 0;
-      const addEdge = (a, b) => {
-        if (a === b) return;
-        if (!adj.has(a)) adj.set(a, /* @__PURE__ */ new Set());
-        if (!adj.has(b)) adj.set(b, /* @__PURE__ */ new Set());
-        if (adj.get(a).has(b)) return;
-        adj.get(a).add(b);
-        adj.get(b).add(a);
-        degree.set(a, (degree.get(a) || 0) + 1);
-        degree.set(b, (degree.get(b) || 0) + 1);
-        edgeCount += 1;
-      };
-      if (resolved) {
-        for (const [src, targets] of Object.entries(resolved)) {
-          if (!byPath.has(src)) continue;
-          for (const tgt of Object.keys(targets || {})) {
-            if (!byPath.has(tgt)) continue;
-            addEdge(src, tgt);
-          }
-        }
-      }
-      const all = [...byPath.keys()];
-      const ranked = all.slice().sort((a, b) => (degree.get(b) || 0) - (degree.get(a) || 0));
-      const limit = o.limit || 600;
-      const nodes = ranked.slice(0, limit).filter((p) => (degree.get(p) || 0) >= (o.minDegree || 0));
-      const nodeSet = new Set(nodes);
-      const subAdj = /* @__PURE__ */ new Map();
-      for (const n of nodes) {
-        const keep = /* @__PURE__ */ new Set();
-        for (const m of adj.get(n) || []) if (nodeSet.has(m)) keep.add(m);
-        subAdj.set(n, keep);
-      }
-      const communities = detectCommunities(nodes, subAdj);
-      const orphans = all.filter((p) => !degree.get(p));
-      return {
-        nodes,
-        nodeSet,
-        adj: subAdj,
-        degree,
-        edgeCount,
-        communities,
-        orphans,
-        totalNotes: all.length
-      };
-    }
-    function shortName(path, allPaths) {
-      const base = path.split("/").pop().replace(/\.md$/, "");
-      const same = allPaths.filter((p) => p.split("/").pop().replace(/\.md$/, "") === base);
-      if (same.length <= 1) return base;
-      const parent = path.split("/").slice(-2, -1)[0] || "";
-      return `${base}(${parent})`;
-    }
-    function mermaidId(i) {
-      return "n" + i;
-    }
-    function renderGraphMarkdown(app, graph, opts) {
-      const o = opts || {};
-      const date = formatDate3(/* @__PURE__ */ new Date(), "YYYY-MM-DD HH:mm");
-      const allPaths = graph.nodes;
-      const lines = [];
-      lines.push("---");
-      lines.push("tags: [knowledge-graph, generated]");
-      lines.push(`generated: ${date}`);
-      lines.push("---");
-      lines.push("");
-      lines.push(`# \u77E5\u8BC6\u56FE\u8C31 \xB7 ${formatDate3(/* @__PURE__ */ new Date(), "YYYY-MM-DD")}`);
-      lines.push("");
-      lines.push(
-        `> \u7531 Workbench RAG \u5361\u7247\u751F\u6210\u3002\u7B14\u8BB0 ${graph.totalNotes} \u7BC7\uFF0C\u8FDE\u8FB9 ${graph.edgeCount} \u6761\uFF0C\u6D3B\u8DC3\u8282\u70B9 ${graph.nodes.length} \u4E2A\uFF0C\u5B64\u7ACB\u7B14\u8BB0 ${graph.orphans.length} \u7BC7\u3002`
-      );
-      lines.push("");
-      const topN = graph.nodes.slice(0, o.mermaidMax || 40);
-      const topSet = new Set(topN);
-      const idOf = new Map(topN.map((p, i) => [p, mermaidId(i)]));
-      lines.push("## \u7ED3\u6784\u56FE\uFF08\u5EA6\u6700\u9AD8\u7684 " + topN.length + " \u4E2A\u8282\u70B9\uFF09");
-      lines.push("");
-      lines.push("```mermaid");
-      lines.push("graph LR");
-      topN.forEach((p) => {
-        const name = shortName(p, allPaths).replace(/"/g, "'");
-        const deg = graph.degree.get(p) || 0;
-        lines.push(`  ${idOf.get(p)}["${name}<br/>${deg}"]`);
-      });
-      const drawn = /* @__PURE__ */ new Set();
-      for (const a of topN) {
-        for (const b of graph.adj.get(a) || []) {
-          if (!topSet.has(b)) continue;
-          const key = a < b ? a + "|" + b : b + "|" + a;
-          if (drawn.has(key)) continue;
-          drawn.add(key);
-          lines.push(`  ${idOf.get(a)} --- ${idOf.get(b)}`);
-        }
-      }
-      lines.push("```");
-      lines.push("");
-      lines.push("## \u67A2\u7EBD\u7B14\u8BB0\uFF08\u8FDE\u63A5\u6570\u6700\u591A\uFF09");
-      lines.push("");
-      lines.push("| \u7B14\u8BB0 | \u8FDE\u63A5\u6570 |");
-      lines.push("|---|---|");
-      for (const p of graph.nodes.slice(0, 15)) {
-        const name = shortName(p, allPaths);
-        lines.push(`| [[${p.replace(/\.md$/, "")}\\|${name}]] | ${graph.degree.get(p) || 0} |`);
-      }
-      lines.push("");
-      lines.push("## \u4E3B\u9898\u805A\u7C7B\uFF08\u6807\u7B7E\u4F20\u64AD\uFF09");
-      lines.push("");
-      const commCount = o.communityTop || 5;
-      const perComm = o.communitySize || 8;
-      graph.communities.slice(0, commCount).forEach((group, i) => {
-        const names = group.slice(0, perComm).map((p) => shortName(p, allPaths)).join("\u3001");
-        lines.push(`- **\u7C07 ${i + 1}**\uFF08${group.length} \u7BC7\uFF09\uFF1A${names}${group.length > perComm ? " \u7B49" : ""}`);
-      });
-      lines.push("");
-      lines.push("## \u5B64\u7ACB\u7B14\u8BB0\uFF08\u6CA1\u6709\u4EFB\u4F55\u94FE\u63A5\uFF09");
-      lines.push("");
-      if (!graph.orphans.length) {
-        lines.push("\u65E0\u3002\u6240\u6709\u7B14\u8BB0\u90FD\u5728\u94FE\u63A5\u7F51\u7EDC\u91CC\u3002");
-      } else {
-        lines.push(`\u5171 ${graph.orphans.length} \u7BC7\uFF0C\u524D 20\uFF1A`);
-        lines.push("");
-        for (const p of graph.orphans.slice(0, 20)) lines.push(`- [[${p.replace(/\.md$/, "")}]]`);
-      }
-      lines.push("");
-      return lines.join("\n");
-    }
-    async function writeGraphNote(app, opts) {
-      const o = opts || {};
-      const graph = buildGraph(app, o);
-      const md = renderGraphMarkdown(app, graph, o);
-      const dir = normalizePath3(o.dir || "vault/\u7CFB\u7EDF\u4E0E\u5DE5\u5177");
-      if (!app.vault.getAbstractFileByPath(dir)) {
+    import_obsidian4 = require("obsidian");
+    init_utils();
+  }
+});
+
+// src/services/codeRunner.ts
+var codeRunner_exports = {};
+__export(codeRunner_exports, {
+  MAX_OUTPUT: () => MAX_OUTPUT,
+  renderHtmlPreview: () => renderHtmlPreview,
+  renderRunnableBlock: () => renderRunnableBlock,
+  runJs: () => runJs,
+  runProcess: () => runProcess
+});
+function getNodeRequire() {
+  if (typeof window !== "undefined" && typeof window.require === "function") return window.require;
+  if (typeof require === "function") return require;
+  return null;
+}
+function runJs(code) {
+  const logs = [];
+  const capture = (level) => (...args) => {
+    logs.push(
+      args.map((a) => {
+        if (typeof a === "string") return a;
         try {
-          await app.vault.createFolder(dir);
+          return JSON.stringify(a, null, 2);
         } catch (e) {
+          return String(a);
         }
-      }
-      const path = normalizePath3(`${dir}/\u77E5\u8BC6\u56FE\u8C31-${formatDate3(/* @__PURE__ */ new Date(), "YYYY-MM-DD")}.md`);
-      const existing = app.vault.getAbstractFileByPath(path);
-      let file;
-      if (existing) {
-        await app.vault.modify(existing, md);
-        file = existing;
-      } else {
-        file = await app.vault.create(path, md);
-      }
-      new Notice3(
-        `\u77E5\u8BC6\u56FE\u8C31\u5DF2\u751F\u6210\uFF1A${graph.nodes.length} \u6D3B\u8DC3\u8282\u70B9 / ${graph.edgeCount} \u6761\u8FDE\u8FB9 / ${graph.orphans.length} \u7BC7\u5B64\u7ACB`,
-        7e3
-      );
-      await app.workspace.getLeaf(false).openFile(file);
-      return { file, graph };
-    }
-    module2.exports = { buildGraph, renderGraphMarkdown, writeGraphNote, detectCommunities, shortName };
-  }
-});
-
-// src/services/codeRunner.js
-var require_codeRunner = __commonJS({
-  "src/services/codeRunner.js"(exports2, module2) {
-    "use strict";
-    var { Notice: Notice3, setIcon } = require("obsidian");
-    var MAX_OUTPUT = 64 * 1024;
-    function getNodeRequire() {
-      if (typeof window !== "undefined" && typeof window.require === "function") return window.require;
-      if (typeof require === "function") return require;
-      return null;
-    }
-    function runJs(code) {
-      const logs = [];
-      const capture = (level) => (...args) => {
-        logs.push(
-          args.map((a) => {
-            if (typeof a === "string") return a;
-            try {
-              return JSON.stringify(a, null, 2);
-            } catch (e) {
-              return String(a);
-            }
-          }).join(" ")
-        );
-      };
-      const sandboxConsole = {
-        log: capture("log"),
-        info: capture("info"),
-        warn: capture("warn"),
-        error: capture("error"),
-        debug: capture("debug")
-      };
-      try {
-        const fn = new Function(
-          "console",
-          `"use strict";
+      }).join(" ")
+    );
+  };
+  const sandboxConsole = {
+    log: capture("log"),
+    info: capture("info"),
+    warn: capture("warn"),
+    error: capture("error"),
+    debug: capture("debug")
+  };
+  try {
+    const fn = new Function(
+      "console",
+      `"use strict";
 ${code}
 `
-        );
-        const ret = fn(sandboxConsole);
-        if (ret !== void 0) logs.push("=> " + (typeof ret === "string" ? ret : JSON.stringify(ret)));
-        return { ok: true, output: logs.join("\n") || "(\u65E0\u8F93\u51FA)" };
-      } catch (err) {
-        return { ok: false, output: (logs.length ? logs.join("\n") + "\n" : "") + "\u274C " + (err && err.message) };
-      }
-    }
-    async function runProcess(kind, code, opts) {
-      const o = opts || {};
-      const nodeRequire = getNodeRequire();
-      if (!nodeRequire) return { ok: false, output: "\u5F53\u524D\u73AF\u5883\u6CA1\u6709 Node require\uFF0C\u65E0\u6CD5\u6267\u884C\u5B50\u8FDB\u7A0B" };
-      const cp = nodeRequire("child_process");
-      const bin = kind === "python" ? o.pythonPath || "python3" : o.shellPath || "/bin/bash";
-      const args = kind === "python" ? ["-c", code] : ["-lc", code];
-      return new Promise((resolve) => {
-        let done = false;
-        const child = cp.execFile(
-          bin,
-          args,
-          {
-            cwd: o.cwd || void 0,
-            timeout: o.timeoutMs || 2e4,
-            maxBuffer: MAX_OUTPUT * 2,
-            env: { ...process.env, PYTHONIOENCODING: "utf-8" }
-          },
-          (err, stdout, stderr) => {
-            if (done) return;
-            done = true;
-            const out = [stdout, stderr].filter(Boolean).join("\n").slice(0, MAX_OUTPUT);
-            if (err) {
-              const msg = err.killed ? `\u6267\u884C\u8D85\u65F6\uFF08>${(o.timeoutMs || 2e4) / 1e3}s\uFF09` : err.message;
-              resolve({ ok: false, output: (out ? out + "\n" : "") + "\u274C " + msg });
-            } else {
-              resolve({ ok: true, output: out || "(\u65E0\u8F93\u51FA)" });
-            }
-          }
-        );
-        if (child && child.stdin) child.stdin.end();
-      });
-    }
-    function renderRunnableBlock2(lang, code, container, ctx) {
-      container.empty();
-      container.addClass("owb-run-block");
-      const head = container.createDiv({ cls: "owb-run-head" });
-      const label = head.createSpan({ cls: "owb-run-lang", text: lang });
-      const runBtn = head.createEl("button", { cls: "owb-run-btn", text: "\u8FD0\u884C" });
-      const copyBtn = head.createEl("button", { cls: "owb-run-btn", text: "\u590D\u5236" });
-      copyBtn.addEventListener("click", async () => {
-        try {
-          await navigator.clipboard.writeText(code);
-          new Notice3("\u5DF2\u590D\u5236\u4EE3\u7801");
-        } catch (e) {
-          new Notice3("\u590D\u5236\u5931\u8D25\uFF1A" + e.message);
-        }
-      });
-      const pre = container.createEl("pre", { cls: "owb-run-code" });
-      pre.createEl("code", { text: code });
-      const out = container.createDiv({ cls: "owb-run-out" });
-      out.style.display = "none";
-      const showOut = (res) => {
-        out.style.display = "";
-        out.empty();
-        const meta = out.createDiv({ cls: "owb-run-meta" });
-        meta.createSpan({ text: res.ok ? "\u8F93\u51FA" : "\u5931\u8D25" });
-        meta.createSpan({ text: (/* @__PURE__ */ new Date()).toLocaleTimeString() });
-        const body = out.createEl("pre", { cls: "owb-run-text" });
-        body.setText(res.output);
-      };
-      runBtn.addEventListener("click", async () => {
-        const s = ctx.plugin.settings;
-        if (!s.codeExecEnabled) {
-          new Notice3("\u4EE3\u7801\u6267\u884C\u672A\u542F\u7528\uFF1A\u8BBE\u7F6E \u2192 \u8C03\u8BD5\u4E0E\u6027\u80FD \u2192 \u5141\u8BB8\u4EE3\u7801\u5757\u6267\u884C", 7e3);
-          return;
-        }
-        const cwd = ctx.plugin.getVaultBasePath() || "";
-        const ok = await confirmRun(ctx.app, lang, code, cwd);
-        if (!ok) return;
-        runBtn.setText("\u8FD0\u884C\u4E2D\u2026");
-        runBtn.setAttribute("disabled", "disabled");
-        let res;
-        if (lang === "run-js") {
-          res = runJs(code);
+    );
+    const ret = fn(sandboxConsole);
+    if (ret !== void 0) logs.push("=> " + (typeof ret === "string" ? ret : JSON.stringify(ret)));
+    return { ok: true, output: logs.join("\n") || "(\u65E0\u8F93\u51FA)" };
+  } catch (err) {
+    return { ok: false, output: (logs.length ? logs.join("\n") + "\n" : "") + "\u274C " + (err && err.message) };
+  }
+}
+async function runProcess(kind, code, opts) {
+  const o = opts || {};
+  const nodeRequire = getNodeRequire();
+  if (!nodeRequire) return { ok: false, output: "\u5F53\u524D\u73AF\u5883\u6CA1\u6709 Node require\uFF0C\u65E0\u6CD5\u6267\u884C\u5B50\u8FDB\u7A0B" };
+  const cp = nodeRequire("child_process");
+  const bin = kind === "python" ? o.pythonPath || "python3" : o.shellPath || "/bin/bash";
+  const args = kind === "python" ? ["-c", code] : ["-lc", code];
+  return new Promise((resolve) => {
+    let done = false;
+    const child = cp.execFile(
+      bin,
+      args,
+      {
+        cwd: o.cwd || void 0,
+        timeout: o.timeoutMs || 2e4,
+        maxBuffer: MAX_OUTPUT * 2,
+        env: { ...process.env, PYTHONIOENCODING: "utf-8" }
+      },
+      (err, stdout, stderr) => {
+        if (done) return;
+        done = true;
+        const out = [stdout, stderr].filter(Boolean).join("\n").slice(0, MAX_OUTPUT);
+        if (err) {
+          const msg = err.killed ? `\u6267\u884C\u8D85\u65F6\uFF08>${(o.timeoutMs || 2e4) / 1e3}s\uFF09` : err.message;
+          resolve({ ok: false, output: (out ? out + "\n" : "") + "\u274C " + msg });
         } else {
-          res = await runProcess(lang === "run-python" ? "python" : "shell", code, {
-            cwd,
-            timeoutMs: (s.codeExecTimeoutSec || 20) * 1e3,
-            pythonPath: s.pythonPath || "python3"
-          });
+          resolve({ ok: true, output: out || "(\u65E0\u8F93\u51FA)" });
         }
-        runBtn.setText("\u8FD0\u884C");
-        runBtn.removeAttribute("disabled");
-        showOut(res);
+      }
+    );
+    if (child && child.stdin) child.stdin.end();
+  });
+}
+function renderRunnableBlock(lang, code, container, ctx) {
+  container.empty();
+  container.addClass("owb-run-block");
+  const head = container.createDiv({ cls: "owb-run-head" });
+  const label = head.createSpan({ cls: "owb-run-lang", text: lang });
+  const runBtn = head.createEl("button", { cls: "owb-run-btn", text: "\u8FD0\u884C" });
+  const copyBtn = head.createEl("button", { cls: "owb-run-btn", text: "\u590D\u5236" });
+  copyBtn.addEventListener("click", async () => {
+    try {
+      await navigator.clipboard.writeText(code);
+      new import_obsidian5.Notice("\u5DF2\u590D\u5236\u4EE3\u7801");
+    } catch (e) {
+      new import_obsidian5.Notice("\u590D\u5236\u5931\u8D25\uFF1A" + e.message);
+    }
+  });
+  const pre = container.createEl("pre", { cls: "owb-run-code" });
+  pre.createEl("code", { text: code });
+  const out = container.createDiv({ cls: "owb-run-out" });
+  out.style.display = "none";
+  const showOut = (res) => {
+    out.style.display = "";
+    out.empty();
+    const meta = out.createDiv({ cls: "owb-run-meta" });
+    meta.createSpan({ text: res.ok ? "\u8F93\u51FA" : "\u5931\u8D25" });
+    meta.createSpan({ text: (/* @__PURE__ */ new Date()).toLocaleTimeString() });
+    const body = out.createEl("pre", { cls: "owb-run-text" });
+    body.setText(res.output);
+  };
+  runBtn.addEventListener("click", async () => {
+    const s = ctx.plugin.settings;
+    if (!s.codeExecEnabled) {
+      new import_obsidian5.Notice("\u4EE3\u7801\u6267\u884C\u672A\u542F\u7528\uFF1A\u8BBE\u7F6E \u2192 \u8C03\u8BD5\u4E0E\u6027\u80FD \u2192 \u5141\u8BB8\u4EE3\u7801\u5757\u6267\u884C", 7e3);
+      return;
+    }
+    const cwd = ctx.plugin.getVaultBasePath() || "";
+    const ok = await confirmRun(ctx.app, lang, code, cwd);
+    if (!ok) return;
+    runBtn.setText("\u8FD0\u884C\u4E2D\u2026");
+    runBtn.setAttribute("disabled", "disabled");
+    let res;
+    if (lang === "run-js") {
+      res = runJs(code);
+    } else {
+      res = await runProcess(lang === "run-python" ? "python" : "shell", code, {
+        cwd,
+        timeoutMs: (s.codeExecTimeoutSec || 20) * 1e3,
+        pythonPath: s.pythonPath || "python3"
       });
     }
-    function confirmRun(app, lang, code, cwd) {
-      return new Promise((resolve) => {
-        const modal = new (require("obsidian")).Modal(app);
-        modal.titleEl.setText("\u786E\u8BA4\u6267\u884C\u4EE3\u7801");
-        const body = modal.contentEl;
-        body.createEl("p", {
-          text: `\u8BED\u8A00\uFF1A${lang}\u3000\u5DE5\u4F5C\u76EE\u5F55\uFF1A${cwd || "(\u672A\u77E5)"}`
-        });
-        body.createEl("p", {
-          cls: "owb-muted",
-          text: "\u4EE3\u7801\u5C06\u5728\u672C\u673A\u6267\u884C\uFF0C\u53EF\u8BFB\u5199\u6587\u4EF6\u3002\u53EA\u8FD0\u884C\u4F60\u4FE1\u4EFB\u7684\u5185\u5BB9\u3002"
-        });
-        const pre = body.createEl("pre", { cls: "owb-run-code" });
-        pre.setText(code.length > 600 ? code.slice(0, 600) + "\n\u2026" : code);
-        const foot = body.createDiv({ cls: "owb-run-confirm" });
-        let settled = false;
-        const finish = (v) => {
-          if (settled) return;
-          settled = true;
-          modal.close();
-          resolve(v);
-        };
-        foot.createEl("button", { cls: "mod-warning", text: "\u6267\u884C" }).addEventListener("click", () => finish(true));
-        foot.createEl("button", { text: "\u53D6\u6D88" }).addEventListener("click", () => finish(false));
-        modal.onClose = () => {
-          if (!settled) {
-            settled = true;
-            resolve(false);
-          }
-        };
-        modal.open();
-      });
-    }
-    function renderHtmlPreview2(code, container) {
-      container.empty();
-      container.addClass("owb-preview-block");
-      const head = container.createDiv({ cls: "owb-run-head" });
-      head.createSpan({ cls: "owb-run-lang", text: "preview" });
-      const frame = container.createEl("iframe", { cls: "owb-preview-frame" });
-      frame.setAttribute("sandbox", "allow-same-origin");
-      frame.style.width = "100%";
-      frame.style.height = "420px";
-      frame.style.border = "1px solid var(--background-modifier-border)";
-      frame.style.borderRadius = "10px";
-      frame.style.background = "#fff";
-      frame.srcdoc = code;
-    }
-    module2.exports = { renderRunnableBlock: renderRunnableBlock2, renderHtmlPreview: renderHtmlPreview2, runJs, runProcess, MAX_OUTPUT };
+    runBtn.setText("\u8FD0\u884C");
+    runBtn.removeAttribute("disabled");
+    showOut(res);
+  });
+}
+function confirmRun(app, lang, code, cwd) {
+  return new Promise((resolve) => {
+    const modal = new (require("obsidian")).Modal(app);
+    modal.titleEl.setText("\u786E\u8BA4\u6267\u884C\u4EE3\u7801");
+    const body = modal.contentEl;
+    body.createEl("p", {
+      text: `\u8BED\u8A00\uFF1A${lang}\u3000\u5DE5\u4F5C\u76EE\u5F55\uFF1A${cwd || "(\u672A\u77E5)"}`
+    });
+    body.createEl("p", {
+      cls: "owb-muted",
+      text: "\u4EE3\u7801\u5C06\u5728\u672C\u673A\u6267\u884C\uFF0C\u53EF\u8BFB\u5199\u6587\u4EF6\u3002\u53EA\u8FD0\u884C\u4F60\u4FE1\u4EFB\u7684\u5185\u5BB9\u3002"
+    });
+    const pre = body.createEl("pre", { cls: "owb-run-code" });
+    pre.setText(code.length > 600 ? code.slice(0, 600) + "\n\u2026" : code);
+    const foot = body.createDiv({ cls: "owb-run-confirm" });
+    let settled = false;
+    const finish = (v) => {
+      if (settled) return;
+      settled = true;
+      modal.close();
+      resolve(v);
+    };
+    foot.createEl("button", { cls: "mod-warning", text: "\u6267\u884C" }).addEventListener("click", () => finish(true));
+    foot.createEl("button", { text: "\u53D6\u6D88" }).addEventListener("click", () => finish(false));
+    modal.onClose = () => {
+      if (!settled) {
+        settled = true;
+        resolve(false);
+      }
+    };
+    modal.open();
+  });
+}
+function renderHtmlPreview(code, container) {
+  container.empty();
+  container.addClass("owb-preview-block");
+  const head = container.createDiv({ cls: "owb-run-head" });
+  head.createSpan({ cls: "owb-run-lang", text: "preview" });
+  const frame = container.createEl("iframe", { cls: "owb-preview-frame" });
+  frame.setAttribute("sandbox", "allow-same-origin");
+  frame.style.width = "100%";
+  frame.style.height = "420px";
+  frame.style.border = "1px solid var(--background-modifier-border)";
+  frame.style.borderRadius = "10px";
+  frame.style.background = "#fff";
+  frame.srcdoc = code;
+}
+var import_obsidian5, MAX_OUTPUT;
+var init_codeRunner = __esm({
+  "src/services/codeRunner.ts"() {
+    "use strict";
+    import_obsidian5 = require("obsidian");
+    MAX_OUTPUT = 64 * 1024;
   }
 });
 
@@ -1920,21 +1956,21 @@ ${code}
 var require_attachmentPreviewModal = __commonJS({
   "src/modals/attachmentPreviewModal.js"(exports2, module2) {
     "use strict";
-    var { Modal, Notice: Notice3 } = require("obsidian");
+    var { Modal, Notice: Notice7 } = require("obsidian");
     var ofvModule;
     var ofvError = "";
-    var pluginDir = "";
-    function setPluginDir2(dir) {
-      pluginDir = String(dir || "");
+    var pluginDir2 = "";
+    function setPluginDir3(dir) {
+      pluginDir2 = String(dir || "");
       ofvModule = void 0;
     }
     function loadOpenFileViewer() {
       if (ofvModule !== void 0) return ofvModule;
       const attempts = [() => require("@open-file-viewer/core")];
-      if (pluginDir && pluginDir.startsWith("/")) {
+      if (pluginDir2 && pluginDir2.startsWith("/")) {
         attempts.push(() => {
           const p = require("path");
-          return require(p.join(pluginDir, "node_modules", "@open-file-viewer", "core"));
+          return require(p.join(pluginDir2, "node_modules", "@open-file-viewer", "core"));
         });
       }
       for (const fn of attempts) {
@@ -2021,7 +2057,7 @@ var require_attachmentPreviewModal = __commonJS({
             const electron = require("electron");
             await electron.shell.openPath(resourceUrl(app, file));
           } catch (e) {
-            new Notice3("\u65E0\u6CD5\u8C03\u7528\u7CFB\u7EDF\u5E94\u7528\uFF1A" + e.message);
+            new Notice7("\u65E0\u6CD5\u8C03\u7528\u7CFB\u7EDF\u5E94\u7528\uFF1A" + e.message);
           }
         });
       }
@@ -2056,25 +2092,290 @@ var require_attachmentPreviewModal = __commonJS({
       renderPreview,
       resourceUrl,
       AttachmentPreviewModal: AttachmentPreviewModal2,
-      setPluginDir: setPluginDir2,
+      setPluginDir: setPluginDir3,
       loadOpenFileViewer
     };
   }
 });
 
-// src/services/attachmentService.js
-var require_attachmentService = __commonJS({
-  "src/services/attachmentService.js"(exports2, module2) {
-    "use strict";
-    var { normalizePath: normalizePath3 } = require("obsidian");
-    function safeDecode(s) {
-      try {
-        return decodeURIComponent(s);
-      } catch (e) {
-        return s;
+// src/services/attachmentService.ts
+var attachmentService_exports = {};
+__export(attachmentService_exports, {
+  ATTACHMENT_EXTS: () => ATTACHMENT_EXTS,
+  applyOrganize: () => applyOrganize,
+  archiveOrphans: () => archiveOrphans,
+  auditVault: () => auditVault,
+  extractAttachmentRefs: () => extractAttachmentRefs,
+  planOrganize: () => planOrganize,
+  saveAttachment: () => saveAttachment
+});
+function safeDecode(s) {
+  try {
+    return decodeURIComponent(s);
+  } catch (e) {
+    return s;
+  }
+}
+function stripCode(text) {
+  const out = [];
+  let inFence = false;
+  for (const line of text.split("\n")) {
+    if (line.trim().startsWith("```")) {
+      inFence = !inFence;
+      out.push("");
+      continue;
+    }
+    out.push(inFence ? "" : line);
+  }
+  return out.join("\n").replace(/`[^`\n]*`/g, "");
+}
+function extractAttachmentRefs(text) {
+  const body = stripCode(text);
+  const refs = [];
+  const seen = /* @__PURE__ */ new Set();
+  const push = (raw, target) => {
+    const t = String(target || "").trim();
+    if (!t) return;
+    if (seen.has(t + "|" + raw)) return;
+    seen.add(t + "|" + raw);
+    refs.push({ raw, target: t });
+  };
+  for (const m of body.matchAll(/\[\[([^\]]+)\]\]/g)) {
+    const inner = m[1].replace(/\\\|/g, "|").split("|")[0];
+    const head = inner.split("#")[0].trim();
+    if (!head) continue;
+    const base = head.split("/").pop();
+    if (ATTACHMENT_EXTS.has(base.split(".").pop().toLowerCase())) push(m[0], base);
+  }
+  for (const m of body.matchAll(/!\[([^\]]*)\]\(([^)]+)\)/g)) {
+    const p = m[2].trim().split(/\s+/)[0];
+    if (/^(https?:|data:|mailto:|#)/i.test(p)) continue;
+    const base = safeDecode(p.split("/").pop() || "");
+    if (ATTACHMENT_EXTS.has(base.split(".").pop().toLowerCase())) push(m[0], base);
+  }
+  for (const m of body.matchAll(/<img[^>]+src=["']([^"']+)["']/gi)) {
+    const p = m[1].trim();
+    if (/^(https?:|data:)/i.test(p)) continue;
+    const base = safeDecode(p.split("/").pop() || "");
+    if (ATTACHMENT_EXTS.has(base.split(".").pop().toLowerCase())) push(m[0], base);
+  }
+  return refs;
+}
+async function auditVault(app, opts) {
+  const allFiles = app.vault.getFiles();
+  const mdFiles = allFiles.filter((f) => f.extension === "md");
+  const attachments = allFiles.filter((f) => ATTACHMENT_EXTS.has(f.extension));
+  const byName = /* @__PURE__ */ new Map();
+  const ambiguous = /* @__PURE__ */ new Set();
+  for (const a of attachments) {
+    if (byName.has(a.name)) ambiguous.add(a.name);
+    byName.set(a.name, a.name);
+  }
+  const referencedNames = /* @__PURE__ */ new Set();
+  const missingRefs = [];
+  for (const md of mdFiles) {
+    if (md.path.startsWith(".obsidian/")) continue;
+    let text = "";
+    try {
+      text = await app.vault.cachedRead(md);
+    } catch (e) {
+      continue;
+    }
+    for (const r of extractAttachmentRefs(text)) {
+      referencedNames.add(r.target);
+      if (!byName.has(r.target)) {
+        missingRefs.push({ file: md, raw: r.raw, target: r.target });
       }
     }
-    var ATTACHMENT_EXTS = /* @__PURE__ */ new Set([
+  }
+  const orphans = attachments.filter((a) => !referencedNames.has(a.name));
+  const orphansAmbiguous = attachments.filter(
+    (a) => referencedNames.has(a.name) && ambiguous.has(a.name)
+  );
+  const sizeTop = attachments.map((a) => ({ file: a, size: a.stat ? a.stat.size : 0 })).sort((x, y) => y.size - x.size).slice(0, 15);
+  const totalBytes = attachments.reduce((s, a) => s + (a.stat ? a.stat.size : 0), 0);
+  const orphanBytes = orphans.reduce((s, a) => s + (a.stat ? a.stat.size : 0), 0);
+  return {
+    attachments,
+    orphans,
+    orphansAmbiguous,
+    missingRefs,
+    sizeTop,
+    totalBytes,
+    orphanBytes,
+    mdCount: mdFiles.length
+  };
+}
+async function archiveOrphans(app, files, note) {
+  if (!files || !files.length) return { moved: [], failed: [] };
+  const stamp = /* @__PURE__ */ new Date();
+  const pad = (n) => String(n).padStart(2, "0");
+  const day = `${stamp.getFullYear()}-${pad(stamp.getMonth() + 1)}-${pad(stamp.getDate())}`;
+  const destDir = `4-\u5B58\u6863/${day}_\u5B64\u513F\u9644\u4EF6`;
+  const moved = [];
+  const failed = [];
+  for (const f of files) {
+    try {
+      const dest = (0, import_obsidian6.normalizePath)(`${destDir}/${f.name}`);
+      const target = app.vault.getAbstractFileByPath(dest);
+      const finalPath = target ? (0, import_obsidian6.normalizePath)(`${destDir}/${stamp.getTime()}_${f.name}`) : dest;
+      await app.vault.rename(f, finalPath);
+      moved.push({ from: f.path, to: finalPath });
+    } catch (e) {
+      failed.push({ file: f, error: String(e && e.message) });
+    }
+  }
+  if (moved.length) {
+    const readmePath = (0, import_obsidian6.normalizePath)(`${destDir}/README.md`);
+    const lines = [
+      `# ${day} \u5B64\u513F\u9644\u4EF6\u5F52\u6863`,
+      "",
+      `\u6765\u6E90\uFF1A\u9644\u4EF6\u7BA1\u7406\u5668\u68C0\u6D4B\u4E3A\u672A\u88AB\u4EFB\u4F55\u7B14\u8BB0\u5F15\u7528\u7684\u9644\u4EF6\uFF08${note || "\u624B\u52A8\u89E6\u53D1"}\uFF09\u3002`,
+      `\u6570\u91CF\uFF1A${moved.length}${failed.length ? `\uFF0C\u5931\u8D25 ${failed.length}` : ""}`,
+      "",
+      "| \u539F\u4F4D\u7F6E | \u5F52\u6863\u4F4D\u7F6E |",
+      "|---|---|"
+    ];
+    for (const m of moved) lines.push(`| ${m.from} | ${m.to} |`);
+    const existed = app.vault.getAbstractFileByPath(readmePath);
+    const content = lines.join("\n") + "\n";
+    if (existed) {
+      const old = await app.vault.read(existed);
+      await app.vault.modify(existed, old + "\n\n---\n\n" + content);
+    } else {
+      await app.vault.create(readmePath, content);
+    }
+  }
+  return { moved, failed, destDir };
+}
+function planOrganize(app) {
+  let files = [];
+  try {
+    files = app.vault.getFiles();
+  } catch (e) {
+    files = [];
+  }
+  const items = [];
+  let bytes = 0;
+  for (const f of files) {
+    const ext = String(f.extension || "").toLowerCase();
+    if (!ATTACHMENT_EXTS.has(ext)) continue;
+    if (f.path.startsWith("assets/") || f.path.startsWith("4-\u5B58\u6863/") || f.path.startsWith(".obsidian/")) continue;
+    const parent = f.parent ? f.parent.path : "";
+    if (parent && /^assets\//.test(parent)) continue;
+    const d = f.stat && f.stat.mtime ? new Date(f.stat.mtime) : /* @__PURE__ */ new Date();
+    const pad = (n) => String(n).padStart(2, "0");
+    const dir = `assets/${d.getFullYear()}-${pad(d.getMonth() + 1)}`;
+    items.push({ file: f, dest: (0, import_obsidian6.normalizePath)(`${dir}/${f.name}`) });
+    bytes += f.stat ? f.stat.size : 0;
+  }
+  return { items, bytes };
+}
+async function applyOrganize(app, plan, onProgress) {
+  const moved = [];
+  const failed = [];
+  const rewrites = /* @__PURE__ */ new Map();
+  for (const item of plan.items) {
+    try {
+      let dest = item.dest;
+      if (app.vault.getAbstractFileByPath(dest)) {
+        const dot = dest.lastIndexOf(".");
+        dest = dest.slice(0, dot) + "-" + Date.now() + dest.slice(dot);
+      }
+      await app.vault.rename(item.file, dest);
+      rewrites.set(item.file.path, dest);
+      moved.push({ from: item.file.path, to: dest });
+      if (onProgress) onProgress(moved.length, plan.items.length);
+    } catch (e) {
+      failed.push({ file: item.file.path, error: String(e && e.message) });
+    }
+  }
+  let touched = 0;
+  if (rewrites.size) {
+    let mds = [];
+    try {
+      mds = app.vault.getMarkdownFiles();
+    } catch (e) {
+      mds = [];
+    }
+    for (const md of mds) {
+      let text = "";
+      try {
+        text = await app.vault.read(md);
+      } catch (e) {
+        continue;
+      }
+      let next = text;
+      for (const [oldPath, newPath] of rewrites) {
+        if (!next.includes(oldPath)) continue;
+        next = next.split(oldPath).join(newPath);
+      }
+      if (next !== text) {
+        try {
+          await app.vault.modify(md, next);
+          touched += 1;
+        } catch (e) {
+        }
+      }
+    }
+  }
+  if (moved.length) {
+    const pad = (n) => String(n).padStart(2, "0");
+    const now = /* @__PURE__ */ new Date();
+    const day = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+    const readme = (0, import_obsidian6.normalizePath)(`assets/\u6574\u7406\u8BB0\u5F55-${day}.md`);
+    const lines = [
+      `# \u9644\u4EF6\u6574\u7406 ${day}`,
+      "",
+      `\u79FB\u52A8 ${moved.length} \u4E2A\u9644\u4EF6\u5230 assets/<\u5E74-\u6708>/\uFF0C\u6539\u5199 ${touched} \u7BC7\u7B14\u8BB0\u4E2D\u7684\u5E26\u8DEF\u5F84\u5F15\u7528\u3002`,
+      "",
+      "| \u539F\u4F4D\u7F6E | \u65B0\u4F4D\u7F6E |",
+      "|---|---|"
+    ];
+    for (const m of moved) lines.push(`| ${m.from} | ${m.to} |`);
+    const existing = app.vault.getAbstractFileByPath(readme);
+    if (existing) {
+      const oldText = await app.vault.read(existing);
+      await app.vault.modify(existing, oldText + "\n\n" + lines.join("\n") + "\n");
+    } else {
+      await app.vault.create(readme, lines.join("\n") + "\n");
+    }
+  }
+  return { moved, failed, touched };
+}
+async function saveAttachment(app, input, opts) {
+  const o = opts || {};
+  const name = o.name || `attachment-${Date.now()}`;
+  const d = o.date || /* @__PURE__ */ new Date();
+  const pad = (n) => String(n).padStart(2, "0");
+  const dir = o.dir || `assets/${d.getFullYear()}-${pad(d.getMonth() + 1)}`;
+  if (!app.vault.getAbstractFileByPath((0, import_obsidian6.normalizePath)(dir))) {
+    try {
+      await app.vault.createFolder((0, import_obsidian6.normalizePath)(dir));
+    } catch (e) {
+    }
+  }
+  let bytes;
+  if (input instanceof ArrayBuffer) bytes = new Uint8Array(input);
+  else if (input && input.buffer instanceof ArrayBuffer) bytes = new Uint8Array(input.buffer);
+  else if (input && typeof input.arrayBuffer === "function") bytes = new Uint8Array(await input.arrayBuffer());
+  else throw new Error("\u65E0\u6CD5\u8BC6\u522B\u7684\u9644\u4EF6\u8F93\u5165");
+  let path2 = (0, import_obsidian6.normalizePath)(`${dir}/${name}`);
+  if (app.vault.getAbstractFileByPath(path2)) {
+    const dot = name.lastIndexOf(".");
+    const base = dot > 0 ? name.slice(0, dot) : name;
+    const ext = dot > 0 ? name.slice(dot) : "";
+    path2 = (0, import_obsidian6.normalizePath)(`${dir}/${base}-${Date.now()}${ext}`);
+  }
+  const file = await app.vault.createBinary(path2, bytes.buffer);
+  return { file, path: path2 };
+}
+var import_obsidian6, ATTACHMENT_EXTS;
+var init_attachmentService = __esm({
+  "src/services/attachmentService.ts"() {
+    "use strict";
+    import_obsidian6 = require("obsidian");
+    ATTACHMENT_EXTS = /* @__PURE__ */ new Set([
       "png",
       "jpg",
       "jpeg",
@@ -2093,277 +2394,19 @@ var require_attachmentService = __commonJS({
       "xlsx",
       "pptx"
     ]);
-    function stripCode(text) {
-      const out = [];
-      let inFence = false;
-      for (const line of text.split("\n")) {
-        if (line.trim().startsWith("```")) {
-          inFence = !inFence;
-          out.push("");
-          continue;
-        }
-        out.push(inFence ? "" : line);
-      }
-      return out.join("\n").replace(/`[^`\n]*`/g, "");
-    }
-    function extractAttachmentRefs(text) {
-      const body = stripCode(text);
-      const refs = [];
-      const seen = /* @__PURE__ */ new Set();
-      const push = (raw, target) => {
-        const t = String(target || "").trim();
-        if (!t) return;
-        if (seen.has(t + "|" + raw)) return;
-        seen.add(t + "|" + raw);
-        refs.push({ raw, target: t });
-      };
-      for (const m of body.matchAll(/\[\[([^\]]+)\]\]/g)) {
-        const inner = m[1].replace(/\\\|/g, "|").split("|")[0];
-        const head = inner.split("#")[0].trim();
-        if (!head) continue;
-        const base = head.split("/").pop();
-        if (ATTACHMENT_EXTS.has(base.split(".").pop().toLowerCase())) push(m[0], base);
-      }
-      for (const m of body.matchAll(/!\[([^\]]*)\]\(([^)]+)\)/g)) {
-        const p = m[2].trim().split(/\s+/)[0];
-        if (/^(https?:|data:|mailto:|#)/i.test(p)) continue;
-        const base = safeDecode(p.split("/").pop() || "");
-        if (ATTACHMENT_EXTS.has(base.split(".").pop().toLowerCase())) push(m[0], base);
-      }
-      for (const m of body.matchAll(/<img[^>]+src=["']([^"']+)["']/gi)) {
-        const p = m[1].trim();
-        if (/^(https?:|data:)/i.test(p)) continue;
-        const base = safeDecode(p.split("/").pop() || "");
-        if (ATTACHMENT_EXTS.has(base.split(".").pop().toLowerCase())) push(m[0], base);
-      }
-      return refs;
-    }
-    async function auditVault(app, opts) {
-      const allFiles = app.vault.getFiles();
-      const mdFiles = allFiles.filter((f) => f.extension === "md");
-      const attachments = allFiles.filter((f) => ATTACHMENT_EXTS.has(f.extension));
-      const byName = /* @__PURE__ */ new Map();
-      const ambiguous = /* @__PURE__ */ new Set();
-      for (const a of attachments) {
-        if (byName.has(a.name)) ambiguous.add(a.name);
-        byName.set(a.name, a.name);
-      }
-      const referencedNames = /* @__PURE__ */ new Set();
-      const missingRefs = [];
-      for (const md of mdFiles) {
-        if (md.path.startsWith(".obsidian/")) continue;
-        let text = "";
-        try {
-          text = await app.vault.cachedRead(md);
-        } catch (e) {
-          continue;
-        }
-        for (const r of extractAttachmentRefs(text)) {
-          referencedNames.add(r.target);
-          if (!byName.has(r.target)) {
-            missingRefs.push({ file: md, raw: r.raw, target: r.target });
-          }
-        }
-      }
-      const orphans = attachments.filter((a) => !referencedNames.has(a.name));
-      const orphansAmbiguous = attachments.filter(
-        (a) => referencedNames.has(a.name) && ambiguous.has(a.name)
-      );
-      const sizeTop = attachments.map((a) => ({ file: a, size: a.stat ? a.stat.size : 0 })).sort((x, y) => y.size - x.size).slice(0, 15);
-      const totalBytes = attachments.reduce((s, a) => s + (a.stat ? a.stat.size : 0), 0);
-      const orphanBytes = orphans.reduce((s, a) => s + (a.stat ? a.stat.size : 0), 0);
-      return {
-        attachments,
-        orphans,
-        orphansAmbiguous,
-        missingRefs,
-        sizeTop,
-        totalBytes,
-        orphanBytes,
-        mdCount: mdFiles.length
-      };
-    }
-    async function archiveOrphans(app, files, note) {
-      if (!files || !files.length) return { moved: [], failed: [] };
-      const stamp = /* @__PURE__ */ new Date();
-      const pad = (n) => String(n).padStart(2, "0");
-      const day = `${stamp.getFullYear()}-${pad(stamp.getMonth() + 1)}-${pad(stamp.getDate())}`;
-      const destDir = `4-\u5B58\u6863/${day}_\u5B64\u513F\u9644\u4EF6`;
-      const moved = [];
-      const failed = [];
-      for (const f of files) {
-        try {
-          const dest = normalizePath3(`${destDir}/${f.name}`);
-          const target = app.vault.getAbstractFileByPath(dest);
-          const finalPath = target ? normalizePath3(`${destDir}/${stamp.getTime()}_${f.name}`) : dest;
-          await app.vault.rename(f, finalPath);
-          moved.push({ from: f.path, to: finalPath });
-        } catch (e) {
-          failed.push({ file: f, error: String(e && e.message) });
-        }
-      }
-      if (moved.length) {
-        const readmePath = normalizePath3(`${destDir}/README.md`);
-        const lines = [
-          `# ${day} \u5B64\u513F\u9644\u4EF6\u5F52\u6863`,
-          "",
-          `\u6765\u6E90\uFF1A\u9644\u4EF6\u7BA1\u7406\u5668\u68C0\u6D4B\u4E3A\u672A\u88AB\u4EFB\u4F55\u7B14\u8BB0\u5F15\u7528\u7684\u9644\u4EF6\uFF08${note || "\u624B\u52A8\u89E6\u53D1"}\uFF09\u3002`,
-          `\u6570\u91CF\uFF1A${moved.length}${failed.length ? `\uFF0C\u5931\u8D25 ${failed.length}` : ""}`,
-          "",
-          "| \u539F\u4F4D\u7F6E | \u5F52\u6863\u4F4D\u7F6E |",
-          "|---|---|"
-        ];
-        for (const m of moved) lines.push(`| ${m.from} | ${m.to} |`);
-        const existed = app.vault.getAbstractFileByPath(readmePath);
-        const content = lines.join("\n") + "\n";
-        if (existed) {
-          const old = await app.vault.read(existed);
-          await app.vault.modify(existed, old + "\n\n---\n\n" + content);
-        } else {
-          await app.vault.create(readmePath, content);
-        }
-      }
-      return { moved, failed, destDir };
-    }
-    function planOrganize2(app) {
-      let files = [];
-      try {
-        files = app.vault.getFiles();
-      } catch (e) {
-        files = [];
-      }
-      const items = [];
-      let bytes = 0;
-      for (const f of files) {
-        const ext = String(f.extension || "").toLowerCase();
-        if (!ATTACHMENT_EXTS.has(ext)) continue;
-        if (f.path.startsWith("assets/") || f.path.startsWith("4-\u5B58\u6863/") || f.path.startsWith(".obsidian/")) continue;
-        const parent = f.parent ? f.parent.path : "";
-        if (parent && /^assets\//.test(parent)) continue;
-        const d = f.stat && f.stat.mtime ? new Date(f.stat.mtime) : /* @__PURE__ */ new Date();
-        const pad = (n) => String(n).padStart(2, "0");
-        const dir = `assets/${d.getFullYear()}-${pad(d.getMonth() + 1)}`;
-        items.push({ file: f, dest: normalizePath3(`${dir}/${f.name}`) });
-        bytes += f.stat ? f.stat.size : 0;
-      }
-      return { items, bytes };
-    }
-    async function applyOrganize2(app, plan, onProgress) {
-      const moved = [];
-      const failed = [];
-      const rewrites = /* @__PURE__ */ new Map();
-      for (const item of plan.items) {
-        try {
-          let dest = item.dest;
-          if (app.vault.getAbstractFileByPath(dest)) {
-            const dot = dest.lastIndexOf(".");
-            dest = dest.slice(0, dot) + "-" + Date.now() + dest.slice(dot);
-          }
-          await app.vault.rename(item.file, dest);
-          rewrites.set(item.file.path, dest);
-          moved.push({ from: item.file.path, to: dest });
-          if (onProgress) onProgress(moved.length, plan.items.length);
-        } catch (e) {
-          failed.push({ file: item.file.path, error: String(e && e.message) });
-        }
-      }
-      let touched = 0;
-      if (rewrites.size) {
-        let mds = [];
-        try {
-          mds = app.vault.getMarkdownFiles();
-        } catch (e) {
-          mds = [];
-        }
-        for (const md of mds) {
-          let text = "";
-          try {
-            text = await app.vault.read(md);
-          } catch (e) {
-            continue;
-          }
-          let next = text;
-          for (const [oldPath, newPath] of rewrites) {
-            if (!next.includes(oldPath)) continue;
-            next = next.split(oldPath).join(newPath);
-          }
-          if (next !== text) {
-            try {
-              await app.vault.modify(md, next);
-              touched += 1;
-            } catch (e) {
-            }
-          }
-        }
-      }
-      if (moved.length) {
-        const pad = (n) => String(n).padStart(2, "0");
-        const now = /* @__PURE__ */ new Date();
-        const day = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
-        const readme = normalizePath3(`assets/\u6574\u7406\u8BB0\u5F55-${day}.md`);
-        const lines = [
-          `# \u9644\u4EF6\u6574\u7406 ${day}`,
-          "",
-          `\u79FB\u52A8 ${moved.length} \u4E2A\u9644\u4EF6\u5230 assets/<\u5E74-\u6708>/\uFF0C\u6539\u5199 ${touched} \u7BC7\u7B14\u8BB0\u4E2D\u7684\u5E26\u8DEF\u5F84\u5F15\u7528\u3002`,
-          "",
-          "| \u539F\u4F4D\u7F6E | \u65B0\u4F4D\u7F6E |",
-          "|---|---|"
-        ];
-        for (const m of moved) lines.push(`| ${m.from} | ${m.to} |`);
-        const existing = app.vault.getAbstractFileByPath(readme);
-        if (existing) {
-          const oldText = await app.vault.read(existing);
-          await app.vault.modify(existing, oldText + "\n\n" + lines.join("\n") + "\n");
-        } else {
-          await app.vault.create(readme, lines.join("\n") + "\n");
-        }
-      }
-      return { moved, failed, touched };
-    }
-    async function saveAttachment2(app, input, opts) {
-      const o = opts || {};
-      const name = o.name || `attachment-${Date.now()}`;
-      const d = o.date || /* @__PURE__ */ new Date();
-      const pad = (n) => String(n).padStart(2, "0");
-      const dir = o.dir || `assets/${d.getFullYear()}-${pad(d.getMonth() + 1)}`;
-      if (!app.vault.getAbstractFileByPath(normalizePath3(dir))) {
-        try {
-          await app.vault.createFolder(normalizePath3(dir));
-        } catch (e) {
-        }
-      }
-      let bytes;
-      if (input instanceof ArrayBuffer) bytes = new Uint8Array(input);
-      else if (input && input.buffer instanceof ArrayBuffer) bytes = new Uint8Array(input.buffer);
-      else if (input && typeof input.arrayBuffer === "function") bytes = new Uint8Array(await input.arrayBuffer());
-      else throw new Error("\u65E0\u6CD5\u8BC6\u522B\u7684\u9644\u4EF6\u8F93\u5165");
-      let path = normalizePath3(`${dir}/${name}`);
-      if (app.vault.getAbstractFileByPath(path)) {
-        const dot = name.lastIndexOf(".");
-        const base = dot > 0 ? name.slice(0, dot) : name;
-        const ext = dot > 0 ? name.slice(dot) : "";
-        path = normalizePath3(`${dir}/${base}-${Date.now()}${ext}`);
-      }
-      const file = await app.vault.createBinary(path, bytes.buffer);
-      return { file, path };
-    }
-    module2.exports = {
-      planOrganize: planOrganize2,
-      applyOrganize: applyOrganize2,
-      saveAttachment: saveAttachment2,
-      ATTACHMENT_EXTS,
-      extractAttachmentRefs,
-      auditVault,
-      archiveOrphans
-    };
   }
 });
 
-// src/styles/basesStyle.js
-var require_basesStyle = __commonJS({
-  "src/styles/basesStyle.js"(exports2, module2) {
+// src/styles/basesStyle.ts
+var basesStyle_exports = {};
+__export(basesStyle_exports, {
+  BASE_STYLE_CSS: () => BASE_STYLE_CSS
+});
+var BASE_STYLE_CSS;
+var init_basesStyle = __esm({
+  "src/styles/basesStyle.ts"() {
     "use strict";
-    var BASE_STYLE_CSS2 = `/* \u7531 Obsidian Workbench \u751F\u6210\uFF1A\u591A\u7EF4\u8868\u683C\u7EDF\u4E00\u5916\u89C2 */
+    BASE_STYLE_CSS = `/* \u7531 Obsidian Workbench \u751F\u6210\uFF1A\u591A\u7EF4\u8868\u683C\u7EDF\u4E00\u5916\u89C2 */
 
 /* \u547D\u4EE4\u680F\uFF1A\u6241\u5E73\u5316\uFF0C\u53BB\u6389\u91CD\u9634\u5F71 */
 .mt-command-bar {
@@ -2454,7 +2497,6 @@ var require_basesStyle = __commonJS({
   color: var(--text-normal);
 }
 `;
-    module2.exports = { BASE_STYLE_CSS: BASE_STYLE_CSS2 };
   }
 });
 
@@ -2462,7 +2504,7 @@ var require_basesStyle = __commonJS({
 var require_pomodoroFullscreen = __commonJS({
   "src/modals/pomodoroFullscreen.js"(exports2, module2) {
     "use strict";
-    var { Modal, Notice: Notice3, setIcon } = require("obsidian");
+    var { Modal, Notice: Notice7, setIcon: setIcon2 } = require("obsidian");
     var PomodoroFullscreen2 = class extends Modal {
       constructor(app, plugin) {
         super(app, plugin);
@@ -2505,7 +2547,7 @@ var require_pomodoroFullscreen = __commonJS({
         this.metaEl = wrap.createDiv({ cls: "owb-fs-meta" });
         const actions = wrap.createDiv({ cls: "owb-fs-actions" });
         this.mainBtn = actions.createEl("button", { cls: "mod-cta owb-fs-btn" });
-        setIcon(this.mainBtn, "play");
+        setIcon2(this.mainBtn, "play");
         this.mainBtn.createSpan({ text: "\u5F00\u59CB\u4E13\u6CE8" });
         this.mainBtn.addEventListener("click", () => {
           const pomo = this.plugin.pomodoro;
@@ -2515,7 +2557,7 @@ var require_pomodoroFullscreen = __commonJS({
           this._pulse();
         });
         const breakBtn = actions.createEl("button", { cls: "owb-fs-btn" });
-        setIcon(breakBtn, "coffee");
+        setIcon2(breakBtn, "coffee");
         breakBtn.createSpan({ text: "\u77ED\u4F11" });
         breakBtn.addEventListener("click", () => {
           this.plugin.pomodoro.startBreak();
@@ -2523,7 +2565,7 @@ var require_pomodoroFullscreen = __commonJS({
           this._pulse();
         });
         const resetBtn = actions.createEl("button", { cls: "owb-fs-btn" });
-        setIcon(resetBtn, "rotate-ccw");
+        setIcon2(resetBtn, "rotate-ccw");
         resetBtn.createSpan({ text: "\u91CD\u7F6E" });
         resetBtn.addEventListener("click", () => {
           this.plugin.pomodoro.reset();
@@ -2531,7 +2573,7 @@ var require_pomodoroFullscreen = __commonJS({
           this._pulse();
         });
         const closeBtn = actions.createEl("button", { cls: "owb-fs-btn owb-fs-quiet" });
-        setIcon(closeBtn, "minimize-2");
+        setIcon2(closeBtn, "minimize-2");
         closeBtn.createSpan({ text: "\u9000\u51FA\u5168\u5C4F" });
         closeBtn.addEventListener("click", () => this.close());
         this._keydown = (ev) => {
@@ -2816,66 +2858,74 @@ var init_wallpaperService = __esm({
   }
 });
 
-// src/services/baseService.js
-var require_baseService = __commonJS({
-  "src/services/baseService.js"(exports2, module2) {
+// src/services/baseService.ts
+var baseService_exports = {};
+__export(baseService_exports, {
+  BASE_EXTS: () => BASE_EXTS,
+  DEFAULT_FOLDER: () => DEFAULT_FOLDER,
+  createBase: () => createBase,
+  duoweiTemplate: () => duoweiTemplate,
+  listBases: () => listBases
+});
+function listBases(app, folderPrefix) {
+  const prefix = String(folderPrefix || "").replace(/^\/+|\/+$/g, "");
+  let files = [];
+  try {
+    files = app.vault.getFiles();
+  } catch (e) {
+    return [];
+  }
+  return files.filter((f) => BASE_EXTS.includes(String(f.extension || "").toLowerCase())).filter((f) => !prefix || f.path === prefix || f.path.startsWith(prefix + "/")).filter((f) => !f.path.startsWith("4-\u5B58\u6863/")).map((f) => ({
+    file: f,
+    kind: KIND_LABEL[String(f.extension).toLowerCase()] || f.extension,
+    ext: String(f.extension).toLowerCase()
+  })).sort((a, b) => a.file.path < b.file.path ? -1 : 1);
+}
+function duoweiTemplate(title) {
+  return JSON.stringify(
+    {
+      version: 1,
+      name: title || "\u65B0\u5EFA\u5DE5\u4F5C\u8868",
+      views: [{ type: "table", name: "\u8868\u683C" }],
+      fields: [
+        { id: "title", name: "\u540D\u79F0", type: "text" },
+        { id: "status", name: "\u72B6\u6001", type: "select", options: ["\u5F85\u5F00\u59CB", "\u8FDB\u884C\u4E2D", "\u5DF2\u5B8C\u6210"] }
+      ],
+      rows: []
+    },
+    null,
+    2
+  ) + "\n";
+}
+async function createBase(app, name, folder) {
+  const title = String(name || "\u65B0\u5EFA\u5DE5\u4F5C\u8868").trim() || "\u65B0\u5EFA\u5DE5\u4F5C\u8868";
+  const dir = (0, import_obsidian7.normalizePath)(folder || DEFAULT_FOLDER);
+  if (!app.vault.getAbstractFileByPath(dir)) {
+    try {
+      await app.vault.createFolder(dir);
+    } catch (e) {
+    }
+  }
+  let path2 = (0, import_obsidian7.normalizePath)(`${dir}/${title}.duowei`);
+  if (app.vault.getAbstractFileByPath(path2)) {
+    path2 = (0, import_obsidian7.normalizePath)(`${dir}/${title}-${Date.now()}.duowei`);
+  }
+  const file = await app.vault.create(path2, duoweiTemplate(title));
+  new import_obsidian7.Notice(`\u5DF2\u521B\u5EFA\u591A\u7EF4\u8868\u683C\uFF1A${path2}`);
+  await app.workspace.getLeaf(false).openFile(file);
+  return file;
+}
+var import_obsidian7, BASE_EXTS, KIND_LABEL, DEFAULT_FOLDER;
+var init_baseService = __esm({
+  "src/services/baseService.ts"() {
     "use strict";
-    var { normalizePath: normalizePath3, Notice: Notice3 } = require("obsidian");
-    var BASE_EXTS = ["base", "duowei"];
-    var KIND_LABEL = {
+    import_obsidian7 = require("obsidian");
+    BASE_EXTS = ["base", "duowei"];
+    KIND_LABEL = {
       base: "Bases",
       duowei: "Duowei"
     };
-    var DEFAULT_FOLDER = "vault/\u5DE5\u4F5C\u53F0";
-    function listBases(app, folderPrefix) {
-      const prefix = String(folderPrefix || "").replace(/^\/+|\/+$/g, "");
-      let files = [];
-      try {
-        files = app.vault.getFiles();
-      } catch (e) {
-        return [];
-      }
-      return files.filter((f) => BASE_EXTS.includes(String(f.extension || "").toLowerCase())).filter((f) => !prefix || f.path === prefix || f.path.startsWith(prefix + "/")).filter((f) => !f.path.startsWith("4-\u5B58\u6863/")).map((f) => ({
-        file: f,
-        kind: KIND_LABEL[String(f.extension).toLowerCase()] || f.extension,
-        ext: String(f.extension).toLowerCase()
-      })).sort((a, b) => a.file.path < b.file.path ? -1 : 1);
-    }
-    function duoweiTemplate(title) {
-      return JSON.stringify(
-        {
-          version: 1,
-          name: title || "\u65B0\u5EFA\u5DE5\u4F5C\u8868",
-          views: [{ type: "table", name: "\u8868\u683C" }],
-          fields: [
-            { id: "title", name: "\u540D\u79F0", type: "text" },
-            { id: "status", name: "\u72B6\u6001", type: "select", options: ["\u5F85\u5F00\u59CB", "\u8FDB\u884C\u4E2D", "\u5DF2\u5B8C\u6210"] }
-          ],
-          rows: []
-        },
-        null,
-        2
-      ) + "\n";
-    }
-    async function createBase(app, name, folder) {
-      const title = String(name || "\u65B0\u5EFA\u5DE5\u4F5C\u8868").trim() || "\u65B0\u5EFA\u5DE5\u4F5C\u8868";
-      const dir = normalizePath3(folder || DEFAULT_FOLDER);
-      if (!app.vault.getAbstractFileByPath(dir)) {
-        try {
-          await app.vault.createFolder(dir);
-        } catch (e) {
-        }
-      }
-      let path = normalizePath3(`${dir}/${title}.duowei`);
-      if (app.vault.getAbstractFileByPath(path)) {
-        path = normalizePath3(`${dir}/${title}-${Date.now()}.duowei`);
-      }
-      const file = await app.vault.create(path, duoweiTemplate(title));
-      new Notice3(`\u5DF2\u521B\u5EFA\u591A\u7EF4\u8868\u683C\uFF1A${path}`);
-      await app.workspace.getLeaf(false).openFile(file);
-      return file;
-    }
-    module2.exports = { BASE_EXTS, listBases, createBase, duoweiTemplate, DEFAULT_FOLDER };
+    DEFAULT_FOLDER = "vault/\u5DE5\u4F5C\u53F0";
   }
 });
 
@@ -2891,7 +2941,7 @@ function tagStats(app, opts) {
   const counts = /* @__PURE__ */ new Map();
   let mc = null;
   try {
-    mc = app.metadataCache.getTags ? app.metadataCache.getTags() : null;
+    mc = app.metadataCache && app.metadataCache.getTags ? app.metadataCache.getTags() : null;
   } catch (e) {
     mc = null;
   }
@@ -2927,7 +2977,7 @@ function attachmentStats(app, attachmentExts) {
   for (const f of files) {
     const ext = String(f.extension || "").toLowerCase();
     if (!attachmentExts.has(ext)) continue;
-    const size = f.stat ? f.stat.size : 0;
+    const size = f.stat ? f.stat.size ?? 0 : 0;
     const cur = byExt.get(ext) || { ext, count: 0, bytes: 0 };
     cur.count += 1;
     cur.bytes += size;
@@ -2998,7 +3048,7 @@ function saveSnapshot(storage, data) {
 }
 function defaultFetcher() {
   return async () => {
-    const res = await (0, import_obsidian3.requestUrl)({
+    const res = await (0, import_obsidian8.requestUrl)({
       url: "https://v1.jinrishici.com/all.json",
       method: "GET",
       headers: { Accept: "application/json" }
@@ -3020,17 +3070,17 @@ async function getQuote(force, storage, fetcher) {
     };
     if (!data.content) throw new Error("\u7A7A\u5185\u5BB9");
     cache = { key, data };
-    saveSnapshot(storage, data);
+    saveSnapshot(storage || null, data);
     return data;
   } catch (e) {
-    return { error: String(e && e.message || e), content: "", author: "", origin: "" };
+    return { error: String(e?.message || e), content: "", author: "", origin: "", category: "" };
   }
 }
-var import_obsidian3, cache, STORAGE_KEY;
+var import_obsidian8, cache, STORAGE_KEY;
 var init_quoteService = __esm({
   "src/services/quoteService.ts"() {
     "use strict";
-    import_obsidian3 = require("obsidian");
+    import_obsidian8 = require("obsidian");
     cache = { key: "", data: null };
     STORAGE_KEY = "owb-quote-cache";
   }
@@ -3047,6 +3097,17 @@ __export(weatherService_exports, {
 });
 function defaultStorage2() {
   return typeof localStorage !== "undefined" ? localStorage : null;
+}
+function iconEmoji(code) {
+  const c = String(code || "");
+  if (c.startsWith("01")) return "\u2600\uFE0F";
+  if (c.startsWith("02")) return "\u{1F324}\uFE0F";
+  if (c.startsWith("03") || c.startsWith("04")) return "\u2601\uFE0F";
+  if (c.startsWith("09") || c.startsWith("10")) return "\u{1F327}\uFE0F";
+  if (c.startsWith("11")) return "\u26C8\uFE0F";
+  if (c.startsWith("13")) return "\u2744\uFE0F";
+  if (c.startsWith("50")) return "\u{1F32B}\uFE0F";
+  return "\u{1F321}\uFE0F";
 }
 function getCachedSnapshot2(storage) {
   const st = storage || defaultStorage2();
@@ -3069,50 +3130,39 @@ function saveSnapshot2(storage, data) {
   } catch (e) {
   }
 }
-function iconEmoji(code) {
-  const c = String(code || "");
-  if (c.startsWith("01")) return "\u2600\uFE0F";
-  if (c.startsWith("02")) return "\u{1F324}\uFE0F";
-  if (c.startsWith("03") || c.startsWith("04")) return "\u2601\uFE0F";
-  if (c.startsWith("09") || c.startsWith("10")) return "\u{1F327}\uFE0F";
-  if (c.startsWith("11")) return "\u26C8\uFE0F";
-  if (c.startsWith("13")) return "\u2744\uFE0F";
-  if (c.startsWith("50")) return "\u{1F32B}\uFE0F";
-  return "\u{1F321}\uFE0F";
-}
 async function getWeather(settings, force) {
   const key = String(settings && settings.weatherApiKey || "").trim();
   const city = String(settings && settings.weatherCity || "").trim();
-  if (!key || !city) return { missing: true };
+  if (!key || !city) return { missing: true, city: "", temp: 0, feels: 0, humidity: 0, desc: "", emoji: "", code: "" };
   const cacheKey = key.slice(0, 6) + "|" + city;
   if (!force && cache2.data && cache2.key === cacheKey && Date.now() - cache2.at < TTL) return cache2.data;
   try {
     const url = "https://api.openweathermap.org/data/2.5/weather?q=" + encodeURIComponent(city) + "&appid=" + encodeURIComponent(key) + "&units=metric&lang=zh_cn";
-    const res = await (0, import_obsidian4.requestUrl)({ url, method: "GET" });
+    const res = await (0, import_obsidian9.requestUrl)({ url, method: "GET" });
     const j = res.json || JSON.parse(res.text);
     if (!j || !j.main) throw new Error(j && j.message || "\u8FD4\u56DE\u7ED3\u6784\u5F02\u5E38");
     const w = j.weather && j.weather[0] || {};
     const data = {
       city: j.name || city,
-      temp: Math.round(j.main.temp),
-      feels: Math.round(j.main.feels_like),
-      humidity: j.main.humidity,
+      temp: Math.round(j.main.temp ?? 0),
+      feels: Math.round(j.main.feels_like ?? 0),
+      humidity: j.main.humidity ?? 0,
       desc: w.description || "",
-      emoji: iconEmoji(w.icon),
+      emoji: iconEmoji(w.icon || ""),
       code: w.icon || ""
     };
     cache2 = { at: Date.now(), key: cacheKey, data };
     saveSnapshot2(null, data);
     return data;
   } catch (e) {
-    return { error: String(e && e.message || e) };
+    return { error: String(e?.message || e), city, temp: 0, feels: 0, humidity: 0, desc: "", emoji: "", code: "" };
   }
 }
-var import_obsidian4, cache2, TTL, STORAGE_KEY2;
+var import_obsidian9, cache2, TTL, STORAGE_KEY2;
 var init_weatherService = __esm({
   "src/services/weatherService.ts"() {
     "use strict";
-    import_obsidian4 = require("obsidian");
+    import_obsidian9 = require("obsidian");
     cache2 = { at: 0, key: "", data: null };
     TTL = 30 * 60 * 1e3;
     STORAGE_KEY2 = "owb-weather-cache";
@@ -3123,7 +3173,7 @@ var init_weatherService = __esm({
 var require_workbenchView = __commonJS({
   "src/views/workbenchView.js"(exports2, module2) {
     "use strict";
-    var { ItemView, Notice: Notice3, normalizePath: normalizePath3, setIcon } = require("obsidian");
+    var { ItemView, Notice: Notice7, normalizePath: normalizePath7, setIcon: setIcon2 } = require("obsidian");
     var { VIEW_TYPE_WORKBENCH: VIEW_TYPE_WORKBENCH3 } = (init_constants(), __toCommonJS(constants_exports));
     var { formatDate: formatDate3, getGreeting: getGreeting2 } = (init_utils(), __toCommonJS(utils_exports));
     var { collectWorkbenchData, toggleTaskInFile } = require_vaultStats();
@@ -3131,10 +3181,10 @@ var require_workbenchView = __commonJS({
     var { listProjects: listProjects3 } = (init_projectService(), __toCommonJS(projectService_exports));
     var { buildHeatmap: buildHeatmap2 } = (init_heatmapService(), __toCommonJS(heatmapService_exports));
     var { wallpaperUrl: wallpaperUrl2 } = (init_wallpaperService(), __toCommonJS(wallpaperService_exports));
-    var { listBases, createBase } = require_baseService();
+    var { listBases: listBases2, createBase: createBase2 } = (init_baseService(), __toCommonJS(baseService_exports));
     var { tagStats: tagStats2, attachmentStats: attachmentStats2 } = (init_statsService(), __toCommonJS(statsService_exports));
     var { AttachmentPreviewModal: AttachmentPreviewModal2 } = require_attachmentPreviewModal();
-    var { ATTACHMENT_EXTS, planOrganize: planOrganize2, applyOrganize: applyOrganize2 } = require_attachmentService();
+    var { ATTACHMENT_EXTS: ATTACHMENT_EXTS2, planOrganize: planOrganize3, applyOrganize: applyOrganize3 } = (init_attachmentService(), __toCommonJS(attachmentService_exports));
     var { getQuote: getQuote2, getCachedSnapshot: quoteSnapshot } = (init_quoteService(), __toCommonJS(quoteService_exports));
     var { getWeather: getWeather2, getCachedSnapshot: weatherSnapshot } = (init_weatherService(), __toCommonJS(weatherService_exports));
     var WorkbenchView2 = class extends ItemView {
@@ -3274,10 +3324,10 @@ var require_workbenchView = __commonJS({
             cell.setAttribute("title", label);
             cell.addEventListener("click", async () => {
               const target = this.app.vault.getAbstractFileByPath(
-                normalizePath3(`${this.plugin.settings.dailyFolder}/${day.key}.md`)
+                normalizePath7(`${this.plugin.settings.dailyFolder}/${day.key}.md`)
               );
               if (target) await this.app.workspace.getLeaf(false).openFile(target);
-              else new Notice3(`${day.key} \xB7 ${day.count} \u6B21\u66F4\u65B0\uFF08\u5F53\u5929\u6CA1\u6709\u65E5\u8BB0\uFF09`);
+              else new Notice7(`${day.key} \xB7 ${day.count} \u6B21\u66F4\u65B0\uFF08\u5F53\u5929\u6CA1\u6709\u65E5\u8BB0\uFF09`);
             });
           }
         }
@@ -3339,7 +3389,7 @@ var require_workbenchView = __commonJS({
           collectWorkbenchData(this.app, this.plugin.settings),
           listDailies2(this.app, this.plugin.settings),
           this.plugin.isFeatureEnabled("projects") ? listProjects3(this.app, this.plugin.settings) : Promise.resolve([]),
-          this.plugin.isFeatureEnabled("bases") ? listBases(this.app) : Promise.resolve([])
+          this.plugin.isFeatureEnabled("bases") ? listBases2(this.app) : Promise.resolve([])
         ]);
         perf.dataMs = Date.now() - tData;
         const heat = this.getHeat(perf);
@@ -3405,7 +3455,7 @@ var require_workbenchView = __commonJS({
         const heroActions = hero.createDiv({ cls: "owb-hero-actions" });
         const mkBtn = (label, icon, primary, handler) => {
           const b = heroActions.createEl("button", { cls: primary ? "mod-cta owb-btn-icon" : "owb-btn-icon" });
-          if (icon) setIcon(b, icon);
+          if (icon) setIcon2(b, icon);
           b.createSpan({ text: label });
           b.addEventListener("click", handler);
         };
@@ -3488,12 +3538,12 @@ var require_workbenchView = __commonJS({
               try {
                 await toggleTaskInFile(this.app, t.file, t.line);
                 this.invalidateHeat();
-                new Notice3("\u5DF2\u5B8C\u6210");
+                new Notice7("\u5DF2\u5B8C\u6210");
                 await new Promise((r) => setTimeout(r, 360));
                 await this.render();
               } catch (err) {
                 row.removeClass("done");
-                new Notice3(`\u66F4\u65B0\u5931\u8D25\uFF1A${err.message}`);
+                new Notice7(`\u66F4\u65B0\u5931\u8D25\uFF1A${err.message}`);
               }
             });
             const a = row.createEl("a", { cls: "owb-link", text: t.text });
@@ -3588,10 +3638,10 @@ ${t.file.path}`);
           bh.createDiv({ cls: "owb-card-title", text: `\u591A\u7EF4\u8868\u683C \xB7 ${bases.length}` });
           bh.createEl("button", { cls: "owb-mini-btn", text: "\u65B0\u5EFA" }).addEventListener("click", async () => {
             try {
-              await createBase(this.app, "\u65B0\u5EFA\u5DE5\u4F5C\u8868");
+              await createBase2(this.app, "\u65B0\u5EFA\u5DE5\u4F5C\u8868");
               this.render();
             } catch (e) {
-              new Notice3("\u521B\u5EFA\u5931\u8D25\uFF1A" + e.message);
+              new Notice7("\u521B\u5EFA\u5931\u8D25\uFF1A" + e.message);
             }
           });
           if (!bases.length) {
@@ -3606,7 +3656,7 @@ ${t.file.path}`);
           }
         }
         if (this.plugin.isFeatureEnabled("attachments")) {
-          const att = attachmentStats2(this.app, ATTACHMENT_EXTS);
+          const att = attachmentStats2(this.app, ATTACHMENT_EXTS2);
           const card = sideCol.createDiv({ cls: "owb-card" });
           const h2 = card.createDiv({ cls: "owb-card-title-row" });
           h2.createDiv({ cls: "owb-card-title", text: `\u9644\u4EF6 \xB7 ${att.count}` });
@@ -3647,9 +3697,9 @@ ${t.file.path}`);
           const strip = root.createDiv({ cls: "owb-quick-links" });
           for (const item of links) {
             strip.createEl("button", { cls: "owb-chip", text: item.label }).addEventListener("click", async () => {
-              const target = this.app.vault.getAbstractFileByPath(normalizePath3(item.target));
+              const target = this.app.vault.getAbstractFileByPath(normalizePath7(item.target));
               if (target) await this.app.workspace.getLeaf(false).openFile(target);
-              else new Notice3(`\u672A\u627E\u5230\uFF1A${item.target}`);
+              else new Notice7(`\u672A\u627E\u5230\uFF1A${item.target}`);
             });
           }
         }
@@ -3825,7 +3875,7 @@ var require_diffModal = __commonJS({
 var require_branchModal = __commonJS({
   "src/modals/branchModal.js"(exports2, module2) {
     "use strict";
-    var { Modal, Notice: Notice3 } = require("obsidian");
+    var { Modal, Notice: Notice7 } = require("obsidian");
     var BranchModal = class extends Modal {
       constructor(app, onCreate) {
         super(app);
@@ -3847,7 +3897,7 @@ var require_branchModal = __commonJS({
         const submit = async () => {
           const name = input.value.trim();
           if (!name) {
-            new Notice3("\u8BF7\u8F93\u5165\u5206\u652F\u540D\u79F0");
+            new Notice7("\u8BF7\u8F93\u5165\u5206\u652F\u540D\u79F0");
             return;
           }
           okBtn.disabled = true;
@@ -3855,7 +3905,7 @@ var require_branchModal = __commonJS({
             await this.onCreate(name);
             this.close();
           } catch (err) {
-            new Notice3(err.message);
+            new Notice7(err.message);
             okBtn.disabled = false;
           }
         };
@@ -3877,7 +3927,7 @@ var require_branchModal = __commonJS({
 var require_remoteModal = __commonJS({
   "src/modals/remoteModal.js"(exports2, module2) {
     "use strict";
-    var { Modal, Notice: Notice3 } = require("obsidian");
+    var { Modal, Notice: Notice7 } = require("obsidian");
     var RemoteModal = class extends Modal {
       constructor(app, gitService, currentBranch, onUpdated) {
         super(app);
@@ -3904,10 +3954,10 @@ var require_remoteModal = __commonJS({
               pushBtn.disabled = true;
               try {
                 await this.gitService.pushSetUpstream(r.name, this.currentBranch);
-                new Notice3(`\u5DF2\u63A8\u9001\u5E76\u7ED1\u5B9A\u4E0A\u6E38 ${r.name}/${this.currentBranch}`);
+                new Notice7(`\u5DF2\u63A8\u9001\u5E76\u7ED1\u5B9A\u4E0A\u6E38 ${r.name}/${this.currentBranch}`);
                 if (this.onUpdated) await this.onUpdated();
               } catch (err) {
-                new Notice3(err.message, 6e3);
+                new Notice7(err.message, 6e3);
               } finally {
                 pushBtn.disabled = false;
               }
@@ -3916,11 +3966,11 @@ var require_remoteModal = __commonJS({
             delBtn.addEventListener("click", async () => {
               try {
                 await this.gitService.removeRemote(r.name);
-                new Notice3(`\u5DF2\u79FB\u9664\u8FDC\u7A0B ${r.name}`);
+                new Notice7(`\u5DF2\u79FB\u9664\u8FDC\u7A0B ${r.name}`);
                 if (this.onUpdated) await this.onUpdated();
                 await this.onOpen();
               } catch (err) {
-                new Notice3(err.message);
+                new Notice7(err.message);
               }
             });
           }
@@ -3946,17 +3996,17 @@ var require_remoteModal = __commonJS({
           const name = nameInput.value.trim() || "origin";
           const url = urlInput.value.trim();
           if (!url) {
-            new Notice3("\u8BF7\u8F93\u5165\u8FDC\u7A0B\u4ED3\u5E93 URL");
+            new Notice7("\u8BF7\u8F93\u5165\u8FDC\u7A0B\u4ED3\u5E93 URL");
             return;
           }
           saveBtn.disabled = true;
           try {
             await this.gitService.setRemote(name, url);
-            new Notice3(`\u5DF2\u4FDD\u5B58\u8FDC\u7A0B ${name}`);
+            new Notice7(`\u5DF2\u4FDD\u5B58\u8FDC\u7A0B ${name}`);
             if (this.onUpdated) await this.onUpdated();
             await this.onOpen();
           } catch (err) {
-            new Notice3(err.message);
+            new Notice7(err.message);
           } finally {
             saveBtn.disabled = false;
           }
@@ -3970,122 +4020,123 @@ var require_remoteModal = __commonJS({
   }
 });
 
-// src/services/aiService.js
-var require_aiService = __commonJS({
-  "src/services/aiService.js"(exports2, module2) {
-    "use strict";
-    function getHttpClient() {
-      try {
-        const obs = require("obsidian");
-        if (obs && typeof obs.requestUrl === "function") {
-          return async (url, headers, bodyObj) => {
-            const res = await obs.requestUrl({
-              url,
-              method: "POST",
-              headers,
-              body: JSON.stringify(bodyObj),
-              throw: false
-            });
-            if (res.status < 200 || res.status >= 300) {
-              throw new Error(`HTTP ${res.status}: ${String(res.text || "").slice(0, 200)}`);
-            }
-            return res.json;
-          };
-        }
-      } catch {
-      }
+// src/services/aiService.ts
+var aiService_exports = {};
+__export(aiService_exports, {
+  chatCompletion: () => chatCompletion,
+  generateCommitMessage: () => generateCommitMessage,
+  generateQuizMarkdownFromNote: () => generateQuizMarkdownFromNote
+});
+function getHttpClient() {
+  try {
+    const obs = require("obsidian");
+    if (obs && typeof obs.requestUrl === "function") {
       return async (url, headers, bodyObj) => {
-        const res = await fetch(url, {
+        const res = await obs.requestUrl({
+          url,
           method: "POST",
           headers,
-          body: JSON.stringify(bodyObj)
+          body: JSON.stringify(bodyObj),
+          throw: false
         });
-        const text = await res.text();
-        if (!res.ok) {
-          throw new Error(`HTTP ${res.status}: ${text.slice(0, 200)}`);
+        if (res.status < 200 || res.status >= 300) {
+          throw new Error(`HTTP ${res.status}: ${String(res.text || "").slice(0, 200)}`);
         }
-        return JSON.parse(text);
+        return res.json;
       };
     }
-    async function chatCompletion(messages, config, customClient) {
-      const baseUrl = String(config.aiBaseUrl || "").replace(/\/+$/, "");
-      const model = String(config.aiModel || "").trim();
-      const apiKey = String(config.aiApiKey || "").trim();
-      if (!baseUrl || !model) {
-        throw new Error("\u8BF7\u5148\u5728\u8BBE\u7F6E\u4E2D\u586B\u5199 AI Base URL \u4E0E\u6A21\u578B\u540D\u79F0");
-      }
-      const endpoint = baseUrl.endsWith("/chat/completions") ? baseUrl : `${baseUrl}/chat/completions`;
-      const headers = { "Content-Type": "application/json" };
-      if (apiKey) headers.Authorization = `Bearer ${apiKey}`;
-      const client = customClient || getHttpClient();
-      const data = await client(endpoint, headers, {
-        model,
-        temperature: 0.3,
-        messages
-      });
-      const content = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
-      if (!content) {
-        throw new Error("AI \u63A5\u53E3\u8FD4\u56DE\u5185\u5BB9\u4E3A\u7A7A");
-      }
-      return String(content).trim();
+  } catch {
+  }
+  return async (url, headers, bodyObj) => {
+    const res = await fetch(url, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(bodyObj)
+    });
+    const text = await res.text();
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}: ${text.slice(0, 200)}`);
     }
-    async function generateCommitMessage(diffText, config, customClient) {
-      if (!diffText || !diffText.trim()) {
-        throw new Error("\u5F53\u524D\u6CA1\u6709\u53EF\u4F9B\u5206\u6790\u7684 Git \u53D8\u66F4\u5185\u5BB9");
-      }
-      const prompt = [
-        "\u6839\u636E\u4EE5\u4E0B Git \u53D8\u66F4\u6458\u8981\u751F\u6210\u4E00\u6761\u7B80\u6D01\u3001\u89C4\u8303\u7684\u4E2D\u6587 Conventional Commit \u4FE1\u606F\u3002",
-        "\u8981\u6C42\uFF1A\u4EC5\u8F93\u51FA\u5355\u884C\u63D0\u4EA4\u4FE1\u606F\uFF08\u5982 `docs(notes): \u66F4\u65B0 RNA-seq \u5B9E\u9A8C\u8BB0\u5F55`\uFF09\uFF0C\u4E0D\u8981\u52A0\u5F15\u53F7\u3001\u4E0D\u8981\u89E3\u91CA\u3001\u4E0D\u8D85\u8FC7 60 \u5B57\u3002",
-        "",
-        diffText.slice(0, 5e3)
-      ].join("\n");
-      const raw = await chatCompletion(
-        [
-          { role: "system", content: "\u4F60\u662F\u4E25\u8C28\u7684\u8F6F\u4EF6\u5DE5\u7A0B\u4E0E\u77E5\u8BC6\u5E93\u7248\u672C\u7BA1\u7406\u52A9\u624B\u3002" },
-          { role: "user", content: prompt }
-        ],
-        config,
-        customClient
-      );
-      return raw.split(/\r?\n/)[0].replace(/^[`"']+|[`"']+$/g, "").trim();
-    }
-    async function generateQuizMarkdownFromNote(noteTitle, noteContent, count, config, customClient) {
-      const n = Math.max(1, Math.min(20, Number(count) || 5));
-      const prompt = [
-        `\u8BF7\u6839\u636E\u4E0B\u9762\u8FD9\u7BC7\u7B14\u8BB0\u300A${noteTitle}\u300B\u751F\u6210 ${n} \u9053\u9AD8\u8D28\u91CF\u81EA\u6D4B\u9898\uFF08\u5305\u542B\u5355\u9009\u3001\u591A\u9009\u4E0E\u5224\u65AD\u9898\uFF09\u3002`,
-        "\u5FC5\u987B\u4E25\u683C\u8F93\u51FA\u5982\u4E0B Markdown \u683C\u5F0F\uFF08\u4E0D\u8981\u52A0\u989D\u5916\u8BF4\u660E\u6216\u4EE3\u7801\u5757\u56F4\u680F\uFF09\uFF1A",
-        "",
-        "---",
-        `title: ${noteTitle} \xB7 \u81EA\u6D4B\u9898\u5E93`,
-        "desc: \u7531 AI \u57FA\u4E8E\u7B14\u8BB0\u5185\u5BB9\u81EA\u52A8\u751F\u6210",
-        "---",
-        "",
-        "## \u9898\u5E72\u5185\u5BB9",
-        "- [ ] A. \u9009\u9879\u4E00",
-        "- [x] B. \u6B63\u786E\u9009\u9879",
-        "- [ ] C. \u9009\u9879\u4E09",
-        "- [ ] D. \u9009\u9879\u56DB",
-        "> \u89E3\u6790\uFF1A\u7B80\u6D01\u89E3\u91CA\u6B63\u786E\u7B54\u6848\u539F\u56E0\u3002",
-        "> \u6807\u7B7E\uFF1A\u5173\u952E\u8BCD1, \u5173\u952E\u8BCD2",
-        "",
-        "\u4EE5\u4E0B\u662F\u7B14\u8BB0\u539F\u6587\uFF1A",
-        noteContent.slice(0, 8e3)
-      ].join("\n");
-      const raw = await chatCompletion(
-        [
-          { role: "system", content: "\u4F60\u662F\u7CBE\u901A\u8BA4\u77E5\u79D1\u5B66\u4E0E\u95F4\u9694\u91CD\u590D\u51FA\u9898\u7684\u6559\u5B66\u4E13\u5BB6\u3002" },
-          { role: "user", content: prompt }
-        ],
-        config,
-        customClient
-      );
-      return raw.replace(/^```(?:markdown|md)?\r?\n?/i, "").replace(/\r?\n?```$/i, "").trim() + "\n";
-    }
-    module2.exports = {
-      chatCompletion,
-      generateCommitMessage,
-      generateQuizMarkdownFromNote
-    };
+    return JSON.parse(text);
+  };
+}
+async function chatCompletion(messages, config, customClient) {
+  const baseUrl = String(config.aiBaseUrl || "").replace(/\/+$/, "");
+  const model = String(config.aiModel || "").trim();
+  const apiKey = String(config.aiApiKey || "").trim();
+  if (!baseUrl || !model) {
+    throw new Error("\u8BF7\u5148\u5728\u8BBE\u7F6E\u4E2D\u586B\u5199 AI Base URL \u4E0E\u6A21\u578B\u540D\u79F0");
+  }
+  const endpoint = baseUrl.endsWith("/chat/completions") ? baseUrl : `${baseUrl}/chat/completions`;
+  const headers = { "Content-Type": "application/json" };
+  if (apiKey) headers.Authorization = `Bearer ${apiKey}`;
+  const client = customClient || getHttpClient();
+  const data = await client(endpoint, headers, {
+    model,
+    temperature: 0.3,
+    messages
+  });
+  const content = data && data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+  if (!content) {
+    throw new Error("AI \u63A5\u53E3\u8FD4\u56DE\u5185\u5BB9\u4E3A\u7A7A");
+  }
+  return String(content).trim();
+}
+async function generateCommitMessage(diffText, config, customClient) {
+  if (!diffText || !diffText.trim()) {
+    throw new Error("\u5F53\u524D\u6CA1\u6709\u53EF\u4F9B\u5206\u6790\u7684 Git \u53D8\u66F4\u5185\u5BB9");
+  }
+  const prompt = [
+    "\u6839\u636E\u4EE5\u4E0B Git \u53D8\u66F4\u6458\u8981\u751F\u6210\u4E00\u6761\u7B80\u6D01\u3001\u89C4\u8303\u7684\u4E2D\u6587 Conventional Commit \u4FE1\u606F\u3002",
+    "\u8981\u6C42\uFF1A\u4EC5\u8F93\u51FA\u5355\u884C\u63D0\u4EA4\u4FE1\u606F\uFF08\u5982 `docs(notes): \u66F4\u65B0 RNA-seq \u5B9E\u9A8C\u8BB0\u5F55`\uFF09\uFF0C\u4E0D\u8981\u52A0\u5F15\u53F7\u3001\u4E0D\u8981\u89E3\u91CA\u3001\u4E0D\u8D85\u8FC7 60 \u5B57\u3002",
+    "",
+    diffText.slice(0, 5e3)
+  ].join("\n");
+  const raw = await chatCompletion(
+    [
+      { role: "system", content: "\u4F60\u662F\u4E25\u8C28\u7684\u8F6F\u4EF6\u5DE5\u7A0B\u4E0E\u77E5\u8BC6\u5E93\u7248\u672C\u7BA1\u7406\u52A9\u624B\u3002" },
+      { role: "user", content: prompt }
+    ],
+    config,
+    customClient
+  );
+  return raw.split(/\r?\n/)[0].replace(/^[`"']+|[`"']+$/g, "").trim();
+}
+async function generateQuizMarkdownFromNote(noteTitle, noteContent, count, config, customClient) {
+  const n = Math.max(1, Math.min(20, Number(count) || 5));
+  const prompt = [
+    `\u8BF7\u6839\u636E\u4E0B\u9762\u8FD9\u7BC7\u7B14\u8BB0\u300A${noteTitle}\u300B\u751F\u6210 ${n} \u9053\u9AD8\u8D28\u91CF\u81EA\u6D4B\u9898\uFF08\u5305\u542B\u5355\u9009\u3001\u591A\u9009\u4E0E\u5224\u65AD\u9898\uFF09\u3002`,
+    "\u5FC5\u987B\u4E25\u683C\u8F93\u51FA\u5982\u4E0B Markdown \u683C\u5F0F\uFF08\u4E0D\u8981\u52A0\u989D\u5916\u8BF4\u660E\u6216\u4EE3\u7801\u5757\u56F4\u680F\uFF09\uFF1A",
+    "",
+    "---",
+    `title: ${noteTitle} \xB7 \u81EA\u6D4B\u9898\u5E93`,
+    "desc: \u7531 AI \u57FA\u4E8E\u7B14\u8BB0\u5185\u5BB9\u81EA\u52A8\u751F\u6210",
+    "---",
+    "",
+    "## \u9898\u5E72\u5185\u5BB9",
+    "- [ ] A. \u9009\u9879\u4E00",
+    "- [x] B. \u6B63\u786E\u9009\u9879",
+    "- [ ] C. \u9009\u9879\u4E09",
+    "- [ ] D. \u9009\u9879\u56DB",
+    "> \u89E3\u6790\uFF1A\u7B80\u6D01\u89E3\u91CA\u6B63\u786E\u7B54\u6848\u539F\u56E0\u3002",
+    "> \u6807\u7B7E\uFF1A\u5173\u952E\u8BCD1, \u5173\u952E\u8BCD2",
+    "",
+    "\u4EE5\u4E0B\u662F\u7B14\u8BB0\u539F\u6587\uFF1A",
+    noteContent.slice(0, 8e3)
+  ].join("\n");
+  const raw = await chatCompletion(
+    [
+      { role: "system", content: "\u4F60\u662F\u7CBE\u901A\u8BA4\u77E5\u79D1\u5B66\u4E0E\u95F4\u9694\u91CD\u590D\u51FA\u9898\u7684\u6559\u5B66\u4E13\u5BB6\u3002" },
+      { role: "user", content: prompt }
+    ],
+    config,
+    customClient
+  );
+  return raw.replace(/^```(?:markdown|md)?\r?\n?/i, "").replace(/\r?\n?```$/i, "").trim() + "\n";
+}
+var init_aiService = __esm({
+  "src/services/aiService.ts"() {
+    "use strict";
   }
 });
 
@@ -4093,13 +4144,13 @@ var require_aiService = __commonJS({
 var require_gitView = __commonJS({
   "src/views/gitView.js"(exports2, module2) {
     "use strict";
-    var { ItemView, Notice: Notice3, setIcon } = require("obsidian");
+    var { ItemView, Notice: Notice7, setIcon: setIcon2 } = require("obsidian");
     var { VIEW_TYPE_GIT: VIEW_TYPE_GIT3 } = (init_constants(), __toCommonJS(constants_exports));
     var { formatDate: formatDate3 } = (init_utils(), __toCommonJS(utils_exports));
     var { DiffModal } = require_diffModal();
     var { BranchModal } = require_branchModal();
     var { RemoteModal } = require_remoteModal();
-    var { generateCommitMessage } = require_aiService();
+    var { generateCommitMessage: generateCommitMessage2 } = (init_aiService(), __toCommonJS(aiService_exports));
     var GitPanelView2 = class extends ItemView {
       constructor(leaf, plugin) {
         super(leaf);
@@ -4130,7 +4181,7 @@ var require_gitView = __commonJS({
           await this.render();
           await this.plugin.updateGitStatusBar();
         } catch (err) {
-          new Notice3(`${label}\u5931\u8D25\uFF1A${err.message}`, 6e3);
+          new Notice7(`${label}\u5931\u8D25\uFF1A${err.message}`, 6e3);
         } finally {
           this.busy = false;
         }
@@ -4163,7 +4214,7 @@ var require_gitView = __commonJS({
             "click",
             () => this.runAction("\u521D\u59CB\u5316\u4ED3\u5E93", async () => {
               await git.initRepo();
-              new Notice3("\u5DF2\u521D\u59CB\u5316 Git \u4ED3\u5E93");
+              new Notice7("\u5DF2\u521D\u59CB\u5316 Git \u4ED3\u5E93");
             })
           );
           return;
@@ -4186,7 +4237,7 @@ var require_gitView = __commonJS({
           if (target && target !== status.branch) {
             this.runAction("\u5207\u6362\u5206\u652F", async () => {
               await git.checkoutBranch(target);
-              new Notice3(`\u5DF2\u5207\u6362\u81F3\u5206\u652F ${target}`);
+              new Notice7(`\u5DF2\u5207\u6362\u81F3\u5206\u652F ${target}`);
             });
           }
         });
@@ -4194,18 +4245,18 @@ var require_gitView = __commonJS({
           cls: "clickable-icon",
           attr: { "aria-label": "\u65B0\u5EFA\u5206\u652F" }
         });
-        setIcon(newBrBtn, "plus");
+        setIcon2(newBrBtn, "plus");
         newBrBtn.addEventListener("click", () => {
           new BranchModal(this.app, async (name) => {
             await git.createBranch(name);
-            new Notice3(`\u5DF2\u521B\u5EFA\u5E76\u5207\u6362\u81F3 ${name}`);
+            new Notice7(`\u5DF2\u521B\u5EFA\u5E76\u5207\u6362\u81F3 ${name}`);
             await this.render();
           }).open();
         });
         const btnGroup = topBar.createDiv({ cls: "owb-git-actions" });
         const addIconBtn = (iconName, label, handler) => {
           const b = btnGroup.createEl("button", { cls: "clickable-icon", attr: { "aria-label": label } });
-          setIcon(b, iconName);
+          setIcon2(b, iconName);
           b.addEventListener("click", handler);
           return b;
         };
@@ -4220,7 +4271,7 @@ var require_gitView = __commonJS({
           "\u62C9\u53D6 (Pull)",
           () => this.runAction("Pull", async () => {
             await git.pull();
-            new Notice3("\u62C9\u53D6\u5B8C\u6210");
+            new Notice7("\u62C9\u53D6\u5B8C\u6210");
           })
         );
         addIconBtn(
@@ -4228,7 +4279,7 @@ var require_gitView = __commonJS({
           "\u63A8\u9001 (Push)",
           () => this.runAction("Push", async () => {
             await git.push();
-            new Notice3("\u63A8\u9001\u5B8C\u6210");
+            new Notice7("\u63A8\u9001\u5B8C\u6210");
           })
         );
         const metaBar = root.createDiv({ cls: "owb-git-meta" });
@@ -4250,7 +4301,7 @@ var require_gitView = __commonJS({
               "click",
               () => this.runAction("\u4FDD\u7559\u672C\u5730\u7248\u672C", async () => {
                 await git.resolveConflict(item.path, "ours");
-                new Notice3(`\u5DF2\u91C7\u7528\u672C\u5730\u7248\u672C\uFF1A${item.path}`);
+                new Notice7(`\u5DF2\u91C7\u7528\u672C\u5730\u7248\u672C\uFF1A${item.path}`);
               })
             );
             const theirsBtn = ops.createEl("button", { cls: "owb-btn-sm", text: "\u91C7\u7528\u8FDC\u7A0B" });
@@ -4258,7 +4309,7 @@ var require_gitView = __commonJS({
               "click",
               () => this.runAction("\u91C7\u7528\u8FDC\u7A0B\u7248\u672C", async () => {
                 await git.resolveConflict(item.path, "theirs");
-                new Notice3(`\u5DF2\u91C7\u7528\u8FDC\u7A0B\u7248\u672C\uFF1A${item.path}`);
+                new Notice7(`\u5DF2\u91C7\u7528\u8FDC\u7A0B\u7248\u672C\uFF1A${item.path}`);
               })
             );
           }
@@ -4282,12 +4333,12 @@ var require_gitView = __commonJS({
             aiBtn.setText("\u751F\u6210\u4E2D...");
             try {
               const diff = await git.getDiffForAI();
-              const msg = await generateCommitMessage(diff, this.plugin.settings);
+              const msg = await generateCommitMessage2(diff, this.plugin.settings);
               this.commitDraft = msg;
               msgInput.value = msg;
-              new Notice3("\u5DF2\u751F\u6210 AI \u63D0\u4EA4\u4FE1\u606F");
+              new Notice7("\u5DF2\u751F\u6210 AI \u63D0\u4EA4\u4FE1\u606F");
             } catch (err) {
-              new Notice3(`AI \u751F\u6210\u5931\u8D25\uFF1A${err.message}`, 6e3);
+              new Notice7(`AI \u751F\u6210\u5931\u8D25\uFF1A${err.message}`, 6e3);
             } finally {
               aiBtn.disabled = false;
               aiBtn.setText("\u2728 AI \u6458\u8981");
@@ -4306,7 +4357,7 @@ var require_gitView = __commonJS({
             if (!status.staged.length) await git.stageAll();
             await git.commit(resolveMessage());
             this.commitDraft = "";
-            new Notice3("Git \u63D0\u4EA4\u6210\u529F");
+            new Notice7("Git \u63D0\u4EA4\u6210\u529F");
           })
         );
         syncBtn.addEventListener(
@@ -4322,9 +4373,9 @@ var require_gitView = __commonJS({
             if (st.upstream) {
               await git.pull();
               await git.push();
-              new Notice3("\u5DF2\u5B8C\u6210\u63D0\u4EA4\u3001\u62C9\u53D6\u4E0E\u63A8\u9001");
+              new Notice7("\u5DF2\u5B8C\u6210\u63D0\u4EA4\u3001\u62C9\u53D6\u4E0E\u63A8\u9001");
             } else {
-              new Notice3("\u5DF2\u5B8C\u6210\u672C\u5730\u63D0\u4EA4\uFF08\u672A\u914D\u7F6E\u8FDC\u7A0B\u5206\u652F\uFF0C\u8DF3\u8FC7\u63A8\u9001\uFF09");
+              new Notice7("\u5DF2\u5B8C\u6210\u672C\u5730\u63D0\u4EA4\uFF08\u672A\u914D\u7F6E\u8FDC\u7A0B\u5206\u652F\uFF0C\u8DF3\u8FC7\u63A8\u9001\uFF09");
             }
           })
         );
@@ -4340,7 +4391,7 @@ var require_gitView = __commonJS({
             "click",
             () => this.runAction("Stash \u6682\u5B58", async () => {
               await git.stashPush(`owb-stash ${formatDate3(/* @__PURE__ */ new Date(), "MM-DD HH:mm")}`);
-              new Notice3("\u5DF2\u5C06\u5F53\u524D\u5DE5\u4F5C\u533A\u5B58\u5165 Stash");
+              new Notice7("\u5DF2\u5C06\u5F53\u524D\u5DE5\u4F5C\u533A\u5B58\u5165 Stash");
             })
           );
           if (!stashes.length) {
@@ -4356,7 +4407,7 @@ var require_gitView = __commonJS({
                 "click",
                 () => this.runAction("\u5F39\u51FA Stash", async () => {
                   await git.stashPop(st.ref);
-                  new Notice3(`\u5DF2\u5F39\u51FA ${st.ref}`);
+                  new Notice7(`\u5DF2\u5F39\u51FA ${st.ref}`);
                 })
               );
               const dropBtn = ops.createEl("button", { cls: "owb-btn-sm", text: "\u5220" });
@@ -4364,7 +4415,7 @@ var require_gitView = __commonJS({
                 "click",
                 () => this.runAction("\u5220\u9664 Stash", async () => {
                   await git.stashDrop(st.ref);
-                  new Notice3(`\u5DF2\u5220\u9664 ${st.ref}`);
+                  new Notice7(`\u5DF2\u5220\u9664 ${st.ref}`);
                 })
               );
             }
@@ -4387,7 +4438,7 @@ var require_gitView = __commonJS({
                 const diff = await git.getCommitDiff(entry.hash);
                 new DiffModal(this.app, `Commit ${entry.hash} \xB7 ${entry.subject}`, diff).open();
               } catch (err) {
-                new Notice3(err.message);
+                new Notice7(err.message);
               }
             });
           }
@@ -4434,7 +4485,7 @@ var require_gitView = __commonJS({
           });
           const ops = row.createDiv({ cls: "owb-git-file-ops" });
           const diffBtn = ops.createEl("button", { cls: "clickable-icon", attr: { "aria-label": "\u67E5\u770B Diff" } });
-          setIcon(diffBtn, "file-diff");
+          setIcon2(diffBtn, "file-diff");
           diffBtn.addEventListener("click", async () => {
             const diff = await git.getDiff(item.path, isStaged).catch((e) => e.message);
             new DiffModal(this.app, `${isStaged ? "Staged " : ""}Diff \xB7 ${item.path}`, diff).open();
@@ -4443,7 +4494,7 @@ var require_gitView = __commonJS({
             cls: "clickable-icon",
             attr: { "aria-label": isStaged ? "\u53D6\u6D88\u6682\u5B58" : "\u6682\u5B58\u6587\u4EF6" }
           });
-          setIcon(toggleBtn, isStaged ? "minus" : "plus");
+          setIcon2(toggleBtn, isStaged ? "minus" : "plus");
           toggleBtn.addEventListener(
             "click",
             () => this.runAction(
@@ -4453,7 +4504,7 @@ var require_gitView = __commonJS({
           );
           if (!isStaged) {
             const discardBtn = ops.createEl("button", { cls: "clickable-icon", attr: { "aria-label": "\u4E22\u5F03\u66F4\u6539" } });
-            setIcon(discardBtn, "undo-2");
+            setIcon2(discardBtn, "undo-2");
             discardBtn.addEventListener(
               "click",
               () => this.runAction("\u4E22\u5F03\u66F4\u6539", () => git.discardFile(item.path, item.status === "??"))
@@ -4466,151 +4517,153 @@ var require_gitView = __commonJS({
   }
 });
 
-// src/services/quizEngine.js
-var require_quizEngine = __commonJS({
-  "src/services/quizEngine.js"(exports2, module2) {
+// src/services/quizEngine.ts
+var quizEngine_exports = {};
+__export(quizEngine_exports, {
+  formatWrongCalloutMarkdown: () => formatWrongCalloutMarkdown,
+  getDueOrWrongQuestions: () => getDueOrWrongQuestions,
+  parseMarkdownQuiz: () => parseMarkdownQuiz,
+  updateMasterySM2: () => updateMasterySM2
+});
+function stableQuestionId(stem, options) {
+  const sig = `${stem}|${Object.keys(options).sort().map((k) => `${k}:${options[k]}`).join("|")}`;
+  return crypto.createHash("sha1").update(sig, "utf8").digest("hex").slice(0, 10);
+}
+function parseMarkdownQuiz(mdText, fallbackTitle = "\u77E5\u8BC6\u81EA\u6D4B") {
+  const meta = {
+    title: fallbackTitle,
+    desc: "\u539F\u751F SM-2 \u95F4\u9694\u91CD\u590D\u81EA\u6D4B\u5F15\u64CE"
+  };
+  let body = mdText || "";
+  const fm = body.match(FRONTMATTER_RE);
+  if (fm) {
+    for (const rawLine of fm[1].split(/\r?\n/)) {
+      const line = rawLine.trim();
+      if (!line || line.startsWith("#") || !line.includes(":")) continue;
+      const idx = line.indexOf(":");
+      const k = line.slice(0, idx).trim();
+      const v = line.slice(idx + 1).trim().replace(/^['"]|['"]$/g, "");
+      if (k === "title" && v) meta.title = v;
+      if ((k === "desc" || k === "description") && v) meta.desc = v;
+    }
+    body = body.slice(fm[0].length);
+  }
+  const blocks = body.split(QUESTION_SPLIT_RE);
+  const questions = [];
+  for (let i = 1; i < blocks.length; i++) {
+    const lines = blocks[i].trim().split(/\r?\n/);
+    if (!lines.length) continue;
+    const stem = lines[0].trim();
+    const options = {};
+    const answers = [];
+    const explainParts = [];
+    const tags = [];
+    let explicitType = null;
+    for (let j = 1; j < lines.length; j++) {
+      const s = lines[j].trim();
+      if (!s) continue;
+      const om = s.match(OPTION_RE);
+      if (om) {
+        const key = om[2].toLowerCase();
+        options[key] = om[3].trim();
+        if (om[1].toLowerCase() === "x") answers.push(key);
+        continue;
+      }
+      const mm = s.match(META_LINE_RE);
+      if (mm) {
+        const field = mm[1].toLowerCase();
+        const val = mm[2].trim();
+        if (field === "\u89E3\u6790" || field === "explain") {
+          explainParts.push(val);
+        } else if (field === "\u6807\u7B7E" || field === "tags") {
+          for (const t of val.split(/[,，\s]+/)) {
+            if (t.trim()) tags.push(t.trim());
+          }
+        } else if (field === "\u9898\u578B" || field === "type") {
+          explicitType = val.toLowerCase();
+        }
+      }
+    }
+    const optKeys = Object.keys(options);
+    if (!optKeys.length || !answers.length) continue;
+    let type = "single";
+    if (explicitType === "single" || explicitType === "multi" || explicitType === "boolean") {
+      type = explicitType;
+    } else if (answers.length > 1) {
+      type = "multi";
+    } else if (optKeys.length === 2 && optKeys.includes("a") && optKeys.includes("b")) {
+      type = "boolean";
+    }
+    questions.push({
+      id: stableQuestionId(stem, options),
+      type,
+      stem,
+      options,
+      ansList: answers.slice().sort(),
+      explain: explainParts.join(" "),
+      tags
+    });
+  }
+  return { meta, questions };
+}
+function updateMasterySM2(store, questionId, isCorrect, nowMs = Date.now()) {
+  if (!store.mastery) store.mastery = {};
+  const prev = store.mastery[questionId] || {
+    seen: 0,
+    wrong: 0,
+    streak: 0,
+    ease: 2.5,
+    intervalDays: 0,
+    dueAt: 0
+  };
+  const next = { ...prev, seen: prev.seen + 1 };
+  if (isCorrect) {
+    next.streak += 1;
+    if (next.streak === 1) next.intervalDays = 1;
+    else if (next.streak === 2) next.intervalDays = 3;
+    else next.intervalDays = Math.max(1, Math.round(next.intervalDays * next.ease));
+    next.ease = Math.min(3, Number((next.ease + 0.1).toFixed(2)));
+    next.dueAt = nowMs + next.intervalDays * 864e5;
+  } else {
+    next.wrong += 1;
+    next.streak = 0;
+    next.intervalDays = 0;
+    next.ease = Math.max(1.3, Number((next.ease - 0.2).toFixed(2)));
+    next.dueAt = nowMs;
+  }
+  store.mastery[questionId] = next;
+  return next;
+}
+function getDueOrWrongQuestions(questions, store, nowMs = Date.now()) {
+  const mastery = store && store.mastery || {};
+  return questions.filter((q) => {
+    const m = mastery[q.id];
+    return m && (m.streak === 0 || m.dueAt <= nowMs);
+  }).sort((a, b) => {
+    const ma = mastery[a.id] || { wrong: 0, dueAt: 0 };
+    const mb = mastery[b.id] || { wrong: 0, dueAt: 0 };
+    return mb.wrong - ma.wrong || ma.dueAt - mb.dueAt;
+  });
+}
+function formatWrongCalloutMarkdown(title, wrongQuestions, dateStr) {
+  const lines = [`> [!warning] ${title} \xB7 \u9519\u9898\u590D\u76D8\uFF08${dateStr}\uFF09`];
+  wrongQuestions.forEach((q, idx) => {
+    const ansText = q.ansList.map((k) => `${k.toUpperCase()}. ${q.options[k] || ""}`).join("\uFF1B");
+    lines.push(`> ${idx + 1}. **${q.stem}**`);
+    lines.push(`>    - \u6B63\u786E\u7B54\u6848\uFF1A${ansText}`);
+    if (q.explain) lines.push(`>    - \u89E3\u6790\uFF1A${q.explain}`);
+  });
+  return lines.join("\n") + "\n";
+}
+var crypto, FRONTMATTER_RE, QUESTION_SPLIT_RE, OPTION_RE, META_LINE_RE;
+var init_quizEngine = __esm({
+  "src/services/quizEngine.ts"() {
     "use strict";
-    var crypto = require("crypto");
-    var FRONTMATTER_RE = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?/;
-    var QUESTION_SPLIT_RE = /^##\s+/m;
-    var OPTION_RE = /^-\s*\[([ xX])\]\s*([A-Za-z])[\.\)、\s]+(.+)$/;
-    var META_LINE_RE = /^>\s*(解析|标签|题型|Explain|Tags|Type)\s*[：:]\s*(.+)$/i;
-    function stableQuestionId(stem, options) {
-      const sig = `${stem}|${Object.keys(options).sort().map((k) => `${k}:${options[k]}`).join("|")}`;
-      return crypto.createHash("sha1").update(sig, "utf8").digest("hex").slice(0, 10);
-    }
-    function parseMarkdownQuiz(mdText, fallbackTitle = "\u77E5\u8BC6\u81EA\u6D4B") {
-      const meta = {
-        title: fallbackTitle,
-        desc: "\u539F\u751F SM-2 \u95F4\u9694\u91CD\u590D\u81EA\u6D4B\u5F15\u64CE"
-      };
-      let body = mdText || "";
-      const fm = body.match(FRONTMATTER_RE);
-      if (fm) {
-        for (const rawLine of fm[1].split(/\r?\n/)) {
-          const line = rawLine.trim();
-          if (!line || line.startsWith("#") || !line.includes(":")) continue;
-          const idx = line.indexOf(":");
-          const k = line.slice(0, idx).trim();
-          const v = line.slice(idx + 1).trim().replace(/^['"]|['"]$/g, "");
-          if (k === "title" && v) meta.title = v;
-          if ((k === "desc" || k === "description") && v) meta.desc = v;
-        }
-        body = body.slice(fm[0].length);
-      }
-      const blocks = body.split(QUESTION_SPLIT_RE);
-      const questions = [];
-      for (let i = 1; i < blocks.length; i++) {
-        const lines = blocks[i].trim().split(/\r?\n/);
-        if (!lines.length) continue;
-        const stem = lines[0].trim();
-        const options = {};
-        const answers = [];
-        const explainParts = [];
-        const tags = [];
-        let explicitType = null;
-        for (let j = 1; j < lines.length; j++) {
-          const s = lines[j].trim();
-          if (!s) continue;
-          const om = s.match(OPTION_RE);
-          if (om) {
-            const key = om[2].toLowerCase();
-            options[key] = om[3].trim();
-            if (om[1].toLowerCase() === "x") answers.push(key);
-            continue;
-          }
-          const mm = s.match(META_LINE_RE);
-          if (mm) {
-            const field = mm[1].toLowerCase();
-            const val = mm[2].trim();
-            if (field === "\u89E3\u6790" || field === "explain") {
-              explainParts.push(val);
-            } else if (field === "\u6807\u7B7E" || field === "tags") {
-              for (const t of val.split(/[,，\s]+/)) {
-                if (t.trim()) tags.push(t.trim());
-              }
-            } else if (field === "\u9898\u578B" || field === "type") {
-              explicitType = val.toLowerCase();
-            }
-          }
-        }
-        const optKeys = Object.keys(options);
-        if (!optKeys.length || !answers.length) continue;
-        let type = "single";
-        if (explicitType === "single" || explicitType === "multi" || explicitType === "boolean") {
-          type = explicitType;
-        } else if (answers.length > 1) {
-          type = "multi";
-        } else if (optKeys.length === 2 && optKeys.includes("a") && optKeys.includes("b")) {
-          type = "boolean";
-        }
-        questions.push({
-          id: stableQuestionId(stem, options),
-          type,
-          stem,
-          options,
-          ansList: answers.slice().sort(),
-          explain: explainParts.join(" "),
-          tags
-        });
-      }
-      return { meta, questions };
-    }
-    function updateMasterySM2(store, questionId, isCorrect, nowMs = Date.now()) {
-      if (!store.mastery) store.mastery = {};
-      const prev = store.mastery[questionId] || {
-        seen: 0,
-        wrong: 0,
-        streak: 0,
-        ease: 2.5,
-        intervalDays: 0,
-        dueAt: 0
-      };
-      const next = { ...prev, seen: prev.seen + 1 };
-      if (isCorrect) {
-        next.streak += 1;
-        if (next.streak === 1) next.intervalDays = 1;
-        else if (next.streak === 2) next.intervalDays = 3;
-        else next.intervalDays = Math.max(1, Math.round(next.intervalDays * next.ease));
-        next.ease = Math.min(3, Number((next.ease + 0.1).toFixed(2)));
-        next.dueAt = nowMs + next.intervalDays * 864e5;
-      } else {
-        next.wrong += 1;
-        next.streak = 0;
-        next.intervalDays = 0;
-        next.ease = Math.max(1.3, Number((next.ease - 0.2).toFixed(2)));
-        next.dueAt = nowMs;
-      }
-      store.mastery[questionId] = next;
-      return next;
-    }
-    function getDueOrWrongQuestions(questions, store, nowMs = Date.now()) {
-      const mastery = store && store.mastery || {};
-      return questions.filter((q) => {
-        const m = mastery[q.id];
-        return m && (m.streak === 0 || m.dueAt <= nowMs);
-      }).sort((a, b) => {
-        const ma = mastery[a.id] || { wrong: 0, dueAt: 0 };
-        const mb = mastery[b.id] || { wrong: 0, dueAt: 0 };
-        return mb.wrong - ma.wrong || ma.dueAt - mb.dueAt;
-      });
-    }
-    function formatWrongCalloutMarkdown(title, wrongQuestions, dateStr) {
-      const lines = [`> [!warning] ${title} \xB7 \u9519\u9898\u590D\u76D8\uFF08${dateStr}\uFF09`];
-      wrongQuestions.forEach((q, idx) => {
-        const ansText = q.ansList.map((k) => `${k.toUpperCase()}. ${q.options[k] || ""}`).join("\uFF1B");
-        lines.push(`> ${idx + 1}. **${q.stem}**`);
-        lines.push(`>    - \u6B63\u786E\u7B54\u6848\uFF1A${ansText}`);
-        if (q.explain) lines.push(`>    - \u89E3\u6790\uFF1A${q.explain}`);
-      });
-      return lines.join("\n") + "\n";
-    }
-    module2.exports = {
-      parseMarkdownQuiz,
-      updateMasterySM2,
-      getDueOrWrongQuestions,
-      formatWrongCalloutMarkdown
-    };
+    crypto = require("crypto");
+    FRONTMATTER_RE = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?/;
+    QUESTION_SPLIT_RE = /^##\s+/m;
+    OPTION_RE = /^-\s*\[([ xX])\]\s*([A-Za-z])[\.\)、\s]+(.+)$/;
+    META_LINE_RE = /^>\s*(解析|标签|题型|Explain|Tags|Type)\s*[：:]\s*(.+)$/i;
   }
 });
 
@@ -4618,15 +4671,15 @@ var require_quizEngine = __commonJS({
 var require_quizView = __commonJS({
   "src/views/quizView.js"(exports2, module2) {
     "use strict";
-    var { ItemView, Notice: Notice3, normalizePath: normalizePath3 } = require("obsidian");
+    var { ItemView, Notice: Notice7, normalizePath: normalizePath7 } = require("obsidian");
     var { VIEW_TYPE_QUIZ: VIEW_TYPE_QUIZ3 } = (init_constants(), __toCommonJS(constants_exports));
     var { formatDate: formatDate3, formatDuration: formatDuration2, shuffleArray: shuffleArray2 } = (init_utils(), __toCommonJS(utils_exports));
     var {
-      parseMarkdownQuiz,
-      updateMasterySM2,
-      getDueOrWrongQuestions,
-      formatWrongCalloutMarkdown
-    } = require_quizEngine();
+      parseMarkdownQuiz: parseMarkdownQuiz2,
+      updateMasterySM2: updateMasterySM22,
+      getDueOrWrongQuestions: getDueOrWrongQuestions2,
+      formatWrongCalloutMarkdown: formatWrongCalloutMarkdown2
+    } = (init_quizEngine(), __toCommonJS(quizEngine_exports));
     var QuizView2 = class extends ItemView {
       constructor(leaf, plugin) {
         super(leaf);
@@ -4666,7 +4719,7 @@ var require_quizView = __commonJS({
           return;
         }
         const text = await this.app.vault.cachedRead(file);
-        this.parsed = parseMarkdownQuiz(text, file.basename);
+        this.parsed = parseMarkdownQuiz2(text, file.basename);
       }
       async render() {
         const root = this.contentEl;
@@ -4697,14 +4750,14 @@ var require_quizView = __commonJS({
           this.session = null;
           await this.loadSelectedBank(this.selectedFilePath);
           this.renderStage(root);
-          new Notice3("\u9898\u5E93\u5DF2\u91CD\u65B0\u52A0\u8F7D");
+          new Notice7("\u9898\u5E93\u5DF2\u91CD\u65B0\u52A0\u8F7D");
         });
         if (this.selectedFilePath && !this.parsed) {
           await this.loadSelectedBank(this.selectedFilePath);
         }
         const store = this.plugin.settings.quizStore;
         const questions = this.parsed && this.parsed.questions || [];
-        const dueCount = getDueOrWrongQuestions(questions, store).length;
+        const dueCount = getDueOrWrongQuestions2(questions, store).length;
         const statRow = root.createDiv({ cls: "owb-stat-row" });
         const addStat = (label, val) => {
           const s = statRow.createDiv({ cls: "owb-stat" });
@@ -4742,7 +4795,7 @@ var require_quizView = __commonJS({
         const store = this.plugin.settings.quizStore;
         const allTags = ["\u5168\u90E8", ...new Set(questions.flatMap((q) => q.tags))];
         const filtered = this.selectedTag === "\u5168\u90E8" ? questions : questions.filter((q) => q.tags.includes(this.selectedTag));
-        const dueList = getDueOrWrongQuestions(filtered, store);
+        const dueList = getDueOrWrongQuestions2(filtered, store);
         const card = stage.createDiv({ cls: "owb-card owb-quiz-center" });
         card.createEl("h3", { text: this.parsed.meta.title });
         card.createEl("p", { cls: "owb-muted", text: this.parsed.meta.desc });
@@ -4880,7 +4933,7 @@ var require_quizView = __commonJS({
         this.session.lastRight = right;
         if (right) this.session.correct += 1;
         else this.session.wrongItems.push(q);
-        updateMasterySM2(this.plugin.settings.quizStore, q.id, right);
+        updateMasterySM22(this.plugin.settings.quizStore, q.id, right);
         await this.plugin.saveSettings();
         this.renderStage(this.contentEl);
       }
@@ -4940,8 +4993,8 @@ var require_quizView = __commonJS({
         });
       }
       async exportWrongNote(wrongQuestions) {
-        const targetPath = normalizePath3(this.plugin.settings.quizWrongExportPath || "notes/\u9519\u9898\u590D\u76D8.md");
-        const callout = formatWrongCalloutMarkdown(
+        const targetPath = normalizePath7(this.plugin.settings.quizWrongExportPath || "notes/\u9519\u9898\u590D\u76D8.md");
+        const callout = formatWrongCalloutMarkdown2(
           this.parsed.meta.title,
           wrongQuestions,
           formatDate3(/* @__PURE__ */ new Date(), "YYYY-MM-DD")
@@ -4962,7 +5015,7 @@ ${callout}`);
 
 ${callout}`);
         }
-        new Notice3(`\u5DF2\u5199\u5165 ${wrongQuestions.length} \u9053\u9519\u9898\u5230 ${targetPath}`);
+        new Notice7(`\u5DF2\u5199\u5165 ${wrongQuestions.length} \u9053\u9519\u9898\u5230 ${targetPath}`);
       }
       _handleKeyDown(evt) {
         if (!this.containerEl.isShown() || !this.session || this.session.finished) return;
@@ -4993,7 +5046,7 @@ ${callout}`);
 var require_quickCaptureModal = __commonJS({
   "src/modals/quickCaptureModal.js"(exports2, module2) {
     "use strict";
-    var { Modal, Notice: Notice3, normalizePath: normalizePath3 } = require("obsidian");
+    var { Modal, Notice: Notice7, normalizePath: normalizePath7 } = require("obsidian");
     var { formatDate: formatDate3, insertCaptureLine: insertCaptureLine2 } = (init_utils(), __toCommonJS(utils_exports));
     var QuickCaptureModal2 = class extends Modal {
       constructor(app, plugin) {
@@ -5034,16 +5087,16 @@ var require_quickCaptureModal = __commonJS({
         const submit = async () => {
           const raw = textarea.value.trim();
           if (!raw) {
-            new Notice3("\u8BF7\u8F93\u5165\u95EA\u5FF5\u5185\u5BB9");
+            new Notice7("\u8BF7\u8F93\u5165\u95EA\u5FF5\u5185\u5BB9");
             return;
           }
           submitBtn.disabled = true;
           try {
             await this.saveCapture(raw);
-            new Notice3("\u5DF2\u4FDD\u5B58\u5230\u95EA\u5FF5\u6536\u4EF6\u7BB1");
+            new Notice7("\u5DF2\u4FDD\u5B58\u5230\u95EA\u5FF5\u6536\u4EF6\u7BB1");
             this.close();
           } catch (err) {
-            new Notice3(`\u4FDD\u5B58\u5931\u8D25\uFF1A${err.message}`);
+            new Notice7(`\u4FDD\u5B58\u5931\u8D25\uFF1A${err.message}`);
             submitBtn.disabled = false;
           }
         };
@@ -5058,7 +5111,7 @@ var require_quickCaptureModal = __commonJS({
       }
       async saveCapture(text) {
         const { inboxPath, captureInsertMode, captureTimeFormat } = this.plugin.settings;
-        const normPath = normalizePath3(inboxPath || "inbox.md");
+        const normPath = normalizePath7(inboxPath || "inbox.md");
         const stamp = formatDate3(/* @__PURE__ */ new Date(), captureTimeFormat || "HH:mm");
         const suffix = this.selectedTags.size ? ` ${[...this.selectedTags].join(" ")}` : "";
         const line = `- ${stamp} - ${text}${suffix}`;
@@ -5108,7 +5161,7 @@ ${line}
           );
           const a = answers && answers.area;
           if (!a || a.confidence == null || a.confidence < floor) return;
-          new Notice3(`\u51B3\u7B56\u5EFA\u8BAE\uFF1A\u5F52\u5165\u300C${a.value}\u300D\uFF08\u7F6E\u4FE1\u5EA6 ${(a.confidence * 100).toFixed(0)}%\uFF09`, 6e3);
+          new Notice7(`\u51B3\u7B56\u5EFA\u8BAE\uFF1A\u5F52\u5165\u300C${a.value}\u300D\uFF08\u7F6E\u4FE1\u5EA6 ${(a.confidence * 100).toFixed(0)}%\uFF09`, 6e3);
         } catch (e) {
           console.debug("[workbench] \u51B3\u7B56\u5F52\u7C7B\u8DF3\u8FC7:", e && e.message);
         }
@@ -5125,7 +5178,7 @@ ${line}
 var require_taskModal = __commonJS({
   "src/modals/taskModal.js"(exports2, module2) {
     "use strict";
-    var { Modal, Notice: Notice3, normalizePath: normalizePath3 } = require("obsidian");
+    var { Modal, Notice: Notice7, normalizePath: normalizePath7 } = require("obsidian");
     var { formatDate: formatDate3 } = (init_utils(), __toCommonJS(utils_exports));
     var { toggleTaskInFile } = require_vaultStats();
     var MAX_SCAN = 300;
@@ -5134,11 +5187,11 @@ var require_taskModal = __commonJS({
       const files = app.vault.getMarkdownFiles();
       const folders = String(settings.tasksScanFolders || "").trim();
       for (const file of files) {
-        const path = file.path;
-        if (path.startsWith(".obsidian/") || path.startsWith(".trash/")) continue;
+        const path2 = file.path;
+        if (path2.startsWith(".obsidian/") || path2.startsWith(".trash/")) continue;
         if (folders) {
           const roots = folders.split(",").map((x) => x.trim()).filter(Boolean);
-          if (roots.length && !roots.some((r) => path === r || path.startsWith(r + "/"))) continue;
+          if (roots.length && !roots.some((r) => path2 === r || path2.startsWith(r + "/"))) continue;
         }
         let content;
         try {
@@ -5191,7 +5244,7 @@ var require_taskModal = __commonJS({
             input.value = "";
             await this.render();
           } catch (err) {
-            new Notice3("\u5199\u5165\u5931\u8D25\uFF1A" + err.message);
+            new Notice7("\u5199\u5165\u5931\u8D25\uFF1A" + err.message);
           }
         });
         const tasks = await scanAllTasks(this.app, this.plugin.settings);
@@ -5222,10 +5275,10 @@ var require_taskModal = __commonJS({
             cb.addEventListener("change", async () => {
               try {
                 await toggleTaskInFile(this.app, t.file, t.line);
-                new Notice3("\u2713 \u5DF2\u5B8C\u6210\uFF1A" + t.text.slice(0, 30));
+                new Notice7("\u2713 \u5DF2\u5B8C\u6210\uFF1A" + t.text.slice(0, 30));
                 await this.render();
               } catch (err) {
-                new Notice3("\u66F4\u65B0\u5931\u8D25\uFF1A" + err.message);
+                new Notice7("\u66F4\u65B0\u5931\u8D25\uFF1A" + err.message);
                 await this.render();
               }
             });
@@ -5236,13 +5289,13 @@ var require_taskModal = __commonJS({
       }
       async addTask(text) {
         const { tasksPath } = this.plugin.settings;
-        const target = normalizePath3(tasksPath || "vault/\u4EFB\u52A1.md");
+        const target = normalizePath7(tasksPath || "vault/\u4EFB\u52A1.md");
         let file = this.app.vault.getAbstractFileByPath(target);
         const line = `- [ ] ${text}`;
         if (!file) {
           const folder = target.slice(0, target.lastIndexOf("/"));
-          if (folder && !this.app.vault.getAbstractFileByPath(normalizePath3(folder))) {
-            await this.app.vault.createFolder(normalizePath3(folder));
+          if (folder && !this.app.vault.getAbstractFileByPath(normalizePath7(folder))) {
+            await this.app.vault.createFolder(normalizePath7(folder));
           }
           const today = formatDate3(/* @__PURE__ */ new Date(), "YYYY-MM-DD");
           file = await this.app.vault.create(
@@ -5270,7 +5323,7 @@ ${line}
             return lines.join("\n");
           });
         }
-        new Notice3("\u5DF2\u8BB0\u5F55\uFF1A" + text.slice(0, 30));
+        new Notice7("\u5DF2\u8BB0\u5F55\uFF1A" + text.slice(0, 30));
       }
     };
     module2.exports = { TaskCenterModal: TaskCenterModal2, scanAllTasks };
@@ -5281,8 +5334,8 @@ ${line}
 var require_attachmentModal = __commonJS({
   "src/modals/attachmentModal.js"(exports2, module2) {
     "use strict";
-    var { Modal, Notice: Notice3 } = require("obsidian");
-    var { auditVault, archiveOrphans } = require_attachmentService();
+    var { Modal, Notice: Notice7 } = require("obsidian");
+    var { auditVault: auditVault2, archiveOrphans: archiveOrphans2 } = (init_attachmentService(), __toCommonJS(attachmentService_exports));
     var { AttachmentPreviewModal: AttachmentPreviewModal2 } = require_attachmentPreviewModal();
     function fmtSize(bytes) {
       const n = Number(bytes) || 0;
@@ -5308,10 +5361,10 @@ var require_attachmentModal = __commonJS({
         const status = contentEl.querySelector(".owb-att-status");
         if (status) status.setText("\u626B\u63CF\u4E2D\u2026");
         try {
-          this.report = await auditVault(this.app);
+          this.report = await auditVault2(this.app);
           this.selected.clear();
         } catch (e) {
-          new Notice3("\u9644\u4EF6\u626B\u63CF\u5931\u8D25\uFF1A" + e.message, 8e3);
+          new Notice7("\u9644\u4EF6\u626B\u63CF\u5931\u8D25\uFF1A" + e.message, 8e3);
           this.report = null;
         }
         this.render();
@@ -5414,11 +5467,11 @@ var require_attachmentModal = __commonJS({
         const files = r.orphans.filter((f) => this.selected.has(f.path));
         if (!files.length) return;
         try {
-          const res = await archiveOrphans(this.app, files, "\u9644\u4EF6\u7BA1\u7406\u5668");
-          new Notice3(`\u5DF2\u5F52\u6863 ${res.moved.length} \u4E2A\u9644\u4EF6 \u2192 ${res.destDir}${res.failed.length ? `\uFF0C\u5931\u8D25 ${res.failed.length}` : ""}`, 7e3);
+          const res = await archiveOrphans2(this.app, files, "\u9644\u4EF6\u7BA1\u7406\u5668");
+          new Notice7(`\u5DF2\u5F52\u6863 ${res.moved.length} \u4E2A\u9644\u4EF6 \u2192 ${res.destDir}${res.failed.length ? `\uFF0C\u5931\u8D25 ${res.failed.length}` : ""}`, 7e3);
           await this.audit();
         } catch (e) {
-          new Notice3("\u5F52\u6863\u5931\u8D25\uFF1A" + e.message, 8e3);
+          new Notice7("\u5F52\u6863\u5931\u8D25\uFF1A" + e.message, 8e3);
         }
       }
     };
@@ -5430,22 +5483,22 @@ var require_attachmentModal = __commonJS({
 var require_imageToolsModal = __commonJS({
   "src/modals/imageToolsModal.js"(exports2, module2) {
     "use strict";
-    var { Modal, Notice: Notice3, Setting } = require("obsidian");
+    var { Modal, Notice: Notice7, Setting } = require("obsidian");
     var {
-      engineInfo,
-      collectImages,
-      convertFiles,
-      saveImage,
-      assetDirFor,
-      SUPPORTED_OUT,
-      DEFAULT_FORMAT
-    } = require_imageService();
+      engineInfo: engineInfo2,
+      collectImages: collectImages2,
+      convertFiles: convertFiles2,
+      saveImage: saveImage2,
+      assetDirFor: assetDirFor2,
+      SUPPORTED_OUT: SUPPORTED_OUT2,
+      DEFAULT_FORMAT: DEFAULT_FORMAT2
+    } = (init_imageService(), __toCommonJS(imageService_exports));
     var { fmtSize } = require_attachmentModal();
     var ImageToolsModal2 = class extends Modal {
       constructor(app, plugin) {
         super(app, plugin);
         this.plugin = plugin;
-        this.format = DEFAULT_FORMAT;
+        this.format = DEFAULT_FORMAT2;
         this.quality = 60;
         this.maxWidth = 1600;
         this.scope = "";
@@ -5460,7 +5513,7 @@ var require_imageToolsModal = __commonJS({
         contentEl.empty();
         contentEl.addClass("owb-img-modal");
         contentEl.createEl("h2", { text: "\u{1F5BC}\uFE0F \u56FE\u7247\u5DE5\u5177" });
-        const info = engineInfo();
+        const info = engineInfo2();
         const engineBox = contentEl.createDiv({ cls: "owb-img-engine" });
         if (info.engine === "sharp") {
           engineBox.createDiv({
@@ -5496,7 +5549,7 @@ var require_imageToolsModal = __commonJS({
         });
         upRow.createDiv({
           cls: "owb-muted",
-          text: `\u843D\u76D8\u76EE\u5F55 ${assetDirFor()} \xB7 \u53EF\u76F4\u63A5\u628A\u56FE\u7247\u62D6\u8FDB\u6B64\u5F39\u7A97`
+          text: `\u843D\u76D8\u76EE\u5F55 ${assetDirFor2()} \xB7 \u53EF\u76F4\u63A5\u628A\u56FE\u7247\u62D6\u8FDB\u6B64\u5F39\u7A97`
         });
         contentEl.addEventListener("dragover", (e) => {
           e.preventDefault();
@@ -5513,7 +5566,7 @@ var require_imageToolsModal = __commonJS({
         });
         contentEl.createEl("h3", { text: "\u6279\u91CF\u683C\u5F0F\u8F6C\u6362\u4E0E\u538B\u7F29" });
         new Setting(contentEl).setName("\u76EE\u6807\u683C\u5F0F").addDropdown((d) => {
-          for (const f of SUPPORTED_OUT) d.addOption(f, f.toUpperCase());
+          for (const f of SUPPORTED_OUT2) d.addOption(f, f.toUpperCase());
           d.setValue(this.format);
           d.onChange((v) => this.format = v);
         }).addText((t) => {
@@ -5545,7 +5598,7 @@ var require_imageToolsModal = __commonJS({
         const out = [];
         try {
           for (const f of files) {
-            const res = await saveImage(this.app, f, {
+            const res = await saveImage2(this.app, f, {
               name: f.name || `pasted-${Date.now()}.png`,
               format: this.format,
               quality: this.quality,
@@ -5553,8 +5606,8 @@ var require_imageToolsModal = __commonJS({
             });
             out.push(res);
           }
-          new Notice3(
-            `\u5DF2\u5B58\u6863 ${out.length} \u5F20 \u2192 ${assetDirFor()}\uFF08\u5F15\u64CE ${out[0] ? out[0].engine : "-"}\uFF09`,
+          new Notice7(
+            `\u5DF2\u5B58\u6863 ${out.length} \u5F20 \u2192 ${assetDirFor2()}\uFF08\u5F15\u64CE ${out[0] ? out[0].engine : "-"}\uFF09`,
             6e3
           );
           const leaf = this.app.workspace.getMostRecentLeaf();
@@ -5563,24 +5616,24 @@ var require_imageToolsModal = __commonJS({
             leaf.view.editor.replaceSelection(link);
           }
         } catch (e) {
-          new Notice3("\u4E0A\u4F20\u5931\u8D25\uFF1A" + e.message, 8e3);
+          new Notice7("\u4E0A\u4F20\u5931\u8D25\uFF1A" + e.message, 8e3);
         }
       }
       preview() {
-        const imgs = collectImages(this.app, this.scope);
+        const imgs = collectImages2(this.app, this.scope);
         const total = imgs.reduce((s, f) => s + (f.stat ? f.stat.size : 0), 0);
         this.progress = `\u8303\u56F4\u5185\u53EF\u8F6C\u6362\u56FE\u7247 ${imgs.length} \u4E2A\uFF0C\u5408\u8BA1 ${fmtSize(total)}`;
         this.render();
       }
       async run() {
-        const imgs = collectImages(this.app, this.scope);
+        const imgs = collectImages2(this.app, this.scope);
         if (!imgs.length) {
-          new Notice3("\u8BE5\u8303\u56F4\u5185\u6CA1\u6709\u53EF\u8F6C\u6362\u7684\u56FE\u7247");
+          new Notice7("\u8BE5\u8303\u56F4\u5185\u6CA1\u6709\u53EF\u8F6C\u6362\u7684\u56FE\u7247");
           return;
         }
         this.progress = `\u8F6C\u6362\u4E2D 0/${imgs.length}`;
         this.render();
-        const results = await convertFiles(
+        const results = await convertFiles2(
           this.app,
           imgs,
           {
@@ -5589,8 +5642,8 @@ var require_imageToolsModal = __commonJS({
             maxWidth: this.maxWidth,
             skipSameFormat: true
           },
-          (done, total, path) => {
-            this.progress = `\u8F6C\u6362\u4E2D ${done}/${total} \xB7 ${path}`;
+          (done, total, path2) => {
+            this.progress = `\u8F6C\u6362\u4E2D ${done}/${total} \xB7 ${path2}`;
             const el = this.contentEl.querySelector(".owb-img-progress");
             if (el) el.setText(this.progress);
           }
@@ -5599,7 +5652,7 @@ var require_imageToolsModal = __commonJS({
         const ok = results.filter((r) => !r.error && !r.skipped);
         const saved = ok.reduce((s, r) => s + (r.saved || 0), 0);
         this.progress = `\u5B8C\u6210\uFF1A\u8F6C\u6362 ${ok.length} \u4E2A\uFF0C\u8282\u7701 ${fmtSize(saved)}`;
-        new Notice3(this.progress, 8e3);
+        new Notice7(this.progress, 8e3);
         this.render();
       }
       renderResults(container, results) {
@@ -5630,13 +5683,144 @@ var require_imageToolsModal = __commonJS({
   }
 });
 
-// src/services/doctorService.js
-var require_doctorService = __commonJS({
-  "src/services/doctorService.js"(exports2, module2) {
+// src/services/doctorService.ts
+var doctorService_exports = {};
+__export(doctorService_exports, {
+  diagnoseVault: () => diagnoseVault,
+  ensureSafeGitignore: () => ensureSafeGitignore
+});
+function safeReadJson(filePath, fallback) {
+  try {
+    if (!fs.existsSync(filePath)) return fallback;
+    return JSON.parse(fs.readFileSync(filePath, "utf8"));
+  } catch {
+    return fallback;
+  }
+}
+async function diagnoseVault(vaultBasePath, gitService) {
+  const issues = [];
+  const obsDir = path.join(vaultBasePath, ".obsidian");
+  if (!fs.existsSync(obsDir)) {
+    issues.push({
+      severity: "error",
+      code: "NO_OBSIDIAN_DIR",
+      message: "\u672A\u68C0\u6D4B\u5230 .obsidian \u76EE\u5F55",
+      fixable: false
+    });
+    return issues;
+  }
+  const appearance = safeReadJson(path.join(obsDir, "appearance.json"), {});
+  const snippetsDir = path.join(obsDir, "snippets");
+  const danglingSnippets = [];
+  for (const name of appearance.enabledCssSnippets || []) {
+    if (!fs.existsSync(path.join(snippetsDir, `${name}.css`))) {
+      danglingSnippets.push(name);
+    }
+  }
+  if (danglingSnippets.length) {
+    issues.push({
+      severity: "error",
+      code: "DANGLING_SNIPPETS",
+      message: `appearance.json \u542F\u7528\u4E86\u4E0D\u5B58\u5728\u7684 CSS \u7247\u6BB5\uFF1A${danglingSnippets.join(", ")}`,
+      fixable: true,
+      meta: { danglingSnippets }
+    });
+  }
+  const QUICKADD_BUILTIN = /* @__PURE__ */ new Set([
+    "quickadd:runQuickAdd",
+    "quickadd:openQuickAddSettings",
+    "quickadd:openSettings"
+  ]);
+  const quickAddChoices = new Set(
+    ((safeReadJson(path.join(obsDir, "plugins/quickadd/data.json"), {}) || {}).choices || []).map((c) => c && c.id).filter(Boolean)
+  );
+  const hotkeys = safeReadJson(path.join(obsDir, "hotkeys.json"), {});
+  for (const [cmdId, val] of Object.entries(hotkeys)) {
+    if (cmdId.startsWith("quickadd:") && !cmdId.startsWith("quickadd:choice:") && !QUICKADD_BUILTIN.has(cmdId)) {
+      issues.push({
+        severity: "error",
+        code: "LEGACY_QUICKADD_HOTKEY",
+        message: `\u5FEB\u6377\u952E ${cmdId} \u4E0D\u662F\u5408\u6CD5 QuickAdd \u547D\u4EE4\uFF08\u7F3A choice: \u524D\u7F00\u6216 id\uFF09\uFF0C\u4F1A\u9759\u9ED8\u5931\u6548`,
+        fixable: false
+      });
+    }
+    if (cmdId.startsWith("quickadd:choice:") && quickAddChoices.size) {
+      const id = cmdId.slice("quickadd:choice:".length);
+      if (!quickAddChoices.has(id)) {
+        issues.push({
+          severity: "warning",
+          code: "DANGLING_QUICKADD_CHOICE",
+          message: `\u5FEB\u6377\u952E\u7ED1\u5B9A\u7684 QuickAdd choice \u4E0D\u5B58\u5728\uFF1A${id}`,
+          fixable: false
+        });
+      }
+    }
+    if (!Array.isArray(val)) {
+      issues.push({
+        severity: "error",
+        code: "INVALID_HOTKEY_SCHEMA",
+        message: `\u5FEB\u6377\u952E ${cmdId} \u7684\u503C\u4E0D\u662F\u6570\u7EC4\uFF0CObsidian \u53EF\u80FD\u5FFD\u7565\u8BE5\u7ED1\u5B9A`,
+        fixable: false
+      });
+    }
+  }
+  const enabledPlugins = new Set(safeReadJson(path.join(obsDir, "community-plugins.json"), []));
+  const pluginsDir = path.join(obsDir, "plugins");
+  if (fs.existsSync(pluginsDir)) {
+    const dirs = fs.readdirSync(pluginsDir, { withFileTypes: true }).filter((d) => d.isDirectory());
+    const orphan = dirs.map((d) => d.name).filter((name) => !enabledPlugins.has(name));
+    if (orphan.length) {
+      issues.push({
+        severity: "warn",
+        code: "DISABLED_PLUGIN_DIRS",
+        message: `\u5B58\u5728 ${orphan.length} \u4E2A\u672A\u542F\u7528\u63D2\u4EF6\u76EE\u5F55\uFF08\u53EF\u6309\u9700\u6E05\u7406\uFF09\uFF1A${orphan.join(", ")}`,
+        fixable: false
+      });
+    }
+  }
+  if (gitService && await gitService.isGitRepo()) {
+    const tracked = await gitService.listTrackedSensitiveFiles([
+      ".obsidian/plugins/nutstore-sync/data.json",
+      ".obsidian/plugins/remotely-save/data.json"
+    ]);
+    if (tracked.length) {
+      issues.push({
+        severity: "error",
+        code: "GIT_TRACKING_SECRETS",
+        message: `Git \u6B63\u5728\u8FFD\u8E2A\u53EF\u80FD\u5305\u542B OAuth/API \u51ED\u8BC1\u7684\u6587\u4EF6\uFF1A${tracked.join(", ")}`,
+        fixable: false
+      });
+    }
+    const giPath = path.join(vaultBasePath, ".gitignore");
+    const giText = fs.existsSync(giPath) ? fs.readFileSync(giPath, "utf8") : "";
+    if (!giText.includes("nutstore-sync/data.json")) {
+      issues.push({
+        severity: "warn",
+        code: "GITIGNORE_INCOMPLETE",
+        message: ".gitignore \u7F3A\u5C11\u540C\u6B65\u63D2\u4EF6\u51ED\u8BC1\u4E0E\u5DE5\u4F5C\u533A\u7F13\u5B58\u5FFD\u7565\u89C4\u5219",
+        fixable: true
+      });
+    }
+  }
+  return issues;
+}
+function ensureSafeGitignore(vaultBasePath) {
+  const giPath = path.join(vaultBasePath, ".gitignore");
+  const current = fs.existsSync(giPath) ? fs.readFileSync(giPath, "utf8") : "";
+  const linesToAdd = RECOMMENDED_GITIGNORE_ENTRIES.filter((line) => !current.includes(line));
+  if (!linesToAdd.length) return false;
+  const prefix = current && !current.endsWith("\n") ? "\n\n" : current ? "\n" : "";
+  fs.writeFileSync(giPath, `${current}${prefix}${linesToAdd.join("\n")}
+`, "utf8");
+  return true;
+}
+var fs, path, RECOMMENDED_GITIGNORE_ENTRIES;
+var init_doctorService = __esm({
+  "src/services/doctorService.ts"() {
     "use strict";
-    var fs = require("fs");
-    var path = require("path");
-    var RECOMMENDED_GITIGNORE_ENTRIES = [
+    fs = require("fs");
+    path = require("path");
+    RECOMMENDED_GITIGNORE_ENTRIES = [
       "# Obsidian Workbench \u5B89\u5168\u5FFD\u7565\u89C4\u5219\uFF08\u907F\u514D\u6CC4\u9732\u540C\u6B65\u63D2\u4EF6\u51ED\u8BC1\u4E0E\u7F13\u5B58\uFF09",
       ".obsidian/plugins/nutstore-sync/data.json",
       ".obsidian/plugins/remotely-save/data.json",
@@ -5645,135 +5829,6 @@ var require_doctorService = __commonJS({
       ".owb-backups/",
       "*.tar.gz"
     ];
-    function safeReadJson(filePath, fallback) {
-      try {
-        if (!fs.existsSync(filePath)) return fallback;
-        return JSON.parse(fs.readFileSync(filePath, "utf8"));
-      } catch {
-        return fallback;
-      }
-    }
-    async function diagnoseVault(vaultBasePath, gitService) {
-      const issues = [];
-      const obsDir = path.join(vaultBasePath, ".obsidian");
-      if (!fs.existsSync(obsDir)) {
-        issues.push({
-          severity: "error",
-          code: "NO_OBSIDIAN_DIR",
-          message: "\u672A\u68C0\u6D4B\u5230 .obsidian \u76EE\u5F55",
-          fixable: false
-        });
-        return issues;
-      }
-      const appearance = safeReadJson(path.join(obsDir, "appearance.json"), {});
-      const snippetsDir = path.join(obsDir, "snippets");
-      const danglingSnippets = [];
-      for (const name of appearance.enabledCssSnippets || []) {
-        if (!fs.existsSync(path.join(snippetsDir, `${name}.css`))) {
-          danglingSnippets.push(name);
-        }
-      }
-      if (danglingSnippets.length) {
-        issues.push({
-          severity: "error",
-          code: "DANGLING_SNIPPETS",
-          message: `appearance.json \u542F\u7528\u4E86\u4E0D\u5B58\u5728\u7684 CSS \u7247\u6BB5\uFF1A${danglingSnippets.join(", ")}`,
-          fixable: true,
-          meta: { danglingSnippets }
-        });
-      }
-      const QUICKADD_BUILTIN = /* @__PURE__ */ new Set([
-        "quickadd:runQuickAdd",
-        "quickadd:openQuickAddSettings",
-        "quickadd:openSettings"
-      ]);
-      const quickAddChoices = new Set(
-        ((safeReadJson(path.join(obsDir, "plugins/quickadd/data.json"), {}) || {}).choices || []).map((c) => c && c.id).filter(Boolean)
-      );
-      const hotkeys = safeReadJson(path.join(obsDir, "hotkeys.json"), {});
-      for (const [cmdId, val] of Object.entries(hotkeys)) {
-        if (cmdId.startsWith("quickadd:") && !cmdId.startsWith("quickadd:choice:") && !QUICKADD_BUILTIN.has(cmdId)) {
-          issues.push({
-            severity: "error",
-            code: "LEGACY_QUICKADD_HOTKEY",
-            message: `\u5FEB\u6377\u952E ${cmdId} \u4E0D\u662F\u5408\u6CD5 QuickAdd \u547D\u4EE4\uFF08\u7F3A choice: \u524D\u7F00\u6216 id\uFF09\uFF0C\u4F1A\u9759\u9ED8\u5931\u6548`,
-            fixable: false
-          });
-        }
-        if (cmdId.startsWith("quickadd:choice:") && quickAddChoices.size) {
-          const id = cmdId.slice("quickadd:choice:".length);
-          if (!quickAddChoices.has(id)) {
-            issues.push({
-              severity: "warning",
-              code: "DANGLING_QUICKADD_CHOICE",
-              message: `\u5FEB\u6377\u952E\u7ED1\u5B9A\u7684 QuickAdd choice \u4E0D\u5B58\u5728\uFF1A${id}`,
-              fixable: false
-            });
-          }
-        }
-        if (!Array.isArray(val)) {
-          issues.push({
-            severity: "error",
-            code: "INVALID_HOTKEY_SCHEMA",
-            message: `\u5FEB\u6377\u952E ${cmdId} \u7684\u503C\u4E0D\u662F\u6570\u7EC4\uFF0CObsidian \u53EF\u80FD\u5FFD\u7565\u8BE5\u7ED1\u5B9A`,
-            fixable: false
-          });
-        }
-      }
-      const enabledPlugins = new Set(safeReadJson(path.join(obsDir, "community-plugins.json"), []));
-      const pluginsDir = path.join(obsDir, "plugins");
-      if (fs.existsSync(pluginsDir)) {
-        const dirs = fs.readdirSync(pluginsDir, { withFileTypes: true }).filter((d) => d.isDirectory());
-        const orphan = dirs.map((d) => d.name).filter((name) => !enabledPlugins.has(name));
-        if (orphan.length) {
-          issues.push({
-            severity: "warn",
-            code: "DISABLED_PLUGIN_DIRS",
-            message: `\u5B58\u5728 ${orphan.length} \u4E2A\u672A\u542F\u7528\u63D2\u4EF6\u76EE\u5F55\uFF08\u53EF\u6309\u9700\u6E05\u7406\uFF09\uFF1A${orphan.join(", ")}`,
-            fixable: false
-          });
-        }
-      }
-      if (gitService && await gitService.isGitRepo()) {
-        const tracked = await gitService.listTrackedSensitiveFiles([
-          ".obsidian/plugins/nutstore-sync/data.json",
-          ".obsidian/plugins/remotely-save/data.json"
-        ]);
-        if (tracked.length) {
-          issues.push({
-            severity: "error",
-            code: "GIT_TRACKING_SECRETS",
-            message: `Git \u6B63\u5728\u8FFD\u8E2A\u53EF\u80FD\u5305\u542B OAuth/API \u51ED\u8BC1\u7684\u6587\u4EF6\uFF1A${tracked.join(", ")}`,
-            fixable: false
-          });
-        }
-        const giPath = path.join(vaultBasePath, ".gitignore");
-        const giText = fs.existsSync(giPath) ? fs.readFileSync(giPath, "utf8") : "";
-        if (!giText.includes("nutstore-sync/data.json")) {
-          issues.push({
-            severity: "warn",
-            code: "GITIGNORE_INCOMPLETE",
-            message: ".gitignore \u7F3A\u5C11\u540C\u6B65\u63D2\u4EF6\u51ED\u8BC1\u4E0E\u5DE5\u4F5C\u533A\u7F13\u5B58\u5FFD\u7565\u89C4\u5219",
-            fixable: true
-          });
-        }
-      }
-      return issues;
-    }
-    function ensureSafeGitignore(vaultBasePath) {
-      const giPath = path.join(vaultBasePath, ".gitignore");
-      const current = fs.existsSync(giPath) ? fs.readFileSync(giPath, "utf8") : "";
-      const linesToAdd = RECOMMENDED_GITIGNORE_ENTRIES.filter((line) => !current.includes(line));
-      if (!linesToAdd.length) return false;
-      const prefix = current && !current.endsWith("\n") ? "\n\n" : current ? "\n" : "";
-      fs.writeFileSync(giPath, `${current}${prefix}${linesToAdd.join("\n")}
-`, "utf8");
-      return true;
-    }
-    module2.exports = {
-      diagnoseVault,
-      ensureSafeGitignore
-    };
   }
 });
 
@@ -5781,8 +5836,8 @@ var require_doctorService = __commonJS({
 var require_doctorModal = __commonJS({
   "src/modals/doctorModal.js"(exports2, module2) {
     "use strict";
-    var { Modal, Notice: Notice3 } = require("obsidian");
-    var { diagnoseVault, ensureSafeGitignore } = require_doctorService();
+    var { Modal, Notice: Notice7 } = require("obsidian");
+    var { diagnoseVault: diagnoseVault2, ensureSafeGitignore: ensureSafeGitignore2 } = (init_doctorService(), __toCommonJS(doctorService_exports));
     var DoctorModal2 = class extends Modal {
       constructor(app, plugin) {
         super(app);
@@ -5800,7 +5855,7 @@ var require_doctorModal = __commonJS({
         }
         const listEl = contentEl.createDiv({ cls: "owb-doctor-list" });
         listEl.createEl("p", { cls: "owb-muted", text: "\u6B63\u5728\u626B\u63CF\u914D\u7F6E\u4E0E Git \u5B89\u5168\u89C4\u5219..." });
-        const issues = await diagnoseVault(basePath, this.plugin.gitService);
+        const issues = await diagnoseVault2(basePath, this.plugin.gitService);
         listEl.empty();
         if (!issues.length) {
           listEl.createDiv({
@@ -5816,8 +5871,8 @@ var require_doctorModal = __commonJS({
           if (iss.code === "GITIGNORE_INCOMPLETE") {
             const fixBtn = row.createEl("button", { cls: "owb-btn-sm", text: "\u4E00\u952E\u8865\u5168 .gitignore" });
             fixBtn.addEventListener("click", () => {
-              const added = ensureSafeGitignore(basePath);
-              new Notice3(added ? "\u5DF2\u5199\u5165\u63A8\u8350 .gitignore \u4FDD\u62A4\u89C4\u5219" : "\u89C4\u5219\u5DF2\u5B58\u5728");
+              const added = ensureSafeGitignore2(basePath);
+              new Notice7(added ? "\u5DF2\u5199\u5165\u63A8\u8350 .gitignore \u4FDD\u62A4\u89C4\u5219" : "\u89C4\u5219\u5DF2\u5B58\u5728");
               this.onOpen();
             });
           }
@@ -5835,8 +5890,8 @@ var require_doctorModal = __commonJS({
 var require_aiQuizModal = __commonJS({
   "src/modals/aiQuizModal.js"(exports2, module2) {
     "use strict";
-    var { Modal, Notice: Notice3, normalizePath: normalizePath3 } = require("obsidian");
-    var { generateQuizMarkdownFromNote } = require_aiService();
+    var { Modal, Notice: Notice7, normalizePath: normalizePath7 } = require("obsidian");
+    var { generateQuizMarkdownFromNote: generateQuizMarkdownFromNote2 } = (init_aiService(), __toCommonJS(aiService_exports));
     var AIQuizModal2 = class extends Modal {
       constructor(app, plugin) {
         super(app);
@@ -5857,7 +5912,7 @@ var require_aiQuizModal = __commonJS({
           text: `\u6E90\u7B14\u8BB0\uFF1A${activeFile.path} \xB7 \u6A21\u578B\uFF1A${this.plugin.settings.aiModel}`
         });
         const folder = (this.plugin.settings.quizFolder || "notes").replace(/^\/+|\/+$/g, "");
-        const defaultOut = normalizePath3(`${folder}/${activeFile.basename}-\u81EA\u6D4B\u9898\u5E93.md`);
+        const defaultOut = normalizePath7(`${folder}/${activeFile.basename}-\u81EA\u6D4B\u9898\u5E93.md`);
         contentEl.createEl("label", { cls: "owb-muted", text: "\u8F93\u51FA\u9898\u5E93\u8DEF\u5F84" });
         const pathInput = contentEl.createEl("input", {
           cls: "owb-input",
@@ -5873,13 +5928,13 @@ var require_aiQuizModal = __commonJS({
         cancelBtn.addEventListener("click", () => this.close());
         const genBtn = actions.createEl("button", { cls: "mod-cta", text: "\u5F00\u59CB\u751F\u6210\u9898\u5E93" });
         genBtn.addEventListener("click", async () => {
-          const outPath = normalizePath3(pathInput.value.trim() || defaultOut);
+          const outPath = normalizePath7(pathInput.value.trim() || defaultOut);
           const count = Math.max(1, Math.min(20, Number.parseInt(countInput.value, 10) || 5));
           genBtn.disabled = true;
           genBtn.setText("\u6B63\u5728\u751F\u6210...");
           try {
             const noteText = await this.app.vault.cachedRead(activeFile);
-            const md = await generateQuizMarkdownFromNote(
+            const md = await generateQuizMarkdownFromNote2(
               activeFile.basename,
               noteText,
               count,
@@ -5895,13 +5950,13 @@ var require_aiQuizModal = __commonJS({
             } else {
               await this.app.vault.create(outPath, md);
             }
-            new Notice3(`\u5DF2\u751F\u6210\u81EA\u6D4B\u9898\u5E93\uFF1A${outPath}`);
+            new Notice7(`\u5DF2\u751F\u6210\u81EA\u6D4B\u9898\u5E93\uFF1A${outPath}`);
             this.close();
             if (this.plugin.isFeatureEnabled("quizEngine")) {
               await this.plugin.activateQuizView(outPath);
             }
           } catch (err) {
-            new Notice3(`AI \u51FA\u9898\u5931\u8D25\uFF1A${err.message}`, 7e3);
+            new Notice7(`AI \u51FA\u9898\u5931\u8D25\uFF1A${err.message}`, 7e3);
             genBtn.disabled = false;
             genBtn.setText("\u5F00\u59CB\u751F\u6210\u9898\u5E93");
           }
@@ -5919,7 +5974,7 @@ var require_aiQuizModal = __commonJS({
 var require_settings = __commonJS({
   "src/settings.js"(exports2, module2) {
     "use strict";
-    var { PluginSettingTab, Setting, Notice: Notice3 } = require("obsidian");
+    var { PluginSettingTab, Setting, Notice: Notice7 } = require("obsidian");
     var FEATURE_META = [
       { key: "workbench", name: "\u4E2A\u4EBA\u77E5\u8BC6\u5DE5\u4F5C\u53F0", desc: "\u9996\u5C4F\u95EE\u5019\u3001\u4ECA\u65E5\u884C\u52A8\u52FE\u9009\u3001\u4ECA\u65E5\u8F93\u5165/\u8F93\u51FA\u4E0E\u6C89\u7761\u7B14\u8BB0\u6D1E\u5BDF" },
       { key: "gitPanel", name: "Git \u7BA1\u7406\u9762\u677F\u4E0E\u72B6\u6001\u680F", desc: "\u53F3\u4FA7\u8FB9\u680F\u5206\u652F\u5207\u6362\u3001\u6682\u5B58/\u64A4\u9500/Diff\u3001\u63D0\u4EA4\u540C\u6B65\u4E0E\u5386\u53F2\u8BB0\u5F55" },
@@ -6166,7 +6221,7 @@ var require_settings = __commonJS({
                 mastery: {}
               };
               await this.plugin.saveSettings();
-              new Notice3("\u7B54\u9898\u8BB0\u5F55\u5DF2\u6E05\u7A7A");
+              new Notice7("\u7B54\u9898\u8BB0\u5F55\u5DF2\u6E05\u7A7A");
             })
           );
         }
@@ -6366,12 +6421,12 @@ var require_settings = __commonJS({
               if (leaf.view && leaf.view.invalidateHeat) leaf.view.invalidateHeat();
             }
             this.plugin.refreshWorkbenchViews();
-            new Notice3("\u7F13\u5B58\u5DF2\u6E05\u7A7A");
+            new Notice7("\u7F13\u5B58\u5DF2\u6E05\u7A7A");
           })
         );
         if (this.plugin.isFeatureEnabled("imageTools")) {
           containerEl.createEl("h3", { text: "\u56FE\u7247\u5DE5\u5177" });
-          const info = require_imageService().engineInfo();
+          const info = (init_imageService(), __toCommonJS(imageService_exports)).engineInfo();
           new Setting(containerEl).setName("\u8F6C\u6362\u5F15\u64CE").setDesc(
             info.engine === "sharp" ? "sharp\uFF08libvips " + (info.libvips || "?") + "\uFF09\xB7 \u652F\u6301 AVIF \u4E0E\u9AD8\u8D28\u91CF\u91CD\u91C7\u6837" : "Canvas \u515C\u5E95\uFF08webp/jpeg/png\uFF09\u3002\u8981\u542F\u7528 AVIF \u4E0E\u66F4\u5FEB\u8F6C\u6362\uFF1A\u5728\u63D2\u4EF6\u76EE\u5F55\u6267\u884C npm i sharp \u540E\u91CD\u542F Obsidian" + (info.error ? " \xB7 \u539F\u56E0\uFF1A" + String(info.error).slice(0, 100) : "")
           ).addButton((b) => b.setButtonText("\u6253\u5F00\u56FE\u7247\u5DE5\u5177").onClick(() => this.plugin.openImageToolsModal()));
@@ -6383,7 +6438,7 @@ var require_settings = __commonJS({
 });
 
 // src/main.js
-var { Plugin, Notice: Notice2 } = require("obsidian");
+var { Plugin, Notice: Notice6 } = require("obsidian");
 var {
   VIEW_TYPE_WORKBENCH: VIEW_TYPE_WORKBENCH2,
   VIEW_TYPE_GIT: VIEW_TYPE_GIT2,
@@ -6392,19 +6447,19 @@ var {
   DEFAULT_SETTINGS: DEFAULT_SETTINGS2
 } = (init_constants(), __toCommonJS(constants_exports));
 var { deepMergeDefaults: deepMergeDefaults2, formatDate: formatDate2, migrateSettings: migrateSettings2 } = (init_utils(), __toCommonJS(utils_exports));
-var { GitService } = require_gitService();
+var { GitService: GitService2 } = (init_gitService(), __toCommonJS(gitService_exports));
 var { PomodoroService: PomodoroService2 } = (init_pomodoroService(), __toCommonJS(pomodoroService_exports));
-var { RagService } = require_ragService();
+var { RagService: RagService2 } = (init_ragService(), __toCommonJS(ragService_exports));
 var { openDaily: openDaily2 } = (init_dailyService(), __toCommonJS(dailyService_exports));
 var { listProjects: listProjects2, createProject: createProject2 } = (init_projectService(), __toCommonJS(projectService_exports));
 var privacyService = require_privacyService();
-var { setPluginDir } = require_imageService();
-var decisionService = require_decisionService();
-var graphService = require_graphService();
-var { renderRunnableBlock, renderHtmlPreview } = require_codeRunner();
+var { setPluginDir: setPluginDir2 } = (init_imageService(), __toCommonJS(imageService_exports));
+var decisionService = (init_decisionService(), __toCommonJS(decisionService_exports));
+var graphService = (init_graphService(), __toCommonJS(graphService_exports));
+var { renderRunnableBlock: renderRunnableBlock2, renderHtmlPreview: renderHtmlPreview2 } = (init_codeRunner(), __toCommonJS(codeRunner_exports));
 var { AttachmentPreviewModal } = require_attachmentPreviewModal();
-var { saveAttachment, planOrganize, applyOrganize } = require_attachmentService();
-var { BASE_STYLE_CSS } = require_basesStyle();
+var { saveAttachment: saveAttachment2, planOrganize: planOrganize2, applyOrganize: applyOrganize2 } = (init_attachmentService(), __toCommonJS(attachmentService_exports));
+var { BASE_STYLE_CSS: BASE_STYLE_CSS2 } = (init_basesStyle(), __toCommonJS(basesStyle_exports));
 var { PomodoroFullscreen } = require_pomodoroFullscreen();
 var { WorkbenchView } = require_workbenchView();
 var { GitPanelView } = require_gitView();
@@ -6420,7 +6475,7 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
   async onload() {
     await this.loadSettings();
     const basePath = this.getVaultBasePath();
-    this.gitService = basePath ? new GitService(basePath, {
+    this.gitService = basePath ? new GitService2(basePath, {
       gitBinary: this.settings.gitBinary,
       timeoutMs: this.settings.gitTimeoutMs
     }) : null;
@@ -6428,7 +6483,7 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
       () => this.settings,
       async (finishedPhase) => {
         await this.saveSettings();
-        new Notice2(
+        new Notice6(
           finishedPhase === "work" ? "\u{1F345} \u4E13\u6CE8\u756A\u8304\u5B8C\u6210\uFF01\u4F11\u606F\u4E00\u4E0B\u5427" : "\u2615 \u4F11\u606F\u7ED3\u675F\uFF0C\u51C6\u5907\u5F00\u542F\u4E0B\u4E00\u8F6E\u4E13\u6CE8",
           6e3
         );
@@ -6441,13 +6496,13 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
     this.registerView(VIEW_TYPE_WORKBENCH2, (leaf) => new WorkbenchView(leaf, this));
     this.registerView(VIEW_TYPE_GIT2, (leaf) => new GitPanelView(leaf, this));
     this.registerView(VIEW_TYPE_QUIZ2, (leaf) => new QuizView(leaf, this));
-    this.rag = new RagService(() => this.settings, this.app.vault.adapter);
+    this.rag = new RagService2(() => this.settings, this.app.vault.adapter);
     if (this.manifest && this.manifest.dir) {
       const dir = this.manifest.dir;
       const base = this.app && this.app.vault && this.app.vault.adapter ? this.app.vault.adapter.basePath : "";
       const abs = dir.startsWith("/") ? dir : base ? `${base}/${dir}` : "";
       if (abs) {
-        setPluginDir(abs);
+        setPluginDir2(abs);
         try {
           require_attachmentPreviewModal().setPluginDir(abs);
         } catch (e) {
@@ -6585,11 +6640,11 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
     });
     for (const lang of ["run-js", "run-python", "run-sh"]) {
       this.registerMarkdownCodeBlockProcessor(lang, (source, el, ctx) => {
-        renderRunnableBlock(lang, source, el, { app: this.app, plugin: this });
+        renderRunnableBlock2(lang, source, el, { app: this.app, plugin: this });
       });
     }
     this.registerMarkdownCodeBlockProcessor("preview-html", (source, el) => {
-      renderHtmlPreview(source, el);
+      renderHtmlPreview2(source, el);
     });
     this.gitStatusEl = this.addStatusBarItem();
     this.gitStatusEl.addClass("owb-status-bar");
@@ -6632,7 +6687,7 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
             await this.updateGitStatusBar();
           }
         } catch (err) {
-          new Notice2(`\u542F\u52A8\u81EA\u52A8\u62C9\u53D6\u5931\u8D25\uFF1A${err.message}`, 5e3);
+          new Notice6(`\u542F\u52A8\u81EA\u52A8\u62C9\u53D6\u5931\u8D25\uFF1A${err.message}`, 5e3);
         }
       }
     });
@@ -6755,17 +6810,17 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
   }
   async runGitQuickSync(silent = false) {
     if (!this.isFeatureEnabled("gitPanel") || !this.gitService) {
-      if (!silent) new Notice2("Git \u6A21\u5757\u672A\u542F\u7528\u6216\u5F53\u524D\u73AF\u5883\u4E0D\u652F\u6301");
+      if (!silent) new Notice6("Git \u6A21\u5757\u672A\u542F\u7528\u6216\u5F53\u524D\u73AF\u5883\u4E0D\u652F\u6301");
       return;
     }
     try {
       const st = await this.gitService.getStatus();
       if (!st.isRepo) {
-        if (!silent) new Notice2("\u5F53\u524D Vault \u5C1A\u672A\u521D\u59CB\u5316 Git \u4ED3\u5E93");
+        if (!silent) new Notice6("\u5F53\u524D Vault \u5C1A\u672A\u521D\u59CB\u5316 Git \u4ED3\u5E93");
         return;
       }
       if (st.conflicts.length) {
-        new Notice2("\u5B58\u5728\u672A\u89E3\u51B3\u7684\u5408\u5E76\u51B2\u7A81\uFF0C\u8BF7\u5148\u5728 Git \u9762\u677F\u5904\u7406", 6e3);
+        new Notice6("\u5B58\u5728\u672A\u89E3\u51B3\u7684\u5408\u5E76\u51B2\u7A81\uFF0C\u8BF7\u5148\u5728 Git \u9762\u677F\u5904\u7406", 6e3);
         return;
       }
       if (st.staged.length || st.unstaged.length) {
@@ -6780,9 +6835,9 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
       }
       await this.updateGitStatusBar();
       this.refreshGitViews();
-      if (!silent) new Notice2("Git \u540C\u6B65\u5B8C\u6210");
+      if (!silent) new Notice6("Git \u540C\u6B65\u5B8C\u6210");
     } catch (err) {
-      new Notice2(`Git \u540C\u6B65\u5931\u8D25\uFF1A${err.message}`, 6e3);
+      new Notice6(`Git \u540C\u6B65\u5931\u8D25\uFF1A${err.message}`, 6e3);
     }
   }
   async activateWorkbenchView() {
@@ -6828,7 +6883,7 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
   openDailyNote(offsetDays) {
     if (!this.isFeatureEnabled("dailyJournal")) return;
     openDaily2(this.app, this.settings, offsetDays).catch(
-      (err) => new Notice2("\u65E5\u8BB0\u6253\u5F00\u5931\u8D25\uFF1A" + err.message, 5e3)
+      (err) => new Notice6("\u65E5\u8BB0\u6253\u5F00\u5931\u8D25\uFF1A" + err.message, 5e3)
     );
   }
   openPomodoroFullscreen() {
@@ -6864,26 +6919,26 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
       if (!files.length) return;
       try {
         for (const f of files) {
-          const res = await saveAttachment(this.app, f, { name: f.name });
+          const res = await saveAttachment2(this.app, f, { name: f.name });
           const leaf = this.app.workspace.getMostRecentLeaf();
           if (leaf && leaf.view && leaf.view.editor) {
             leaf.view.editor.replaceSelection(`![[${res.path}]]
 `);
           }
         }
-        new Notice2(`\u5DF2\u5F52\u6863 ${files.length} \u4E2A\u9644\u4EF6\u5230 assets/`);
+        new Notice6(`\u5DF2\u5F52\u6863 ${files.length} \u4E2A\u9644\u4EF6\u5230 assets/`);
         this.refreshWorkbenchViews();
       } catch (e) {
-        new Notice2("\u4E0A\u4F20\u5931\u8D25\uFF1A" + e.message, 7e3);
+        new Notice6("\u4E0A\u4F20\u5931\u8D25\uFF1A" + e.message, 7e3);
       }
     });
     input.click();
   }
   /** 整理附件：先 dry-run 预览，确认后移动并改写带路径引用 */
   async organizeAttachments() {
-    const plan = planOrganize(this.app);
+    const plan = planOrganize2(this.app);
     if (!plan.items.length) {
-      new Notice2("\u6CA1\u6709\u9700\u8981\u6574\u7406\u7684\u9644\u4EF6\uFF0C\u5168\u90E8\u5DF2\u5728 assets/ \u6216\u5F52\u6863\u533A");
+      new Notice6("\u6CA1\u6709\u9700\u8981\u6574\u7406\u7684\u9644\u4EF6\uFF0C\u5168\u90E8\u5DF2\u5728 assets/ \u6216\u5F52\u6863\u533A");
       return;
     }
     const { Modal } = require("obsidian");
@@ -6905,8 +6960,8 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
     const foot = body.createDiv({ cls: "owb-run-confirm" });
     foot.createEl("button", { cls: "mod-warning", text: "\u786E\u8BA4\u6574\u7406" }).addEventListener("click", async () => {
       modal.close();
-      const res = await applyOrganize(this.app, plan);
-      new Notice2(
+      const res = await applyOrganize2(this.app, plan);
+      new Notice6(
         `\u6574\u7406\u5B8C\u6210\uFF1A\u79FB\u52A8 ${res.moved.length} \u4E2A\uFF0C\u6539\u5199 ${res.touched} \u7BC7\u7B14\u8BB0${res.failed.length ? `\uFF0C\u5931\u8D25 ${res.failed.length}` : ""}`,
         8e3
       );
@@ -6917,7 +6972,7 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
   }
   /** 生成多维表格样式片段（.mt-* 组件统一外观） */
   async applyBasesStyle() {
-    const css = BASE_STYLE_CSS;
+    const css = BASE_STYLE_CSS2;
     try {
       await this.app.vault.adapter.write(".obsidian/snippets/workbench-bases.css", css);
       const p = ".obsidian/appearance.json";
@@ -6931,16 +6986,16 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
       if (!list.includes("workbench-bases")) list.push("workbench-bases");
       appJson.enabledCssSnippets = list;
       await this.app.vault.adapter.write(p, JSON.stringify(appJson, null, 2));
-      new Notice2("\u591A\u7EF4\u8868\u683C\u6837\u5F0F\u5DF2\u751F\u6210\u5E76\u542F\u7528\uFF1Aworkbench-bases.css", 6e3);
+      new Notice6("\u591A\u7EF4\u8868\u683C\u6837\u5F0F\u5DF2\u751F\u6210\u5E76\u542F\u7528\uFF1Aworkbench-bases.css", 6e3);
     } catch (e) {
-      new Notice2("\u751F\u6210\u5931\u8D25\uFF1A" + e.message, 7e3);
+      new Notice6("\u751F\u6210\u5931\u8D25\uFF1A" + e.message, 7e3);
     }
   }
   async buildGraphNote() {
     try {
       await graphService.writeGraphNote(this.app, { dir: "vault/\u7CFB\u7EDF\u4E0E\u5DE5\u5177" });
     } catch (err) {
-      new Notice2("\u77E5\u8BC6\u56FE\u8C31\u751F\u6210\u5931\u8D25\uFF1A" + err.message, 8e3);
+      new Notice6("\u77E5\u8BC6\u56FE\u8C31\u751F\u6210\u5931\u8D25\uFF1A" + err.message, 8e3);
     }
   }
   /**
@@ -6983,9 +7038,9 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
         ""
       );
     }
-    const path = ".obsidian/snippets/workbench-explorer.css";
+    const path2 = ".obsidian/snippets/workbench-explorer.css";
     try {
-      await this.app.vault.adapter.write(path, lines.join("\n"));
+      await this.app.vault.adapter.write(path2, lines.join("\n"));
       const appJsonPath = ".obsidian/appearance.json";
       let appJson = {};
       try {
@@ -6997,9 +7052,9 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
       if (!list.includes("workbench-explorer")) list.push("workbench-explorer");
       appJson.enabledCssSnippets = list;
       await this.app.vault.adapter.write(appJsonPath, JSON.stringify(appJson, null, 2));
-      new Notice2("\u6587\u4EF6\u6D4F\u89C8\u5668\u6837\u5F0F\u5DF2\u751F\u6210\u5E76\u542F\u7528\uFF1A.obsidian/snippets/workbench-explorer.css", 7e3);
+      new Notice6("\u6587\u4EF6\u6D4F\u89C8\u5668\u6837\u5F0F\u5DF2\u751F\u6210\u5E76\u542F\u7528\uFF1A.obsidian/snippets/workbench-explorer.css", 7e3);
     } catch (err) {
-      new Notice2("\u751F\u6210\u5931\u8D25\uFF1A" + err.message, 8e3);
+      new Notice6("\u751F\u6210\u5931\u8D25\uFF1A" + err.message, 8e3);
     }
   }
   openAttachmentModal() {
@@ -7015,7 +7070,7 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
     const name = window.prompt("\u9879\u76EE\u540D\u79F0\uFF08\u5C06\u5728\u9879\u76EE\u76EE\u5F55\u4E0B\u521B\u5EFA <\u540D\u79F0>.md\uFF09\uFF1A", "");
     if (!name || !name.trim()) return;
     createProject2(this.app, this.settings, name).catch(
-      (err) => new Notice2("\u9879\u76EE\u521B\u5EFA\u5931\u8D25\uFF1A" + err.message, 6e3)
+      (err) => new Notice6("\u9879\u76EE\u521B\u5EFA\u5931\u8D25\uFF1A" + err.message, 6e3)
     );
   }
   async setPrivacy(hidden) {
@@ -7024,19 +7079,19 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
       if (hidden) await privacyService.ensureFolder(this.app, this.settings);
       await privacyService.setHidden(this.app, this.settings, hidden);
     } catch (err) {
-      new Notice2("\u9690\u79C1\u533A\u5207\u6362\u5931\u8D25\uFF1A" + err.message, 6e3);
+      new Notice6("\u9690\u79C1\u533A\u5207\u6362\u5931\u8D25\uFF1A" + err.message, 6e3);
     }
   }
   async showPrivacyStatus() {
     if (!this.isFeatureEnabled("privacy")) return;
     try {
       const st = await privacyService.status(this.app, this.settings);
-      new Notice2(
+      new Notice6(
         "\u9690\u79C1\u533A " + st.folder + "\uFF1A" + (st.hidden ? "\u{1F512} \u5DF2\u9501\u5B9A\uFF08\u641C\u7D22/\u94FE\u63A5\u4E0D\u7D22\u5F15\uFF0CGit \u6392\u9664\uFF09" : "\u{1F513} \u672A\u9501\u5B9A") + " \xB7 " + st.fileCount + " \u4E2A\u6587\u4EF6 \xB7 Git \u6392\u9664\uFF1A" + (st.gitExcluded ? "\u662F" : "\u5426"),
         8e3
       );
     } catch (err) {
-      new Notice2("\u72B6\u6001\u8BFB\u53D6\u5931\u8D25\uFF1A" + err.message, 6e3);
+      new Notice6("\u72B6\u6001\u8BFB\u53D6\u5931\u8D25\uFF1A" + err.message, 6e3);
     }
   }
   async activateRagView() {
@@ -7050,9 +7105,9 @@ var ObsidianWorkbenchPlugin = class extends Plugin {
     if (!this.isFeatureEnabled("ragSearch")) return;
     try {
       const stat = await this.rag.buildIndex(this.app, null);
-      new Notice2("RAG \u7D22\u5F15\u5B8C\u6210\uFF1A" + stat.files + " \u7BC7 / " + stat.chunks + " \u5757", 6e3);
+      new Notice6("RAG \u7D22\u5F15\u5B8C\u6210\uFF1A" + stat.files + " \u7BC7 / " + stat.chunks + " \u5757", 6e3);
     } catch (err) {
-      new Notice2("\u7D22\u5F15\u6784\u5EFA\u5931\u8D25\uFF1A" + err.message, 8e3);
+      new Notice6("\u7D22\u5F15\u6784\u5EFA\u5931\u8D25\uFF1A" + err.message, 8e3);
     }
   }
   refreshWorkbenchViews() {

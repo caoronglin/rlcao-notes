@@ -13,7 +13,7 @@ const { formatDate } = require("../utils");
  * 排除：.obsidian/、.trash/、4-存档/（归档不算生产）、模板目录
  */
 
-const EXCLUDE_PREFIXES = [".obsidian/", ".trash/", "4-存档/"];
+const EXCLUDE_PREFIXES = [".obsidian/", ".trash/", ".trash-1000/", "4-存档/"];
 const EXCLUDE_NAMES = new Set(["README.md"]);
 
 function dayKey(d) {

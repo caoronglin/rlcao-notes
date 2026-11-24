@@ -13,6 +13,36 @@ const { requestUrl } = require("obsidian");
 
 let cache = { at: 0, key: "", data: null };
 const TTL = 30 * 60 * 1000;
+const STORAGE_KEY = "owb-weather-cache";
+
+function defaultStorage() {
+  return typeof localStorage !== "undefined" ? localStorage : null;
+}
+
+/** 同步快照：上次成功结果，离线也先有内容 */
+function getCachedSnapshot(storage) {
+  const st = storage || defaultStorage();
+  if (!st) return null;
+  try {
+    const raw = st.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return parsed && parsed.data && typeof parsed.data.temp === "number" ? parsed.data : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function saveSnapshot(storage, data) {
+  if (!data || typeof data.temp !== "number") return;
+  const st = storage || defaultStorage();
+  if (!st) return;
+  try {
+    st.setItem(STORAGE_KEY, JSON.stringify({ at: Date.now(), key: "", data }));
+  } catch (e) {
+    /* ignore */
+  }
+}
 
 function iconEmoji(code) {
   const c = String(code || "");
@@ -53,10 +83,11 @@ async function getWeather(settings, force) {
       code: w.icon || ""
     };
     cache = { at: Date.now(), key: cacheKey, data };
+    saveSnapshot(null, data);
     return data;
   } catch (e) {
     return { error: String((e && e.message) || e) };
   }
 }
 
-module.exports = { getWeather, iconEmoji };
+module.exports = { getWeather, iconEmoji, getCachedSnapshot, saveSnapshot, STORAGE_KEY };

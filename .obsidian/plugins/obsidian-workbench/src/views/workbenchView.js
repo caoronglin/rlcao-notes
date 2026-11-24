@@ -12,8 +12,8 @@ const { listBases, createBase } = require("../services/baseService");
 const { tagStats, attachmentStats } = require("../services/statsService");
 const { AttachmentPreviewModal } = require("../modals/attachmentPreviewModal");
 const { ATTACHMENT_EXTS, planOrganize, applyOrganize } = require("../services/attachmentService");
-const { getQuote } = require("../services/quoteService");
-const { getWeather } = require("../services/weatherService");
+const { getQuote, getCachedSnapshot: quoteSnapshot } = require("../services/quoteService");
+const { getWeather, getCachedSnapshot: weatherSnapshot } = require("../services/weatherService");
 
 /**
  * 个人知识工作台（v3.4）：视觉重做 + 性能缓存 + 调试面板。
@@ -274,30 +274,51 @@ class WorkbenchView extends ItemView {
     const dayMsg = h < 6 ? "夜深了，记完今天最后一笔就收工" : dayMsgs[dayIdx];
     hero.createEl("h2", { cls: "owb-greeting", text: dayMsg });
 
-    // 诗词 + 天气（各自失败互不影响）
+    // 诗词 + 天气（SWR：同步填上次快照，异步刷新，绝不阻塞渲染）
     const ambient = hero.createDiv({ cls: "owb-ambient" });
-    if (this.plugin.settings.showQuote !== false) {
-      const q = await getQuote();
-      if (q && q.content) {
-        const line = ambient.createDiv({ cls: "owb-quote" });
-        line.createSpan({ cls: "owb-quote-text", text: q.content });
-        if (q.author || q.origin) {
-          line.createSpan({ cls: "owb-muted", text: `　· ${q.author}${q.origin ? "《" + q.origin + "》" : ""}` });
-        }
+    this._ambientEl = ambient;
+    const paintQuote = (q) => {
+      if (!q || !q.content) return;
+      ambient.createDiv({ cls: "owb-quote" }).createSpan({ cls: "owb-quote-text", text: q.content });
+      const meta = ambient.querySelector(".owb-quote");
+      if (meta && (q.author || q.origin)) {
+        meta.createSpan({ cls: "owb-muted", text: `　· ${q.author}${q.origin ? "《" + q.origin + "》" : ""}` });
       }
+    };
+    const paintWeather = (w) => {
+      if (!w || w.missing) return;
+      const chip = ambient.createDiv({ cls: "owb-weather" });
+      if (w.error) {
+        chip.createSpan({ cls: "owb-muted", text: "天气获取失败" });
+        return;
+      }
+      chip.createSpan({ cls: "owb-weather-emoji", text: w.emoji });
+      chip.createSpan({ cls: "owb-weather-temp", text: w.temp + "°C" });
+      chip.createSpan({ cls: "owb-muted", text: `${w.desc} · ${w.city} · 湿度 ${w.humidity}%` });
+    };
+
+    if (this.plugin.settings.showQuote !== false) {
+      paintQuote(quoteSnapshot()); // stale 立即上屏
+      getQuote().then((q) => {
+        // 用户可能已切走/重渲染：容器不在当前 DOM 就放弃
+        if (!this._ambientEl || !this._ambientEl.isConnected) return;
+        if (q && q.content) {
+          const old = this._ambientEl.querySelector(".owb-quote");
+          if (old) old.remove();
+          paintQuote(q);
+        }
+      });
     }
     if (this.plugin.settings.showWeather !== false) {
-      const w = await getWeather(this.plugin.settings);
-      if (w && !w.missing) {
-        const chip = ambient.createDiv({ cls: "owb-weather" });
-        if (w.error) {
-          chip.createSpan({ cls: "owb-muted", text: "天气获取失败" });
-        } else {
-          chip.createSpan({ cls: "owb-weather-emoji", text: w.emoji });
-          chip.createSpan({ cls: "owb-weather-temp", text: w.temp + "°C" });
-          chip.createSpan({ cls: "owb-muted", text: `${w.desc} · ${w.city} · 湿度 ${w.humidity}%` });
+      paintWeather(weatherSnapshot());
+      getWeather(this.plugin.settings).then((w) => {
+        if (!this._ambientEl || !this._ambientEl.isConnected) return;
+        if (w && !w.missing && !w.error) {
+          const old = this._ambientEl.querySelector(".owb-weather");
+          if (old) old.remove();
+          paintWeather(w);
         }
-      }
+      });
     }
 
     this.renderStats(hero, data, heat);

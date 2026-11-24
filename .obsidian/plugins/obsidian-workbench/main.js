@@ -4314,7 +4314,7 @@ const { formatDate } = require("../utils");
  * 排除：.obsidian/、.trash/、4-存档/（归档不算生产）、模板目录
  */
 
-const EXCLUDE_PREFIXES = [".obsidian/", ".trash/", "4-存档/"];
+const EXCLUDE_PREFIXES = [".obsidian/", ".trash/", ".trash-1000/", "4-存档/"];
 const EXCLUDE_NAMES = new Set(["README.md"]);
 
 function dayKey(d) {
@@ -5283,21 +5283,65 @@ const { requestUrl } = require("obsidian");
 
 let cache = { key: "", data: null };
 
+const STORAGE_KEY = "owb-quote-cache";
+
 function todayKey() {
   const d = new Date();
   return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
 }
 
-async function getQuote(force) {
-  const key = todayKey();
-  if (!force && cache.data && cache.key === key) return cache.data;
+function defaultStorage() {
+  return typeof localStorage !== "undefined" ? localStorage : null;
+}
+
+/**
+ * 同步快照（stale-while-revalidate 的 stale 半边）：
+ * render 立即用上次成功结果填 UI，不等待网络。
+ * 无缓存/损坏返回 null。
+ */
+function getCachedSnapshot(storage) {
+  const st = storage || defaultStorage();
+  if (!st) return null;
   try {
+    const raw = st.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return parsed && parsed.data && parsed.data.content ? parsed.data : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+/** 只在拿到有效数据时回写；null（失败路径）不动旧缓存 */
+function saveSnapshot(storage, data) {
+  if (!data || !data.content) return;
+  const st = storage || defaultStorage();
+  if (!st) return;
+  try {
+    st.setItem(STORAGE_KEY, JSON.stringify({ key: todayKey(), at: Date.now(), data }));
+  } catch (e) {
+    /* 存储满/隐私模式：忽略 */
+  }
+}
+
+/** 默认走 Obsidian requestUrl；测试或非 Obsidian 环境可注入 fetcher */
+function defaultFetcher() {
+  return async () => {
     const res = await requestUrl({
       url: "https://v1.jinrishici.com/all.json",
       method: "GET",
       headers: { Accept: "application/json" }
     });
-    const j = res.json || JSON.parse(res.text);
+    return res.json || JSON.parse(res.text);
+  };
+}
+
+async function getQuote(force, storage, fetcher) {
+  const key = todayKey();
+  if (!force && cache.data && cache.key === key) return cache.data;
+  try {
+    const doFetch = fetcher || defaultFetcher();
+    const j = await doFetch();
     const data = {
       content: String(j.content || "").trim(),
       author: String(j.author || "").trim(),
@@ -5306,13 +5350,14 @@ async function getQuote(force) {
     };
     if (!data.content) throw new Error("空内容");
     cache = { key, data };
+    saveSnapshot(storage, data);
     return data;
   } catch (e) {
     return { error: String((e && e.message) || e), content: "", author: "", origin: "" };
   }
 }
 
-module.exports = { getQuote };
+module.exports = { getQuote, getCachedSnapshot, saveSnapshot, STORAGE_KEY };
 
   }, "./services"],
   "./services/ragService.js": [function(require, module, exports) {
@@ -5850,6 +5895,36 @@ const { requestUrl } = require("obsidian");
 
 let cache = { at: 0, key: "", data: null };
 const TTL = 30 * 60 * 1000;
+const STORAGE_KEY = "owb-weather-cache";
+
+function defaultStorage() {
+  return typeof localStorage !== "undefined" ? localStorage : null;
+}
+
+/** 同步快照：上次成功结果，离线也先有内容 */
+function getCachedSnapshot(storage) {
+  const st = storage || defaultStorage();
+  if (!st) return null;
+  try {
+    const raw = st.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return parsed && parsed.data && typeof parsed.data.temp === "number" ? parsed.data : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function saveSnapshot(storage, data) {
+  if (!data || typeof data.temp !== "number") return;
+  const st = storage || defaultStorage();
+  if (!st) return;
+  try {
+    st.setItem(STORAGE_KEY, JSON.stringify({ at: Date.now(), key: "", data }));
+  } catch (e) {
+    /* ignore */
+  }
+}
 
 function iconEmoji(code) {
   const c = String(code || "");
@@ -5890,13 +5965,14 @@ async function getWeather(settings, force) {
       code: w.icon || ""
     };
     cache = { at: Date.now(), key: cacheKey, data };
+    saveSnapshot(null, data);
     return data;
   } catch (e) {
     return { error: String((e && e.message) || e) };
   }
 }
 
-module.exports = { getWeather, iconEmoji };
+module.exports = { getWeather, iconEmoji, getCachedSnapshot, saveSnapshot, STORAGE_KEY };
 
   }, "./services"],
   "./settings.js": [function(require, module, exports) {
@@ -7846,8 +7922,8 @@ const { listBases, createBase } = require("../services/baseService");
 const { tagStats, attachmentStats } = require("../services/statsService");
 const { AttachmentPreviewModal } = require("../modals/attachmentPreviewModal");
 const { ATTACHMENT_EXTS, planOrganize, applyOrganize } = require("../services/attachmentService");
-const { getQuote } = require("../services/quoteService");
-const { getWeather } = require("../services/weatherService");
+const { getQuote, getCachedSnapshot: quoteSnapshot } = require("../services/quoteService");
+const { getWeather, getCachedSnapshot: weatherSnapshot } = require("../services/weatherService");
 
 /**
  * 个人知识工作台（v3.4）：视觉重做 + 性能缓存 + 调试面板。
@@ -8108,30 +8184,51 @@ class WorkbenchView extends ItemView {
     const dayMsg = h < 6 ? "夜深了，记完今天最后一笔就收工" : dayMsgs[dayIdx];
     hero.createEl("h2", { cls: "owb-greeting", text: dayMsg });
 
-    // 诗词 + 天气（各自失败互不影响）
+    // 诗词 + 天气（SWR：同步填上次快照，异步刷新，绝不阻塞渲染）
     const ambient = hero.createDiv({ cls: "owb-ambient" });
-    if (this.plugin.settings.showQuote !== false) {
-      const q = await getQuote();
-      if (q && q.content) {
-        const line = ambient.createDiv({ cls: "owb-quote" });
-        line.createSpan({ cls: "owb-quote-text", text: q.content });
-        if (q.author || q.origin) {
-          line.createSpan({ cls: "owb-muted", text: `　· ${q.author}${q.origin ? "《" + q.origin + "》" : ""}` });
-        }
+    this._ambientEl = ambient;
+    const paintQuote = (q) => {
+      if (!q || !q.content) return;
+      ambient.createDiv({ cls: "owb-quote" }).createSpan({ cls: "owb-quote-text", text: q.content });
+      const meta = ambient.querySelector(".owb-quote");
+      if (meta && (q.author || q.origin)) {
+        meta.createSpan({ cls: "owb-muted", text: `　· ${q.author}${q.origin ? "《" + q.origin + "》" : ""}` });
       }
+    };
+    const paintWeather = (w) => {
+      if (!w || w.missing) return;
+      const chip = ambient.createDiv({ cls: "owb-weather" });
+      if (w.error) {
+        chip.createSpan({ cls: "owb-muted", text: "天气获取失败" });
+        return;
+      }
+      chip.createSpan({ cls: "owb-weather-emoji", text: w.emoji });
+      chip.createSpan({ cls: "owb-weather-temp", text: w.temp + "°C" });
+      chip.createSpan({ cls: "owb-muted", text: `${w.desc} · ${w.city} · 湿度 ${w.humidity}%` });
+    };
+
+    if (this.plugin.settings.showQuote !== false) {
+      paintQuote(quoteSnapshot()); // stale 立即上屏
+      getQuote().then((q) => {
+        // 用户可能已切走/重渲染：容器不在当前 DOM 就放弃
+        if (!this._ambientEl || !this._ambientEl.isConnected) return;
+        if (q && q.content) {
+          const old = this._ambientEl.querySelector(".owb-quote");
+          if (old) old.remove();
+          paintQuote(q);
+        }
+      });
     }
     if (this.plugin.settings.showWeather !== false) {
-      const w = await getWeather(this.plugin.settings);
-      if (w && !w.missing) {
-        const chip = ambient.createDiv({ cls: "owb-weather" });
-        if (w.error) {
-          chip.createSpan({ cls: "owb-muted", text: "天气获取失败" });
-        } else {
-          chip.createSpan({ cls: "owb-weather-emoji", text: w.emoji });
-          chip.createSpan({ cls: "owb-weather-temp", text: w.temp + "°C" });
-          chip.createSpan({ cls: "owb-muted", text: `${w.desc} · ${w.city} · 湿度 ${w.humidity}%` });
+      paintWeather(weatherSnapshot());
+      getWeather(this.plugin.settings).then((w) => {
+        if (!this._ambientEl || !this._ambientEl.isConnected) return;
+        if (w && !w.missing && !w.error) {
+          const old = this._ambientEl.querySelector(".owb-weather");
+          if (old) old.remove();
+          paintWeather(w);
         }
-      }
+      });
     }
 
     this.renderStats(hero, data, heat);

@@ -627,3 +627,49 @@ test("v3.7 UI polish: 文案零 em-dash/en-dash + 动效 class 契约", () => {
   assert.match(css, /\.owb-task-row\.done/);
   assert.match(css, /cursor: pointer/);
 });
+
+test("v3.8-A heatmap: .trash-1000/ 回收站文件不计入热力", () => {
+  const { buildHeatmap } = require(path.join(rootDir, "src/services/heatmapService.js"));
+  const now = new Date();
+  const files = [
+    { path: "notes/good.md", name: "good.md", stat: { ctime: now.getTime(), mtime: now.getTime() } },
+    { path: ".trash-1000/deleted.md", name: "deleted.md", stat: { ctime: now.getTime(), mtime: now.getTime() } },
+    { path: ".trash/old.md", name: "old.md", stat: { ctime: now.getTime(), mtime: now.getTime() } }
+  ];
+  const heat = buildHeatmap({ vault: { getMarkdownFiles: () => files } }, { weeks: 13 });
+  // 回收站(.trash 与 .trash-1000)都不算产出
+  assert.equal(heat.total, 1);
+});
+
+test("v3.8-A quote/weather: render 不被网络阻塞(SWR 缓存读写)", async () => {
+  const quote = require(path.join(rootDir, "src/services/quoteService.js"));
+  // fake storage：模拟 localStorage
+  const store = new Map();
+  const fakeStorage = {
+    getItem: (k) => (store.has(k) ? store.get(k) : null),
+    setItem: (k, v) => store.set(k, String(v)),
+    removeItem: (k) => store.delete(k)
+  };
+  assert.equal(typeof quote.getCachedSnapshot, "function");
+  // 无缓存时 snapshot 为 null（视图先渲染骨架）
+  const snap = quote.getCachedSnapshot(fakeStorage);
+  assert.equal(snap, null);
+  // 写入缓存后 snapshot 立即可用（离线也有内容）
+  fakeStorage.setItem("owb-quote-cache", JSON.stringify({ key: "2026-11-24", data: { content: "旧诗", author: "A", origin: "B" } }));
+  const snap2 = quote.getCachedSnapshot(fakeStorage);
+  assert.ok(snap2 && snap2.content === "旧诗");
+  // getQuote 成功后应回写缓存（注入 fetcher，不发真网络）
+  const data = await quote.getQuote(true, fakeStorage, async () => ({
+    content: "新诗一句",
+    author: "测试",
+    origin: "测试集"
+  }));
+  assert.ok(data && data.content);
+  const saved = JSON.parse(fakeStorage.getItem("owb-quote-cache"));
+  assert.ok(saved && saved.data && saved.data.content);
+  // 失败时不清空旧缓存（stale 保留）
+  fakeStorage.setItem("owb-quote-cache", JSON.stringify({ key: "old", data: { content: "keep" } }));
+  quote.saveSnapshot(fakeStorage, null); // 失败路径
+  const kept = JSON.parse(fakeStorage.getItem("owb-quote-cache"));
+  assert.equal(kept.data.content, "keep");
+});

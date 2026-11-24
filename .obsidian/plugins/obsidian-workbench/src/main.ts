@@ -19,6 +19,8 @@ import { saveAttachment, planOrganize, applyOrganize, cleanupConvertPairs } from
 import { BASE_STYLE_CSS } from "./styles/basesStyle";
 import { PomodoroFullscreen } from "./modals/pomodoroFullscreen";
 const goalService = require("./services/goalService");
+import { ZoteroSearchModal } from "./modals/zoteroSearchModal";
+import { importItemAsNote } from "./services/zoteroService";
 import { formatNote } from "./services/autoFormatService";
 import { chatCompletion } from "./services/aiService";
 
@@ -247,6 +249,11 @@ class ObsidianWorkbenchPlugin extends Plugin {
       id: "goal-ai-breakdown",
       name: "目标：AI 拆解当前目标到月/周/日",
       checkCallback: (checking) => this._guardCommand("goals", checking, () => this.goalAiBreakdown())
+    });
+    this.addCommand({
+      id: "zotero-search",
+      name: "Zotero：搜索并插入引用（官方 Web API）",
+      checkCallback: (checking) => this._guardCommand("workbench", checking, () => this.openZoteroSearch())
     });
     this.addCommand({
       id: "format-note",
@@ -850,6 +857,27 @@ class ObsidianWorkbenchPlugin extends Plugin {
       new Notice("文件浏览器样式已生成并启用：.obsidian/snippets/workbench-explorer.css", 7000);
     } catch (err) {
       new Notice("生成失败：" + (err as Error)?.message, 8000);
+    }
+  }
+
+  openZoteroSearch(): void {
+    new ZoteroSearchModal(this.app, this).open();
+  }
+
+  /** Zotero 批量导入：把一次搜索的结果全部生成文献笔记。 */
+  async zoteroImportAll(query: string): Promise<void> {
+    try {
+      const { searchItems } = require("./services/zoteroService");
+      const res = await searchItems(query, this.settings);
+      const folder = String(this.settings.zoteroImportFolder || "vault/文献笔记");
+      let n = 0;
+      for (const item of res.items) {
+        await importItemAsNote(this.app, item, folder);
+        n += 1;
+      }
+      new Notice(`已导入 ${n} 篇文献笔记`, 6000);
+    } catch (e) {
+      new Notice("导入失败：" + (e as Error)?.message, 8000);
     }
   }
 

@@ -63,6 +63,7 @@ const DEFAULT_SETTINGS = {
   zoteroApiKey: "",
   zoteroUserId: "",
   zoteroLibraryType: "user",
+  zoteroImportFolder: "vault/文献笔记",
 
   // 多维表格
   basesFolder: "vault/工作台",

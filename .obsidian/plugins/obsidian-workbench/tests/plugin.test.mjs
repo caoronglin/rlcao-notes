@@ -842,3 +842,109 @@ test("v3.12 vaultStats: 任务来源含目标目录与任务清单，排除归�
   // 归档与游离文件不进今日行动；任务清单/目标/项目三路都在
   assert.deepEqual(paths, ["vault/任务.md", "vault/目标/2026.md", "vault/项目/p.md"]);
 });
+
+test("v3.16 zotero: URL 构造 / 条目解析 / 引用 / 笔记生成 / 幂等导入", async () => {
+  const zs = require(path.join(rootDir, "src/services/zoteroService.ts"));
+  const settings = { zoteroApiKey: "KEY123", zoteroUserId: "4321", zoteroLibraryType: "user" };
+
+  // 1) libraryPrefix
+  assert.equal(zs.libraryPrefix(settings), "/users/4321");
+  assert.equal(zs.libraryPrefix({ ...settings, zoteroLibraryType: "group" }), "/groups/4321");
+  assert.equal(zs.isConfigured(settings), true);
+  assert.equal(zs.isConfigured({ zoteroApiKey: "", zoteroUserId: "1" }), false);
+
+  // 2) searchItems: 注入 fetcher 验 URL 与解析
+  const seen = [];
+  const fakeFetcher = async (p, params, st) => {
+    seen.push({ p, params, key: st.zoteroApiKey });
+    return {
+      status: 200,
+      headers: { "Total-Results": "2" },
+      text: JSON.stringify([
+        {
+          key: "AB12", version: 9,
+          data: {
+            itemType: "journalArticle",
+            title: "A Chromosome-scale Genome of Soybean",
+            creators: [
+              { creatorType: "author", firstName: "A", lastName: "Zhang" },
+              { creatorType: "author", firstName: "B", lastName: "Li" }
+            ],
+            date: "2026-05",
+            abstractNote: "高质量基因组组装。",
+            publicationTitle: "Nature Plants",
+            DOI: "10.1038/x",
+            url: "https://example.com",
+            tags: [{ tag: "soybean" }, { tag: "genome assembly" }]
+          }
+        },
+        {
+          key: "CD34",
+          data: { itemType: "book", title: "Bioinformatics", creators: [{ name: "统一作者" }], date: "2020" }
+        }
+      ])
+    };
+  };
+  const res = await zs.searchItems("soybean", settings, { fetcher: fakeFetcher });
+  assert.equal(res.total, 2);
+  assert.equal(res.items.length, 2);
+  assert.equal(seen[0].p, "/users/4321/items");
+  assert.equal(seen[0].params.q, "soybean");
+  assert.equal(seen[0].params.qmode, "everything");
+  assert.equal(seen[0].params.format, "json");
+  assert.equal(seen[0].params.limit, 50);
+  assert.equal(seen[0].key, "KEY123");
+
+  const it = res.items[0];
+  assert.equal(it.key, "AB12");
+  assert.equal(it.title, "A Chromosome-scale Genome of Soybean");
+  assert.equal(it.DOI, "10.1038/x");
+
+  // 3) 引用格式
+  assert.equal(zs.extractYear("2026-05"), "2026");
+  assert.equal(zs.extractYear("May 2020"), "2020");
+  assert.equal(zs.firstAuthor(it.creators), "Zhang et al.");
+  assert.equal(zs.toCitation(it), "Zhang et al. (2026)");
+  assert.equal(zs.toCitation(res.items[1]), "统一作者 (2020)"); // 单作者无 et al.
+
+  // 4) 笔记 Markdown：frontmatter 键齐全、标签规范化
+  const md = zs.toNoteMarkdown(it);
+  assert.match(md, /^---\n/);
+  assert.match(md, /type: literature/);
+  assert.match(md, /zotero-key: AB12/);
+  assert.match(md, /authors: "Zhang, A and Li, B"/);
+  assert.match(md, /year: 2026/);
+  assert.match(md, /doi: 10\.1038\/x/);
+  assert.match(md, /journal: "Nature Plants"/);
+  assert.match(md, /tags: \[lit\/soybean, lit\/genome-assembly\]/);
+  assert.match(md, /# A Chromosome-scale Genome of Soybean/);
+  assert.match(md, /高质量基因组组装/);
+  assert.match(md, /## 笔记/);
+
+  // 5) 幂等导入（key 唯一）：同一 key 第二次为更新而非重复建
+  const writes = [];
+  const app = {
+    vault: {
+      getAbstractFileByPath: (p) => (writes.find((w) => w.path === p) ? { path: p, extension: "md" } : null),
+      createFolder: async () => ({}),
+      create: async (p, data) => { writes.push({ path: p, data, op: "create" }); return { path: p, extension: "md" }; },
+      modify: async (f, data) => { writes.push({ path: f.path, data, op: "modify" }); return f; }
+    }
+  };
+  const r1 = await zs.importItemAsNote(app, it, "vault/文献笔记");
+  assert.equal(r1.created, true);
+  assert.match(r1.file.path, /vault\/文献笔记\/AB12\.md$/);
+  const r2 = await zs.importItemAsNote(app, it, "vault/文献笔记");
+  assert.equal(r2.created, false);
+  assert.equal(writes.filter((w) => w.op === "create").length, 1);
+  assert.equal(writes.filter((w) => w.op === "modify").length, 1);
+
+  // 6) BibTeX 导出 URL
+  const seen2 = [];
+  await zs.exportBibTeX(["AB12", "CD34"], settings, {
+    fetcher: async (p, params) => { seen2.push({ p, params }); return { status: 200, text: "@article{...}", headers: {} }; }
+  });
+  assert.equal(seen2[0].p, "/users/4321/items");
+  assert.equal(seen2[0].params.itemKey, "AB12,CD34");
+  assert.equal(seen2[0].params.format, "bibtex");
+});

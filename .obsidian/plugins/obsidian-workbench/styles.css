@@ -1797,3 +1797,14 @@
   background-size: 200% 100%;
 }
 .theme-light .owb-glass .owb-goal-track { background: rgba(0, 0, 0, 0.08); }
+
+/* ---- v3.16 Zotero 搜索弹窗 ---- */
+.owb-zot-modal { max-width: 680px; width: 90vw; }
+.owb-zot-modal .owb-att-body { max-height: 44vh; }
+.owb-zot-cite { font-weight: 600; flex: none; }
+.owb-zot-title { min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.owb-zot-abstract {
+  margin-top: 12px; padding: 10px 12px; border-radius: 8px;
+  background: var(--background-secondary);
+  font-size: 0.84em; line-height: 1.6; color: var(--text-muted);
+}

@@ -1,6 +1,7 @@
+// @ts-nocheck -- 批4机械迁移: 类型化排入队列
 "use strict";
 
-const { PluginSettingTab, Setting, Notice } = require("obsidian");
+import { PluginSettingTab, Setting, Notice } from "obsidian";
 
 const FEATURE_META = [
   { key: "workbench", name: "个人知识工作台", desc: "首屏问候、今日行动勾选、今日输入/输出与沉睡笔记洞察" },
@@ -694,4 +695,6 @@ class WorkbenchSettingTab extends PluginSettingTab {
   }
 }
 
-module.exports = { WorkbenchSettingTab };
+export {
+  WorkbenchSettingTab
+};

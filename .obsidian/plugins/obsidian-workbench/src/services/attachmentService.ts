@@ -224,7 +224,7 @@ function planOrganize(app) {
  * 说明：Obsidian 用文件名解析 [[name]]，移动后普通双链仍然有效；
  * 只有显式带路径的引用（![[assets/old/x.png]] 或 ![](old/x.png)）需要改写。
  */
-async function applyOrganize(app, plan, onProgress) {
+async function applyOrganize(app: any, plan: any, onProgress?: any) {
   const moved = [];
   const failed = [];
   const rewrites = new Map(); // oldPath -> newPath
@@ -353,7 +353,7 @@ async function saveAttachment(app, input, opts) {
  *   2) 副本 vault.rename 归档到 4-存档/<日期>_重复附件/（移动不是删除，附 README）
  * 同名无路径的 wikilink（[[x.png]]）无需改动：副本移走后 Obsidian 自动解析到正本。
  */
-async function applyDedupe(app, groups, onProgress) {
+async function applyDedupe(app: any, groups: any, onProgress?: any) {
   const pad = (n) => String(n).padStart(2, "0");
   const now = new Date();
   const day = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
@@ -467,7 +467,7 @@ function escapeRegExp(s) {
  * png/jpg/jpeg 与 avif/webp），引用还挂在旧格式上，新格式成了孤儿。
  * 闭环：引用改写到新格式 → 旧原件归档到 4-存档/<日期>_转码原件/。
  */
-async function cleanupConvertPairs(app, onProgress) {
+async function cleanupConvertPairs(app: any, onProgress?: any) {
   const OLD_EXTS = new Set(["png", "jpg", "jpeg"]);
   const NEW_EXTS = new Set(["avif", "webp"]);
   let files = [];

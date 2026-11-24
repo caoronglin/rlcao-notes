@@ -235,7 +235,7 @@ test("v3.1 modules: export contract + cosine/streak sanity", () => {
   const decision = require(path.join(rootDir, "src/services/decisionService.ts"));
   const daily = require(path.join(rootDir, "src/services/dailyService.ts"));
   const { listProjects, createProject, parseFrontmatter } = require(path.join(rootDir, "src/services/projectService.ts"));
-  const privacy = require(path.join(rootDir, "src/services/privacyService.js"));
+  const privacy = require(path.join(rootDir, "src/services/privacyService.ts"));
 
   assert.equal(typeof RagService, "function");
   assert.equal(typeof cosine, "function");

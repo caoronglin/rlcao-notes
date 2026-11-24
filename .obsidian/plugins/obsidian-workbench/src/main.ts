@@ -1,55 +1,60 @@
 "use strict";
 
-const { Plugin, Notice } = require("obsidian");
-const {
-  VIEW_TYPE_WORKBENCH,
-  VIEW_TYPE_GIT,
-  VIEW_TYPE_QUIZ,
-  VIEW_TYPE_RAG,
-  DEFAULT_SETTINGS
-} = require("./constants");
-const { deepMergeDefaults, formatDate, migrateSettings } = require("./utils");
-const { GitService } = require("./services/gitService");
-const { PomodoroService } = require("./services/pomodoroService");
-const { RagService } = require("./services/ragService");
-const { openDaily } = require("./services/dailyService");
-const { listProjects, createProject } = require("./services/projectService");
+import { Plugin, Notice, type TFile, type Vault } from "obsidian";
+import { VIEW_TYPE_WORKBENCH, VIEW_TYPE_GIT, VIEW_TYPE_QUIZ, VIEW_TYPE_RAG, DEFAULT_SETTINGS } from "./constants";
+import { deepMergeDefaults, formatDate, migrateSettings } from "./utils";
+import { GitService } from "./services/gitService";
+import { PomodoroService } from "./services/pomodoroService";
+import { RagService } from "./services/ragService";
+import { openDaily } from "./services/dailyService";
+import { listProjects, createProject } from "./services/projectService";
 const privacyService = require("./services/privacyService");
-const { setPluginDir } = require("./services/imageService");
+import { setPluginDir } from "./services/imageService";
 const decisionService = require("./services/decisionService");
 const graphService = require("./services/graphService");
-const { renderRunnableBlock, renderHtmlPreview } = require("./services/codeRunner");
-const { AttachmentPreviewModal } = require("./modals/attachmentPreviewModal");
-const { DedupeModal } = require("./modals/dedupeModal");
-const { saveAttachment, planOrganize, applyOrganize, cleanupConvertPairs } = require("./services/attachmentService");
-const { BASE_STYLE_CSS } = require("./styles/basesStyle");
-const { PomodoroFullscreen } = require("./modals/pomodoroFullscreen");
+import { renderRunnableBlock, renderHtmlPreview } from "./services/codeRunner";
+import { AttachmentPreviewModal } from "./modals/attachmentPreviewModal";
+import { DedupeModal } from "./modals/dedupeModal";
+import { saveAttachment, planOrganize, applyOrganize, cleanupConvertPairs } from "./services/attachmentService";
+import { BASE_STYLE_CSS } from "./styles/basesStyle";
+import { PomodoroFullscreen } from "./modals/pomodoroFullscreen";
 const goalService = require("./services/goalService");
-const { formatNote } = require("./services/autoFormatService");
-const { chatCompletion } = require("./services/aiService");
+import { formatNote } from "./services/autoFormatService";
+import { chatCompletion } from "./services/aiService";
 
 /** LLM 桥：OpenAI 兼容接口，无配置时抛明确错误 */
-async function aiBridgeChat(messages, settings) {
+async function aiBridgeChat(messages: Array<{ role: string; content: string }>, settings: Record<string, any>): Promise<string> {
   const baseUrl = String((settings && settings.aiBaseUrl) || "").replace(/\/+$/, "");
   const model = String((settings && settings.aiModel) || "").trim();
   if (!baseUrl || !model) {
     throw new Error("请先在设置中配置 AI Base URL 与模型（OpenAI/DeepSeek/Ollama 均可）");
   }
-  return chatCompletion(messages, settings);
+  return chatCompletion(messages, settings, undefined);
 }
-const { WorkbenchView } = require("./views/workbenchView");
-const { GitPanelView } = require("./views/gitView");
-const { QuizView } = require("./views/quizView");
-const { QuickCaptureModal } = require("./modals/quickCaptureModal");
-const { TaskCenterModal } = require("./modals/taskModal");
-const { AttachmentModal } = require("./modals/attachmentModal");
-const { ImageToolsModal } = require("./modals/imageToolsModal");
-const { DoctorModal } = require("./modals/doctorModal");
-const { AIQuizModal } = require("./modals/aiQuizModal");
-const { WorkbenchSettingTab } = require("./settings");
+import { WorkbenchView } from "./views/workbenchView";
+import { GitPanelView } from "./views/gitView";
+import { QuizView } from "./views/quizView";
+import { QuickCaptureModal } from "./modals/quickCaptureModal";
+import { TaskCenterModal } from "./modals/taskModal";
+import { AttachmentModal } from "./modals/attachmentModal";
+import { ImageToolsModal } from "./modals/imageToolsModal";
+import { DoctorModal } from "./modals/doctorModal";
+import { AIQuizModal } from "./modals/aiQuizModal";
+import { WorkbenchSettingTab } from "./settings";
 
 class ObsidianWorkbenchPlugin extends Plugin {
-  async onload() {
+  settings!: typeof DEFAULT_SETTINGS & Record<string, any>;
+  gitService!: GitService | null;
+  pomodoro!: PomodoroService;
+  rag!: RagService;
+  ribbonEls!: Record<string, HTMLElement | undefined>;
+  gitStatusEl!: HTMLElement;
+  pomoStatusEl!: HTMLElement;
+  _autoSyncId: number | null = null;
+  _refreshTimer: ReturnType<typeof setTimeout> | null = null;
+  _migrationApplied?: string[];
+
+  async onload(): Promise<void> {
     await this.loadSettings();
 
     const basePath = this.getVaultBasePath();
@@ -91,7 +96,7 @@ class ObsidianWorkbenchPlugin extends Plugin {
     // "OWB bundle: cannot resolve module .../node_modules/sharp from ./services"。
     if (this.manifest && this.manifest.dir) {
       const dir = this.manifest.dir;
-      const base = this.app && this.app.vault && this.app.vault.adapter ? this.app.vault.adapter.basePath : "";
+      const base = this.app && this.app.vault && this.app.vault.adapter ? (this.app.vault.adapter as any).basePath || "" : "";
       const abs = dir.startsWith("/") ? dir : base ? `${base}/${dir}` : "";
       if (abs) {
         setPluginDir(abs);
@@ -323,7 +328,7 @@ class ObsidianWorkbenchPlugin extends Plugin {
             await this.updateGitStatusBar();
           }
         } catch (err) {
-          new Notice(`启动自动拉取失败：${err.message}`, 5000);
+          new Notice(`启动自动拉取失败：${(err as Error)?.message}`, 5000);
         }
       }
     });
@@ -340,11 +345,11 @@ class ObsidianWorkbenchPlugin extends Plugin {
     }
   }
 
-  isFeatureEnabled(key) {
-    return Boolean(this.settings && this.settings.features && this.settings.features[key]);
+  isFeatureEnabled(key: string): boolean {
+    return Boolean(this.settings && this.settings.features && (this.settings.features as Record<string, boolean>)[key]);
   }
 
-  _guardCommand(featureKey, checking, fn) {
+  _guardCommand(featureKey: string, checking: boolean, fn: () => unknown): boolean {
     if (!this.isFeatureEnabled(featureKey)) return false;
     if (!checking) fn();
     return true;
@@ -353,7 +358,7 @@ class ObsidianWorkbenchPlugin extends Plugin {
   /**
    * 实时应用所有模块开关状态（无需重启 Obsidian）。
    */
-  async applyFeatureState() {
+  async applyFeatureState(): Promise<void> {
     if (this.ribbonEls) {
       for (const [key, el] of Object.entries(this.ribbonEls)) {
         if (el) el.style.display = this.isFeatureEnabled(key) ? "" : "none";
@@ -369,14 +374,14 @@ class ObsidianWorkbenchPlugin extends Plugin {
     this.refreshGitViews();
   }
 
-  getVaultBasePath() {
+  getVaultBasePath(): string | null {
     const adapter = this.app && this.app.vault && this.app.vault.adapter;
-    return adapter && typeof adapter.basePath === "string" ? adapter.basePath : null;
+    return adapter && typeof (adapter as any).basePath === "string" ? (adapter as any).basePath : null;
   }
 
-  async loadSettings() {
+  async loadSettings(): Promise<void> {
     const saved = await this.loadData();
-    this.settings = migrateSettings(deepMergeDefaults(DEFAULT_SETTINGS, saved));
+    this.settings = migrateSettings(deepMergeDefaults(DEFAULT_SETTINGS, saved)) as ObsidianWorkbenchPlugin["settings"];
     const log = this.settings._migrationLog || [];
     delete this.settings._migrationLog;
     if (log.length) {
@@ -387,11 +392,11 @@ class ObsidianWorkbenchPlugin extends Plugin {
     }
   }
 
-  async saveSettings() {
+  async saveSettings(): Promise<void> {
     await this.saveData(this.settings);
   }
 
-  resetAutoSyncTimer() {
+  resetAutoSyncTimer(): void {
     if (this._autoSyncId) {
       window.clearInterval(this._autoSyncId);
       this._autoSyncId = null;
@@ -405,7 +410,7 @@ class ObsidianWorkbenchPlugin extends Plugin {
   }
 
   /** 番茄完成后把这次专注写进当天日记，形成可回溯的专注流水 */
-  async logPomodoroToDaily() {
+  async logPomodoroToDaily(): Promise<void> {
     if (!this.isFeatureEnabled("dailyJournal")) return;
     try {
       const mins = Number(this.settings.pomodoroWorkMinutes) || 25;
@@ -424,11 +429,11 @@ class ObsidianWorkbenchPlugin extends Plugin {
         return content.replace(/\s*$/, "") + "\n\n" + line + "\n";
       });
     } catch (e) {
-      console.debug("[workbench] 番茄记录写入日记失败:", e && e.message);
+      console.debug("[workbench] 番茄记录写入日记失败:", (e as Error)?.message);
     }
   }
 
-  updatePomodoroStatusBar() {
+  updatePomodoroStatusBar(): void {
     if (!this.pomoStatusEl) return;
     if (!this.isFeatureEnabled("pomodoro") || !this.pomodoro) {
       this.pomoStatusEl.setText("");
@@ -437,7 +442,7 @@ class ObsidianWorkbenchPlugin extends Plugin {
     this.pomoStatusEl.setText(this.pomodoro.getStatusBarText());
   }
 
-  async updateGitStatusBar() {
+  async updateGitStatusBar(): Promise<void> {
     if (!this.gitStatusEl) return;
     if (!this.isFeatureEnabled("gitPanel") || !this.gitService) {
       this.gitStatusEl.setText("");
@@ -458,7 +463,7 @@ class ObsidianWorkbenchPlugin extends Plugin {
     }
   }
 
-  async runGitQuickSync(silent = false) {
+  async runGitQuickSync(silent: boolean = false): Promise<void> {
     if (!this.isFeatureEnabled("gitPanel") || !this.gitService) {
       if (!silent) new Notice("Git 模块未启用或当前环境不支持");
       return;
@@ -487,11 +492,11 @@ class ObsidianWorkbenchPlugin extends Plugin {
       this.refreshGitViews();
       if (!silent) new Notice("Git 同步完成");
     } catch (err) {
-      new Notice(`Git 同步失败：${err.message}`, 6000);
+      new Notice(`Git 同步失败：${(err as Error)?.message}`, 6000);
     }
   }
 
-  async activateWorkbenchView() {
+  async activateWorkbenchView(): Promise<void> {
     if (!this.isFeatureEnabled("workbench")) return;
     const existing = this.app.workspace.getLeavesOfType(VIEW_TYPE_WORKBENCH);
     const leaf = existing.length ? existing[0] : this.app.workspace.getLeaf("tab");
@@ -499,53 +504,59 @@ class ObsidianWorkbenchPlugin extends Plugin {
     this.app.workspace.revealLeaf(leaf);
   }
 
-  async activateGitView() {
+  async activateGitView(): Promise<void> {
     if (!this.isFeatureEnabled("gitPanel")) return;
     const existing = this.app.workspace.getLeavesOfType(VIEW_TYPE_GIT);
     const leaf = existing.length ? existing[0] : this.app.workspace.getRightLeaf(false);
-    await leaf.setViewState({ type: VIEW_TYPE_GIT, active: true });
-    this.app.workspace.revealLeaf(leaf);
+    await leaf!.setViewState({ type: VIEW_TYPE_GIT, active: true });
+    this.app.workspace.revealLeaf(leaf!);
   }
 
-  async activateQuizView(initialFilePath = "") {
+  async activateQuizView(initialFilePath: string = ""): Promise<void> {
     if (!this.isFeatureEnabled("quizEngine")) return;
     const existing = this.app.workspace.getLeavesOfType(VIEW_TYPE_QUIZ);
     const leaf = existing.length ? existing[0] : this.app.workspace.getLeaf("tab");
-    await leaf.setViewState({ type: VIEW_TYPE_QUIZ, active: true });
-    this.app.workspace.revealLeaf(leaf);
-    if (initialFilePath && leaf.view && typeof leaf.view.loadSelectedBank === "function") {
-      leaf.view.selectedFilePath = initialFilePath;
-      leaf.view.session = null;
-      await leaf.view.loadSelectedBank(initialFilePath);
-      await leaf.view.render();
+    await leaf!.setViewState({ type: VIEW_TYPE_QUIZ, active: true });
+    this.app.workspace.revealLeaf(leaf!);
+    const quizView = leaf && leaf.view ? (leaf.view as unknown as {
+      loadSelectedBank?: (p: string) => Promise<void>;
+      selectedFilePath?: string;
+      session?: unknown;
+      render?: () => Promise<void> | void;
+    }) : null;
+    if (initialFilePath && quizView && typeof quizView.loadSelectedBank === "function") {
+      quizView.selectedFilePath = initialFilePath;
+      quizView.session = null;
+      await quizView.loadSelectedBank(initialFilePath);
+      await quizView.render?.();
     }
   }
 
-  openQuickCapture() {
+  openQuickCapture(): void {
     if (!this.isFeatureEnabled("quickCapture")) return;
     new QuickCaptureModal(this.app, this).open();
   }
 
-  openDoctorModal() {
+  openDoctorModal(): void {
     if (!this.isFeatureEnabled("vaultDoctor")) return;
     new DoctorModal(this.app, this).open();
   }
 
-  openAIQuizModal() {
+  openAIQuizModal(): void {
     if (!this.isFeatureEnabled("aiAssist")) return;
     new AIQuizModal(this.app, this).open();
   }
 
   // ── v3.1 新模块方法 ──
-  openDailyNote(offsetDays) {
+  openDailyNote(offsetDays: number): void {
     if (!this.isFeatureEnabled("dailyJournal")) return;
     openDaily(this.app, this.settings, offsetDays).catch((err) =>
-      new Notice("日记打开失败：" + err.message, 5000)
+      new Notice("日记打开失败：" + (err as Error)?.message, 5000)
     );
   }
 
   // ── 目标模式 ──
-  async openYearGoals() {
+  async openYearGoals(): Promise<void> {
     const year = new Date().getFullYear();
     const file = await goalService.ensureGoalFile(this.app, year);
     await this.app.workspace.getLeaf(false).openFile(file);
@@ -556,10 +567,12 @@ class ObsidianWorkbenchPlugin extends Plugin {
    * AI 拆解：取当前笔记中的未勾目标行（或用户选中文本），决策模型判定领域/优先级，
    * LLM 生成层级草案 → 追加进目标文件的 AI 草稿小节（不静默改正文）。
    */
-  async goalAiBreakdown() {
+  async goalAiBreakdown(): Promise<void> {
     try {
       const leaf = this.app.workspace.getMostRecentLeaf();
-      const view = leaf && leaf.view;
+      const view = (leaf && leaf.view ? leaf.view : null) as
+        | { file?: import("obsidian").TFile; editor?: { somethingSelected?(): boolean; getSelection(): string } }
+        | null;
       if (!view || !view.file) {
         new Notice("先打开目标文件（或包含目标行的笔记）");
         return;
@@ -589,8 +602,8 @@ class ObsidianWorkbenchPlugin extends Plugin {
 
       new Notice("拆解中：决策模型判定领域 → LLM 生成草案…", 6000);
       const res = await goalService.aiBreakdown(
-        (state, questions) => this.decide(state, questions),
-        (messages) => aiBridgeChat(messages, this.settings),
+        (state: Record<string, unknown>, questions: Record<string, unknown>) => this.decide(state, questions as Record<string, { type?: string; instructions?: string; criteria?: unknown }>),
+        (messages: Array<{ role: string; content: string }>) => aiBridgeChat(messages, this.settings),
         goalText,
         "month"
       );
@@ -601,20 +614,20 @@ class ObsidianWorkbenchPlugin extends Plugin {
       );
       await this.app.workspace.getLeaf(false).openFile(tree.file);
     } catch (err) {
-      new Notice("AI 拆解失败：" + err.message, 8000);
+      new Notice("AI 拆解失败：" + (err as Error)?.message, 8000);
     }
   }
 
-  async formatCurrentNote() {
+  async formatCurrentNote(): Promise<void> {
     const leaf = this.app.workspace.getMostRecentLeaf();
-    const view = leaf && leaf.view;
+    const view = (leaf && leaf.view ? leaf.view : null) as { file?: import("obsidian").TFile } | null;
     if (!view || !view.file || view.file.extension !== "md") {
       new Notice("先打开一篇笔记");
       return;
     }
     try {
       const res = await formatNote(this.app, view.file, {
-        decide: (state, questions) => this.decide(state, questions)
+        decide: (state: Record<string, unknown>, questions: Record<string, unknown>) => this.decide(state, questions as Record<string, { type?: string; instructions?: string; criteria?: unknown }>)
       });
       if (!res.changed) {
         new Notice("frontmatter 已完备，无需改动");
@@ -625,16 +638,16 @@ class ObsidianWorkbenchPlugin extends Plugin {
         8000
       );
     } catch (err) {
-      new Notice("格式化失败：" + err.message, 8000);
+      new Notice("格式化失败：" + (err as Error)?.message, 8000);
     }
   }
 
-  openPomodoroFullscreen() {
+  openPomodoroFullscreen(): void {
     if (!this.isFeatureEnabled("pomodoro")) return;
     new PomodoroFullscreen(this.app, this).open();
   }
 
-  openTaskCenter() {
+  openTaskCenter(): void {
     if (!this.isFeatureEnabled("tasks")) return;
     new TaskCenterModal(this.app, this).open();
   }
@@ -643,9 +656,12 @@ class ObsidianWorkbenchPlugin extends Plugin {
    * 决策模型接口（内部）：不提供独立入口，供闪念归类等功能调用。
    * 返回 { answers: { key: { type, value, confidence } } }
    */
-  async decide(state, questions) {
+  async decide(
+    state: Record<string, unknown>,
+    questions: Record<string, { type?: string; instructions?: string; criteria?: unknown }>
+  ): Promise<{ answers: Record<string, { type?: string; value: unknown; confidence: number | null; raw?: unknown }> }> {
     if (!this.isFeatureEnabled("decision")) throw new Error("决策接口未启用");
-    const types = {};
+    const types: Record<string, string> = {};
     for (const k of Object.keys(questions || {})) types[k] = questions[k].type || "choice";
     return decisionService.ask(state, questions, this.settings, { questionTypes: types });
   }
@@ -663,16 +679,16 @@ class ObsidianWorkbenchPlugin extends Plugin {
       );
       this.refreshWorkbenchViews();
     } catch (err) {
-      new Notice("转码清理失败：" + err.message, 8000);
+      new Notice("转码清理失败：" + (err as Error)?.message, 8000);
     }
   }
 
-  openDedupeModal() {
+  openDedupeModal(): void {
     if (!this.isFeatureEnabled("attachments")) return;
     new DedupeModal(this.app, this).open();
   }
 
-  previewAttachment(file) {
+  previewAttachment(file: TFile): void {
     if (!file) return;
     new AttachmentPreviewModal(this.app, this, file).open();
   }
@@ -689,14 +705,13 @@ class ObsidianWorkbenchPlugin extends Plugin {
         for (const f of files) {
           const res = await saveAttachment(this.app, f, { name: f.name });
           const leaf = this.app.workspace.getMostRecentLeaf();
-          if (leaf && leaf.view && leaf.view.editor) {
-            leaf.view.editor.replaceSelection(`![[${res.path}]]\n`);
-          }
+          const ed = leaf && leaf.view ? (leaf.view as unknown as { editor?: { replaceSelection(t: string): void } }).editor : null;
+          if (ed) ed.replaceSelection(`![[${res.path}]]\n`);
         }
         new Notice(`已归档 ${files.length} 个附件到 assets/`);
         this.refreshWorkbenchViews();
       } catch (e) {
-        new Notice("上传失败：" + e.message, 7000);
+        new Notice("上传失败：" + (e as Error)?.message, 7000);
       }
     });
     input.click();
@@ -745,11 +760,11 @@ class ObsidianWorkbenchPlugin extends Plugin {
     try {
       await this.app.vault.adapter.write(".obsidian/snippets/workbench-bases.css", css);
       const p = ".obsidian/appearance.json";
-      let appJson = {};
+      let appJson: { enabledCssSnippets?: string[] } = {};
       try {
-        appJson = JSON.parse(await this.app.vault.adapter.read(p));
+        appJson = JSON.parse(await this.app.vault.adapter.read(p)) as { enabledCssSnippets?: string[] };
       } catch (e) {
-        appJson = {};
+        appJson = {} as { enabledCssSnippets?: string[] };
       }
       const list = Array.isArray(appJson.enabledCssSnippets) ? appJson.enabledCssSnippets : [];
       if (!list.includes("workbench-bases")) list.push("workbench-bases");
@@ -757,15 +772,15 @@ class ObsidianWorkbenchPlugin extends Plugin {
       await this.app.vault.adapter.write(p, JSON.stringify(appJson, null, 2));
       new Notice("多维表格样式已生成并启用：workbench-bases.css", 6000);
     } catch (e) {
-      new Notice("生成失败：" + e.message, 7000);
+      new Notice("生成失败：" + (e as Error)?.message, 7000);
     }
   }
 
-  async buildGraphNote() {
+  async buildGraphNote(): Promise<void> {
     try {
       await graphService.writeGraphNote(this.app, { dir: "vault/系统与工具" });
     } catch (err) {
-      new Notice("知识图谱生成失败：" + err.message, 8000);
+      new Notice("知识图谱生成失败：" + (err as Error)?.message, 8000);
     }
   }
 
@@ -822,11 +837,11 @@ class ObsidianWorkbenchPlugin extends Plugin {
     try {
       await this.app.vault.adapter.write(path, lines.join("\n"));
       const appJsonPath = ".obsidian/appearance.json";
-      let appJson = {};
+      let appJson: { enabledCssSnippets?: string[] } = {};
       try {
         appJson = JSON.parse(await this.app.vault.adapter.read(appJsonPath));
       } catch (e) {
-        appJson = {};
+        appJson = {} as { enabledCssSnippets?: string[] };
       }
       const list = Array.isArray(appJson.enabledCssSnippets) ? appJson.enabledCssSnippets : [];
       if (!list.includes("workbench-explorer")) list.push("workbench-explorer");
@@ -834,40 +849,40 @@ class ObsidianWorkbenchPlugin extends Plugin {
       await this.app.vault.adapter.write(appJsonPath, JSON.stringify(appJson, null, 2));
       new Notice("文件浏览器样式已生成并启用：.obsidian/snippets/workbench-explorer.css", 7000);
     } catch (err) {
-      new Notice("生成失败：" + err.message, 8000);
+      new Notice("生成失败：" + (err as Error)?.message, 8000);
     }
   }
 
-  openAttachmentModal() {
+  openAttachmentModal(): void {
     if (!this.isFeatureEnabled("attachments")) return;
     new AttachmentModal(this.app, this).open();
   }
 
-  openImageToolsModal() {
+  openImageToolsModal(): void {
     if (!this.isFeatureEnabled("imageTools")) return;
     new ImageToolsModal(this.app, this).open();
   }
 
-  createProjectInteractive() {
+  createProjectInteractive(): void {
     if (!this.isFeatureEnabled("projects")) return;
     const name = window.prompt("项目名称（将在项目目录下创建 <名称>.md）：", "");
     if (!name || !name.trim()) return;
     createProject(this.app, this.settings, name).catch((err) =>
-      new Notice("项目创建失败：" + err.message, 6000)
+      new Notice("项目创建失败：" + (err as Error)?.message, 6000)
     );
   }
 
-  async setPrivacy(hidden) {
+  async setPrivacy(hidden: boolean): Promise<void> {
     if (!this.isFeatureEnabled("privacy")) return;
     try {
       if (hidden) await privacyService.ensureFolder(this.app, this.settings);
       await privacyService.setHidden(this.app, this.settings, hidden);
     } catch (err) {
-      new Notice("隐私区切换失败：" + err.message, 6000);
+      new Notice("隐私区切换失败：" + (err as Error)?.message, 6000);
     }
   }
 
-  async showPrivacyStatus() {
+  async showPrivacyStatus(): Promise<void> {
     if (!this.isFeatureEnabled("privacy")) return;
     try {
       const st = await privacyService.status(this.app, this.settings);
@@ -877,39 +892,41 @@ class ObsidianWorkbenchPlugin extends Plugin {
         8000
       );
     } catch (err) {
-      new Notice("状态读取失败：" + err.message, 6000);
+      new Notice("状态读取失败：" + (err as Error)?.message, 6000);
     }
   }
 
-  async activateRagView() {
+  async activateRagView(): Promise<void> {
     if (!this.isFeatureEnabled("ragSearch")) return;
     const existing = this.app.workspace.getLeavesOfType(VIEW_TYPE_RAG);
     const leaf = existing.length ? existing[0] : this.app.workspace.getLeaf("tab");
-    await leaf.setViewState({ type: VIEW_TYPE_RAG, active: true });
-    this.app.workspace.revealLeaf(leaf);
+    await leaf!.setViewState({ type: VIEW_TYPE_RAG, active: true });
+    this.app.workspace.revealLeaf(leaf!);
   }
 
-  async buildRagIndex() {
+  async buildRagIndex(): Promise<void> {
     if (!this.isFeatureEnabled("ragSearch")) return;
     try {
       const stat = await this.rag.buildIndex(this.app, null);
       new Notice("RAG 索引完成：" + stat.files + " 篇 / " + stat.chunks + " 块", 6000);
     } catch (err) {
-      new Notice("索引构建失败：" + err.message, 8000);
+      new Notice("索引构建失败：" + (err as Error)?.message, 8000);
     }
   }
 
-  refreshWorkbenchViews() {
+  refreshWorkbenchViews(): void {
     for (const leaf of this.app.workspace.getLeavesOfType(VIEW_TYPE_WORKBENCH)) {
-      if (leaf.view && typeof leaf.view.render === "function") leaf.view.render();
+      const v = leaf.view as unknown as { render?: () => Promise<void> | void };
+      if (v && typeof v.render === "function") v.render();
     }
   }
 
-  refreshGitViews() {
+  refreshGitViews(): void {
     for (const leaf of this.app.workspace.getLeavesOfType(VIEW_TYPE_GIT)) {
-      if (leaf.view && typeof leaf.view.render === "function") leaf.view.render();
+      const v = leaf.view as unknown as { render?: () => Promise<void> | void };
+      if (v && typeof v.render === "function") v.render();
     }
   }
 }
 
-module.exports = ObsidianWorkbenchPlugin;
+export = ObsidianWorkbenchPlugin;

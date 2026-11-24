@@ -1,6 +1,7 @@
+// @ts-nocheck -- 批4机械迁移: 类型化排入队列
 "use strict";
 
-const { normalizePath, Notice } = require("obsidian");
+import { normalizePath, Notice } from "obsidian";
 
 /**
  * 隐私区服务：
@@ -115,4 +116,8 @@ async function ensureFolder(app, settings) {
   return abs;
 }
 
-module.exports = { status, setHidden, ensureFolder };
+export {
+  status,
+  setHidden,
+  ensureFolder
+};

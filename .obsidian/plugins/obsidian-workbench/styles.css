@@ -1706,3 +1706,64 @@
   .owb-fs-enter, .owb-fs-pulse { animation: none !important; }
   .owb-pomo-progress-fill { transition: none; }
 }
+
+/* ================= v3.11 afrexai/ui-ux-pro 打磨 ================= */
+
+/* 空状态四要素 */
+.owb-empty-slot { gap: 10px; }
+.owb-empty-icon svg { width: 18px; height: 18px; opacity: 0.55; }
+.owb-empty-cta { margin-left: auto; flex: none; }
+
+/* 骨架屏（Skeleton > Spinner） */
+.owb-skeleton-box { display: flex; flex-direction: column; gap: 8px; margin: 8px 0 4px; }
+.owb-skeleton-line {
+  height: 11px;
+  border-radius: 5px;
+  background: linear-gradient(90deg,
+    rgba(255, 255, 255, 0.06) 25%,
+    rgba(255, 255, 255, 0.14) 50%,
+    rgba(255, 255, 255, 0.06) 75%);
+  background-size: 200% 100%;
+  animation: owb-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes owb-shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+
+/* 按压反馈（afrexai micro-interaction: press scale 0.97 / 100ms） */
+.owb-workbench-view button:not(:disabled):active {
+  transform: scale(0.97);
+  transition-duration: 80ms;
+}
+
+/* 首次入场列表项 stagger（每项延迟 50ms，只前 8 项避免长列表拖沓） */
+.owb-enter .owb-task-list .owb-task-row:nth-child(-n+8) {
+  animation: owb-rise 360ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.owb-enter .owb-task-list .owb-task-row:nth-child(1) { animation-delay: 200ms; }
+.owb-enter .owb-task-list .owb-task-row:nth-child(2) { animation-delay: 250ms; }
+.owb-enter .owb-task-list .owb-task-row:nth-child(3) { animation-delay: 300ms; }
+.owb-enter .owb-task-list .owb-task-row:nth-child(4) { animation-delay: 350ms; }
+.owb-enter .owb-task-list .owb-task-row:nth-child(n+5) { animation-delay: 400ms; }
+
+.owb-enter .owb-heat-grid .owb-heat-col:nth-child(-n+6) {
+  animation: owb-rise 360ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.owb-enter .owb-heat-grid .owb-heat-col:nth-child(1) { animation-delay: 90ms; }
+.owb-enter .owb-heat-grid .owb-heat-col:nth-child(2) { animation-delay: 120ms; }
+.owb-enter .owb-heat-grid .owb-heat-col:nth-child(3) { animation-delay: 150ms; }
+.owb-enter .owb-heat-grid .owb-heat-col:nth-child(4) { animation-delay: 180ms; }
+.owb-enter .owb-heat-grid .owb-heat-col:nth-child(5) { animation-delay: 210ms; }
+.owb-enter .owb-heat-grid .owb-heat-col:nth-child(6) { animation-delay: 240ms; }
+
+/* reduced-motion 一并关闭 */
+@media (prefers-reduced-motion: reduce) {
+  .owb-skeleton-line { animation: none; }
+  .owb-enter .owb-task-list .owb-task-row,
+  .owb-enter .owb-heat-grid .owb-heat-col { animation: none !important; }
+}
+
+/* 标签计数数字等宽（antfu: font-variant tabular for counters） */
+.owb-tag-count, .owb-heat-summary, .owb-stat-label { font-variant-numeric: tabular-nums; }

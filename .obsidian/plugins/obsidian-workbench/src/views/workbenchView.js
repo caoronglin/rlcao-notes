@@ -136,10 +136,16 @@ class WorkbenchView extends ItemView {
   renderHeatmap(container, heat) {
     const card = container.createDiv({ cls: "owb-card owb-heat-card" });
     const head = card.createDiv({ cls: "owb-card-title-row" });
-    head.createDiv({ cls: "owb-card-title", text: "更新热力" });
+    // 结论式标题（smart-charts: 标题写结论不写主题）
+    head.createDiv({
+      cls: "owb-card-title",
+      text: heat.streak > 0
+        ? `已连续更新 ${heat.streak} 天 · 单日峰值 ${heat.max} 次`
+        : `近 ${heat.weeks} 周有 ${heat.activeDays} 天在产出`
+    });
     head.createDiv({
       cls: "owb-muted owb-heat-summary",
-      text: `${heat.activeDays}/${heat.weeks * 7} 天有产出 · 累计 ${heat.total} 次 · 峰值 ${heat.max}`
+      text: `${heat.activeDays}/${heat.weeks * 7} 天 · 累计 ${heat.total} 次`
     });
 
     const cols = card.createDiv({ cls: "owb-heat-cols" });
@@ -192,7 +198,7 @@ class WorkbenchView extends ItemView {
     tagHead.createDiv({ cls: "owb-card-title", text: "标签统计" });
     tagHead.createDiv({ cls: "owb-muted", text: `${tags.distinct} 个标签 · ${tags.total} 次引用` });
     if (!tags.list.length) {
-      this.emptySlot(tagPanel, "库里还没有标签");
+      this.emptySlot(tagPanel, "还没有任何标签，给笔记加上第一个标签后会在这里看到统计", { icon: "tags", ctaLabel: "打开收件箱", ctaIcon: "inbox", onCta: () => this.plugin.openQuickCapture() });
     } else {
       const max = tags.list[0].count || 1;
       const list = tagPanel.createDiv({ cls: "owb-tag-list" });
@@ -216,9 +222,27 @@ class WorkbenchView extends ItemView {
     legend.createSpan({ cls: "owb-muted", text: "多" });
   }
 
-  emptySlot(container, text) {
+  /**
+   * 空状态四要素（afrexai-ui-design-system）：
+   * icon + 一句话说明 + 可选 CTA。绝不让用户看到一片空白的解释文。
+   */
+  emptySlot(container, text, opts) {
+    const o = opts || {};
     const slot = container.createDiv({ cls: "owb-empty-slot" });
-    slot.createSpan({ text: text });
+    if (o.icon) {
+      const ic = slot.createSpan({ cls: "owb-empty-icon" });
+      setIcon(ic, o.icon);
+    }
+    slot.createSpan({ cls: "owb-empty-text", text });
+    if (o.ctaLabel) {
+      const btn = slot.createEl("button", { cls: "owb-mini-btn owb-empty-cta" });
+      if (o.ctaIcon) setIcon(btn, o.ctaIcon);
+      btn.createSpan({ text: o.ctaLabel });
+      btn.addEventListener("click", (ev) => {
+        ev.stopPropagation();
+        if (typeof o.onCta === "function") o.onCta();
+      });
+    }
     return slot;
   }
 
@@ -408,7 +432,7 @@ class WorkbenchView extends ItemView {
       );
     }
     if (!data.pendingTasks.length) {
-      this.emptySlot(taskCard, "没有待办。享受这份安静。");
+      this.emptySlot(taskCard, "没有待办，享受这份安静", { icon: "check-circle-2", ctaLabel: "新建任务", ctaIcon: "plus", onCta: () => this.plugin.openTaskCenter() });
     } else {
       const list = taskCard.createDiv({ cls: "owb-task-list" });
       for (const t of data.pendingTasks.slice(0, 12)) {
@@ -452,7 +476,7 @@ class WorkbenchView extends ItemView {
       text: `沉睡 ${this.plugin.settings.forgottenDays || 30} 天以上 · ${data.forgotten.length}`
     });
     if (!data.forgotten.length) {
-      this.emptySlot(forgotCard, "全部笔记都在活跃维护");
+      this.emptySlot(forgotCard, "全部笔记都在活跃维护", { icon: "sprout" });
     } else {
       const ul = forgotCard.createEl("ul", { cls: "owb-list" });
       for (const item of data.forgotten.slice(0, 5)) {
@@ -475,7 +499,7 @@ class WorkbenchView extends ItemView {
         this.plugin.createProjectInteractive()
       );
       if (!projects.length) {
-        this.emptySlot(projCard, `项目目录为空：${this.plugin.settings.projectFolder}`);
+        this.emptySlot(projCard, `项目目录为空（${this.plugin.settings.projectFolder}）`, { icon: "folder-plus", ctaLabel: "新建第一个项目", ctaIcon: "plus", onCta: () => this.plugin.createProjectInteractive() });
       } else {
         const ul = projCard.createEl("ul", { cls: "owb-list" });
         for (const item of projects.slice(0, 6)) {
@@ -503,7 +527,7 @@ class WorkbenchView extends ItemView {
         this.plugin.openDailyNote(-1)
       );
       if (!dailies.length) {
-        this.emptySlot(dailyCard, `还没有日记：${this.plugin.settings.dailyFolder}`);
+        this.emptySlot(dailyCard, `还没有日记（${this.plugin.settings.dailyFolder}）`, { icon: "notebook-pen", ctaLabel: "写今日第一篇", ctaIcon: "pen-line", onCta: () => this.plugin.openDailyNote(0) });
       } else {
         const ul = dailyCard.createEl("ul", { cls: "owb-list" });
         for (const d of dailies.slice(0, 5)) {
@@ -528,7 +552,7 @@ class WorkbenchView extends ItemView {
         }
       });
       if (!bases.length) {
-        this.emptySlot(baseCard, "没有 .duowei / .base 文件");
+        this.emptySlot(baseCard, "还没有多维表格", { icon: "table-2", ctaLabel: "新建工作表", ctaIcon: "plus", onCta: async () => { const { createBase } = require("../services/baseService"); await createBase(this.app, "新建工作表"); this.render(); } });
       } else {
         for (const b of bases.slice(0, 6)) {
           const row = baseCard.createDiv({ cls: "owb-base-row" });
@@ -670,9 +694,10 @@ class WorkbenchView extends ItemView {
     });
 
     if (this._ragBusy) {
-      const slot = card.createDiv({ cls: "owb-empty-slot" });
-      slot.createSpan({ cls: "owb-spinner" });
-      slot.createSpan({ text: "处理中…（构建索引会分批调用 embeddings）" });
+      // afrexai: Skeleton > Spinner（展示结构，降低感知等待）
+      const sk = card.createDiv({ cls: "owb-skeleton-box" });
+      for (let i = 0; i < 3; i++) sk.createDiv({ cls: "owb-skeleton-line", attr: { style: `width:${[92, 78, 85][i]}%` } });
+      sk.createDiv({ cls: "owb-muted", text: this._ragProgressText || "处理中…（构建索引分批调用 embeddings）" });
       return;
     }
     if (this._ragError) {

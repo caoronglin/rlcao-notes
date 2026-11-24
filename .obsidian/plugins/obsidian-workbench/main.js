@@ -3743,10 +3743,13 @@ var require_workbenchView = __commonJS({
       renderHeatmap(container, heat) {
         const card = container.createDiv({ cls: "owb-card owb-heat-card" });
         const head = card.createDiv({ cls: "owb-card-title-row" });
-        head.createDiv({ cls: "owb-card-title", text: "\u66F4\u65B0\u70ED\u529B" });
+        head.createDiv({
+          cls: "owb-card-title",
+          text: heat.streak > 0 ? `\u5DF2\u8FDE\u7EED\u66F4\u65B0 ${heat.streak} \u5929 \xB7 \u5355\u65E5\u5CF0\u503C ${heat.max} \u6B21` : `\u8FD1 ${heat.weeks} \u5468\u6709 ${heat.activeDays} \u5929\u5728\u4EA7\u51FA`
+        });
         head.createDiv({
           cls: "owb-muted owb-heat-summary",
-          text: `${heat.activeDays}/${heat.weeks * 7} \u5929\u6709\u4EA7\u51FA \xB7 \u7D2F\u8BA1 ${heat.total} \u6B21 \xB7 \u5CF0\u503C ${heat.max}`
+          text: `${heat.activeDays}/${heat.weeks * 7} \u5929 \xB7 \u7D2F\u8BA1 ${heat.total} \u6B21`
         });
         const cols = card.createDiv({ cls: "owb-heat-cols" });
         const body = cols.createDiv({ cls: "owb-heat-body" });
@@ -3793,7 +3796,7 @@ var require_workbenchView = __commonJS({
         tagHead.createDiv({ cls: "owb-card-title", text: "\u6807\u7B7E\u7EDF\u8BA1" });
         tagHead.createDiv({ cls: "owb-muted", text: `${tags.distinct} \u4E2A\u6807\u7B7E \xB7 ${tags.total} \u6B21\u5F15\u7528` });
         if (!tags.list.length) {
-          this.emptySlot(tagPanel, "\u5E93\u91CC\u8FD8\u6CA1\u6709\u6807\u7B7E");
+          this.emptySlot(tagPanel, "\u8FD8\u6CA1\u6709\u4EFB\u4F55\u6807\u7B7E\uFF0C\u7ED9\u7B14\u8BB0\u52A0\u4E0A\u7B2C\u4E00\u4E2A\u6807\u7B7E\u540E\u4F1A\u5728\u8FD9\u91CC\u770B\u5230\u7EDF\u8BA1", { icon: "tags", ctaLabel: "\u6253\u5F00\u6536\u4EF6\u7BB1", ctaIcon: "inbox", onCta: () => this.plugin.openQuickCapture() });
         } else {
           const max = tags.list[0].count || 1;
           const list = tagPanel.createDiv({ cls: "owb-tag-list" });
@@ -3815,9 +3818,27 @@ var require_workbenchView = __commonJS({
         for (let l = 0; l <= 4; l++) legend.createDiv({ cls: `owb-heat-cell owb-heat-l${l}` });
         legend.createSpan({ cls: "owb-muted", text: "\u591A" });
       }
-      emptySlot(container, text) {
+      /**
+       * 空状态四要素（afrexai-ui-design-system）：
+       * icon + 一句话说明 + 可选 CTA。绝不让用户看到一片空白的解释文。
+       */
+      emptySlot(container, text, opts) {
+        const o = opts || {};
         const slot = container.createDiv({ cls: "owb-empty-slot" });
-        slot.createSpan({ text });
+        if (o.icon) {
+          const ic = slot.createSpan({ cls: "owb-empty-icon" });
+          setIcon3(ic, o.icon);
+        }
+        slot.createSpan({ cls: "owb-empty-text", text });
+        if (o.ctaLabel) {
+          const btn = slot.createEl("button", { cls: "owb-mini-btn owb-empty-cta" });
+          if (o.ctaIcon) setIcon3(btn, o.ctaIcon);
+          btn.createSpan({ text: o.ctaLabel });
+          btn.addEventListener("click", (ev) => {
+            ev.stopPropagation();
+            if (typeof o.onCta === "function") o.onCta();
+          });
+        }
         return slot;
       }
       async render() {
@@ -3984,7 +4005,7 @@ var require_workbenchView = __commonJS({
           );
         }
         if (!data.pendingTasks.length) {
-          this.emptySlot(taskCard, "\u6CA1\u6709\u5F85\u529E\u3002\u4EAB\u53D7\u8FD9\u4EFD\u5B89\u9759\u3002");
+          this.emptySlot(taskCard, "\u6CA1\u6709\u5F85\u529E\uFF0C\u4EAB\u53D7\u8FD9\u4EFD\u5B89\u9759", { icon: "check-circle-2", ctaLabel: "\u65B0\u5EFA\u4EFB\u52A1", ctaIcon: "plus", onCta: () => this.plugin.openTaskCenter() });
         } else {
           const list = taskCard.createDiv({ cls: "owb-task-list" });
           for (const t of data.pendingTasks.slice(0, 12)) {
@@ -4026,7 +4047,7 @@ ${t.file.path}`);
           text: `\u6C89\u7761 ${this.plugin.settings.forgottenDays || 30} \u5929\u4EE5\u4E0A \xB7 ${data.forgotten.length}`
         });
         if (!data.forgotten.length) {
-          this.emptySlot(forgotCard, "\u5168\u90E8\u7B14\u8BB0\u90FD\u5728\u6D3B\u8DC3\u7EF4\u62A4");
+          this.emptySlot(forgotCard, "\u5168\u90E8\u7B14\u8BB0\u90FD\u5728\u6D3B\u8DC3\u7EF4\u62A4", { icon: "sprout" });
         } else {
           const ul = forgotCard.createEl("ul", { cls: "owb-list" });
           for (const item of data.forgotten.slice(0, 5)) {
@@ -4048,7 +4069,7 @@ ${t.file.path}`);
             () => this.plugin.createProjectInteractive()
           );
           if (!projects.length) {
-            this.emptySlot(projCard, `\u9879\u76EE\u76EE\u5F55\u4E3A\u7A7A\uFF1A${this.plugin.settings.projectFolder}`);
+            this.emptySlot(projCard, `\u9879\u76EE\u76EE\u5F55\u4E3A\u7A7A\uFF08${this.plugin.settings.projectFolder}\uFF09`, { icon: "folder-plus", ctaLabel: "\u65B0\u5EFA\u7B2C\u4E00\u4E2A\u9879\u76EE", ctaIcon: "plus", onCta: () => this.plugin.createProjectInteractive() });
           } else {
             const ul = projCard.createEl("ul", { cls: "owb-list" });
             for (const item of projects.slice(0, 6)) {
@@ -4077,7 +4098,7 @@ ${t.file.path}`);
             () => this.plugin.openDailyNote(-1)
           );
           if (!dailies.length) {
-            this.emptySlot(dailyCard, `\u8FD8\u6CA1\u6709\u65E5\u8BB0\uFF1A${this.plugin.settings.dailyFolder}`);
+            this.emptySlot(dailyCard, `\u8FD8\u6CA1\u6709\u65E5\u8BB0\uFF08${this.plugin.settings.dailyFolder}\uFF09`, { icon: "notebook-pen", ctaLabel: "\u5199\u4ECA\u65E5\u7B2C\u4E00\u7BC7", ctaIcon: "pen-line", onCta: () => this.plugin.openDailyNote(0) });
           } else {
             const ul = dailyCard.createEl("ul", { cls: "owb-list" });
             for (const d of dailies.slice(0, 5)) {
@@ -4101,7 +4122,11 @@ ${t.file.path}`);
             }
           });
           if (!bases.length) {
-            this.emptySlot(baseCard, "\u6CA1\u6709 .duowei / .base \u6587\u4EF6");
+            this.emptySlot(baseCard, "\u8FD8\u6CA1\u6709\u591A\u7EF4\u8868\u683C", { icon: "table-2", ctaLabel: "\u65B0\u5EFA\u5DE5\u4F5C\u8868", ctaIcon: "plus", onCta: async () => {
+              const { createBase: createBase3 } = (init_baseService(), __toCommonJS(baseService_exports));
+              await createBase3(this.app, "\u65B0\u5EFA\u5DE5\u4F5C\u8868");
+              this.render();
+            } });
           } else {
             for (const b of bases.slice(0, 6)) {
               const row = baseCard.createDiv({ cls: "owb-base-row" });
@@ -4230,9 +4255,9 @@ ${t.file.path}`);
           this.invalidateHeat();
         });
         if (this._ragBusy) {
-          const slot = card.createDiv({ cls: "owb-empty-slot" });
-          slot.createSpan({ cls: "owb-spinner" });
-          slot.createSpan({ text: "\u5904\u7406\u4E2D\u2026\uFF08\u6784\u5EFA\u7D22\u5F15\u4F1A\u5206\u6279\u8C03\u7528 embeddings\uFF09" });
+          const sk = card.createDiv({ cls: "owb-skeleton-box" });
+          for (let i = 0; i < 3; i++) sk.createDiv({ cls: "owb-skeleton-line", attr: { style: `width:${[92, 78, 85][i]}%` } });
+          sk.createDiv({ cls: "owb-muted", text: this._ragProgressText || "\u5904\u7406\u4E2D\u2026\uFF08\u6784\u5EFA\u7D22\u5F15\u5206\u6279\u8C03\u7528 embeddings\uFF09" });
           return;
         }
         if (this._ragError) {
